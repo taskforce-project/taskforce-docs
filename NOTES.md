@@ -113,3 +113,17 @@ Période : en continu (dès le mois 2)
 - Backlog produit
 - Roadmap et KPI
 - Doc API (auto-générée)
+
+
+
+
+
+| Livrable / Cahier                    | Objectif                               | Graphes / Diagrammes associés                 |
+| ------------------------------------ | -------------------------------------- | --------------------------------------------- |
+| 📘 **Cahier des charges**            | Cadrage du projet                      | SMART, PBS, WBS, OBS, Risques, Planning macro |
+| 📗 **Spécifications fonctionnelles** | Décrire ce que fait le produit         | Use Case, BPMN, Wireframes                    |
+| 📙 **Spécifications techniques**     | Décrire comment c’est fait             | Architecture, MCD, Séquence, Stack            |
+| 📒 **Plan de gestion de projet**     | Organiser le travail et les ressources | WBS, Gantt, PERT, RACI, OBS                   |
+| 📕 **Cahier de tests**               | Valider la qualité                     | Plan de test, tableau, screenshots            |
+| 📔 **Documentation utilisateur**     | Guider l’utilisation                   | Screens, navigation, API                      |
+| 📓 **Rapport / soutenance**          | Synthétiser le tout                    | Résumé visuel + résultats                     |

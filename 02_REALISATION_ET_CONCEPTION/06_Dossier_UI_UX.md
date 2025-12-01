@@ -19,6 +19,13 @@
 
 ## 6. Prototypes
 
+**Landing page**
+![Landing page - taskforce](../assets/maquettes/landing_page_01.png)
+![Landing page - taskforce](../assets/maquettes/landing_page_02.png)
+![Landing page - taskforce](../assets/maquettes/landing_page_03.png)
+![Landing page - taskforce](../assets/maquettes/landing_page_04.png)
+![Landing page - taskforce](../assets/maquettes/landing_page_05.png)
+
 **Portail de connexion et création de compte:**
 ![Portail de connexion - taskforce](../assets/maquettes/login.png)
 ![Portail de connexion - taskforce](../assets/maquettes/register.png)
