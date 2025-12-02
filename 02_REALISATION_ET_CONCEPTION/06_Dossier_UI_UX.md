@@ -1,7 +1,7 @@
 # Dossier UI/UX
 
 <div style="display: flex; align-items: center; gap: 50px; justify-content: center;">
-    <img src="../assets/images/logo_taskforce_light.png" alt="TaskForce Logo" width="200"/>
+    <img src="../assets/images/logo_taskforce_tp.png" alt="TaskForce Logo" width="200"/>
     <img src="../assets/images/logo_metz_numeric_school.svg" alt="Metz Numeric School Logo" width="230"/>
 </div>
 
