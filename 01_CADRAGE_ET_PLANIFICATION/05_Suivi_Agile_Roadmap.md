@@ -1,281 +1,678 @@
-# Suivi Agile et Roadmap
+# 🚀 Vision Produit & Roadmap - TaskForce
 
-<div style="display: flex; align-items: center; gap: 50px; justify-content: center;">
-    <img src="../assets/images/logo_taskforce_tp.png" alt="TaskForce Logo" width="200"/>
-    <img src="../assets/images/logo_metz_numeric_school.svg" alt="Metz Numeric School Logo" width="230"/>
-</div>
-
-## Sommaire
-- [1. Méthodologie Agile](#1-méthodologie-agile)
-- [2. Organisation des Sprints](#2-organisation-des-sprints)
-- [3. Backlog Produit](#3-backlog-produit)
-- [4. Roadmap Produit](#4-roadmap-produit)
-- [5. Définition of Done (DoD)](#5-définition-of-done-dod)
-- [6. Rituels Agile](#6-rituels-agile)
-- [7. Outils de Suivi](#7-outils-de-suivi)
+> **Projet** : TaskForce - Plateforme de gestion de tâches avec assignation intelligente  
+> **Version** : 1.0  
+> **Date** : 04/01/2026  
+> **Auteur** : Michel-Pierre  
+> **Statut** : Validé
 
 ---
 
-## 1. Méthodologie Agile
+## 🎯 Objectif du document
 
-### 1.1 Framework Choisi
-**Scrum adapté en mode solo** avec gestion Kanban sur GitHub Projects.
-
-### 1.2 Principes Appliqués
-- **Itérations courtes** : Sprints d'une semaine pour un feedback rapide.
-- **Livraison incrémentale** : Fonctionnalités déployables à chaque sprint.
-- **Amélioration continue** : Rétrospective hebdomadaire pour ajuster le processus.
-- **Priorisation** : Focus sur les fonctionnalités à haute valeur pour le MVP.
-
-### 1.3 Rôles (Mode Solo)
-- **Product Owner + Scrum Master + Développeur** : Pierre MICHEL
-- **Stakeholder / AMOA** : Cédric Brasseur (validation des livrables)
+Ce document présente la **vision produit à long terme** de TaskForce, la **roadmap stratégique** sur 12-18 mois, et le **suivi Agile** avec la planification détaillée des sprints, releases et milestones.
 
 ---
 
-## 2. Organisation des Sprints
+## 📋 Table des matières
 
-### 2.1 Durée des Sprints
-**1 semaine** (Lundi → Dimanche)
-
-### 2.2 Capacité par Sprint
-- **Développement** : ~30-35 heures effectives
-- **Vélocité estimée** : 20-25 Story Points (à affiner après Sprint 1)
-
-### 2.3 Cycle de Sprint
-1. **Lundi matin** : Sprint Planning (définition des objectifs et sélection des User Stories)
-2. **Mardi → Samedi** : Développement quotidien + Daily Standup personnel (bilan journalier)
-3. **Dimanche** : Sprint Review (démonstration des fonctionnalités) + Sprint Retrospective
+1. [Vision produit](#1-vision-produit)
+2. [Stratégie produit et positionnement](#2-stratégie-produit-et-positionnement)
+3. [Roadmap stratégique](#3-roadmap-stratégique)
+4. [Planification Agile - Sprints et Milestones](#4-planification-agile---sprints-et-milestones)
+5. [Backlog priorisé et User Stories](#5-backlog-priorisé-et-user-stories)
+6. [OKRs et métriques de succès](#6-okrs-et-métriques-de-succès)
+7. [Gestion du changement et évolution](#7-gestion-du-changement-et-évolution)
 
 ---
 
-## 3. Backlog Produit
+## 1. Vision produit
 
-### 3.1 Priorisation (MoSCoW)
-- **Must Have** : Fonctionnalités essentielles pour le MVP
-- **Should Have** : Importantes mais reportables à la v2
-- **Could Have** : Nice-to-have pour versions futures
-- **Won't Have** : Hors scope pour ce projet
+### 1.1 Vision statement
 
-### 3.2 Backlog MVP (v1.0 - Juin 2026)
+> **"TaskForce est la plateforme collaborative qui révolutionne l'assignation des tâches en entreprise en exploitant l'intelligence des compétences pour optimiser la productivité et l'engagement des équipes."**
 
-#### Epic 1 : Authentification & Gestion des Utilisateurs
-| User Story | Priorité | Story Points | Sprint |
-|:-----------|:---------|:-------------|:-------|
-| US-001 : En tant qu'utilisateur, je peux créer un compte avec email/mot de passe | Must | 5 | Sprint 1 |
-| US-002 : En tant qu'utilisateur, je peux me connecter et me déconnecter | Must | 3 | Sprint 1 |
-| US-003 : En tant qu'utilisateur, je peux réinitialiser mon mot de passe | Should | 5 | Sprint 8 |
-| US-004 : En tant qu'utilisateur, je peux compléter mon profil (nom, photo, bio) | Must | 3 | Sprint 2 |
-| US-005 : En tant qu'utilisateur, je peux déclarer mes compétences avec niveau (tags) | Must | 8 | Sprint 2 |
-| US-006 : En tant qu'utilisateur, je peux gérer ma disponibilité (congés, heures/semaine) | Should | 5 | Sprint 9 |
+### 1.2 Mission
 
-#### Epic 2 : Gestion des Équipes
-| User Story | Priorité | Story Points | Sprint |
-|:-----------|:---------|:-------------|:-------|
-| US-007 : En tant que manager, je peux créer une équipe | Must | 5 | Sprint 3 |
-| US-008 : En tant que manager, je peux ajouter/retirer des membres | Must | 3 | Sprint 3 |
-| US-009 : En tant que manager, je peux voir les compétences agrégées de l'équipe | Should | 5 | Sprint 10 |
+Permettre aux **chefs de projet et managers** de :
+- ✅ Assigner automatiquement les tâches aux collaborateurs les plus qualifiés
+- ✅ Identifier instantanément les gaps de compétences dans leurs équipes
+- ✅ Maximiser l'efficacité et la satisfaction des équipes
+- ✅ Suivre en temps réel l'avancement des projets avec des métriques claires
 
-#### Epic 3 : Gestion des Projets
-| User Story | Priorité | Story Points | Sprint |
-|:-----------|:---------|:-------------|:-------|
-| US-010 : En tant que manager, je peux créer un projet (nom, description, dates, équipe) | Must | 5 | Sprint 4 |
-| US-011 : En tant que manager, je peux modifier/archiver un projet | Must | 3 | Sprint 4 |
-| US-012 : En tant que collaborateur, je peux voir les projets auxquels je suis assigné | Must | 2 | Sprint 4 |
+### 1.3 Proposition de valeur unique (UVP)
 
-#### Epic 4 : Gestion des Tâches
-| User Story | Priorité | Story Points | Sprint |
-|:-----------|:---------|:-------------|:-------|
-| US-013 : En tant que manager, je peux créer une tâche (titre, description, compétences requises, estimation) | Must | 8 | Sprint 5 |
-| US-014 : En tant que manager, je peux définir la priorité et la deadline d'une tâche | Must | 3 | Sprint 5 |
-| US-015 : En tant que manager, je peux assigner manuellement une tâche à un collaborateur | Must | 5 | Sprint 6 |
-| US-016 : En tant que manager, je vois les suggestions d'assignation basées sur le matching compétences | Must | 13 | Sprint 7 |
-| US-017 : En tant que collaborateur, je peux mettre à jour le statut d'une tâche (À faire, En cours, Terminé) | Must | 5 | Sprint 6 |
-| US-018 : En tant qu'utilisateur, je peux ajouter des commentaires à une tâche | Must | 8 | Sprint 11 |
-| US-019 : En tant qu'utilisateur, je peux attacher des fichiers à une tâche | Must | 8 | Sprint 12 |
+| Cible | Problème actuel | Solution TaskForce | Bénéfice |
+|-------|-----------------|-------------------|----------|
+| **Chef de projet** | Assignation manuelle chronophage | Matching automatique par compétences | **-70% de temps** sur l'assignation |
+| **Collaborateur** | Tâches inadaptées au profil | Recommandations basées sur skills | **+50% d'engagement** |
+| **RH/Manager** | Visibilité limitée sur les compétences | Dashboard de compétences temps réel | **Décisions data-driven** |
+| **Admin système** | Outils dispersés (Jira/Trello/Asana) | Solution all-in-one | **-30% coûts** outils |
 
-#### Epic 5 : Tableau de Bord & Visualisation
-| User Story | Priorité | Story Points | Sprint |
-|:-----------|:---------|:-------------|:-------|
-| US-020 : En tant que collaborateur, je vois mes tâches en cours et à venir sur mon dashboard | Must | 8 | Sprint 8 |
-| US-021 : En tant que manager, je vois une vue Kanban des tâches du projet | Must | 13 | Sprint 9 |
-| US-022 : En tant que manager, je vois la charge de travail de mon équipe (heatmap) | Should | 8 | Sprint 13 |
+### 1.4 Différenciation compétitive
 
-#### Epic 6 : Notifications
-| User Story | Priorité | Story Points | Sprint |
-|:-----------|:---------|:-------------|:-------|
-| US-023 : En tant qu'utilisateur, je reçois des notifications in-app (nouvelle tâche, commentaire, deadline) | Must | 13 | Sprint 14 |
-| US-024 : En tant qu'utilisateur, je peux marquer les notifications comme lues | Should | 3 | Sprint 15 |
+**vs Trello/Asana/Monday.com** :
 
-#### Epic 7 : Administration
-| User Story | Priorité | Story Points | Sprint |
-|:-----------|:---------|:-------------|:-------|
-| US-025 : En tant qu'admin, je peux gérer les utilisateurs (activation, désactivation) | Should | 5 | Sprint 16 |
-| US-026 : En tant qu'admin, je peux voir les logs d'activité | Could | 8 | v2 |
+| Feature | Trello | Asana | Monday.com | **TaskForce** |
+|---------|--------|-------|------------|---------------|
+| **Assignation manuelle** | ✅ | ✅ | ✅ | ✅ |
+| **Matching par compétences** | ❌ | ❌ | ⚠️ Basique | ✅ **Intelligent** |
+| **Suivi des skills** | ❌ | ❌ | ❌ | ✅ **Natif** |
+| **Analytics prédictifs** | ❌ | ⚠️ Payant | ⚠️ Premium | 🔜 **v2.0** |
+| **Prix** | $5-12/user | $11-25/user | $9-16/user | **$3-10/user** |
 
-### 3.3 Backlog v2.0 (Post-MVP)
-- **IA d'assignation automatique** (algorithme ML avancé)
-- **Chat in-app** entre collaborateurs du même projet
-- **Exports/Rapports** (PDF, Excel)
-- **Vues additionnelles** (Gantt, Timeline, Calendrier)
-- **Intégrations** (Slack, Microsoft Teams, Jira)
-- **Notifications Email**
-- **Mode Hors-ligne**
+
 
 ---
 
-## 4. Roadmap Produit
+## 2. Stratégie produit et positionnement
 
-### 4.1 Timeline Globale
+### 2.1 Segmentation marché
+
+#### Marché cible (TAM/SAM/SOM)
 
 ```
-Décembre 2025 - Janvier 2026 : Phase Conception & Setup
-│
-├── Sprint 0 (02-08 Déc) : Setup environnement + MCD/MLD
-├── Sprint 1 (09-15 Déc) : Authentification (Login/Register)
-├── Sprint 2 (16-22 Déc) : Profils & Compétences
-├── Sprint 3 (23-29 Déc) : Gestion Équipes
-│
-Janvier 2026 : Module Projets & Tâches
-│
-├── Sprint 4 (30 Déc - 05 Jan) : CRUD Projets
-├── Sprint 5 (06-12 Jan) : CRUD Tâches (base)
-├── Sprint 6 (13-19 Jan) : Assignation manuelle + Statuts
-├── Sprint 7 (20-26 Jan) : Matching compétences (algorithme simple)
-│
-Février 2026 : Dashboards & UX
-│
-├── Sprint 8 (27 Jan - 02 Fév) : Dashboard Collaborateur
-├── Sprint 9 (03-09 Fév) : Vue Kanban Projet
-├── Sprint 10 (10-16 Fév) : Agrégation compétences équipe
-├── Sprint 11 (17-23 Fév) : Système de commentaires
-│
-Mars 2026 : Fichiers & Notifications
-│
-├── Sprint 12 (24 Fév - 02 Mar) : Upload/Download fichiers
-├── Sprint 13 (03-09 Mar) : Heatmap charge de travail
-├── Sprint 14 (10-16 Mar) : Notifications in-app
-├── Sprint 15 (17-23 Mar) : Gestion notifications (lues/non lues)
-│
-Avril 2026 : Finalisation & Tests
-│
-├── Sprint 16 (24-30 Mar) : Administration utilisateurs
-├── Sprint 17 (31 Mar - 06 Avr) : Corrections bugs & optimisations
-├── Sprint 18 (07-13 Avr) : Tests E2E complets
-├── Sprint 19 (14-20 Avr) : Documentation utilisateur finale
-│
-Mai 2026 : Recette & Préparation Déploiement
-│
-├── Sprint 20 (21-27 Avr) : Tests de charge & sécurité
-├── Sprint 21 (28 Avr - 04 Mai) : Recette utilisateur
-├── Sprint 22 (05-11 Mai) : Corrections recette
-├── Sprint 23 (12-18 Mai) : Setup environnement production
-│
-Juin 2026 : Déploiement MVP
-│
-├── Sprint 24 (19-25 Mai) : Déploiement production
-└── Sprint 25 (26 Mai - 01 Juin) : Suivi post-déploiement & hotfixes
+┌─────────────────────────────────────────────────┐
+│ TAM (Total Addressable Market)                  │
+│ Toutes les PME/ETI en France                    │
+│ ~3,9M entreprises × 20€/mois = 936M€/an         │
+└─────────────────────────────────────────────────┘
+           │
+           ├─→ ┌──────────────────────────────────┐
+           │   │ SAM (Serviceable Available Mkt)  │
+           │   │ PME 10-250 salariés tech/services│
+           │   │ ~150k entreprises × 20€ = 36M€/an│
+           │   └──────────────────────────────────┘
+           │              │
+           └─→ ┌──────────▼───────────────────────┐
+               │ SOM (Serviceable Obtainable Mkt) │
+               │ 1% du SAM (réaliste an 1-2)      │
+               │ ~1500 clients × 20€ = 360k€/an   │
+               └──────────────────────────────────┘
 ```
 
-### 4.2 Jalons (Milestones)
+#### Segments prioritaires
 
-| Milestone | Date Cible | Livrables |
-|:----------|:-----------|:----------|
-| **M1 : Auth & Profils** | 22 Décembre 2025 | Login/Register, Gestion profils & compétences |
-| **M2 : Projets & Tâches** | 26 Janvier 2026 | CRUD Projets/Tâches, Assignation avec matching |
-| **M3 : Dashboards** | 23 Février 2026 | Dashboard perso, Vue Kanban, Commentaires |
-| **M4 : Collaboration** | 23 Mars 2026 | Fichiers, Notifications, Heatmap |
-| **M5 : MVP Complet** | 20 Avril 2026 | Toutes fonctionnalités MVP + Tests E2E |
-| **M6 : Déploiement Prod** | 01 Juin 2026 | Application en production stable |
+| Segment | Taille | Besoins | Priorité |
+|---------|--------|---------|----------|
+| **Agences digitales** | 10-50 p. | Projets multiples, skills variés | 🔴 **P0** (MVP) |
+| **Startups tech** | 5-30 p. | Agilité, croissance rapide | 🔴 **P0** (MVP) |
+| **ESN/Consulting** | 50-250 p. + | Staffing optimisé, multi-projets | 🟡 **P1** (v1.1) |
+| **Départements IT** | 20-100 p. +| Gestion projets internes | 🟡 **P1** (v1.1) |
+| **Freelance collectives** | 5-20 p. | Collaboration distribuée | 🟢 **P2** (v2.0) |
 
----
+### 2.2 Go-to-Market (GTM)
 
-## 5. Définition of Done (DoD)
+#### Phase 1 : MVP (M1-M3) - Validation produit
 
-Une User Story est considérée comme **Done** si :
+**Objectif** : 10 early adopters (gratuit) → Feedback qualitatif
 
-### 5.1 Code
-- ✅ Code implémenté et conforme aux spécifications
-- ✅ Code respecte les conventions (linter sans erreur)
-- ✅ Pas de dette technique introduite (ou documentée)
-- ✅ Commit conventionnel avec gitmoji (`✨ feat(auth): add login endpoint`)
+| Canal | Action | Coût | KPI |
+|-------|--------|------|-----|
+| **LinkedIn** | Posts organiques + demo vidéo | 0€ | 500 vues |
+| **Product Hunt** | Lancement officiel | 0€ | 50 upvotes |
+| **GitHub** | Open source partie frontend | 0€ | 100 stars |
+| **Communautés** | DevFest, meetups tech Metz/Nancy | 0€ | 5 signups |
 
-### 5.2 Tests
-- ✅ Tests unitaires écrits (couverture > 80% sur la fonctionnalité)
-- ✅ Tests d'intégration (si applicable)
-- ✅ Tous les tests passent (CI/CD green)
+#### Phase 2 : v1.0 (M4-M6) - Acquisition payante
 
-### 5.3 Documentation
-- ✅ Code commenté si logique complexe
-- ✅ API documentée (Swagger si backend)
-- ✅ README mis à jour si nécessaire
+**Objectif** : 50 clients payants → 1000€ MRR
 
-### 5.4 Review & Qualité
-- ✅ Code self-review effectué
-- ✅ Pas d'erreurs console/logs
-- ✅ Responsive & Accessible (WCAG AA)
+| Canal | Action | Budget | CAC cible |
+|-------|--------|--------|-----------|
+| **Google Ads** | Mots-clés "task management skills" | 300€/mois | <50€ |
+| **LinkedIn Ads** | Ciblage chefs de projet | 200€/mois | <60€ |
+| **Content Marketing** | Blog SEO (10 articles) | 0€ (DIY) | 0€ |
+| **Affiliation** | Partenariats agences web | 0€ (rev share) | 0€ |
 
-### 5.5 Démo
-- ✅ Fonctionnalité déployée en environnement de dev
-- ✅ Démonstrable lors de la Sprint Review
+### 2.3 Modèle de revenus
 
----
+#### Pricing par segment
 
-## 6. Rituels Agile
+| Plan | Cible | Prix/mois | Utilisateurs | Features clés | Marge |
+|------|-------|-----------|--------------|---------------|-------|
+| **Free** | Freelancers, tests | **0€** | 5 | Projets limités (3), support community | - |
+| **Starter** | Petites équipes | **15€** | 15 | Projets illimités, matching basique | ~10€ |
+| **Pro** | Agences, startups | **49€** | 50 | Analytics, API, matching avancé | ~40€ |
+| **Enterprise** | ESN, grands comptes | **199€** | Illimité | SSO, support dédié, SLA 99.9% | ~180€ |
 
-### 6.1 Sprint Planning (Lundi matin - 1h)
-- Sélection des User Stories du backlog
-- Estimation en Story Points
-- Définition de l'objectif du sprint (Sprint Goal)
+#### Projections revenus (18 mois)
 
-### 6.2 Daily Standup Personnel (Quotidien - 10 min)
-**Format écrit dans NOTES.md :**
-- ✅ Qu'ai-je fait hier ?
-- 🎯 Que vais-je faire aujourd'hui ?
-- 🚧 Y a-t-il des blocages ?
+| Mois | Clients Free | Starter | Pro | Enterprise | MRR | ARR |
+|------|--------------|---------|-----|------------|-----|-----|
+| M3 (MVP) | 10 | 0 | 0 | 0 | 0€ | 0€ |
+| M6 (v1.0) | 50 | 20 | 3 | 0 | 447€ | 5,4k€ |
+| M12 (v1.1) | 150 | 60 | 15 | 2 | 1633€ | 19,6k€ |
+| M18 (v2.0) | 300 | 120 | 35 | 5 | 3610€ | 43,3k€ |
 
-### 6.3 Sprint Review (Dimanche - 30 min)
-- Démonstration des fonctionnalités complétées
-- Validation par rapport au Sprint Goal
-- Mise à jour de la roadmap si nécessaire
-
-### 6.4 Sprint Retrospective (Dimanche - 30 min)
-**Format :**
-- ➕ Ce qui a bien fonctionné
-- ➖ Ce qui peut être amélioré
-- 🔄 Actions d'amélioration pour le prochain sprint
+**🎯 Objectif M18** : **3,6k€ MRR** (~43k€ ARR) avec **160 clients payants**.
 
 ---
 
-## 7. Outils de Suivi
+## 3. Roadmap stratégique
 
-### 7.1 GitHub Projects (Kanban Board)
-**Colonnes :**
-- 📋 **Backlog** : User Stories priorisées
-- 🎯 **Sprint Actif** : Stories du sprint en cours
-- 🏗️ **In Progress** : En cours de développement
-- 👀 **In Review** : Code review / Tests
-- ✅ **Done** : Terminé (DoD respectée)
+### 3.1 Vue d'ensemble (18 mois)
 
-### 7.2 Labels GitHub
-- `priority:critical` / `priority:high` / `priority:medium` / `priority:low`
-- `epic:auth` / `epic:tasks` / `epic:dashboard` (regroupement)
-- `type:feature` / `type:bug` / `type:refactor`
-- `status:blocked` / `status:needs-info`
+```
+2026                           2027
+├─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┤
+│ JAN │ FEB │ MAR │ APR │ MAY │ JUN │ JUL │ AUG │ SEP │ OCT │ NOV │ DEC │ ...
+├─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┤
+│                                                                          │
+│  🏗️ MVP (v0.9)        🚀 v1.0         📊 v1.1           🤖 v2.0        │
+│  M1-M3                M4-M6            M7-M12            M13-M18         │
+│                                                                          │
+│  • Auth               • Dashboard     • Analytics       • IA prédictive │
+│  • CRUD Tasks         • Notifs temps  • Intégrations   • Mobile app     │
+│  • Matching basique     réel         • API publique    • Webhooks       │
+│                       • Multi-langues • SSO/SAML       • Marketplace    │
+└──────────────────────────────────────────────────────────────────────────┘
+```
 
-### 7.3 Métriques de Suivi
-- **Vélocité** : Story Points complétés par sprint (tracking pour ajuster les estimations)
-- **Burndown Chart** : Progression du sprint (manuel ou via GitHub Projects)
-- **Nombre de bugs** : Tracking pour améliorer la qualité
+### 3.2 Releases détaillées
 
-### 7.4 Documentation de Suivi
-- **NOTES.md** : Journal de bord quotidien (Daily Standup écrit)
-- **CHANGELOG.md** : Historique des versions
-- **GitHub Releases** : Versions taguées à chaque milestone
+#### 🏗️ MVP (v0.9) - Q1 2026 (Jan-Mar)
+
+**Objectif** : Validation du concept avec early adopters
+
+| Feature | Description | Priorité | Sprint |
+|---------|-------------|----------|--------|
+| **Authentification JWT** | Login/Register/Logout | 🔴 MUST | S0 |
+| **Gestion utilisateurs** | Profil, compétences, avatar | 🔴 MUST | S1 |
+| **Gestion équipes** | CRUD teams, ajout membres | 🔴 MUST | S1 |
+| **Gestion projets** | CRUD projets, statuts | 🔴 MUST | S2 |
+| **Gestion tâches** | CRUD tâches, Kanban | 🔴 MUST | S3 |
+| **Assignation manuelle** | Assigner membre à tâche | 🔴 MUST | S4 |
+| **Matching compétences (v1)** | Algorithme de scoring simple | 🔴 MUST | S4 |
+| **Suivi du temps** | Tracking temps passé par tâche | 🟡 SHOULD | S5 |
+| **Commentaires** | Commentaires sur tâches | 🟡 SHOULD | S5 |
+
+**📅 Livraison** : 14/03/2026  
+**🎯 Objectif** : 10 utilisateurs beta testeurs
 
 ---
 
-## 8. Adaptation & Flexibilité
+#### 🚀 v1.0 - Q2 2026 (Apr-Jun)
+
+**Objectif** : First public release avec monétisation
+
+| Feature | Description | Priorité | Impact business |
+|---------|-------------|----------|-----------------|
+| **Dashboard avancé** | Métriques temps réel (tâches, charge, compétences) | 🔴 MUST | ⭐⭐⭐ |
+| **Notifications temps réel** | WebSockets pour notifs instantanées | 🔴 MUST | ⭐⭐⭐ |
+| **Matching v2** | Algorithme pondéré (compétences + dispo + historique) | 🔴 MUST | ⭐⭐⭐ |
+| **Multi-langues (i18n)** | FR + EN | 🟡 SHOULD | ⭐⭐ |
+| **Export PDF/Excel** | Export rapports projets/tâches | 🟡 SHOULD | ⭐⭐ |
+| **Dark mode** | Thème sombre | 🟢 COULD | ⭐ |
+| **Onboarding guidé** | Tour guidé nouveaux users | 🔴 MUST | ⭐⭐⭐ |
+
+**📅 Livraison** : 30/06/2026  
+**🎯 Objectif** : 50 clients payants, 1k€ MRR
+
+---
+
+#### 📊 v1.1 - Q3-Q4 2026 (Jul-Dec)
+
+**Objectif** : Enterprise-ready features
+
+| Feature | Description | Priorité | Plan cible |
+|---------|-------------|----------|------------|
+| **Analytics avancés** | Rapports custom, graphiques interactifs | 🔴 MUST | Pro+ |
+| **API publique REST** | Webhooks, intégrations tierces | 🔴 MUST | Pro+ |
+| **SSO/SAML** | Single Sign-On entreprise | 🔴 MUST | Enterprise |
+| **Rôles personnalisés** | Création de rôles custom (au-delà de USER/MANAGER/ADMIN) | 🟡 SHOULD | Pro+ |
+| **Intégrations** | Slack, Microsoft Teams, Google Calendar | 🟡 SHOULD | Pro+ |
+| **Audit logs** | Logs détaillés toutes actions | 🟡 SHOULD | Enterprise |
+| **Timesheet automatique** | Génération timesheet depuis temps trackés | 🟢 COULD | Pro+ |
+
+**📅 Livraison** : 31/12/2026  
+**🎯 Objectif** : 100 clients payants, 2k€ MRR
+
+---
+
+#### 🤖 v2.0 - Q1-Q2 2027 (Jan-Jun)
+
+**Objectif** : IA et prédiction
+
+| Feature | Description | Priorité | Impact |
+|---------|-------------|----------|--------|
+| **Prédiction de charge** | ML pour anticiper surcharge/sous-charge | 🔴 MUST | ⭐⭐⭐ |
+| **Recommandations IA** | Suggestions de tâches basées sur l'historique | 🔴 MUST | ⭐⭐⭐ |
+| **Détection des risques** | Alerte automatique projets en retard | 🟡 SHOULD | ⭐⭐ |
+| **Mobile app (iOS/Android)** | Application native (React Native) | 🟡 SHOULD | ⭐⭐⭐ |
+| **Mode offline** | Sync automatique quand reconnecté | 🟢 COULD | ⭐⭐ |
+| **Marketplace plugins** | Extensions tierces | 🟢 COULD | ⭐ |
+| **Gamification** | Badges, leaderboard, points | 🟢 COULD | ⭐ |
+
+**📅 Livraison** : 30/06/2027  
+**🎯 Objectif** : 200 clients payants, 4k€ MRR
+
+---
+
+## 4. Planification Agile - Sprints et Milestones
+
+### 4.1 Méthodologie Scrum adaptée (solo dev)
+
+| Pratique Scrum | Adaptation solo | Fréquence |
+|----------------|-----------------|-----------|
+| **Sprint Planning** | Planning écrit (GitHub Projects) | Lundi 9h (1h) |
+| **Daily Standup** | Journal de bord (Notion/Markdown) | Chaque matin (5min) |
+| **Sprint Review** | Auto-démo + screenshots | Vendredi 17h (30min) |
+| **Sprint Retrospective** | Bilan écrit (Keep/Stop/Start) | Vendredi 17h30 (30min) |
+| **Backlog Refinement** | Mise à jour US (estimation) | Mercredi 16h (30min) |
+
+### 4.2 Définition of Done (DoD)
+
+Une User Story est **Done** si :
+- ✅ Code développé et fonctionnel
+- ✅ Tests unitaires écrits (couverture >80%)
+- ✅ Tests d'intégration passés (si applicable)
+- ✅ Code reviewé (auto-review après 2 jours)
+- ✅ Documentation API mise à jour (Swagger)
+- ✅ Merge dans `develop` sans conflit
+- ✅ Déployé sur environnement de staging
+- ✅ Testé manuellement (parcours utilisateur)
+
+### 4.3 Milestones et Sprints (MVP)
+
+#### Milestone 1 : Authentification (M1)
+
+**Durée** : 1 semaine (Sprint 0)  
+**Dates** : 06/01 - 10/01/2026
+
+| Sprint | US incluses | Objectif | Livrables |
+|--------|-------------|----------|-----------|
+| **S0** | US-001, US-002, US-003 | Auth JWT fonctionnelle | Login, Register, Logout + JWT |
+
+**Demo** : User peut se connecter et voir son profil.
+
+---
+
+#### Milestone 2 : Gestion Utilisateurs & Équipes (M2)
+
+**Durée** : 1 semaine (Sprint 1)  
+**Dates** : 13/01 - 17/01/2026
+
+| Sprint | US incluses | Objectif | Livrables |
+|--------|-------------|----------|-----------|
+| **S1** | US-004, US-011, US-012 | Profils + Teams CRUD | Gestion compétences, CRUD teams |
+
+**Demo** : User peut ajouter des compétences et créer une équipe.
+
+---
+
+#### Milestone 3 : Gestion Projets & Tâches (M3)
+
+**Durée** : 2 semaines (Sprint 2-3)  
+**Dates** : 20/01 - 31/01/2026
+
+| Sprint | US incluses | Objectif | Livrables |
+|--------|-------------|----------|-----------|
+| **S2** | US-013, US-014 | Projets CRUD | Création et gestion projets |
+| **S3** | US-015, US-016, US-017 | Tâches CRUD + Statuts | Kanban fonctionnel |
+
+**Demo** : Manager peut créer un projet avec 5 tâches et les déplacer en Kanban.
+
+---
+
+#### Milestone 4 : Assignation Intelligente (M4)
+
+**Durée** : 1 semaine (Sprint 4)  
+**Dates** : 03/02 - 07/02/2026
+
+| Sprint | US incluses | Objectif | Livrables |
+|--------|-------------|----------|-----------|
+| **S4** | US-018, US-019, US-020 | Matching compétences v1 | Algorithme de scoring + assignation |
+
+**Demo** : Système recommande les 3 meilleurs candidats pour une tâche.
+
+---
+
+#### Milestone 5 : Features Avancées (M5)
+
+**Durée** : 3 semaines (Sprint 5-7)  
+**Dates** : 10/02 - 28/02/2026
+
+| Sprint | US incluses | Objectif | Livrables |
+|--------|-------------|----------|-----------|
+| **S5** | US-021, US-022, US-024 | Suivi temps + Commentaires | Time tracking + comments thread |
+| **S6** | US-023, US-025 | Dashboard + Rapports | Métriques temps réel |
+| **S7** | US-026 | Notifications | Système de notifications |
+
+**Demo** : Dashboard affiche la charge de l'équipe en temps réel.
+
+---
+
+#### Milestone 6 : Stabilisation & Déploiement
+
+**Durée** : 2 semaines (Sprint 8-9)  
+**Dates** : 03/03 - 14/03/2026
+
+| Sprint | US incluses | Objectif | Livrables |
+|--------|-------------|----------|-----------|
+| **S8** | - | Tests E2E, Corrections bugs | Suite de tests Playwright |
+| **S9** | - | Déploiement prod + Doc | App en ligne, README, User Docs |
+
+**Demo** : Application accessible publiquement sur taskforce.app (ou similaire).
+
+---
+
+### 4.4 Vélocité et capacité
+
+#### Estimation des US (Planning Poker)
+
+**Échelle Fibonacci** : 1, 2, 3, 5, 8, 13, 21
+
+| Points | Complexité | Durée estimée | Exemple |
+|--------|------------|---------------|---------|
+| **1** | Triviale | 1-2h | Modifier un label |
+| **2** | Simple | 2-4h | CRUD basique |
+| **3** | Moyenne | 4-8h | Formulaire avec validation |
+| **5** | Complexe | 1-2 jours | Relation many-to-many |
+| **8** | Très complexe | 2-3 jours | Algorithme de matching |
+| **13** | Épique | 3-5 jours | Dashboard complet |
+
+#### Capacité par sprint
+
+```
+1 sprint = 1 semaine = 5 jours ouvrés
+1 jour = 8h (théorique) - 20% (meetings, pauses) = 6h effectives
+
+Capacité sprint = 5 jours × 6h = 30h effectives
+Vélocité cible = 20-25 points/sprint (solo dev)
+```
+
+#### Backlog estimé (MVP)
+
+| Epic | US | Points | Total |
+|------|-----|--------|-------|
+| **Authentification** | 3 | 2+3+2 | 7 pts |
+| **Utilisateurs** | 2 | 3+5 | 8 pts |
+| **Équipes** | 2 | 3+3 | 6 pts |
+| **Projets** | 2 | 3+3 | 6 pts |
+| **Tâches** | 5 | 3+3+2+5+3 | 16 pts |
+| **Assignation** | 3 | 5+8+3 | 16 pts |
+| **Dashboard** | 2 | 13+5 | 18 pts |
+| **Notifications** | 1 | 8 | 8 pts |
+| **Total MVP** | **20 US** | | **85 pts** |
+
+**Durée estimée** : 85 pts ÷ 25 pts/sprint = **3,4 sprints** → **4 sprints** (avec marge)
+
+---
+
+## 5. Backlog priorisé et User Stories
+
+### 5.1 Priorisation MoSCoW
+
+| Catégorie | Définition | US incluses | Livraison |
+|-----------|------------|-------------|-----------|
+| **MUST have** | Critiques pour le MVP | US-001 à US-020 (20 US) | Sprint 0-4 |
+| **SHOULD have** | Importantes mais non bloquantes | US-021 à US-024 (4 US) | Sprint 5-6 |
+| **COULD have** | Améliorations souhaitables | US-025, US-026 (2 US) | Sprint 7 |
+| **WON'T have** | Reportées en v1.1+ | Analytics IA, Mobile, SSO | v1.1-v2.0 |
+
+### 5.2 Backlog ordonné (Top 26 US)
+
+> **📌 Note** : Détail complet dans document suivant
+
+| Rang | ID | Titre | Epic | Points | Priorité | Sprint |
+|------|----|-------|------|--------|----------|--------|
+| 1 | US-001 | Inscription utilisateur | Auth | 2 | 🔴 MUST | S0 |
+| 2 | US-002 | Connexion utilisateur | Auth | 3 | 🔴 MUST | S0 |
+| 3 | US-003 | Déconnexion | Auth | 2 | 🔴 MUST | S0 |
+| 4 | US-004 | Gestion profil | Utilisateurs | 3 | 🔴 MUST | S1 |
+| 5 | US-005 | Ajout compétences | Utilisateurs | 5 | 🔴 MUST | S1 |
+| 6 | US-011 | Création équipe | Équipes | 3 | 🔴 MUST | S1 |
+| 7 | US-012 | Ajout membres équipe | Équipes | 3 | 🔴 MUST | S1 |
+| 8 | US-013 | Création projet | Projets | 3 | 🔴 MUST | S2 |
+| 9 | US-014 | Gestion projet | Projets | 3 | 🔴 MUST | S2 |
+| 10 | US-015 | Création tâche | Tâches | 3 | 🔴 MUST | S3 |
+| 11 | US-016 | Modification tâche | Tâches | 3 | 🔴 MUST | S3 |
+| 12 | US-017 | Changement statut | Tâches | 2 | 🔴 MUST | S3 |
+| 13 | US-018 | Assignation manuelle | Tâches | 5 | 🔴 MUST | S4 |
+| 14 | US-019 | Matching compétences | Tâches | 8 | 🔴 MUST | S4 |
+| 15 | US-020 | Voir tâches assignées | Tâches | 3 | 🔴 MUST | S4 |
+| 16 | US-021 | Suivi du temps | Tâches | 5 | 🟡 SHOULD | S5 |
+| 17 | US-022 | Commentaires tâches | Tâches | 3 | 🟡 SHOULD | S5 |
+| 18 | US-024 | Pièces jointes | Tâches | 5 | 🟡 SHOULD | S5 |
+| 19 | US-023 | Dashboard manager | Dashboard | 13 | 🟡 SHOULD | S6 |
+| 20 | US-025 | Rapports projets | Dashboard | 5 | 🟢 COULD | S6 |
+| 21 | US-026 | Notifications temps réel | Notifications | 8 | 🟢 COULD | S7 |
+
+**Total** : 85 points story
+
+---
+
+## 6. OKRs et métriques de succès
+
+### 6.1 OKRs par phase
+
+#### OKR 1 : MVP (Q1 2026)
+
+**Objective** : Valider le product-market fit avec early adopters
+
+| Key Result | Métrique | Cible | Statut |
+|------------|----------|-------|--------|
+| **KR1** | Utilisateurs beta testeurs actifs | 10 | 🔲 |
+| **KR2** | Taux de rétention semaine 1 | >70% | 🔲 |
+| **KR3** | NPS (Net Promoter Score) | >40 | 🔲 |
+| **KR4** | Features MVP complètes | 100% (20 US) | 🔲 |
+
+---
+
+#### OKR 2 : v1.0 Public Launch (Q2 2026)
+
+**Objective** : Atteindre 50 clients payants et 1k€ MRR
+
+| Key Result | Métrique | Cible | Statut |
+|------------|----------|-------|--------|
+| **KR1** | Clients payants (Starter+Pro) | 50 | 🔲 |
+| **KR2** | MRR (Monthly Recurring Revenue) | 1000€ | 🔲 |
+| **KR3** | Taux de conversion Free→Paid | >15% | 🔲 |
+| **KR4** | Uptime (disponibilité) | >99% | 🔲 |
+
+---
+
+#### OKR 3 : v1.1 Enterprise (Q3-Q4 2026)
+
+**Objective** : Devenir Enterprise-ready et doubler le MRR
+
+| Key Result | Métrique | Cible | Statut |
+|------------|----------|-------|--------|
+| **KR1** | Clients Enterprise | 3 | 🔲 |
+| **KR2** | MRR | 2000€ | 🔲 |
+| **KR3** | Intégrations actives (Slack, Teams) | 2 | 🔲 |
+| **KR4** | API publique utilisée | >10 clients | 🔲 |
+
+---
+
+### 6.2 Métriques produit (Product Analytics)
+
+#### Métriques d'activation
+
+| Métrique | Définition | Cible | Outil |
+|----------|------------|-------|-------|
+| **Time to Value** | Temps avant 1ère tâche assignée | <10 min | Mixpanel |
+| **Activation rate** | % users ayant créé ≥1 projet | >80% | Google Analytics |
+| **Onboarding completion** | % users finissant le tour guidé | >60% | Heap |
+
+#### Métriques d'engagement
+
+| Métrique | Définition | Cible | Outil |
+|----------|------------|-------|-------|
+| **DAU/MAU** | Daily/Monthly Active Users | >30% | Mixpanel |
+| **Session duration** | Durée moyenne session | >8 min | GA4 |
+| **Tasks created/week** | Tâches créées par semaine | >50/team | Interne |
+| **Matching usage** | % tâches assignées via matching | >40% | Interne |
+
+#### Métriques de rétention
+
+| Métrique | Définition | Cible | Outil |
+|----------|------------|-------|-------|
+| **Retention D7** | % users actifs après 7 jours | >50% | Mixpanel |
+| **Retention D30** | % users actifs après 30 jours | >30% | Mixpanel |
+| **Churn rate** | % clients annulant abonnement | <5%/mois | Stripe |
+
+#### Métriques revenue
+
+| Métrique | Définition | Cible | Outil |
+|----------|------------|-------|-------|
+| **MRR** | Monthly Recurring Revenue | 1k€ (M6) | Stripe |
+| **ARPU** | Average Revenue Per User | 20€ | Stripe |
+| **LTV** | Lifetime Value (client moyen) | 240€ (1 an) | Calculé |
+| **CAC** | Customer Acquisition Cost | <50€ | Google Ads |
+| **LTV/CAC ratio** | Ratio rentabilité | >3 | Calculé |
+
+---
+
+## 7. Gestion du changement et évolution
+
+### 7.1 Processus de gestion du backlog
+
+#### Ajout d'une nouvelle US
+
+```
+1. Demande (user feedback, bug, feature request)
+   ↓
+2. Création issue GitHub (template US)
+   ↓
+3. Estimation points (Planning Poker solo)
+   ↓
+4. Priorisation MoSCoW
+   ↓
+5. Ajout au backlog (position selon priorité)
+   ↓
+6. Sprint Planning : Si prioritaire → Sprint N+1
+```
+
+#### Template User Story
+
+```markdown
+## [US-XXX] Titre court (max 10 mots)
+
+**En tant que** [ROLE],  
+**Je veux** [ACTION],  
+**Afin de** [BÉNÉFICE].
+
+### Critères d'acceptation
+- [ ] CA1 : Description précise
+- [ ] CA2 : ...
+- [ ] CA3 : ...
+
+### Définition of Done
+- [ ] Code développé
+- [ ] Tests unitaires (>80%)
+- [ ] Code reviewé
+- [ ] Documentation API
+- [ ] Déployé en staging
+
+### Estimation
+- Points : **[X]**
+- Sprint : **[SX]**
+
+### Dépendances
+- Bloqué par : US-YYY
+- Bloque : US-ZZZ
+```
+
+### 7.2 Gestion des bugs
+
+#### Sévérité des bugs
+
+| Sévérité | Définition | SLA Fix | Exemple |
+|----------|------------|---------|---------|
+| **P0 - Critical** | App inutilisable | <4h | Crash au login |
+| **P1 - High** | Feature majeure cassée | <24h | Matching ne fonctionne pas |
+| **P2 - Medium** | Feature mineure cassée | <1 semaine | Filtre de recherche bugué |
+| **P3 - Low** | UI/UX mineur | <2 semaines | Typo dans label |
+
+#### Process de résolution
+
+```
+Bug report (GitHub Issue)
+   ↓
+Triage (étiquette P0/P1/P2/P3)
+   ↓
+Si P0/P1 → Interruption sprint en cours
+Si P2/P3 → Ajout backlog sprint suivant
+   ↓
+Fix + Tests
+   ↓
+Hotfix en prod (si P0/P1) ou Release normale
+```
+
+### 7.3 Rituel de revue roadmap
+
+| Fréquence | Participants | Objectif | Durée |
+|-----------|--------------|----------|-------|
+| **Mensuelle** | Solo dev + mentor (optionnel) | Ajustement priorités | 1h |
+| **Trimestrielle** | + Beta users (interviews) | Validation direction produit | 2h |
+
+**Questions clés** :
+- ✅ Les OKRs sont-ils en bonne voie ?
+- ✅ Y a-t-il des nouvelles opportunités marché ?
+- ✅ Faut-il dé-prioriser certaines features ?
+- ✅ Les retours users nécessitent-ils un pivot ?
+
+### 7.4 Stratégie de feature flags
+
+Pour déployer progressivement les features :
+
+```typescript
+// Exemple : Feature flag pour matching v2
+if (featureFlags.matchingV2Enabled) {
+  return advancedMatching(task, users);
+} else {
+  return basicMatching(task, users);
+}
+```
+
+**Usage** :
+- Rollout progressif (10% users → 50% → 100%)
+- A/B testing (comparer matching v1 vs v2)
+- Kill switch (désactiver rapidement si bug)
+
+---
+
+## 📎 Annexes
+
+### A. Documents liés
+
+- [01_Dossier_Projet.md](01_Dossier_Projet.md) - Contexte général
+- [02_CdCF.md](02_CdCF.md) - Spécifications fonctionnelles
+- [03_CdCT.md](03_CdCT.md) - Spécifications techniques
+- [04_Etude_Faisabilite.md](04_Etude_Faisabilite.md) - Faisabilité et WBS/PERT
+- [GitHub Projects](https://github.com/users/[USERNAME]/projects) - Suivi temps réel
+
+### B. Templates et outils
+
+| Document | Lien |
+|----------|------|
+| **Template User Story** | `.github/ISSUE_TEMPLATE/user-story.md` |
+| **Template Bug Report** | `.github/ISSUE_TEMPLATE/bug.md` |
+| **Sprint Planning Template** | `templates/Sprint_Planning.md` |
+| **Sprint Retrospective** | `templates/Sprint_Retro.md` |
+
+### C. Roadmap visuelle
+
+> **📌 Note** : Roadmap visuelle dans `assets/roadmap/Roadmap_18_Mois.png` (à créer)
+
+**Outils recommandés** :
+- **ProductPlan** (gratuit pour 1 roadmap)
+- **Miro** (template roadmap)
+- **Notion Timeline** (gratuit)
+
+### D. Historique des versions
+
+| Version | Date | Auteur | Modifications |
+|---------|------|--------|---------------|
+| 1.0 | 04/01/2026 | Michel-Pierre | Création complète Vision & Roadmap |
+
+---
+
+**Document validé par** : Michel-Pierre  
+**Date de validation** : 04/01/2026  
+**Prochaine revue roadmap** : 01/02/2026
 
 ### 8.1 Gestion des Imprévus
 - Si blocage technique > 4h : Pivot vers une autre User Story
