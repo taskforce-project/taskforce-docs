@@ -6,7 +6,7 @@ Résumé de l'organisation de la documentation du projet.
 
 ## 🗂️ Structure Complète
 
-```
+```yml
 taskforce-docs/
 ├── README.md                           # 📖 Point d'entrée principal
 │
@@ -57,16 +57,19 @@ taskforce-docs/
 ## ✅ Fichiers Créés
 
 ### 📖 README Principal
+
 - **Fichier** : [`README.md`](../README.md)
 - **Rôle** : Point d'entrée, navigation vers toutes les sections
 - **Contenu** : Vue d'ensemble, liens rapides, architecture
 
 ### ⚡ Quickstart
+
 - **Fichier** : [`developpeur/quickstart/README.md`](quickstart/README.md)
 - **Rôle** : Guide de démarrage rapide (5 minutes)
 - **Contenu** : Installation, démarrage, commandes essentielles
 
 ### 🔀 Git Workflow
+
 1. **[`git-workflow/README.md`](git-workflow/README.md)**
    - Vue d'ensemble du workflow
    - Branches, versioning, labels
@@ -103,17 +106,20 @@ taskforce-docs/
 ## 🎯 Navigation Rapide
 
 ### Pour les Développeurs Débutants
+
 1. Lire [`README.md`](../README.md)
 2. Suivre [`developpeur/quickstart/README.md`](quickstart/README.md)
 3. Créer sa première branche
 4. Consulter [`git-workflow/pull-requests.md`](git-workflow/pull-requests.md)
 
 ### Pour les Reviewers
+
 1. Consulter [`git-workflow/README.md`](git-workflow/README.md)
 2. Comprendre [`git-workflow/versioning.md`](git-workflow/versioning.md)
 3. Référence [`git-workflow/labels-reference.md`](git-workflow/labels-reference.md)
 
 ### Pour les DevOps
+
 1. Étudier [`git-workflow/github-actions.md`](git-workflow/github-actions.md)
 2. Configurer avec [`git-workflow/setup.md`](git-workflow/setup.md)
 3. Monitorer les workflows
@@ -123,10 +129,12 @@ taskforce-docs/
 ## 📝 Fichiers à Créer (Optionnel)
 
 ### Quickstart
+
 - [ ] `environment-setup.md` - Configuration détaillée environnement
 - [ ] `docker-setup.md` - Setup Docker approfondi
 
 ### Infrastructure
+
 - [ ] `overview.md` - Vue d'ensemble infrastructure
 - [ ] `docker-services.md` - Documentation services Docker
 
@@ -137,11 +145,13 @@ Ces fichiers peuvent être créés plus tard selon les besoins.
 ## 🔗 Liens Utiles
 
 ### Documentation Externe
+
 - [Semantic Versioning](https://semver.org/)
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - [GitHub Actions Docs](https://docs.github.com/en/actions)
 
 ### Documentation Projet
+
 - [README Principal](../README.md)
 - [Quickstart](quickstart/README.md)
 - [Git Workflow](git-workflow/README.md)
