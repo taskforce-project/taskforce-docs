@@ -47,6 +47,9 @@ Documentation complète du projet Taskforce ERP.
   - [Pull Requests](./developpeur/git-workflow/pull-requests.md)
   - [Setup Initial](./developpeur/git-workflow/setup.md)
 
+- **Docker & Images**
+  - [Utilisation GHCR](./developpeur/docker/GHCR_USAGE.md) - Pull et test des images Docker
+
 ---
 
 ## 🎯 Guides Rapides
