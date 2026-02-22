@@ -109,6 +109,14 @@ cd taskforce-fullstack
 
 ---
 
+## 🤖 Rédaction avec Claude
+
+Pour rédiger ou mettre à jour la documentation avec l'assistant IA Claude, consulter les instructions officielles :
+
+👉 **[CLAUDE.md](./CLAUDE.md)** — Directives de rédaction : logos, ton, style, structure, conventions
+
+---
+
 ## 📝 Contribution
 
 ### Workflow Git
