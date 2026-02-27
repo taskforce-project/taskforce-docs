@@ -14,8 +14,8 @@ Logo projet        : assets/images/logo_taskforce.png
 ## Liens rapides
 
 - [Dossier Projet](./Dossier_Projet.md)
-- [CdCF – Cahier des Charges Fonctionnel](./02_CdCF.md)
-- [CdCT – Cahier des Charges Technique](./03_CdCT.md)
+- [CdCF – Cahier des Charges Fonctionnel](./01_CdCF.md)
+- [CdCT – Cahier des Charges Technique](./02_CdCT.md)
 - [Business & Analyse de marché](./Etude_business.md)
 - [Stratégie Marketing & Commerciale](./Strategie_Marketing.md)
 - [Repository GitHub](https://github.com/...)
@@ -26,7 +26,7 @@ Logo projet        : assets/images/logo_taskforce.png
 
 ## 1. Contexte et vision du projet
 
-Ce document présente une synthèse du contexte et de la vision du projet. Pour une description fonctionnelle détaillée, se référer au [CdCF - Cahier des Charges Fonctionnel](./02_CdCF.md).
+Ce document présente une synthèse du contexte et de la vision du projet. Pour une description fonctionnelle détaillée, se référer au [CdCF - Cahier des Charges Fonctionnel](./01_CdCF.md).
 
 ### Contexte général
 
@@ -157,7 +157,7 @@ L'écosystème d'outils repose principalement sur GitHub Projects pour la gestio
 
 La veille technologique constitue un élément essentiel du projet, compte tenu de l'évolution rapide des technologies web et des exigences réglementaires. Une veille active est maintenue sur les technologies front-end, notamment Next.js, Astro, React, TypeScript, ainsi que les librairies complémentaires comme Zustand, TanStack Query et Zod. Du côté back-end, la veille couvre Spring Boot, Gradle avec Kotlin DSL, les évolutions de Java, PostgreSQL, Keycloak, l'API Stripe et Docker.
 
-Le suivi des évolutions réglementaires porte sur le RGPD, les normes applicables aux systèmes LIMS et l'écosystème SaaS en général. Les sources d'information incluent des publications spécialisées, des newsletters techniques, des communautés open source et des forums de développeurs. Cette veille permanente permet d'anticiper les évolutions technologiques et de maintenir l'alignement du projet avec les meilleures pratiques du marché. Pour la démarche complète de veille et son application concrète, se référer au [CdCT](./03_CdCT.md) et à l'analyse de marché dans le document [Business](./Etude_business.md).
+Le suivi des évolutions réglementaires porte sur le RGPD, les normes applicables aux systèmes LIMS et l'écosystème SaaS en général. Les sources d'information incluent des publications spécialisées, des newsletters techniques, des communautés open source et des forums de développeurs. Cette veille permanente permet d'anticiper les évolutions technologiques et de maintenir l'alignement du projet avec les meilleures pratiques du marché. Pour la démarche complète de veille et son application concrète, se référer au [CdCT](./02_CdCT.md) et à l'analyse de marché dans le document [Business](./Etude_business.md).
 
 ### Outils et plateformes de veille utilisés
 
@@ -216,7 +216,7 @@ Les objectifs du projet sont formalisés selon la méthode SMART (Spécifique, M
 
 ![Objectifs SMART](../assets/diagrammes/SMART-taskforce.drawio.png)
 
-Pour l'analyse fonctionnelle détaillée incluant les cas d'usage, les exigences et les règles métier, se référer au [CdCF](./02_CdCF.md).
+Pour l'analyse fonctionnelle détaillée incluant les cas d'usage, les exigences et les règles métier, se référer au [CdCF](./01_CdCF.md).
 
 </div>
 
@@ -241,7 +241,7 @@ Le choix des technologies s'appuie sur plusieurs critères stratégiques qui gar
 | **CI/CD**      | GitHub Actions                | GitLab CI, Jenkins                 | Intégration native GitHub, configuration simple, runners gratuits, marketplace d'actions               |
 | **Monitoring** | Grafana + Prometheus (Loki ?) | Datadog, New Relic, Posthog        | Open source, visualisation puissante, alerting configurable, coût maîtrisé                             |
 
-Pour la justification détaillée des choix techniques, l'architecture complète et les alternatives évaluées, consulter le [CdCT](./03_CdCT.md).
+Pour la justification détaillée des choix techniques, l'architecture complète et les alternatives évaluées, consulter le [CdCT](./02_CdCT.md).
 
 </div>
 
@@ -267,7 +267,7 @@ L'**Infrastructure & DevOps** englobe la conteneurisation via Docker, les pipeli
 
 Le WBS organise le travail en lots et tâches selon une progression logique. La phase de **cadrage et initialisation** couvre l'analyse des besoins, la définition du périmètre et la rédaction de la documentation projet (Dossier, CdCF, CdCT). La **conception** inclut l'architecture technique, la modélisation des données et le design UX/UI. Le **développement** comprend le setup de l'infrastructure, le développement du Core, le développement des modules métier, et l'intégration des services tiers. Les **tests et validation** englobent les tests unitaires et d'intégration, les tests d'accessibilité, et les tests de sécurité. Le **déploiement** couvre la configuration des environnements, la migration des données et la mise en production. Enfin, la phase de **documentation et bilan** produit la documentation technique, le manuel utilisateur et le bilan projet.
 
-Pour les diagrammes détaillés et la modélisation complète avec les dépendances entre les lots, se référer au [CdCF](./02_CdCF.md) et aux diagrammes dans le dossier [assets/diagrammes](./assets/diagrammes/).
+Pour les diagrammes détaillés et la modélisation complète avec les dépendances entre les lots, se référer au [CdCF](./01_CdCF.md) et aux diagrammes dans le dossier [assets/diagrammes](./assets/diagrammes/).
 
 </div>
 
@@ -281,7 +281,7 @@ Les **diagrammes structurels** comprennent le diagramme de classes qui modélise
 
 Les **diagrammes dynamiques** incluent les diagrammes de séquence qui décrivent l'authentification via Keycloak, la création de tâche avec assignation automatique, le workflow de paiement avec webhook Stripe, et l'activation de module optionnel. Les diagrammes d'états-transitions modélisent l'évolution des états d'une tâche (Brouillon → En attente → En cours → Terminée → Archivée), d'un projet (Planification → Actif → Suspendu → Clôturé) et d'un abonnement (Essai → Actif → Suspendu → Résilié).
 
-Les diagrammes détaillés et leur implémentation sont disponibles dans le [CdCF - Section 7](./02_CdCF.md) pour l'analyse fonctionnelle et le [CdCT - Section 4](./03_CdCT.md) pour la conception technique.
+Les diagrammes détaillés et leur implémentation sont disponibles dans le [CdCF - Section 7](./01_CdCF.md) pour l'analyse fonctionnelle et le [CdCT - Section 4](./02_CdCT.md) pour la conception technique.
 
 </div>
 
@@ -295,7 +295,7 @@ L'entité **Compétence** établit le référentiel de compétences avec les niv
 
 Les **relations principales** s'articulent selon le schéma suivant : une Organisation possède plusieurs Équipes (relation 1-N), chaque Équipe regroupe plusieurs Utilisateurs (relation 1-N), et chaque Utilisateur peut être assigné à plusieurs Tâches (relation 1-N). Les Tâches sont liées aux Compétences selon une relation N-N, permettant de spécifier plusieurs compétences requises par tâche et de retrouver toutes les tâches nécessitant une compétence donnée.
 
-Pour la modélisation complète incluant le Modèle Conceptuel de Données (MCD), le Modèle Logique de Données (MLD), le Modèle Physique de Données (MPD) et les diagrammes de classes détaillés, consulter le [CdCT](./03_CdCT.md).
+Pour la modélisation complète incluant le Modèle Conceptuel de Données (MCD), le Modèle Logique de Données (MLD), le Modèle Physique de Données (MPD) et les diagrammes de classes détaillés, consulter le [CdCT](./02_CdCT.md).
 
 </div>
 
@@ -428,7 +428,7 @@ L'architecture s'appuie sur plusieurs patterns éprouvés garantissant qualité 
 La communication entre composants utilise plusieurs paradigmes complémentaires. Les **API REST** assurent la communication synchrone avec échange de données au format JSON, garantissant l'interopérabilité et la simplicité d'intégration. Le système d'**Events** basé sur Spring Events permet une communication asynchrone pour les modules optionnels, favorisant le découplage et la scalabilité. Les **Webhooks** gèrent l'intégration avec les services tiers comme Stripe, assurant une synchronisation fiable des données de paiement et d'abonnement.
 
 <blockquote>
-Pour la description détaillée de l'architecture incluant les diagrammes de composants, les patterns d'intégration spécifiques, et la stratégie de migration éventuelle vers des microservices si le besoin se présente à terme, se référer au <a href="./03_CdCT.md">CdCT - Section 5</a>.
+Pour la description détaillée de l'architecture incluant les diagrammes de composants, les patterns d'intégration spécifiques, et la stratégie de migration éventuelle vers des microservices si le besoin se présente à terme, se référer au <a href="./02_CdCT.md">CdCT - Section 5</a>.
 </blockquote>
 
 </div>
@@ -440,7 +440,7 @@ Pour la description détaillée de l'architecture incluant les diagrammes de com
 L'infrastructure logicielle repose sur une stack moderne et éprouvée, privilégiant la conteneurisation via Docker pour garantir la portabilité et la reproductibilité des environnements. Les pipelines CI/CD orchestrés par GitHub Actions automatisent les builds, tests et déploiements, assurant une livraison continue de qualité. La séparation stricte des environnements dev/prod, avec leurs configurations spécifiques, garantit l'isolation nécessaire entre développement et production. L'observabilité s'appuie sur Grafana et Prometheus pour le monitoring en temps réel, permettant la détection précoce des anomalies et l'optimisation des performances.
 
 <blockquote>
-Les détails complets de l'infrastructure, incluant les architectures réseau, les stratégies de backup, les procédures de rollback, et les configurations spécifiques de chaque environnement, sont disponibles dans le <a href="./03_CdCT.md">CdCT - Section 6</a>.
+Les détails complets de l'infrastructure, incluant les architectures réseau, les stratégies de backup, les procédures de rollback, et les configurations spécifiques de chaque environnement, sont disponibles dans le <a href="./02_CdCT.md">CdCT - Section 6</a>.
 </blockquote>
 
 </div>
@@ -476,7 +476,7 @@ L'approche de conception UX/UI privilégie une démarche itérative et centrée 
 Les **parcours utilisateurs clés** identifiés incluent l'inscription avec souscription à un plan (workflow complet depuis la découverte jusqu'à l'activation du compte), la création de projet et ajout de tâches (interface intuitive guidant l'utilisateur pas à pas), la consultation de la charge de travail (visualisations claires et actionnables), ainsi que l'activation de modules optionnels (processus simple et réversible).
 
 <blockquote>
-Pour les wireframes détaillés, les mock-ups haute fidélité, les flows utilisateurs complets et les résultats des tests utilisateurs, consulter le <a href="./02_CdCF.md#11-parcours-utilisateurs-et-maquettes-fonctionnelles">CdCF - Section 11</a>. Pour l'implémentation technique du design system, l'optimisation des performances front-end, les stratégies de lazy loading, et les protocoles de tests d'accessibilité, consulter le <a href="./03_CdCT.md">CdCT</a>.
+Pour les wireframes détaillés, les mock-ups haute fidélité, les flows utilisateurs complets et les résultats des tests utilisateurs, consulter le <a href="./01_CdCF.md#11-parcours-utilisateurs-et-maquettes-fonctionnelles">CdCF - Section 11</a>. Pour l'implémentation technique du design system, l'optimisation des performances front-end, les stratégies de lazy loading, et les protocoles de tests d'accessibilité, consulter le <a href="./02_CdCT.md">CdCT</a>.
 </blockquote>
 
 </div>
@@ -498,7 +498,7 @@ L'architecture anticipe les contraintes réglementaires des environnements haute
 L'architecture modulaire de type ERP permet d'anticiper ces contraintes sans alourdir le MVP initial. La séparation nette Core / Modules optionnels facilite l'ajout futur de modules conformes (comme un module LIMS) avec traçabilité renforcée, audit trails détaillés, signature électronique qualifiée, et processus de validation selon ces référentiels. Cette approche garantit une scalabilité maximale vers des secteurs réglementés tout en maintenant la simplicité et l'agilité pour les clients du MVP initial.
 
 <blockquote>
-Pour la conformité technique détaillée incluant les mécanismes de chiffrement, les procédures d'audit, l'implémentation concrète des mécanismes de sécurité (authentification forte, gestion des sessions, protection contre les attaques), et la stratégie complète d'anticipation réglementaire avec roadmap d'implémentation, se référer au <a href="./03_CdCT.md">CdCT - Sections 12 et 13</a>.
+Pour la conformité technique détaillée incluant les mécanismes de chiffrement, les procédures d'audit, l'implémentation concrète des mécanismes de sécurité (authentification forte, gestion des sessions, protection contre les attaques), et la stratégie complète d'anticipation réglementaire avec roadmap d'implémentation, se référer au <a href="./02_CdCT.md">CdCT - Sections 12 et 13</a>.
 </blockquote>
 
 </div>
