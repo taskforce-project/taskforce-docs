@@ -307,7 +307,7 @@ Pour la modélisation complète incluant le Modèle Conceptuel de Données (MCD)
 
 <div>
 
-**Port porteur de projet** : Pierre MICHEL
+**Porteur de projet** : Pierre MICHEL
 
 Le rôle de Maîtrise d'Ouvrage englobe la définition des besoins, la validation des livrables et les décisions stratégiques du projet. Les responsabilités incluent l'expression précise des besoins fonctionnels, la validation de la conformité du produit par rapport aux exigences initiales, la priorisation des fonctionnalités selon leur valeur métier, et l'arbitrage des choix fonctionnels en cas de contraintes ou de compromis nécessaires. L'engagement porte sur une disponibilité continue tout au long du projet, la validation rigoureuse de chaque jalon, et un suivi qualité permanent pour garantir l'adéquation de la solution avec les objectifs fixés.
 

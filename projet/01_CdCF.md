@@ -14,8 +14,8 @@ Logo projet        : assets/images/logo_taskforce.png
 ## Liens rapides
 
 - [Dossier Projet](./Dossier_Projet.md)
-- [CdCF – Cahier des Charges Fonctionnel](./02_CdCF.md)
-- [CdCT – Cahier des Charges Technique](./03_CdCT.md)
+- [CdCF – Cahier des Charges Fonctionnel](./01_CdCF.md)
+- [CdCT – Cahier des Charges Technique](./02_CdCT.md)
 - [Business & Analyse de marché](./Etude_business.md)
 - [Stratégie Marketing & Commerciale](./Strategie_Marketing.md)
 - [Repository GitHub](https://github.com/...)
@@ -49,11 +49,11 @@ Ce Cahier des Charges Fonctionnel (CdCF) définit l'ensemble des besoins fonctio
 
 ### Périmètre fonctionnel
 
-Le périmètre couvre le Core applicatif comportant l'authentification multi-tenant, la gestion des organisations et utilisateurs, ainsi que le système de gestion des abonnements. Le module métier principal intègre la gestion complète de projets et tâches, le système de compétences, l'algorithme d'assignation automatique, le suivi de charge de travail et le système d'alertes. Les modules optionnels futurs (LIMS, Qualité, GED) sont anticipés dans l'architecture mais ne font pas partie du MVP. Les aspects techniques détaillés (technologies, architecture, infrastructure) sont traités dans le [CdCT](./03_CdCT.md).
+Le périmètre couvre le Core applicatif comportant l'authentification multi-tenant, la gestion des organisations et utilisateurs, ainsi que le système de gestion des abonnements. Le module métier principal intègre la gestion complète de projets et tâches, le système de compétences, l'algorithme d'assignation automatique, le suivi de charge de travail et le système d'alertes. Les modules optionnels futurs (LIMS, Qualité, GED) sont anticipés dans l'architecture mais ne font pas partie du MVP. Les aspects techniques détaillés (technologies, architecture, infrastructure) sont traités dans le [CdCT](./02_CdCT.md).
 
 ### Références documentaires
 
-Ce document s'inscrit dans l'écosystème documentaire projet comprenant le [Dossier Projet](./Dossier_Projet.md) pour la vision globale et le pilotage, le [CdCT](./03_CdCT.md) pour les spécifications techniques détaillées, et l'[Étude Business](./Etude_business.md) pour le modèle économique et l'analyse de marché. Les normes de référence incluent RGPD pour la protection des données, WCAG 2.1 niveau AA pour l'accessibilité, et OWASP Top 10 pour la sécurité.
+Ce document s'inscrit dans l'écosystème documentaire projet comprenant le [Dossier Projet](./Dossier_Projet.md) pour la vision globale et le pilotage, le [CdCT](./02_CdCT.md) pour les spécifications techniques détaillées, et l'[Étude Business](./Etude_business.md) pour le modèle économique et l'analyse de marché. Les normes de référence incluent RGPD pour la protection des données, WCAG 2.1 niveau AA pour l'accessibilité, et OWASP Top 10 pour la sécurité.
 
 ### Glossaire métier
 
@@ -249,11 +249,11 @@ L'accessibilité respecte WCAG 2.1 niveau AA avec navigation complète au clavie
 
 ### Matrice acteurs / fonctionnalités
 
-La matrice complète des permissions par rôle est disponible dans la [documentation technique du projet](./03_CdCT.md). En synthèse, les **Collaborateurs** disposent de droits de lecture sur leurs propres ressources et de mise à jour limitée, les **Managers** bénéficient de droits étendus de création et modification sur les projets et équipes sous leur responsabilité, les **Administrateurs** ont accès complet à toutes les fonctionnalités d'administration, et les **Invités** sont limités à la consultation selon les permissions spécifiques accordées.
+La matrice complète des permissions par rôle est disponible dans la [documentation technique du projet](./02_CdCT.md). En synthèse, les **Collaborateurs** disposent de droits de lecture sur leurs propres ressources et de mise à jour limitée, les **Managers** bénéficient de droits étendus de création et modification sur les projets et équipes sous leur responsabilité, les **Administrateurs** ont accès complet à toutes les fonctionnalités d'administration, et les **Invités** sont limités à la consultation selon les permissions spécifiques accordées.
 
 ### Contrôle d'accès
 
-Le contrôle d'accès s'appuie sur un modèle RBAC (Role-Based Access Control) géré par Keycloak avec vérification des permissions à chaque requête API, isolation multi-tenant garantissant que chaque organisation accède uniquement à ses données, traçabilité complète des accès et modifications via audit logs, et gestion fine des permissions au niveau ressource (projet, tâche, équipe). Les détails d'implémentation technique sont décrits dans le [CdCT - Section Sécurité](./03_CdCT.md).
+Le contrôle d'accès s'appuie sur un modèle RBAC (Role-Based Access Control) géré par Keycloak avec vérification des permissions à chaque requête API, isolation multi-tenant garantissant que chaque organisation accède uniquement à ses données, traçabilité complète des accès et modifications via audit logs, et gestion fine des permissions au niveau ressource (projet, tâche, équipe). Les détails d'implémentation technique sont décrits dans le [CdCT - Section Sécurité](./02_CdCT.md).
 
 </div>
 
@@ -445,7 +445,7 @@ L'OWASP (Open Web Application Security Project) Top 10 identifie les risques de 
 
 **10. Server-Side Request Forgery (SSRF)** : Les attaques SSRF exploitent le serveur pour accéder à des ressources internes. Protection via validation stricte des URLs externes, whitelist des domaines autorisés (Stripe, services cloud uniquement), interdiction d'accès aux IPs privées depuis le backend, et timeout courts sur les requêtes sortantes.
 
-Les détails techniques d'implémentation sont décrits dans le [CdCT - Section Sécurité](./03_CdCT.md).
+Les détails techniques d'implémentation sont décrits dans le [CdCT - Section Sécurité](./02_CdCT.md).
 
 ### Accessibilité
 
@@ -497,7 +497,7 @@ Le RGPD encadre le traitement des données personnelles des citoyens européens 
 
 #### Autres conformités
 
-WCAG 2.1/RGAA pour l'accessibilité (détaillé ci-dessus), OWASP Top 10 pour la sécurité (détaillé ci-dessus), et anticipation de 21 CFR Part 11 (FDA Electronic Records) et GAMP 5 (Good Automated Manufacturing Practice) pour modules pharmaceutiques futurs nécessitant audit trail complet, signatures électroniques, et validation système étendue. Les mécanismes de conformité sont détaillés dans le [Dossier Projet - Section 18](./Dossier_Projet.md) et le [CdCT](./03_CdCT.md).
+WCAG 2.1/RGAA pour l'accessibilité (détaillé ci-dessus), OWASP Top 10 pour la sécurité (détaillé ci-dessus), et anticipation de 21 CFR Part 11 (FDA Electronic Records) et GAMP 5 (Good Automated Manufacturing Practice) pour modules pharmaceutiques futurs nécessitant audit trail complet, signatures électroniques, et validation système étendue. Les mécanismes de conformité sont détaillés dans le [Dossier Projet - Section 18](./Dossier_Projet.md) et le [CdCT](./02_CdCT.md).
 
 </div>
 
@@ -569,7 +569,7 @@ Les tests utilisateurs sont réalisés auprès d'un panel représentatif (manage
 
 Ce Cahier des Charges Fonctionnel définit l'ensemble des besoins fonctionnels de la plateforme Taskforce, ERP modulaire SaaS innovant combinant gestion de projets classique et assignation automatique intelligente de tâches. L'approche modulaire (Core + Modules métier + Extensions optionnelles) garantit l'évolutivité du système tout en maintenant une complexité maîtrisée pour le MVP.
 
-Les spécifications fonctionnelles détaillées dans ce document constituent la référence pour le développement et la validation de l'application. Les aspects techniques (architecture, technologies, infrastructure) sont traités dans le [CdCT](./03_CdCT.md) qui complète ce document. Le modèle économique et l'analyse de marché sont présentés dans l'[Étude Business](./Etude_business.md).
+Les spécifications fonctionnelles détaillées dans ce document constituent la référence pour le développement et la validation de l'application. Les aspects techniques (architecture, technologies, infrastructure) sont traités dans le [CdCT](./02_CdCT.md) qui complète ce document. Le modèle économique et l'analyse de marché sont présentés dans l'[Étude Business](./Etude_business.md).
 
 La réalisation suivra une approche agile avec validation progressive des fonctionnalités et ajustements basés sur les retours utilisateurs, dans le respect du planning projet détaillé dans le [Dossier Projet](./Dossier_Projet.md).
 

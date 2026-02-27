@@ -14,8 +14,8 @@ Logo projet        : assets/images/logo_taskforce.png
 ## Liens rapides
 
 - [Dossier Projet](./Dossier_Projet.md)
-- [CdCF – Cahier des Charges Fonctionnel](./02_CdCF.md)
-- [CdCT – Cahier des Charges Technique](./03_CdCT.md)
+- [CdCF – Cahier des Charges Fonctionnel](./01_CdCF.md)
+- [CdCT – Cahier des Charges Technique](./02_CdCT.md)
 - [Business & Analyse de marché](./Etude_business.md)
 - [Stratégie Marketing & Commerciale](./Strategie_Marketing.md)
 

@@ -16,8 +16,8 @@ Logo projet        : assets/images/logo_taskforce.png
 ## Liens rapides
 
 - [Dossier Projet](./Dossier_Projet.md)
-- [CdCF – Cahier des Charges Fonctionnel](./02_CdCF.md)
-- [CdCT – Cahier des Charges Technique](./03_CdCT.md)
+- [CdCF – Cahier des Charges Fonctionnel](./01_CdCF.md)
+- [CdCT – Cahier des Charges Technique](./02_CdCT.md)
 - [Business & Analyse de marché](./Etude_business.md)
 - [Stratégie Marketing & Commerciale](./Strategie_Marketing.md)
 - [Repository GitHub](https://github.com/...)
@@ -52,11 +52,11 @@ Ce Cahier des Charges Technique (CdCT) définit l'ensemble des spécifications t
 
 ### Périmètre technique
 
-Le périmètre couvre l'architecture applicative complète (front-end, back-end, base de données), l'infrastructure de déploiement (conteneurisation, environnements, réseau), les pipelines CI/CD et automatisation, la sécurité et conformité (authentification, autorisation, chiffrement, audits), et les stratégies de performance, scalabilité et monitoring. Les aspects fonctionnels détaillés sont traités dans le [CdCF](./02_CdCF.md).
+Le périmètre couvre l'architecture applicative complète (front-end, back-end, base de données), l'infrastructure de déploiement (conteneurisation, environnements, réseau), les pipelines CI/CD et automatisation, la sécurité et conformité (authentification, autorisation, chiffrement, audits), et les stratégies de performance, scalabilité et monitoring. Les aspects fonctionnels détaillés sont traités dans le [CdCF](./01_CdCF.md).
 
 ### Références documentaires
 
-Ce document s'appuie sur le [Dossier Projet](./Dossier_Projet.md) pour la vision globale et les objectifs, le [CdCF](./02_CdCF.md) pour les spécifications fonctionnelles, et l'[Étude Business](./Etude_business.md) pour les contraintes économiques. Les références techniques incluent la documentation officielle des technologies utilisées (Spring Boot, Next.js, PostgreSQL, Docker, Keycloak, Stripe), les normes de sécurité (OWASP Top 10, ISO 27001), et les bonnes pratiques DevOps.
+Ce document s'appuie sur le [Dossier Projet](./Dossier_Projet.md) pour la vision globale et les objectifs, le [CdCF](./01_CdCF.md) pour les spécifications fonctionnelles, et l'[Étude Business](./Etude_business.md) pour les contraintes économiques. Les références techniques incluent la documentation officielle des technologies utilisées (Spring Boot, Next.js, PostgreSQL, Docker, Keycloak, Stripe), les normes de sécurité (OWASP Top 10, ISO 27001), et les bonnes pratiques DevOps.
 
 ### Glossaire technique
 
@@ -1237,7 +1237,7 @@ Ce Cahier des Charges Technique établit les fondations technologiques solides d
 
 Les choix technologiques (Spring Boot, Next.js, PostgreSQL, Keycloak, Docker) offrent un équilibre optimal entre robustesse, performance et maintenabilité, tout en respectant les contraintes projet (équipe mono-acteur, calendrier académique, budget limité). La conformité réglementaire (RGPD, WCAG, OWASP) est intégrée dès la conception guarantissant une base solide pour les évolutions futures.
 
-L'implémentation suivra une démarche agile avec validation progressive, automatisation maximale via CI/CD, et monitoring continu pour garantir qualité et disponibilité. Les spécifications fonctionnelles détaillées sont disponibles dans le [CdCF](./02_CdCF.md), tandis que la vision globale et le pilotage projet sont présentés dans le [Dossier Projet](./Dossier_Projet.md).
+L'implémentation suivra une démarche agile avec validation progressive, automatisation maximale via CI/CD, et monitoring continu pour garantir qualité et disponibilité. Les spécifications fonctionnelles détaillées sont disponibles dans le [CdCF](./01_CdCF.md), tandis que la vision globale et le pilotage projet sont présentés dans le [Dossier Projet](./Dossier_Projet.md).
 
 </div>
 
