@@ -9,9 +9,11 @@ Documentation complète du projet Taskforce ERP.
 ### 🎯 [Gestion de Projet](./projet/)
 
 - [Dossier Projet](./projet/Dossier_Projet.md) - Vue d'ensemble et objectifs
-- [Cahier des Charges Fonctionnel](./projet/02_CdCF.md) - Spécifications fonctionnelles
-- [Cahier des Charges Technique](./projet/03_CdCT.md) - Spécifications techniques
-- [Étude Business](./projet/Etude_business.md) - Analyse de marché
+- [Cahier des Charges Fonctionnel](./projet/01_CdCF.md) - Spécifications fonctionnelles
+- [Cahier des Charges Technique](./projet/02_CdCT.md) - Spécifications techniques
+- [Étude Business](./projet/Etude_business.md) - Analyse de marché et modèle économique
+- [Stratégie Marketing](./projet/Strategie_Marketing.md) - Stratégie marketing, pricing et go-to-market
+- [Stratégie Vente LLM](./projet/Strategie_Vente_LLM.md) - Stratégie chatbot IA et wallet compute
 
 ### 🛠️ [Documentation Technique](./technique/)
 
@@ -167,5 +169,5 @@ Pour toute question :
 
 ---
 
-**Dernière mise à jour**: Janvier 2026  
+**Dernière mise à jour**: Février 2026  
 **Version**: 1.0.0
