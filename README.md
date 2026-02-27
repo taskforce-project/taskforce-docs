@@ -7,12 +7,14 @@ Documentation complète du projet Taskforce ERP.
 ## 📖 Table des matières
 
 ### 🎯 [Gestion de Projet](./projet/)
+
 - [Dossier Projet](./projet/Dossier_Projet.md) - Vue d'ensemble et objectifs
 - [Cahier des Charges Fonctionnel](./projet/02_CdCF.md) - Spécifications fonctionnelles
 - [Cahier des Charges Technique](./projet/03_CdCT.md) - Spécifications techniques
 - [Étude Business](./projet/Etude_business.md) - Analyse de marché
 
 ### 🛠️ [Documentation Technique](./technique/)
+
 - **Architecture & Infrastructure**
   - [Architecture](./technique/Architecture.md) - Architecture globale du système
   - [API Documentation](./technique/API.md) - Spécifications des API
@@ -25,12 +27,14 @@ Documentation complète du projet Taskforce ERP.
   - [DevOps](./technique/DevOps.md) - Pipeline CI/CD
 
 ### 👥 [Documentation Utilisateur](./utilisateur/)
+
 - [Manuel Utilisateur](./utilisateur/Manuel_Utilisateur.md)
 - [Guide d'Installation](./utilisateur/Guid_Installation.md)
 - [FAQ](./utilisateur/FAQ.md)
 - [Release Notes](./utilisateur/Release_Notes.md)
 
 ### 🚀 [Documentation Développeur](./developpeur/)
+
 - **Démarrage**
   - [Quickstart Guide](./developpeur/quickstart/README.md)
   - [Configuration Environnement](./developpeur/quickstart/environment-setup.md)
@@ -55,6 +59,7 @@ Documentation complète du projet Taskforce ERP.
 ## 🎯 Guides Rapides
 
 ### Pour les développeurs
+
 ```bash
 # Cloner le projet
 git clone <votre-repo>
@@ -68,6 +73,7 @@ cd taskforce-fullstack
 👉 [Guide complet de démarrage](./developpeur/quickstart/README.md)
 
 ### Pour créer une PR
+
 1. Créer une branche depuis `dev`
 2. Ajouter un label `release:*` (major/minor/patch)
 3. Remplir le template de PR
@@ -79,6 +85,7 @@ cd taskforce-fullstack
 ## 📊 Vue d'ensemble du projet
 
 **Taskforce** est un ERP modulaire moderne construit avec :
+
 - **Backend**: Spring Boot 3.4.1 (Java 21)
 - **Frontend**: Next.js 15
 - **Auth**: Keycloak 23
@@ -153,6 +160,7 @@ Pour rédiger ou mettre à jour la documentation avec l'assistant IA Claude, con
 ## 📞 Support
 
 Pour toute question :
+
 - 📖 Consultez la [FAQ](./utilisateur/FAQ.md)
 - 🐛 Créez une [issue](https://github.com/votre-org/taskforce/issues)
 - 📧 Contactez l'équipe

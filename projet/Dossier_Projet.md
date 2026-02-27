@@ -17,6 +17,7 @@ Logo projet        : assets/images/logo_taskforce.png
 - [CdCF – Cahier des Charges Fonctionnel](./02_CdCF.md)
 - [CdCT – Cahier des Charges Technique](./03_CdCT.md)
 - [Business & Analyse de marché](./Etude_business.md)
+- [Stratégie Marketing & Commerciale](./Strategie_Marketing.md)
 - [Repository GitHub](https://github.com/...)
 
 **Tags :** `#gestion-de-projet` `#documentation` `#webapp` `#architecture` `#erp` `#saas`
@@ -163,28 +164,33 @@ Le suivi des évolutions réglementaires porte sur le RGPD, les normes applicabl
 La veille s'appuie sur plusieurs plateformes et outils spécialisés garantissant une couverture complète de l'écosystème technologique :
 
 **Agrégateurs de contenu technique** :
+
 - [Daily.dev](https://daily.dev/) - Agrégateur personnalisé d'actualités tech avec fil d'actualité pour développeurs couvrant les dernières tendances front-end, back-end et DevOps
 - [Dev.to](https://dev.to/) - Communauté de développeurs partageant articles, tutoriels et retours d'expérience
 - [Hacker News](https://news.ycombinator.com/) - Discussions sur l'innovation tech et les nouvelles pratiques
 
 **Newsletters techniques** :
+
 - [JavaScript Weekly](https://javascriptweekly.com/) - Actualités hebdomadaires sur l'écosystème JavaScript/TypeScript
 - [PostgreSQL Weekly](https://postgresweekly.com/) - Évolutions et optimisations de PostgreSQL
 - [Spring Weekly](https://spring.io/blog) - Blog officiel Spring Framework avec annonces et guides
 - [TLDR Newsletter](https://tldr.tech/) - Résumé quotidien des actualités tech et startup
 
 **Documentation officielle et blogs** :
+
 - [Next.js Blog](https://nextjs.org/blog) - Annonces officielles et best practices Next.js
 - [Spring Blog](https://spring.io/blog) - Guides et actualités Spring Boot
 - [Stripe Developer Updates](https://stripe.com/blog/engineering) - Évolutions API et intégrations
 - [Keycloak Blog](https://www.keycloak.org/blog) - Sécurité et authentification
 
 **Communautés et forums spécialisés** :
+
 - [Stack Overflow](https://stackoverflow.com/) - Résolution de problèmes techniques et échanges entre développeurs
 - [Reddit r/webdev](https://www.reddit.com/r/webdev/) et [r/java](https://www.reddit.com/r/java/) - Discussions et retours d'expérience
 - [GitHub Discussions](https://github.com/) - Veille sur les repos des technologies utilisées (Spring Boot, Next.js, Keycloak)
 
 **Veille réglementaire** :
+
 - [CNIL](https://www.cnil.fr/) - Actualités RGPD et recommandations françaises
 - [OWASP](https://owasp.org/) - Vulnérabilités et sécurité applicative
 - [W3C WAI](https://www.w3.org/WAI/) - Standards d'accessibilité WCAG
