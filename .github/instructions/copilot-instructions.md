@@ -9,11 +9,11 @@ Toutes les règles ci-dessous sont **obligatoires** sauf mention contraire.
 
 ### 1.1 Logos disponibles
 
-| Fichier | Usage |
-|---|---|
-| `assets/images/logo_taskforce.png` | Logo principal du projet |
-| `assets/images/logo_taskforce_tp.png` | Logo compact (entêtes, petits espaces) |
-| `assets/images/logo_metz_numeric_school.svg` | Logo de l'établissement |
+| Fichier                                      | Usage                                  |
+| -------------------------------------------- | -------------------------------------- |
+| `assets/images/logo_taskforce.png`           | Logo principal du projet               |
+| `assets/images/logo_taskforce_tp.png`        | Logo compact (entêtes, petits espaces) |
+| `assets/images/logo_metz_numeric_school.svg` | Logo de l'établissement                |
 
 ### 1.2 Placement dans les documents
 
@@ -43,17 +43,11 @@ Chaque nouveau document doit respecter l'ordre suivant :
 1. Commentaire HTML logos (voir §1.2)
 2. Titre H1 — nom court du document
 3. Métadonnées (Version, Date, Auteur(s))
-4. Séparateur ---
 5. Badges shields.io (Type, Statut, Année académique)
-6. Séparateur ---
 7. Section "Liens rapides"
-8. Séparateur ---
 9. Tags inline
-10. Séparateur ---
 11. Table des matières (si document > 3 sections)
-12. Séparateur ---
 13. Corps du document (sections numérotées)
-14. Séparateur ---
 15. Pied de page (date de mise à jour + version)
 ```
 
@@ -81,18 +75,18 @@ Format standard :
 
 **Couleurs recommandées par type de document :**
 
-| Type de document | Couleur badge Type | Badge Statut : couleur |
-|---|---|---|
-| Dossier Projet | `blue` | Draft → `yellow` / Final → `brightgreen` |
-| CdCF | `green` | Draft → `yellow` / Final → `brightgreen` |
-| CdCT | `orange` | Draft → `yellow` / Final → `brightgreen` |
-| Architecture | `purple` | Draft → `yellow` / Final → `brightgreen` |
-| API | `cyan` | Draft → `yellow` / Final → `brightgreen` |
-| Sécurité | `red` | Draft → `yellow` / Final → `brightgreen` |
-| Tests / Recettes | `teal` | Draft → `yellow` / Final → `brightgreen` |
-| Manuel Utilisateur | `blue` | Draft → `yellow` / Final → `brightgreen` |
-| Quickstart / Guide | `blueviolet` | Draft → `yellow` / Final → `brightgreen` |
-| DevOps / CI-CD | `darkgrey` | Draft → `yellow` / Final → `brightgreen` |
+| Type de document   | Couleur badge Type | Badge Statut : couleur                   |
+| ------------------ | ------------------ | ---------------------------------------- |
+| Dossier Projet     | `blue`             | Draft → `yellow` / Final → `brightgreen` |
+| CdCF               | `green`            | Draft → `yellow` / Final → `brightgreen` |
+| CdCT               | `orange`           | Draft → `yellow` / Final → `brightgreen` |
+| Architecture       | `purple`           | Draft → `yellow` / Final → `brightgreen` |
+| API                | `cyan`             | Draft → `yellow` / Final → `brightgreen` |
+| Sécurité           | `red`              | Draft → `yellow` / Final → `brightgreen` |
+| Tests / Recettes   | `teal`             | Draft → `yellow` / Final → `brightgreen` |
+| Manuel Utilisateur | `blue`             | Draft → `yellow` / Final → `brightgreen` |
+| Quickstart / Guide | `blueviolet`       | Draft → `yellow` / Final → `brightgreen` |
+| DevOps / CI-CD     | `darkgrey`         | Draft → `yellow` / Final → `brightgreen` |
 
 ### 2.3 Liens rapides
 
@@ -200,12 +194,12 @@ Obligatoire pour tout document de plus de 3 sections. Utiliser des listes numér
 
 ### 5.1 Nommage des fichiers
 
-| Contexte | Convention | Exemple |
-|---|---|---|
-| Documents projet | `NN_Titre_Document.md` (préfixe numérique 2 chiffres) | `02_CdCF.md` |
-| Documents technique | `Titre_Document.md` (PascalCase avec underscores) | `Architecture.md` |
-| Documents développeur | `kebab-case.md` ou `README.md` | `docker-setup.md` |
-| Documents utilisateur | `Titre_Document.md` | `Manuel_Utilisateur.md` |
+| Contexte              | Convention                                            | Exemple                 |
+| --------------------- | ----------------------------------------------------- | ----------------------- |
+| Documents projet      | `NN_Titre_Document.md` (préfixe numérique 2 chiffres) | `02_CdCF.md`            |
+| Documents technique   | `Titre_Document.md` (PascalCase avec underscores)     | `Architecture.md`       |
+| Documents développeur | `kebab-case.md` ou `README.md`                        | `docker-setup.md`       |
+| Documents utilisateur | `Titre_Document.md`                                   | `Manuel_Utilisateur.md` |
 
 ### 5.2 Organisation des dossiers
 
@@ -244,6 +238,9 @@ Vérifier systématiquement les points suivants avant de soumettre un document :
 - [ ] Pied de page présent avec date, version et mention du projet
 - [ ] Langue française respectée
 - [ ] Ton professionnel et neutre
+- [ ] Longueur et densité adaptées
+- [ ] Pas de "---" pour séparer les sections
+- [ ] Pas de listes à puces partout (préférer les paragraphes)
 - [ ] Nommage du fichier conforme à la convention (§5.1)
 - [ ] Fichier placé dans le bon dossier (§5.2)
 
