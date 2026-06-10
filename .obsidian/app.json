@@ -1,0 +1,11 @@
+{
+  "attachmentFolderPath": "assets/images",
+  "newLinkFormat": "relative",
+  "useMarkdownLinks": true,
+  "alwaysUpdateLinks": true,
+  "showUnsupportedFiles": true,
+  "defaultViewMode": "preview",
+  "livePreview": true,
+  "promptDelete": true,
+  "trashOption": "system"
+}
