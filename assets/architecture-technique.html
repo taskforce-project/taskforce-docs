@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TaskForce — Architecture technique (v1)</title>
+<style>
+  :root{
+    --ink:#0f172a;--muted:#64748b;--line:#e2e8f0;--card:#fff;
+    --app:#1d4ed8;--app-bg:#eff6ff;--app-bd:#bfdbfe;
+    --data:#0f766e;--data-bg:#f0fdfa;--data-bd:#99f6e4;
+    --ext:#7c3aed;--ext-bg:#f5f3ff;--ext-bd:#ddd6fe;
+    --edge:#475569;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#f8fafc;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.4;padding:22px}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .wrap{max-width:1080px;margin:0 auto}
+  .titleblock{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:6px;flex-wrap:wrap;gap:6px}
+  .titleblock h1{font-size:21px;margin:0}
+  .titleblock .sub{color:var(--muted);font-size:13px;margin-top:2px}
+  .meta{font-size:11px;color:var(--muted);text-align:right}
+  .chip-v{display:inline-block;background:var(--app);color:#fff;border-radius:6px;padding:1px 8px;font-size:11px;font-weight:700}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0 14px;font-size:12px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+  .layout{display:grid;grid-template-columns:1fr 270px;gap:14px;align-items:start}
+  .tier{border-radius:11px;padding:11px 12px;margin:0}
+  .tier h3{margin:0 0 8px;font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+  .tier.app{background:var(--app-bg);border:1px solid var(--app-bd)}
+  .tier.data{background:var(--data-bg);border:1px solid var(--data-bd)}
+  .tier.ext{background:var(--ext-bg);border:1px solid var(--ext-bd)}
+  .tier.plain{background:#fff;border:1px solid var(--line)}
+  .tier.infra{background:#f8fafc;border:1px dashed var(--line)}
+  .row{display:grid;gap:9px}
+  .r1{grid-template-columns:1fr}.r2{grid-template-columns:1fr 1fr}.r3{grid-template-columns:repeat(3,1fr)}.r4{grid-template-columns:repeat(4,1fr)}
+  .node{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-weight:700;font-size:13px}
+  .node small{display:block;font-weight:400;color:var(--muted);font-size:11.5px;margin-top:2px}
+  .node.app{border-left:4px solid var(--app)}.node.data{border-left:4px solid var(--data)}.node.ext{border-left:4px solid var(--ext)}
+  .node.auth{border-left:4px solid var(--ext);background:var(--ext-bg)}
+  .edge{display:flex;align-items:center;justify-content:center;gap:8px;padding:5px 0}
+  .edge .arrow{color:var(--edge);font-size:16px;line-height:1}
+  .edge .lbl{font-size:11px;color:var(--edge);background:#fff;border:1px solid var(--line);border-radius:999px;padding:2px 9px;font-weight:600}
+  .side{display:flex;flex-direction:column;gap:10px}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:11px;padding:11px 12px}
+  .panel h4{margin:0 0 6px;font-size:12px}
+  .panel ol,.panel ul{margin:0;padding-left:18px;font-size:12px;color:#334155}
+  .panel li{margin:3px 0}
+  .badge{font-size:10px;font-weight:700;border-radius:5px;padding:1px 6px;border:1px solid}
+  .badge.dev{color:#7c3aed;border-color:#ddd6fe;background:#f5f3ff}
+  .badge.prod{color:#047857;border-color:#a7f3d0;background:#ecfdf5}
+  .foot{margin-top:14px;text-align:center;color:var(--muted);font-size:11px}
+  @media (max-width:880px){.layout{grid-template-columns:1fr}.r4,.r3{grid-template-columns:1fr 1fr}}
+  @media print{body{background:#fff;padding:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2 class="sr-only">Architecture technique de TaskForce v1, vue conteneurs : client, présentation (Next.js, Astro), application (Spring Boot, Keycloak), données (PostgreSQL+pgvector, MinIO, RabbitMQ), services externes (Groq, Stripe, GitHub/Slack, SMTP), infrastructure, avec protocoles et ports sur les arêtes, et un panneau de notes (cycle de requête, dev/prod, temps réel, sécurité).</h2>
+
+  <div class="titleblock">
+    <div><h1>⚙️ TaskForce — Architecture technique <span class="chip-v">v1</span></h1>
+      <div class="sub">Vue conteneurs &amp; flux (C4 — niveau 2) · protocoles &amp; ports sur les arêtes</div></div>
+    <div class="meta">Metz Numeric School 2025-2026<br>MAJ 09/06/2026 · détail → <code>v1/03-architecture/Architecture.md</code></div>
+  </div>
+
+  <div class="legend">
+    <span><i class="dot" style="background:var(--app)"></i> Présentation / Application</span>
+    <span><i class="dot" style="background:var(--data)"></i> Données &amp; messaging</span>
+    <span><i class="dot" style="background:var(--ext)"></i> Identité &amp; externes</span>
+    <span><span class="badge dev">dev</span> <span class="badge prod">prod</span> environnement</span>
+  </div>
+
+  <div class="layout">
+    <div>
+      <div class="tier plain"><div class="row r1"><div class="node">🌐 Navigateur (utilisateur)<small>SPA Next.js + WebSocket · OIDC redirect Keycloak</small></div></div></div>
+      <div class="edge"><span class="lbl">HTTPS</span><span class="arrow">↓</span><span class="lbl">WSS (SockJS fallback)</span></div>
+
+      <div class="tier app"><h3>Présentation</h3>
+        <div class="row r2">
+          <div class="node app">Frontend — Next.js 16 <span class="badge prod">:3000</span><small>React 19 · Zustand · Axios · STOMP.js · Tailwind</small></div>
+          <div class="node app">Landing — Astro 5 <span class="badge dev">:4321</span><small>SSG · SEO / vitrine</small></div>
+        </div>
+      </div>
+      <div class="edge"><span class="lbl">REST <code>/api</code> · JWT Bearer</span><span class="arrow">↓</span><span class="lbl">STOMP <code>/topic</code> · <code>/app</code></span></div>
+
+      <div class="tier app"><h3>Application</h3>
+        <div class="row" style="grid-template-columns:2fr 1fr">
+          <div class="node app">Backend — Spring Boot 4 · Java 21 <span class="badge prod">:8080</span><small>/api · couches shared/core/modules (chat·ged·sales) · WebSocket broker · resource server JWT</small></div>
+          <div class="node auth">Keycloak <span class="badge dev">:8180</span><small>OAuth2/OIDC · émetteur &amp; JWKS</small></div>
+        </div>
+      </div>
+      <div class="edge"><span class="lbl">JDBC :5432</span><span class="lbl">S3 :9000</span><span class="arrow">↓</span><span class="lbl">AMQP/STOMP :5672/61613</span></div>
+
+      <div class="tier data"><h3>Données &amp; messaging</h3>
+        <div class="row r3">
+          <div class="node data">PostgreSQL 18 + pgvector<small>:5432 · Flyway V1–V35 · données + embeddings</small></div>
+          <div class="node data">MinIO (S3)<small>:9000 · avatars, pièces jointes</small></div>
+          <div class="node data">RabbitMQ<small>:5672 / :61613 · relais STOMP temps réel</small></div>
+        </div>
+      </div>
+      <div class="edge"><span class="arrow">↓</span><span class="lbl">HTTPS sortant (API tierces)</span></div>
+
+      <div class="tier ext"><h3>Identité &amp; services externes (cloud)</h3>
+        <div class="row r4">
+          <div class="node ext">Groq (LLM)<small>smart-assign · assistant · insights</small></div>
+          <div class="node ext">Stripe<small>paiement · webhooks</small></div>
+          <div class="node ext">GitHub / Slack<small>OAuth · intégrations</small></div>
+          <div class="node ext">SMTP / Mailtrap<small>OTP · mails</small></div>
+        </div>
+      </div>
+
+      <div class="tier infra" style="margin-top:12px"><h3>Infrastructure &amp; DevOps (transverse)</h3>
+        <div class="row r4">
+          <div class="node">🐳 Docker Compose<small>dev / prod / tools</small></div>
+          <div class="node">Nginx <span class="badge prod">prod</span><small>reverse proxy + TLS</small></div>
+          <div class="node">GitHub Actions → GHCR<small>tests · build · release</small></div>
+          <div class="node">SigNoz (OTel)<small>traces · métriques · alertes</small></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="side">
+      <div class="panel"><h4>🔄 Cycle d'une requête</h4>
+        <ol>
+          <li>Login → <b>Keycloak</b> émet le JWT.</li>
+          <li>Front appelle <code>/api/**</code> (Bearer).</li>
+          <li>Backend valide le JWT (JWKS), vérifie l'accès (workspace/projet).</li>
+          <li>Service → repository → PostgreSQL.</li>
+          <li>Réponse <code>ApiResponse&lt;T&gt;</code> → <code>data.data</code>.</li>
+        </ol>
+      </div>
+      <div class="panel"><h4>⚡ Temps réel</h4>
+        <ul><li>STOMP via RabbitMQ (<code>/topic/channel.{id}</code>).</li>
+        <li>Repli <i>SimpleBroker</i> en mémoire si RabbitMQ absent.</li>
+        <li>Auth STOMP au CONNECT (interceptor).</li></ul>
+      </div>
+      <div class="panel"><h4>🧭 Dev vs Prod</h4>
+        <ul><li><span class="badge dev">dev</span> compose complet + pgAdmin, ports exposés, Keycloak buildé.</li>
+        <li><span class="badge prod">prod</span> Nginx+TLS, Keycloak 23, secrets via env, ports internes.</li></ul>
+      </div>
+      <div class="panel"><h4>🔐 Sécurité</h4>
+        <ul><li>JWT RS256 · CORS · CSRF off (stateless).</li>
+        <li>Chaînes publiques (<code>/api/auth</code>,<code>/stripe</code>,<code>/files</code>) vs JWT.</li>
+        <li>⚠️ pas de <code>context-path</code> → préfixe <code>/api</code> obligatoire.</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <p class="foot">TaskForce — Architecture technique v1 · 09/06/2026 · ℹ️ <code>ai-service</code> Python vestigial (IA prod = Groq direct en Java)</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TaskForce — Système Brain OS (mémoire · prompts · agents)</title>
+<style>
+  :root{
+    --ink:#0f172a;--muted:#64748b;--line:#e2e8f0;
+    --mem:#6d28d9;--mem-bg:#f5f3ff;--mem-bd:#ddd6fe;
+    --flow:#1d4ed8;--flow-bg:#eff6ff;--flow-bd:#bfdbfe;
+    --loop:#b45309;--loop-bg:#fffbeb;--loop-bd:#fde68a;
+    --out:#047857;--out-bg:#ecfdf5;--out-bd:#a7f3d0;--in-bg:#f1f5f9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#f8fafc;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.4;padding:22px}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .wrap{max-width:1080px;margin:0 auto}
+  .titleblock{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:6px;flex-wrap:wrap;gap:6px}
+  .titleblock h1{font-size:21px;margin:0}.titleblock .sub{color:var(--muted);font-size:13px;margin-top:2px}
+  .meta{font-size:11px;color:var(--muted);text-align:right}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0 14px;font-size:12px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}.dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+  .layout{display:grid;grid-template-columns:1fr 250px;gap:14px;align-items:start}
+  .band{border-radius:11px;padding:11px 12px;margin:0}
+  .band h3{margin:0 0 8px;font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+  .band.mem{background:var(--mem-bg);border:1px solid var(--mem-bd)}.band.flow{background:var(--flow-bg);border:1px solid var(--flow-bd)}
+  .band.loop{background:var(--loop-bg);border:1px solid var(--loop-bd)}.band.out{background:var(--out-bg);border:1px solid var(--out-bd)}.band.plain{background:#fff;border:1px solid var(--line)}
+  .row{display:grid;gap:9px}.r2{grid-template-columns:1fr 1fr}.r3{grid-template-columns:repeat(3,1fr)}.r4{grid-template-columns:repeat(4,1fr)}
+  .node{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-weight:700;font-size:12.5px}
+  .node small{display:block;font-weight:400;color:var(--muted);font-size:11px;margin-top:2px}
+  .node.mem{border-left:4px solid var(--mem)}.node.flow{border-left:4px solid var(--flow)}.node.out{border-left:4px solid var(--out)}.node.in{background:var(--in-bg)}
+  .tag{font-size:9.5px;font-weight:700;border-radius:4px;padding:1px 5px;border:1px solid var(--mem-bd);color:var(--mem);background:#fff}
+  .edge{display:flex;align-items:center;justify-content:center;gap:8px;padding:5px 0}
+  .edge .arrow{color:#475569;font-size:16px}.edge .lbl{font-size:11px;color:#475569;background:#fff;border:1px solid var(--line);border-radius:999px;padding:2px 9px;font-weight:600}
+  .loop-title{color:var(--loop);font-weight:800;text-transform:uppercase;font-size:10.5px;letter-spacing:.05em;margin:0 0 8px}
+  .pipe{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:0;padding:0}
+  .pipe li{background:#fff;border:1px solid var(--loop-bd);border-radius:8px;padding:8px;font-size:11.5px;font-weight:700;text-align:center;position:relative}
+  .pipe li small{display:block;font-weight:400;color:var(--muted);font-size:10.5px;margin-top:2px}
+  .pipe li:not(:last-child)::after{content:"›";position:absolute;right:-8px;top:50%;transform:translateY(-50%);color:var(--loop);font-weight:800}
+  .feedback{margin-top:9px;border-top:2px dashed var(--loop-bd);padding-top:7px;text-align:center;font-size:12px;color:var(--loop);font-weight:700}
+  .side{display:flex;flex-direction:column;gap:10px}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:11px;padding:11px 12px}
+  .panel h4{margin:0 0 6px;font-size:12px}.panel ul{margin:0;padding-left:16px;font-size:11.5px;color:#334155}.panel li{margin:3px 0}
+  .foot{margin-top:14px;text-align:center;color:var(--muted);font-size:11px}
+  @media (max-width:880px){.layout{grid-template-columns:1fr}.r4,.r3{grid-template-columns:1fr 1fr}.pipe{grid-template-columns:1fr 1fr}.pipe li::after{display:none}}
+  @media print{body{background:#fff;padding:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2 class="sr-only">Système Brain OS de TaskForce : entrées, quatre couches de mémoire (mémoire persistante de Claude, vault versionné, copie compacte .ai, instructions Copilot), prompts et déclencheurs, agents Claude et Copilot, boucle opérationnelle dont l'étape d'auto-entretien réécrit la mémoire, et sorties. Les arêtes distinguent la lecture du contexte et l'écriture en mémoire.</h2>
+
+  <div class="titleblock">
+    <div><h1>🧠 TaskForce — Système Brain OS</h1>
+      <div class="sub">Mémoire · prompts · agents · boucle d'auto-entretien (lecture ↔ écriture)</div></div>
+    <div class="meta">Metz Numeric School 2025-2026<br>MAJ 09/06/2026 · point d'entrée IA → <code>AGENTS.md</code></div>
+  </div>
+
+  <div class="legend">
+    <span><i class="dot" style="background:var(--mem)"></i> Mémoire</span>
+    <span><i class="dot" style="background:var(--flow)"></i> Prompts &amp; agents</span>
+    <span><i class="dot" style="background:var(--loop)"></i> Boucle</span>
+    <span><i class="dot" style="background:var(--out)"></i> Sorties</span>
+    <span><span class="tag">P</span> persistant · <span class="tag">S</span> par session</span>
+  </div>
+
+  <div class="layout">
+    <div>
+      <div class="band plain"><h3>1 · Entrées</h3>
+        <div class="row r3">
+          <div class="node in">🎯 Intention<small>besoin · « go » · décision</small></div>
+          <div class="node in">💻 Code source<small>taskforce-fullstack</small></div>
+          <div class="node in">📚 Réfs marché<small>Plane · Linear · GitHub…</small></div>
+        </div>
+      </div>
+      <div class="edge"><span class="arrow">↓</span><span class="lbl">alimentent / capitalisent</span></div>
+
+      <div class="band mem"><h3>2 · Mémoire — 4 couches</h3>
+        <div class="row r4">
+          <div class="node mem">🗃️ Mémoire Claude <span class="tag">P</span><small>~/.claude/…/memory · MEMORY.md + fiches · cross-session</small></div>
+          <div class="node mem">📦 Vault Brain OS <span class="tag">P</span><small>taskforce-docs/v1/ · source de vérité · versionné · humain+IA</small></div>
+          <div class="node mem">⚡ Copie .ai/ <span class="tag">P</span><small>dans le code · compacte · pour Copilot/Claude in-repo</small></div>
+          <div class="node mem">📌 Instructions <span class="tag">P</span><small>copilot-instructions (lean, toujours chargé) + instructions/* ciblées</small></div>
+        </div>
+      </div>
+      <div class="edge"><span class="lbl">① lecture du contexte</span><span class="arrow">↓</span></div>
+
+      <div class="band flow"><h3>3 · Prompts &amp; déclencheurs</h3>
+        <div class="row r3">
+          <div class="node flow">« go » / « prochaine action ? »<small>déclenche le rituel</small></div>
+          <div class="node flow">🤖 Rituel AGENTS.md<small>oriente → propose → ne code pas</small></div>
+          <div class="node flow">🧩 Templates &amp; skills<small>kickoff réutilisable · /commandes</small></div>
+        </div>
+      </div>
+      <div class="edge"><span class="arrow">↓</span><span class="lbl">exécutés par</span></div>
+
+      <div class="band flow"><h3>4 · Agents</h3>
+        <div class="row r2">
+          <div class="node flow">🧠 Claude<small>stratégie · conception · doc · décisions</small></div>
+          <div class="node flow">⌨️ Copilot (VSCode)<small>exécution du code · édits</small></div>
+        </div>
+      </div>
+      <div class="edge"><span class="arrow">↓</span></div>
+
+      <div class="band loop"><div class="loop-title">5 · Boucle opérationnelle</div>
+        <ol class="pipe">
+          <li>S'oriente<small>lit la mémoire ①</small></li>
+          <li>Propose<small>prochaine action</small></li>
+          <li>Valide<small>feu vert humain</small></li>
+          <li>Exécute<small>code + tests</small></li>
+          <li>Auto-entretien<small>② écrit la mémoire</small></li>
+        </ol>
+        <div class="feedback">↺ ② l'auto-entretien <b>réécrit la Mémoire</b> (couche 2) → rétroaction continue</div>
+      </div>
+      <div class="edge"><span class="arrow">↓</span><span class="lbl">produit</span></div>
+
+      <div class="band out"><h3>6 · Sorties</h3>
+        <div class="row r4">
+          <div class="node out">✅ Code livré<small>bout-en-bout, testé</small></div>
+          <div class="node out">📝 Docs &amp; registres<small>produit · backlog · archi</small></div>
+          <div class="node out">🗃️ Mémoire MAJ<small>persistante + vault</small></div>
+          <div class="node out">🎓 PFR / Mémoire RNCP<small>preuves capitalisées</small></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="side">
+      <div class="panel"><h4>🗂️ Qui lit quoi en premier</h4>
+        <ul><li><b>Claude</b> : MEMORY.md + AGENTS.md + Brain OS.</li>
+        <li><b>Copilot</b> : copilot-instructions (lean) → <code>.ai/</code> → vault si ouvert.</li></ul>
+      </div>
+      <div class="panel"><h4>♻️ Auto-entretien (écriture)</h4>
+        <ul><li>statuts <code>[statut::]</code> des fiches produit.</li>
+        <li>bloc « ▶ Prochaine action ».</li>
+        <li>fiche mémoire Claude + changelog.</li></ul>
+      </div>
+      <div class="panel"><h4>🔗 Réf. croisée FE↔BE</h4>
+        <ul><li>front : <code>[besoin-backend:: BE-x]</code>.</li>
+        <li>→ tâche miroir générée côté backend.</li></ul>
+      </div>
+      <div class="panel"><h4>💸 Optimisation tokens</h4>
+        <ul><li>toujours-chargé = lean (65 l).</li>
+        <li>détail = vault, lu à la demande.</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <p class="foot">TaskForce — Système Brain OS · 09/06/2026 · 4 couches de mémoire · boucle « go » → orient → exécute → réécrit la mémoire</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TaskForce — Chaîne DevSecOps & boîte à outils</title>
+<style>
+  :root{
+    --ink:#0f172a;--muted:#64748b;--line:#e2e8f0;
+    --used:#047857;--free:#1d4ed8;--tier:#b45309;--sec:#be123c;--sec-bg:#fff1f2;--sec-bd:#fecdd3;
+    --stage-bg:#f8fafc;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#f8fafc;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.4;padding:22px}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .wrap{max-width:1140px;margin:0 auto}
+  .titleblock{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:6px;flex-wrap:wrap;gap:6px}
+  .titleblock h1{font-size:21px;margin:0}.titleblock .sub{color:var(--muted);font-size:13px;margin-top:2px}
+  .meta{font-size:11px;color:var(--muted);text-align:right}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin:10px 0 14px;font-size:12px;color:var(--muted)}
+  .pill{display:inline-block;border-radius:999px;padding:1px 7px;font-size:11px;font-weight:700;border:1px solid}
+  .pill.used{color:var(--used);background:#ecfdf5;border-color:#a7f3d0}
+  .pill.free{color:var(--free);background:#eff6ff;border-color:#bfdbfe}
+  .pill.tier{color:var(--tier);background:#fffbeb;border-color:#fde68a}
+  .tlabel{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+  .ribbon{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:stretch}
+  .stage{background:var(--stage-bg);border:1px solid var(--line);border-radius:9px;padding:8px;position:relative}
+  .stage h4{margin:0 0 6px;font-size:12px;text-align:center}
+  .stage:not(:last-child)::after{content:"›";position:absolute;right:-6px;top:26px;color:#94a3b8;font-weight:800;z-index:2}
+  .chips{display:flex;flex-wrap:wrap;gap:4px}
+  .chip{font-size:11px;border:1px solid var(--line);border-radius:6px;padding:2px 6px;display:inline-flex;align-items:center;gap:4px;background:#fff}
+  .b{width:7px;height:7px;border-radius:50%;display:inline-block}
+  .b.used{background:var(--used)}.b.free{background:var(--free)}.b.tier{background:var(--tier)}
+  .secband{margin-top:10px;background:var(--sec-bg);border:1px solid var(--sec-bd);border-radius:10px;padding:10px 12px}
+  .secband h3{margin:0 0 8px;font-size:12px;color:var(--sec);font-weight:800}
+  .secgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .secgrid .cell{background:#fff;border:1px solid var(--sec-bd);border-radius:8px;padding:7px 9px}
+  .secgrid .cell b{font-size:12px;display:block;margin-bottom:4px}
+  .cols2{display:grid;grid-template-columns:1fr 300px;gap:12px;margin-top:12px;align-items:start}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .panel h4{margin:0 0 6px;font-size:12px}.panel ol{margin:0;padding-left:17px;font-size:12px;color:#334155}.panel li{margin:3px 0}
+  .priority{background:#ecfdf5;border:1px solid #a7f3d0}.priority h4{color:#065f46}
+  .foot{margin-top:14px;text-align:center;color:var(--muted);font-size:11px}
+  @media (max-width:920px){.ribbon{grid-template-columns:1fr 1fr}.stage::after{display:none}.secgrid{grid-template-columns:1fr}.cols2{grid-template-columns:1fr}}
+  @media print{body{background:#fff;padding:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2 class="sr-only">Chaîne DevSecOps de TaskForce : outils par étape (plan, code, build, test, release, deploy, operate) et bande sécurité transverse (SAST, SCA, secrets, DAST, conteneurs), avec le statut de chaque outil (utilisé, gratuit/open-source, free tier) et les priorités de mise en place gratuites.</h2>
+
+  <div class="titleblock">
+    <div><h1>🧰 TaskForce — Chaîne DevSecOps &amp; outils</h1>
+      <div class="sub">Outillage par étape du cycle · sécurité transverse · gratuit/OSS privilégié</div></div>
+    <div class="meta">Metz Numeric School 2025-2026<br>MAJ 09/06/2026 · catalogue → <code>v1/06-infra/Outils_Infra_Securite.md</code></div>
+  </div>
+
+  <div class="legend">
+    <span><span class="pill used">✅ utilisé</span></span>
+    <span><span class="pill free">🆓 gratuit / OSS</span></span>
+    <span><span class="pill tier">◐ free tier</span></span>
+  </div>
+
+  <div class="tlabel">Cycle de vie (Plan → Operate)</div>
+  <div class="ribbon">
+    <div class="stage"><h4>📋 Plan</h4><div class="chips"><span class="chip"><span class="b used"></span>Backlog</span><span class="chip"><span class="b free"></span>ADR</span></div></div>
+    <div class="stage"><h4>⌨️ Code</h4><div class="chips"><span class="chip"><span class="b used"></span>ESLint</span><span class="chip"><span class="b free"></span>Spotless</span><span class="chip"><span class="b free"></span>pre-commit</span></div></div>
+    <div class="stage"><h4>🏗️ Build</h4><div class="chips"><span class="chip"><span class="b used"></span>Docker</span><span class="chip"><span class="b used"></span>Maven/npm</span><span class="chip"><span class="b free"></span>Hadolint</span></div></div>
+    <div class="stage"><h4>🧪 Test</h4><div class="chips"><span class="chip"><span class="b used"></span>Vitest/JUnit</span><span class="chip"><span class="b free"></span>Playwright</span><span class="chip"><span class="b free"></span>Testcontainers</span><span class="chip"><span class="b used"></span>JaCoCo</span><span class="chip"><span class="b free"></span>k6</span></div></div>
+    <div class="stage"><h4>🚀 Release</h4><div class="chips"><span class="chip"><span class="b used"></span>GH Actions</span><span class="chip"><span class="b used"></span>GHCR</span><span class="chip"><span class="b free"></span>release-please</span><span class="chip"><span class="b free"></span>Syft SBOM</span></div></div>
+    <div class="stage"><h4>☁️ Deploy</h4><div class="chips"><span class="chip"><span class="b used"></span>Compose</span><span class="chip"><span class="b free"></span>Caddy/Nginx</span><span class="chip"><span class="b free"></span>Oracle Free</span><span class="chip"><span class="b free"></span>Let's Encrypt</span></div></div>
+    <div class="stage"><h4>📈 Operate</h4><div class="chips"><span class="chip"><span class="b used"></span>SigNoz</span><span class="chip"><span class="b free"></span>Grafana</span><span class="chip"><span class="b free"></span>Uptime Kuma</span><span class="chip"><span class="b free"></span>restic</span></div></div>
+  </div>
+
+  <div class="secband">
+    <h3>🛡️ Sécurité (transverse — DevSecOps « shift-left »)</h3>
+    <div class="secgrid">
+      <div class="cell"><b>SAST — code</b><div class="chips"><span class="chip"><span class="b used"></span>Semgrep</span><span class="chip"><span class="b free"></span>CodeQL</span><span class="chip"><span class="b free"></span>SonarQube CE</span></div></div>
+      <div class="cell"><b>SCA — dépendances</b><div class="chips"><span class="chip"><span class="b used"></span>Trivy</span><span class="chip"><span class="b free"></span>OWASP Dep-Check</span><span class="chip"><span class="b free"></span>OSV</span><span class="chip"><span class="b free"></span>Dependabot</span></div></div>
+      <div class="cell"><b>Secrets</b><div class="chips"><span class="chip"><span class="b free"></span>Gitleaks</span><span class="chip"><span class="b free"></span>TruffleHog</span><span class="chip"><span class="b free"></span>SOPS/Vault</span></div></div>
+      <div class="cell"><b>DAST — runtime</b><div class="chips"><span class="chip"><span class="b free"></span>OWASP ZAP</span><span class="chip"><span class="b free"></span>Nuclei</span><span class="chip"><span class="b free"></span>Burp CE</span></div></div>
+      <div class="cell"><b>Conteneurs / IaC</b><div class="chips"><span class="chip"><span class="b used"></span>Trivy</span><span class="chip"><span class="b free"></span>Checkov</span><span class="chip"><span class="b free"></span>Dockle</span><span class="chip"><span class="b free"></span>Falco</span></div></div>
+      <div class="cell"><b>Identité / accès</b><div class="chips"><span class="chip"><span class="b used"></span>Keycloak</span><span class="chip"><span class="b used"></span>JWT/OIDC</span><span class="chip"><span class="b free"></span>rate-limit</span></div></div>
+    </div>
+  </div>
+
+  <div class="cols2">
+    <div class="panel priority"><h4>⭐ À installer en premier (gratuit · fort impact)</h4>
+      <ol>
+        <li><b>Couverture de tests ≥ 50 %</b> : Vitest+RTL (front), JUnit+JaCoCo (back) — exigence RNCP C18/C25.</li>
+        <li><b>Sécurité en CI bloquante</b> : Trivy + Semgrep + Gitleaks + OWASP Dependency-Check.</li>
+        <li><b>Dependabot / Renovate</b> : maj automatique des dépendances.</li>
+        <li><b>Hébergement</b> : Oracle Cloud Always Free + Caddy (TLS auto Let's Encrypt).</li>
+        <li><b>Observabilité</b> : SigNoz (déjà là) + Uptime Kuma + sauvegarde restic testée.</li>
+      </ol>
+    </div>
+    <div class="panel"><h4>🗺️ Mapping RNCP (Bloc 4 surtout)</h4>
+      <ol style="list-style:none;padding-left:0">
+        <li>Test → <b>C18 / C25</b></li>
+        <li>Qualité/SAST/Release → <b>C19 / C26</b></li>
+        <li>Sécurité (SCA/DAST/secrets) → <b>C21 / C24</b></li>
+        <li>Deploy/hébergement → <b>C28–C31</b></li>
+        <li>Observabilité/supervision → <b>C32</b></li>
+      </ol>
+    </div>
+  </div>
+
+  <p class="foot">TaskForce — Chaîne DevSecOps &amp; outils · 09/06/2026 · catalogue détaillé : <code>v1/06-infra/Outils_Infra_Securite.md</code></p>
+</div>
+</body>
+</html>

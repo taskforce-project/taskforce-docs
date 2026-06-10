@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TaskForce — Brain OS : flux complet</title>
+<style>
+  :root{
+    --ink:#0f172a;--muted:#64748b;--line:#e2e8f0;
+    --brain:#6d28d9;--brain-bg:#f5f3ff;--brain-bd:#ddd6fe;
+    --code:#1d4ed8;--code-bg:#eff6ff;--code-bd:#bfdbfe;
+    --loop:#b45309;--loop-bg:#fffbeb;--loop-bd:#fde68a;--ok:#047857;--actor-bg:#f1f5f9;--actor-bd:#e2e8f0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#f8fafc;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.4;padding:22px}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .wrap{max-width:1080px;margin:0 auto}
+  .titleblock{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:6px;flex-wrap:wrap;gap:6px}
+  .titleblock h1{font-size:21px;margin:0}.titleblock .sub{color:var(--muted);font-size:13px;margin-top:2px}
+  .meta{font-size:11px;color:var(--muted);text-align:right}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0 14px;font-size:12px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}.dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+  .tlabel{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+  .cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+  .card{background:var(--actor-bg);border:1px solid var(--actor-bd);border-radius:9px;padding:9px 11px;font-weight:700;font-size:13px}
+  .card small{display:block;font-weight:400;color:var(--muted);font-size:11.5px;margin-top:2px}
+  .section{margin:16px 0}
+  .cols{display:grid;grid-template-columns:1fr 70px 1fr;gap:0;align-items:stretch}
+  .zone{border-radius:11px;padding:12px}.zone.brain{background:var(--brain-bg);border:1px solid var(--brain-bd)}.zone.code{background:var(--code-bg);border:1px solid var(--code-bd)}
+  .zt{font-size:11px;font-weight:800;margin-bottom:8px}.zt.brain{color:var(--brain)}.zt.code{color:var(--code)}
+  .chip{background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 9px;margin-bottom:7px;font-size:12.5px;font-weight:700}
+  .chip small{display:block;font-weight:400;color:var(--muted);font-size:11px;margin-top:1px}
+  .chip.k{border-left:4px solid var(--brain)}.chip.l{border-left:4px solid var(--code)}
+  .mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--muted);font-size:10.5px;text-align:center}
+  .mid .ar{font-size:22px;line-height:1;color:#94a3b8}
+  .flux{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}
+  .flux div{font-size:12px;background:#fff;border:1px dashed var(--line);border-radius:9px;padding:8px 10px;color:#334155}
+  .loop{background:var(--loop-bg);border:1px solid var(--loop-bd);border-radius:11px;padding:12px}
+  .loop .tlabel{color:var(--loop)}
+  .pipe{list-style:none;display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:0;padding:0}
+  .pipe li{background:#fff;border:1px solid var(--loop-bd);border-radius:8px;padding:8px;font-size:11.5px;font-weight:700;text-align:center;position:relative}
+  .pipe li small{display:block;font-weight:400;color:var(--muted);font-size:10.5px;margin-top:2px}
+  .pipe li:not(:last-child)::after{content:"›";position:absolute;right:-8px;top:50%;transform:translateY(-50%);color:var(--loop);font-weight:800}
+  .ret{text-align:center;margin-top:8px;font-size:12px;color:var(--loop);font-weight:700;border-top:2px dashed var(--loop-bd);padding-top:7px}
+  .goal{margin-top:16px;text-align:center;background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;border-radius:11px;padding:11px;font-weight:700;font-size:13.5px}
+  .goal small{display:block;font-weight:400;color:#047857;margin-top:2px;font-size:12px}
+  .foot{margin-top:12px;text-align:center;color:var(--muted);font-size:11px}
+  @media (max-width:780px){.cards4,.flux,.pipe{grid-template-columns:1fr 1fr}.cols{grid-template-columns:1fr}.mid{flex-direction:row;padding:4px 0}.pipe li::after{display:none}}
+  @media print{body{background:#fff;padding:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2 class="sr-only">Flux complet du Brain OS de TaskForce : parties prenantes (développeur, Claude, Copilot, jury), les deux dépôts (vault Brain OS et code) en lecture/écriture, les flux clés (le code alimente le Brain OS, le besoin front génère une tâche backend, produit avant mémoire), la boucle « go » et la cible (niveau des outils de référence).</h2>
+
+  <div class="titleblock">
+    <div><h1>🧠 TaskForce — Brain OS : flux complet</h1>
+      <div class="sub">Parties prenantes · dépôts · boucle opérationnelle</div></div>
+    <div class="meta">Metz Numeric School 2025-2026<br>MAJ 09/06/2026 · point d'entrée → <code>Brain_OS.md</code></div>
+  </div>
+
+  <div class="legend">
+    <span><i class="dot" style="background:var(--brain)"></i> Connaissance / pilotage</span>
+    <span><i class="dot" style="background:var(--code)"></i> Code / produit</span>
+    <span><i class="dot" style="background:var(--loop)"></i> Boucle</span>
+    <span><i class="dot" style="background:var(--ok)"></i> Cible</span>
+  </div>
+
+  <div class="section">
+    <div class="tlabel">1 · Parties prenantes</div>
+    <div class="cards4">
+      <div class="card">👤 Développeur<small>pilote · valide · arbitre</small></div>
+      <div class="card">🧠 Claude<small>stratégie · conception · doc</small></div>
+      <div class="card">🤖 Copilot<small>exécution dans VSCode</small></div>
+      <div class="card">🎓 Jury RNCP<small>évalue le mémoire/PFR</small></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="tlabel">2 · Les deux dépôts (lecture ⇄ écriture)</div>
+    <div class="cols">
+      <div class="zone brain">
+        <div class="zt brain">🧠 Brain OS — taskforce-docs/ (versionné v1)</div>
+        <div class="chip k">AGENTS.md — kernel<small>rituel d'orientation + auto-entretien</small></div>
+        <div class="chip">SOP · Conventions · Templates<small>règles d'or, standard du vault</small></div>
+        <div class="chip">Technique<small>archi · API · modules · dette · problèmes</small></div>
+        <div class="chip">Produit<small>fiches FE/BE/Landing/IA/Infra · réf. croisée</small></div>
+        <div class="chip">Backlog · Mémoire RNCP<small>TODO priorisé · C1–C32</small></div>
+      </div>
+      <div class="mid"><span class="ar">⇄</span><span>lit le contexte<br>écrit les MAJ</span></div>
+      <div class="zone code">
+        <div class="zt code">💻 Code — taskforce-fullstack/</div>
+        <div class="chip">Frontend · Backend<small>Next.js · Spring Boot</small></div>
+        <div class="chip">Landing · Infra<small>Astro · Docker · CI/CD</small></div>
+        <div class="chip l">.ai/ + copilot-instructions<small>copie compacte · lean, toujours chargé</small></div>
+        <div class="chip l">.github/instructions/*<small>règles ciblées par dossier</small></div>
+      </div>
+    </div>
+    <div class="flux">
+      <div>📥 <b>Le code alimente le Brain OS</b> — on documente la réalité, pas l'intention.</div>
+      <div>🔗 <b>Besoin front ⇒ tâche backend</b> auto-générée (<code>besoin-backend::</code>).</div>
+      <div>🎯 <b>Produit d'abord</b> (niveau des outils de référence) → preuves → mémoire.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="loop">
+      <div class="tlabel">3 · La boucle opérationnelle — « go »</div>
+      <ol class="pipe">
+        <li>« go »<small>tu lances</small></li>
+        <li>S'oriente<small>lit AGENTS + mémoire</small></li>
+        <li>Propose<small>prochaine action</small></li>
+        <li>Tu valides<small>feu vert</small></li>
+        <li>Exécute<small>Copilot / Claude</small></li>
+        <li>Auto-entretien<small>MAJ fiches + statut</small></li>
+      </ol>
+      <div class="ret">↺ recommence : propose la tâche suivante (P0 → P1 → …)</div>
+    </div>
+  </div>
+
+  <div class="goal">🎯 Cible : niveau des outils de référence (Plane · Linear · GitHub Projects · Jira…) — gérer un projet complet
+    <small>TaskForce ne copie aucun outil ; il vise le niveau fonctionnel de la catégorie · puis le mémoire RNCP</small></div>
+
+  <p class="foot">TaskForce — Brain OS : flux complet · 09/06/2026 · Metz Numeric School 2025-2026</p>
+</div>
+</body>
+</html>
