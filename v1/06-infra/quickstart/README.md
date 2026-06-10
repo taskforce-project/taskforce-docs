@@ -25,7 +25,7 @@ cd taskforce-fullstack
 
 **Windows :**
 ```powershell
-.\init-dev.ps1
+.\tf.ps1 setup
 ```
 
 **Linux/Mac :**
@@ -37,7 +37,7 @@ make init-dev
 
 **Windows :**
 ```powershell
-.\docker.ps1 dev-up
+.\tf.ps1 up
 ```
 
 **Linux/Mac :**
@@ -51,8 +51,8 @@ Une fois les services démarrés (⏱️ ~2 minutes) :
 
 | Service | URL | Identifiants |
 |---------|-----|--------------|
-| **API Backend** | http://localhost:8081/api | - |
-| **Swagger UI** | http://localhost:8081/api/swagger-ui.html | - |
+| **API Backend** | http://localhost:8080/api | - |
+| **Swagger UI** | http://localhost:8080/api/swagger-ui.html | - |
 | **Keycloak Admin** | http://localhost:8180 | admin / admin |
 | **PostgreSQL** | localhost:5432 | postgres / postgres |
 | **pgAdmin** | http://localhost:5050 | admin@taskforce.dev / admin |
@@ -76,26 +76,28 @@ taskforce-fullstack/
 
 ## 🛠️ Commandes Essentielles
 
-### Windows (PowerShell)
+### Windows (PowerShell) — launcher unique `tf.ps1`
+
+> Menu interactif : `.\tf.ps1` · liste des clés : `.\tf.ps1 help` · scripts détaillés dans `scripts/`.
 
 ```powershell
 # Démarrer
-.\docker.ps1 dev-up
+.\tf.ps1 up
 
 # Arrêter
-.\docker.ps1 dev-down
+.\tf.ps1 down
 
 # Voir les logs
-.\docker.ps1 dev-logs
+.\tf.ps1 logs
 
 # Rebuild
-.\docker.ps1 dev-build
+.\tf.ps1 rebuild
 
 # Nettoyer tout
-.\docker.ps1 dev-clean
+.\tf.ps1 clean
 
 # Aide
-.\docker.ps1 help
+.\tf.ps1 help
 ```
 
 ### Linux/Mac (Make)
@@ -192,9 +194,9 @@ Si quelque chose ne fonctionne pas :
 
 ```powershell
 # Windows
-.\docker.ps1 dev-clean
-.\docker.ps1 dev-build
-.\docker.ps1 dev-up
+.\tf.ps1 clean
+.\tf.ps1 rebuild
+.\tf.ps1 up
 ```
 
 ```bash
@@ -210,27 +212,27 @@ make dev-up
 
 ### Via Swagger UI
 
-Ouvrir http://localhost:8081/api/swagger-ui.html
+Ouvrir http://localhost:8080/api/swagger-ui.html
 
 ### Via curl
 
 ```bash
 # Health check
-curl http://localhost:8081/api/actuator/health
+curl http://localhost:8080/api/actuator/health
 
 # Exemple d'endpoint (à adapter selon votre API)
-curl http://localhost:8081/api/v1/users
+curl http://localhost:8080/api/v1/users
 ```
 
 ---
 
 ## 📚 Documentation Complète
 
-- 🔧 [Configuration Environnement](../../../developpeur/quickstart/environment-setup.md)
-- 🐳 [Docker Setup Détaillé](../../../developpeur/quickstart/docker-setup.md)
-- 🏗️ [Infrastructure Overview](../../../developpeur/infrastructure/overview.md)
+- 🧰 [Boîte à outils infra & sécurité](../Outils_Infra_Securite.md)
+- 🐳 [Utilisation GHCR / images Docker](../docker/GHCR_USAGE.md)
+- 🏗️ [Architecture technique](../../03-architecture/Architecture.md)
 - 🔀 [Git Workflow](../../04-engineering/git-workflow/README.md)
-- 📖 [Documentation Technique](../../../technique/README.md)
+- 📖 [Brain OS — Hub](../../../Brain_OS.md)
 
 ---
 
@@ -245,12 +247,12 @@ curl http://localhost:8081/api/v1/users
 ### Port déjà utilisé
 
 ```bash
-# Voir quel processus utilise le port 8081
+# Voir quel processus utilise le port 8080
 # Windows
-netstat -ano | findstr :8081
+netstat -ano | findstr :8080
 
 # Linux/Mac
-lsof -i :8081
+lsof -i :8080
 ```
 
 ### PostgreSQL ne démarre pas
@@ -258,7 +260,7 @@ lsof -i :8081
 ```bash
 # Supprimer le volume et recréer
 docker volume rm taskforce-postgres-data-dev
-.\docker.ps1 dev-up
+.\tf.ps1 up
 ```
 
 ---

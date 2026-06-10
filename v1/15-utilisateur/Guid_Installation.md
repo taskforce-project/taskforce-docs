@@ -59,9 +59,12 @@ déploiement de production. L'application est entièrement conteneurisée (Docke
 ```bash
 git clone https://github.com/taskforce-project/taskforce-fullstack.git
 cd taskforce-fullstack
-cp .env.example .env.dev   # puis renseigner les variables
-.\docker.ps1 dev-up        # ou: docker compose -f docker-compose.dev.yml up
+.\tf.ps1 setup             # cree .env.dev + verifie Docker
+.\tf.ps1 up                # demarre la stack dev (menu complet : .\tf.ps1  |  ou: make dev-up)
 ```
+
+> Launcher unique : `.\tf.ps1` (menu) ou commande directe (`.\tf.ps1 up`, `down`, `logs`, `rebuild`…).
+> Cross-platform : `make dev-up`, `make dev-down`, `make dev-logs`. Scripts détaillés dans `scripts/`.
 
 Services exposés (dev) :
 
