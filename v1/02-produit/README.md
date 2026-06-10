@@ -53,10 +53,10 @@ le frontend a besoin.
 
 **Bloc maintenu par l'agent** (cf. [`AGENTS.md`](../../AGENTS.md) §2-3) — recalculé après chaque tâche.
 
-- **État (09/06/2026) :** bases ✅ ; P0 entièrement réparé (TF-FIX-001→005 ✅). Domaines fonctionnels : Cycles, Pages, Discussions, Chat, Intégrations, PJ, Roadmap, Auth (refresh/logout), Billing (webhooks Stripe). Gaps fonctionnels (vs réf. marché) : Modules, Views, Intake, Estimates.
-- **▶ Prochaine action :** **P1 — gaps fonctionnels** — choisir le premier : Modules, Views (layouts), Intake, ou Estimates. Voir [Backlog](../13-roadmap/Roadmap_Backlog.md).
-- **Ensuite :** continuer les P1 dans l'ordre backlog, puis P2 (Import/Export, Templates, Time-tracking).
-- **Bloqueurs / décisions :** aucun P0 restant — arbitrage ordre des P1 bienvenu.
+- **État (09/06/2026) :** P0 ✅ · Sécurité S1 partielle ✅ (headers HTTP Spring+Next.js, rate limiting Bucket4j, @Valid audit). RGPD, tests (≥50%), infra/deploy à venir.
+- **▶ Prochaine action :** **Sprint 1 suite** — TF-SEC-001 (OWASP/access-control review) puis Sprint 2 RGPD (cookie consent + politique de conf). Voir [Backlog](../13-roadmap/Roadmap_Backlog.md).
+- **Ensuite :** Tests (TF-TEST-001/002/003) puis Infra (TF-INFRA-001→006).
+- **Bloqueurs / décisions :** TF-INFRA-001 (choix cloud) — arbitrage à faire avant le sprint infra.
 
 </div>
 
