@@ -1,173 +1,53 @@
-# 📚 Taskforce - Documentation
+# 📚 TaskForce — Documentation (Brain OS)
 
-Documentation complète du projet Taskforce ERP.
+Base de connaissance complète de TaskForce, organisée comme un **vault Obsidian versionné** (modèle inspiré
+du « documentation operating system » de Plania). Conçue pour être navigable par un **humain** et par une **IA**.
 
----
-
-## 📖 Table des matières
-
-### 🎯 [Gestion de Projet](./projet/)
-
-- [Dossier Projet](./projet/Dossier_Projet.md) - Vue d'ensemble et objectifs
-- [Cahier des Charges Fonctionnel](./projet/01_CdCF.md) - Spécifications fonctionnelles
-- [Cahier des Charges Technique](./projet/02_CdCT.md) - Spécifications techniques
-- [Étude Business](./projet/Etude_business.md) - Analyse de marché et modèle économique
-- [Stratégie Marketing](./projet/Strategie_Marketing.md) - Stratégie marketing, pricing et go-to-market
-- [Stratégie Vente LLM](./projet/Strategie_Vente_LLM.md) - Stratégie chatbot IA et wallet compute
-
-### 🛠️ [Documentation Technique](./technique/)
-
-- **Architecture & Infrastructure**
-  - [Architecture](./technique/Architecture.md) - Architecture globale du système
-  - [API Documentation](./technique/API.md) - Spécifications des API
-  - [Sécurité](./technique/Sécurité.md) - Stratégie de sécurité
-  - [PS/PCA/PRA](./technique/PS_PCA_PRA.md) - Plans de continuité
-
-- **Développement & Qualité**
-  - [Tests](./technique/Tests.md) - Stratégie de tests
-  - [Cahier de Tests & Recettes](./technique/Cahier_Test_Recettes.md)
-  - [DevOps](./technique/DevOps.md) - Pipeline CI/CD
-
-### 👥 [Documentation Utilisateur](./utilisateur/)
-
-- [Manuel Utilisateur](./utilisateur/Manuel_Utilisateur.md)
-- [Guide d'Installation](./utilisateur/Guid_Installation.md)
-- [FAQ](./utilisateur/FAQ.md)
-- [Release Notes](./utilisateur/Release_Notes.md)
-
-### 🚀 [Documentation Développeur](./developpeur/)
-
-- **Démarrage**
-  - [Quickstart Guide](./developpeur/quickstart/README.md)
-  - [Configuration Environnement](./developpeur/quickstart/environment-setup.md)
-  - [Docker Setup](./developpeur/quickstart/docker-setup.md)
-
-- **Infrastructure**
-  - [Infrastructure Overview](./developpeur/infrastructure/overview.md)
-  - [Services Docker](./developpeur/infrastructure/docker-services.md)
-
-- **Git & CI/CD**
-  - [Workflow Git](./developpeur/git-workflow/README.md)
-  - [GitHub Actions](./developpeur/git-workflow/github-actions.md)
-  - [Gestion des Versions](./developpeur/git-workflow/versioning.md)
-  - [Pull Requests](./developpeur/git-workflow/pull-requests.md)
-  - [Setup Initial](./developpeur/git-workflow/setup.md)
-
-- **Docker & Images**
-  - [Utilisation GHCR](./developpeur/docker/GHCR_USAGE.md) - Pull et test des images Docker
+> 🧠 **[Brain OS — Hub central](./Brain_OS.md)** : point d'entrée unique (architecture, API, modules, dette,
+> problèmes connus, état produit). 🤖 Une IA lit d'abord **[AGENTS.md](./AGENTS.md)**.
 
 ---
 
-## 🎯 Guides Rapides
-
-### Pour les développeurs
-
-```bash
-# Cloner le projet
-git clone <votre-repo>
-cd taskforce-fullstack
-
-# Lancer l'environnement de dev
-.\init-dev.ps1
-.\docker.ps1 dev-up
-```
-
-👉 [Guide complet de démarrage](./developpeur/quickstart/README.md)
-
-### Pour créer une PR
-
-1. Créer une branche depuis `dev`
-2. Ajouter un label `release:*` (major/minor/patch)
-3. Remplir le template de PR
-
-👉 [Guide des Pull Requests](./developpeur/git-workflow/pull-requests.md)
-
----
-
-## 📊 Vue d'ensemble du projet
-
-**Taskforce** est un ERP modulaire moderne construit avec :
-
-- **Backend**: Spring Boot 3.4.1 (Java 21)
-- **Frontend**: Next.js 15
-- **Auth**: Keycloak 23
-- **Database**: PostgreSQL 16
-- **Infrastructure**: Docker, GitHub Actions
-
----
-
-## 🏗️ Architecture
+## 🗂️ Structure du vault
 
 ```
-┌─────────────────────────────────────────────────┐
-│           Taskforce Fullstack                   │
-│                                                 │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐     │
-│  │PostgreSQL│  │ Keycloak │  │ Backend  │     │
-│  │  :5432   │◄─┤  :8180   │◄─┤  :8081   │     │
-│  └──────────┘  └──────────┘  └──────────┘     │
-│                                                 │
-│  ┌──────────┐  ┌──────────┐                   │
-│  │ Frontend │  │ Landing  │                   │
-│  │  :3000   │  │  :4321   │                   │
-│  └──────────┘  └──────────┘                   │
-└─────────────────────────────────────────────────┘
+taskforce-docs/
+├─ Brain_OS.md          ← hub central (carte de contenu)
+├─ AGENTS.md            ← contrat d'agent (kernel : orientation + auto-entretien)
+├─ v1/                  ← ÉTAT ACTUEL du produit (16 domaines numérotés)  →  v1/README.md
+├─ v2/                  ← cible future (vide pour l'instant)
+├─ frameworks/          ← SOP & procédures transverses (hors version)
+├─ templates/           ← templates de documents (Templater)
+└─ assets/             ← images, maquettes, diagrammes, schémas HTML
 ```
 
-👉 [Architecture détaillée](./technique/Architecture.md)
+**Versioning :** `v1/` = ce qui existe aujourd'hui ; `v2/` = cible future. On ne mélange jamais les deux
+dans un document (cf. [Conventions](./v1/04-engineering/Conventions_Documentation.md)).
+
+## 📖 Accès rapide
+
+- 🧠 **[Brain OS — Hub](./Brain_OS.md)** · 🤖 **[AGENTS.md](./AGENTS.md)** · ⚙️ **[SOP](./frameworks/SOP_Developpement.md)**
+- 📦 **[Index v1 — tous les domaines](./v1/README.md)**
+- 🏛️ [Architecture](./v1/03-architecture/Architecture.md) · 🔌 [API](./v1/05-api/API.md) · 🧩 [Modules](./v1/03-architecture/Modules.md)
+- 🚧 [État Produit](./v1/02-produit/README.md) · 📋 [Backlog](./v1/13-roadmap/Roadmap_Backlog.md) · 🔥 [Problèmes connus](./v1/09-audits/Problemes_Connus.md)
+- 🎓 [Mémoire RNCP](./v1/16-memoire-rncp/README.md) · 👥 [Doc utilisateur](./v1/15-utilisateur/Manuel_Utilisateur.md)
+- 🗺️ Schémas (PFR) : [flux complet](./assets/brain-os-flow.html) · [architecture technique](./assets/architecture-technique.html) · [boîte à outils infra/sécurité](./assets/infra-toolchain.html) · [système Brain OS](./assets/brain-os-systeme.html)
+- 🧰 [Catalogue d'outils infra & sécurité (gratuit/OSS)](./v1/06-infra/Outils_Infra_Securite.md)
+
+## 🚀 Comment l'utiliser
+
+**Obsidian** : ouvrir ce dossier comme vault (config `.obsidian/` fournie ; plugins recommandés dans
+[Conventions §7](./v1/04-engineering/Conventions_Documentation.md)). La vue Graphe colore les notes par domaine.
+
+**Contribuer** : dupliquer un [template](./templates/Template_Doc_Technique.md), respecter le front-matter et
+le [SOP](./frameworks/SOP_Developpement.md). Commits `docs(scope): …`. Ne jamais supprimer un doc → l'archiver
+dans [`v1/20-archive/`](./v1/20-archive/README.md).
+
+## 🔗 Liens utiles
+
+- Code source : [`../taskforce-fullstack`](../taskforce-fullstack) · version compacte IA : `../taskforce-fullstack/.ai/`
+- Swagger API : `http://localhost:8080/api/swagger-ui.html` · Keycloak : `http://localhost:8180`
 
 ---
 
-## 🤖 Rédaction avec Claude
-
-Pour rédiger ou mettre à jour la documentation avec l'assistant IA Claude, consulter les instructions officielles :
-
-👉 **[CLAUDE.md](./CLAUDE.md)** — Directives de rédaction : logos, ton, style, structure, conventions
-
----
-
-## 📝 Contribution
-
-### Workflow Git
-
-1. **Branches**:
-   - `main` - Production stable
-   - `dev` - Développement (RC versions)
-   - `feature/*` - Nouvelles fonctionnalités
-   - `fix/*` - Corrections de bugs
-   - `hotfix/*` - Corrections urgentes
-
-2. **Versioning**: Semantic Versioning automatique
-   - `v1.0.0` - Version stable
-   - `v1.0.0-rc1` - Release Candidate
-
-3. **Labels obligatoires** sur PR:
-   - `release:major` - Breaking changes
-   - `release:minor` - Nouvelles features
-   - `release:patch` - Bug fixes
-
-👉 [Documentation complète Git Workflow](./developpeur/git-workflow/README.md)
-
----
-
-## 🔗 Liens Utiles
-
-- **Code Source**: [taskforce-fullstack](../taskforce-fullstack/)
-- **API Swagger**: http://localhost:8081/api/swagger-ui.html
-- **Keycloak Admin**: http://localhost:8180
-- **pgAdmin**: http://localhost:5050
-
----
-
-## 📞 Support
-
-Pour toute question :
-
-- 📖 Consultez la [FAQ](./utilisateur/FAQ.md)
-- 🐛 Créez une [issue](https://github.com/votre-org/taskforce/issues)
-- 📧 Contactez l'équipe
-
----
-
-**Dernière mise à jour**: Février 2026  
-**Version**: 1.0.0
+**Dernière mise à jour :** 09/06/2026 · **Brain OS v1** · Projet Taskforce — Metz Numeric School 2025-2026
