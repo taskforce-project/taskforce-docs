@@ -53,10 +53,10 @@ le frontend a besoin.
 
 **Bloc maintenu par l'agent** (cf. [`AGENTS.md`](../../AGENTS.md) §2-3) — recalculé après chaque tâche.
 
-- **État (09/06/2026) :** bases ✅ ; routes P0 réparées ✅ (TF-FIX-001/002/003). Domaines désormais fonctionnels : Cycles, Pages, Discussions, Chat, Intégrations, PJ, Roadmap. Gaps fonctionnels (vs réf. marché) : Modules, Views, Intake, Estimates.
-- **▶ Prochaine action :** **TF-FIX-004** (refresh token + logout) — arbitrage design requis : Keycloak refresh grant vs JWT maison, chemin `/refresh` à unifier. Voir [`.ai/P0-fix-plan.md`](../../../taskforce-fullstack/.ai/P0-fix-plan.md).
-- **Ensuite :** TF-FIX-005 (webhooks Stripe) → même pattern décisionnel.
-- **Bloqueurs / décisions :** TF-FIX-004 : stratégie refresh (Keycloak vs JWT) + chemin `/api/auth/refresh` vs `/api/auth/refresh-token`.
+- **État (09/06/2026) :** bases ✅ ; routes P0 réparées ✅ (TF-FIX-001/002/003) ; refresh token + logout ✅ (TF-FIX-004). Domaines fonctionnels : Cycles, Pages, Discussions, Chat, Intégrations, PJ, Roadmap. Gaps fonctionnels (vs réf. marché) : Modules, Views, Intake, Estimates.
+- **▶ Prochaine action :** **TF-FIX-005** (webhooks Stripe) — décision design requise. Voir [`.ai/P0-fix-plan.md`](../../../taskforce-fullstack/.ai/P0-fix-plan.md).
+- **Ensuite :** gaps fonctionnels P1 (Modules, Views, Intake, Estimates).
+- **Bloqueurs / décisions :** TF-FIX-005 : events Stripe à gérer, stratégie d'idempotence.
 
 </div>
 
