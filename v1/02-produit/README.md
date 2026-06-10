@@ -53,10 +53,10 @@ le frontend a besoin.
 
 **Bloc maintenu par l'agent** (cf. [`AGENTS.md`](../../AGENTS.md) §2-3) — recalculé après chaque tâche.
 
-- **État (09/06/2026) :** bases ✅ ; 7 domaines **cassés (P0)** : Cycles, Pages, Discussions, Chat, Intégrations, Pièces jointes, Roadmap. Gaps fonctionnels (vs réf. marché) : Modules, Views, Intake, Estimates.
-- **▶ Prochaine action :** **TF-FIX-001 + 002 + 003** (réparer les routes — voir [`.ai/P0-fix-plan.md`](../../../taskforce-fullstack/.ai/P0-fix-plan.md)). Exécutables dans VSCode (mécaniques).
-- **Ensuite :** TF-FIX-004 (refresh token) + TF-FIX-005 (webhooks Stripe) → **décision avec l'utilisateur** (ne pas exécuter seul).
-- **Bloqueurs / décisions :** arbitrages refresh token (Keycloak vs JWT ; chemin `/refresh`).
+- **État (09/06/2026) :** bases ✅ ; routes P0 réparées ✅ (TF-FIX-001/002/003). Domaines désormais fonctionnels : Cycles, Pages, Discussions, Chat, Intégrations, PJ, Roadmap. Gaps fonctionnels (vs réf. marché) : Modules, Views, Intake, Estimates.
+- **▶ Prochaine action :** **TF-FIX-004** (refresh token + logout) — arbitrage design requis : Keycloak refresh grant vs JWT maison, chemin `/refresh` à unifier. Voir [`.ai/P0-fix-plan.md`](../../../taskforce-fullstack/.ai/P0-fix-plan.md).
+- **Ensuite :** TF-FIX-005 (webhooks Stripe) → même pattern décisionnel.
+- **Bloqueurs / décisions :** TF-FIX-004 : stratégie refresh (Keycloak vs JWT) + chemin `/api/auth/refresh` vs `/api/auth/refresh-token`.
 
 </div>
 
