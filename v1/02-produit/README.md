@@ -53,10 +53,12 @@ le frontend a besoin.
 
 **Bloc maintenu par l'agent** (cf. [`AGENTS.md`](../../AGENTS.md) §2-3) — recalculé après chaque tâche.
 
-- **État (09/06/2026) :** P0 ✅ · Sécurité S1 partielle ✅ (headers HTTP Spring+Next.js, rate limiting Bucket4j, @Valid audit). RGPD, tests (≥50%), infra/deploy à venir.
-- **▶ Prochaine action :** **Sprint 1 suite** — TF-SEC-001 (OWASP/access-control review) puis Sprint 2 RGPD (cookie consent + politique de conf). Voir [Backlog](../13-roadmap/Roadmap_Backlog.md).
-- **Ensuite :** Tests (TF-TEST-001/002/003) puis Infra (TF-INFRA-001→006).
-- **Bloqueurs / décisions :** TF-INFRA-001 (choix cloud) — arbitrage à faire avant le sprint infra.
+- **État (20/06/2026) :** Roadmap maître réécrite (`.ai/roadmap.md` — produit + certif). **PROD-1.1** ✅ (verrou menu « coming soon »). **PROD-1.2** ✅ (profil de compétences membre → trou CDC #1, alimente Smart Assign ; déployé, smoke-test 401 OK). **PROD-1.3** ✅ (Smart-assign à la **création** : endpoint preview dry-run + bouton « Suggest assignee » ; back+front compilent, **rebuild backend requis**). FIX-002 vérifié déjà fait.
+- **§2.3 RBAC/Workspace :** 3.1 RBAC UI ✅, 3.3 delete workspace ✅, **3.2 brique 1** ✅ (`AuthorizationService` + IDOR Analytics colmaté). **🔴 Reste IDOR Team/Page/Discussion** (BE-AUTHZ-002, P1). Épics RBAC ajoutés : **3.9** (granulaire façon GitHub : permissions par team/membre) + **3.10** (config entreprise/on-premise, realm Keycloak dédié). Restants : 3.4 (invite GitHub), 3.5 (invite email), 3.6 (teams↔ops), 3.7 (Keycloak), 3.8 (avatars — sweep).
+- **▶ Prochaine action :** déroulé roadmap (mandat). §2.1 CDC core terminé (PROD-1.1→1.7 ✅, 1.8 🟡, 1.9 ✅ ; 1.10 dashboard-liveness P3). **§2.2** : PROD-2.1→2.7 ✅ (2.7 = fetch cache-first, bascule onglets instantanée). Restants §2.2 **non simples** : 2.8 (couleur projet → migration), 2.9 (templates → back neuf), 2.10 (modal d'édition), 2.11 (méthodo, à discuter). Lots UI faits : 8.2, 8.6, 8.7, **8.4** (agents « AI · »), **8.5** (focus-trap modals — `modal={false}` retiré), **2.10** (EditProjectDialog). Restants §2.8 : 8.3 (dashboard vivant), 8.8 (migrer pages vers shadcn), 8.1 (PageShell). Restants §2.2 : 2.8 (couleur→migration), 2.9 (templates→back neuf), 2.11 (méthodo, à discuter).
+- **Récemment fait (20/06) :** P0 tous clos (FIX-001/002/003 vérifiés, FIX-006 corrigé, FIX-007 clé Groq OK). PROD-1.1→1.5 ✅, **PROD-1.8** (story points + historicalScore réel, partiel), **PROD-1.9 multi-assign** ✅, **PROD-8.10 « wow » Smart Assign v1** ✅ (pourquoi + skills qui matchent + breakdown).
+- **Ensuite :** chemin critique certif — Tests (T.x ≥50%) → RGPD/sécu (C11 + RBAC) → CI. En fond : conception (C6–C10), SEO (C20), doc gestion projet.
+- **Bloqueurs / décisions :** FIX-004/005 (refresh token, webhooks Stripe) = design sécurité/facturation à trancher avant code.
 
 </div>
 
