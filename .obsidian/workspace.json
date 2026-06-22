@@ -4,17 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "60f3ea2e3e44ebd5",
+        "id": "fa0a3546f614d9db",
         "type": "tabs",
         "children": [
           {
-            "id": "437f5a9805ba544e",
+            "id": "3c27af17a493598e",
             "type": "leaf",
             "state": {
-              "type": "graph",
+              "type": "empty",
               "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Vue graphique"
+              "icon": "lucide-file",
+              "title": "Nouvel onglet"
             }
           }
         ]
@@ -174,8 +174,9 @@
       "bases:Créer une nouvelle base": false
     }
   },
-  "active": "437f5a9805ba544e",
+  "active": "3c27af17a493598e",
   "lastOpenFiles": [
+    "Brain_OS.md",
     "v1/04-engineering/git-workflow/labels-reference.md"
   ]
 }
