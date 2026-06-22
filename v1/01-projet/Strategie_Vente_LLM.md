@@ -29,6 +29,7 @@ Logo projet        : assets/images/logo_taskforce.png
 6. [Go-to-market & adoption](#6-go-to-market--adoption)
 7. [Optimisation & scaling](#7-optimisation--scaling)
 8. [KPIs & monitoring](#8-kpis--monitoring)
+9. [Modèle de distribution — Open Core](#9-modèle-de-distribution--open-core)
 
 ## 1. Vue d'ensemble
 
@@ -444,6 +445,53 @@ Le **Chatbot IA Taskforce** représente un **avantage concurrentiel majeur** dan
 - Coût LLM temps réel (budget alert)
 - Cache hit rate
 - Erreurs API (par provider : OpenAI, Claude)
+
+## 9. Modèle de distribution — Open Core
+
+> Axe **distribution** (comment on package/diffuse TaskForce), complémentaire du modèle de monétisation IA (wallet compute, §2). Synthèse d'une analyse type VC/CTO + position retenue.
+
+### 9.1. Question stratégique
+
+Open source ≠ gratuit. Le modèle **Open Core** (cœur ouvert, valeur premium fermée) a propulsé Supabase, PostHog, Cal.com, GitLab, Sentry. La question pour TaskForce n'est pas *« faut-il ouvrir »* mais *« où est réellement la valeur, et que protège-t-on ? »*
+
+**Réponse : le moat n'est PAS le Kanban.** La gestion de tâches est une commodité (Linear, Plane, Jira, Asana). La valeur défendable de TaskForce est la **couche d'intelligence** :
+
+- **Smart Assign** (répartition multi-signaux + **montée en compétence**, cf. roadmap PROD-1.8),
+- AI Planning, AI Estimation, AI Scrum Master, AI Risk Detection, AI Sprint Review,
+- les **données / workflows / agents** et les effets de réseau associés.
+
+### 9.2. Position retenue : oui à l'Open Core, mais PAS maintenant
+
+Open-sourcer **avant** le PMF crée une charge (communauté, issues, PR, roadmap publique) sans contrepartie de validation. **Prérequis** avant toute ouverture :
+
+- V1 stable + architecture figée,
+- ~100+ utilisateurs actifs et premiers retours,
+- certification RNCP livrée.
+
+**Tant que ces conditions ne sont pas réunies → tout reste fermé.**
+
+### 9.3. Découpage ouvert / fermé
+
+| Couche | Statut cible | Justification |
+| --- | --- | --- |
+| Core PM (CRUD, Kanban, sprints, dashboard, Docker) | **Ouvrable** (Community Edition) | Commodité → moteur d'adoption / marketing |
+| Plugin SDK + intégrations communautaires (Slack, GitHub…) | **Ouvrable** | Vrai levier viral *developer-led* (≫ repos d'infra) |
+| **IA** (Smart Assign, planning, estimation, risk, scrum master) | **Fermé** | Cœur de la valeur — monétisé via wallet compute (§2) |
+| Cloud (hébergement, SSO, audit logs, RBAC avancé, automations) | **Fermé** | Revenu récurrent (§4, §5) |
+
+### 9.4. Licence — point le plus important
+
+Ouvrir le core en **MIT/Apache serait une erreur** : n'importe qui (concurrent, hyperscaler) pourrait héberger TaskForce et capter le revenu Cloud. Pour **protéger le moat Cloud**, le core doit être sous **AGPL** ou une licence **Fair-Source/BSL** (modèle Sentry, Cal.com, n8n) — l'auto-hébergement reste permis, la revente hébergée non.
+
+> ⚠️ La viralité vient du **produit utilisable + plugin SDK**, pas d'ouvrir uniquement l'infra (`helm`/`k8s`) : personne ne « star » un repo d'infra. Infra-OSS = crédibilité, pas adoption.
+
+### 9.5. Phasage
+
+1. **Phase 1 (maintenant)** : tout fermé. Finir V1, RNCP, déploiement, premiers utilisateurs.
+2. **Phase 2** : AI Cloud propriétaire (abonnement + wallet compute) = moteur de revenu.
+3. **Phase 3 (si pertinent)** : Community Edition du core PM sous **AGPL/BSL** + Plugin SDK + doc. IA / automations / intégrations premium / Cloud restent **propriétaires**.
+
+> **Cohérence avec §2** : le wallet compute **est** la monétisation de la couche IA fermée. Open Core (distribution) et wallet (monétisation IA) forment un seul modèle cohérent : *core ouvert auto-hébergeable, intelligence et services Cloud payants*.
 
 ## Conclusion & recommandations
 
