@@ -51,26 +51,43 @@ Groq. Les items <code>[demande-par:: frontend]</code> répondent à un <code>bes
 **Fait :**
 - [x] Architecture en couches `shared/core/modules` [id:: BE-CORE-001] [statut:: done] [parite:: ok] [ref:: backend/tf-api/src/main/java/com/taskforce/tf_api]
 - [x] Sécurité Keycloak OAuth2/OIDC (resource server JWT) [id:: BE-SEC-CORE] [statut:: done] [parite:: ok] [ref:: shared/security/SecurityConfig.java]
-- [x] Persistance JPA + Flyway V1–V35 + AuditableEntity [id:: BE-DB-001] [statut:: done] [parite:: ok] [ref:: src/main/resources/db/migration]
-- [x] Enveloppe `ApiResponse<T>` + GlobalExceptionHandler [id:: BE-CORE-002] [statut:: done] [parite:: ok]
+- [x] **RBAC centralisé** : `AuthorizationService` + **`WorkspaceAccessInterceptor`** (exige l'appartenance pour tout `/api/workspaces/{slug}/…`) → ferme les IDOR globalement [id:: BE-AUTHZ-001] [statut:: done] [parite:: ok] [ref:: core/security/WorkspaceAccessInterceptor.java + core/config/WebMvcConfig.java] (PROD-3.2, 20/06/2026)
+- [x] **IDOR Team/Page/Discussion/Analytics** : fermés par l'interceptor (+ Analytics aussi en défense en profondeur) [id:: BE-AUTHZ-002] [statut:: done] [prio:: P1] (20/06/2026)
+- [ ] RBAC granulaire façon GitHub (rôles/permissions custom, par team/membre) [id:: BE-AUTHZ-003] [statut:: todo] [prio:: P2] (PROD-3.9, épic)
+- [ ] Config entreprise/on-premise : realm Keycloak dédié [id:: BE-AUTHZ-004] [statut:: todo] [prio:: P3] (PROD-3.10, épic)
+- [x] Persistance JPA + Flyway V1–V39 + AuditableEntity [id:: BE-DB-001] [statut:: done] [parite:: ok] [ref:: src/main/resources/db/migration]
+- [x] **Checklist d'issue** : `V39__issue_checklist_items` + entité/repo + CRUD endpoints [id:: BE-CHK-001] [statut:: done] [parite:: ok] [ref:: core/service/IssueService (listChecklist/add/update/delete)] (PROD-2.3, 20/06/2026)
+- [x] Enveloppe `ApiResponse<T>` + GlobalExceptionHandler (IllegalState→409 / IllegalArgument→400, plus de 500 métier) [id:: BE-CORE-002] [statut:: done] [parite:: ok] (PROD-4.8, 20/06/2026)
 
 ## 2. Domaines existants (fait)
 
 - [x] Workspaces / membres / rôles [id:: BE-WS-001] [statut:: done] [parite:: ok]
+- [x] **Delete workspace** : `DELETE /api/workspaces/{slug}` (OWNER-only, cascade DB) [id:: BE-WS-002] [statut:: done] [parite:: ok] [ref:: WorkspaceService.deleteWorkspace] (PROD-3.3, 20/06/2026)
+- [x] **Limites par plan** : workspaces (FREE 2/PRO 10) + membres (FREE 5/PRO 50) enforced → 409 [id:: BE-WS-003] [statut:: done] [parite:: ok] [ref:: WorkspaceService.checkMemberLimit] (PROD-4.2, 20/06/2026) ; reste teams/agents + endpoint d'usage
 - [x] Projets / membres / labels / statuts / types [id:: BE-PRJ-001] [statut:: done] [parite:: ok]
 - [x] Issues : CRUD, commentaires, activité, relations, smart-assign [id:: BE-ISS-001] [statut:: done] [parite:: ok]
+- [x] Smart Assign **preview** (dry-run à la création) + **bulk** (multi-assign) [id:: BE-SA-001] [statut:: done] [parite:: extra] [demande-par:: frontend] [ref:: core/api/IssueController.java (POST …/issues/smart-assign/{preview,bulk}) + SmartAssignService.preview/bulkRecommend] (PROD-1.3/1.9, 20/06/2026)
 - [x] Analytics (KPIs, burndown, throughput, capacité, insights) [id:: BE-ANA-001] [statut:: done] [parite:: ok]
 - [x] Notifications [id:: BE-NOTIF-001] [statut:: done] [parite:: ok]
+- [x] **Alertes de surcharge** : `OverloadAlertScheduler` (cron) + `NotificationService.notifyOverload` (seuil configurable, dédup, notifie OWNER/ADMIN) [id:: BE-NOTIF-002] [statut:: done] [parite:: extra] [ref:: core/service/OverloadAlertScheduler.java] (PROD-1.5, 20/06/2026)
+- [x] **Temps réel issues** : `IssueService` publie `IssueRealtimeEvent` sur `/topic/projects.{id}` (create/update/delete) [id:: BE-RT-001] [statut:: done] [parite:: extra] [ref:: core/service/IssueService.java] (PROD-1.6, 20/06/2026 — reste topic workspace pour dashboard/analytics)
 - [x] Intégrations GitHub/Slack + Webhooks (endpoints `/api`) [id:: BE-INT-001] [statut:: done] [parite:: ok] [ref:: core/api/IntegrationController.java]
 - [x] Pièces jointes + MinIO [id:: BE-ATT-001] [statut:: done] [parite:: ok] [ref:: modules/ged]
 - [x] Roadmap (issues planifiées) [id:: BE-ROAD-001] [statut:: done] [parite:: ok]
+- [x] Profils de compétences membres (CRUD `skills_json`, alimente Smart Assign) [id:: BE-SKILL-001] [statut:: done] [parite:: extra] [demande-par:: frontend] [ref:: core/api/MemberSkillController.java + core/service/MemberSkillProfileService.java] (PROD-1.2, 20/06/2026 — table V33 enfin exploitée via CRUD ; autz : soi-même ou ADMIN/OWNER)
 
 ## 3. P0 — réparations
 
 - [ ] Ajouter `/api` à Cycle/Team/Page/Discussion/Channel [id:: BE-FIX-001] [statut:: broken] [prio:: P0] [ref:: core/api + modules/chat/api] (PC-001 — débloque BE-CYC-001, BE-PAGE-001, BE-DISC-001, BE-TEAM-001, BE-CHAT-001)
 - [ ] Implémenter webhooks Stripe (subscription/invoice) [id:: BE-BILLING-001] [statut:: todo] [parite:: extra] [prio:: P1] [demande-par:: frontend] [ref:: core/api/StripeWebhookController.java] (PC-005)
+- [x] **Stripe Customer Portal** : `BillingController POST /api/billing/portal` + `StripeService.createBillingPortalSession` (chemin protégé) [id:: BE-BILLING-002] [statut:: done] [parite:: extra] (PROD-4.5, 20/06/2026 ; nécessite clés Stripe réelles)
+- [~] **Feature gating** : `PlanFeature` + `PlanFeatureService` ; **appliqué** aux AI insights (gate → message upgrade FREE) ; admin dev → PRO (V40). Reste : analytics avancées + intégrations [id:: BE-PLAN-001] [statut:: wip] [prio:: P2] (PROD-4.4, 20/06/2026)
 - [ ] Refresh token + logout (révocation) [id:: BE-AUTH-001] [statut:: todo] [prio:: P1] [demande-par:: frontend] [ref:: core/api/AuthController.java] (PC-004)
-- [ ] Notifier l'équipe Sales (email) sur inquiry [id:: BE-SALES-001] [statut:: todo] [prio:: P2] [ref:: modules/sales]
+- [x] Notifier l'équipe Sales (email) sur inquiry [id:: BE-SALES-001] [statut:: done] [parite:: ok] [ref:: SalesService + EmailService.sendInternalNotification] (PROD-4.7/KI-008, 20/06/2026 ; envoi réel = config SMTP)
+- [x] **Écritures en tx readOnly corrigées** : 500 `/analytics/insights` (readOnly retiré de `generateInsights`) + `ai_runs`/`assignment_events` jamais persistés en smart-assign (`recommend`/`preview` passés read-write) [id:: BE-FIX-006] [statut:: done] [prio:: P1] [ref:: AnalyticsService + SmartAssignService] (FIX-006, 20/06/2026)
+- [ ] **Clé Groq absente** (`GROQ_API_KEY` vide dans `.env`) → IA en fallback Java. Action user : ajouter la clé [id:: BE-FIX-007] [statut:: config] [prio:: P1] (FIX-007)
+- [~] **Enrichir les signaux Smart Assign** — story points dans la charge ✅ + `historicalScore` calculé depuis `assignment_events` ✅ + expose `reason`/`matchedSkills` (pour le « wow ») ✅ (20/06) ; reste capacité h/sem, séniorité, charge cross-projets, time tracking [id:: BE-SA-002] [statut:: wip] [prio:: P2] [ref:: core/service/SmartAssignService.java] (PROD-1.8 + PROD-8.10)
+- [ ] **Seed équipe de test** (realm Keycloak + DB) : users avec séniorité + compétences distinctes [id:: BE-SEED-001] [statut:: todo] [prio:: P2] (PROD-7.6)
 
 ## 4. Demandes du frontend (BE-xxx)
 
@@ -82,7 +99,7 @@ Groq. Les items <code>[demande-par:: frontend]</code> répondent à un <code>bes
 - [ ] Discussions : endpoints (après /api) [id:: BE-DISC-001] [statut:: broken] [prio:: P0] [demande-par:: frontend]
 - [ ] Chat : endpoints + STOMP (après /api) [id:: BE-CHAT-001] [statut:: broken] [parite:: extra] [prio:: P0] [demande-par:: frontend]
 - [ ] Teams : endpoints (après /api) [id:: BE-TEAM-001] [statut:: broken] [parite:: extra] [prio:: P1] [demande-par:: frontend]
-- [ ] Sous-issues : champ parent + endpoints hiérarchie [id:: BE-ISS-010] [statut:: todo] [parite:: partial] [prio:: P1] [demande-par:: frontend]
+- [x] Sous-issues : parentId (create/update) + `GET /issues/{id}/children` [id:: BE-ISS-010] [statut:: done] [parite:: ok] [demande-par:: frontend] [ref:: core/service/IssueService.listChildren] (PROD-2.1, 20/06/2026)
 - [ ] Estimates : champ `estimate` sur Issue + agrégat cycle [id:: BE-ISS-011] [statut:: todo] [parite:: gap] [prio:: P1] [demande-par:: frontend] (migration Flyway)
 - [ ] Time tracking : entité worklog + endpoints [id:: BE-ISS-012] [statut:: todo] [parite:: gap] [prio:: P3] [demande-par:: frontend]
 - [ ] Templates de projet : entité + endpoints [id:: BE-PRJ-010] [statut:: todo] [parite:: gap] [prio:: P3] [demande-par:: frontend]
