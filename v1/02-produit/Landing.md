@@ -33,7 +33,7 @@ related:
 
 ## Mesure & contenu
 - [ ] Analytics respectueux RGPD [id:: LP-ANA-001] [statut:: todo] [prio:: P2] [besoin-backend:: —] (TF-LP-003)
-- [ ] Contenu : pricing, CTA, proposition de valeur [id:: LP-CNT-001] [statut:: todo] [prio:: P2] (TF-LP-004)
+- [~] Contenu : pricing, CTA, proposition de valeur [id:: LP-CNT-001] [statut:: wip] [prio:: P2] (TF-LP-004) — pricing **aligné backend** (3 tiers, limites ws 2/10 + membres 5/50) 20/06 ; reste copy projets/integrations/storage non enforced
 - [ ] i18n FR/EN (si cible bilingue) [id:: LP-I18N-001] [statut:: todo] [prio:: P3] (TF-LP-006)
 
 ---
