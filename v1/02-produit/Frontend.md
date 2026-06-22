@@ -55,10 +55,12 @@ Les items <code>[besoin-backend:: BE-xxx]</code> renvoient à une tâche de la <
 - [x] App Router + groupes de routes (protected/auth/payment) [id:: FE-CORE-001] [statut:: done] [parite:: ok] [ref:: frontend/app]
 - [x] Client Axios (bearer JWT, refresh-on-401, mapping erreurs) [id:: FE-CORE-002] [statut:: done] [parite:: ok] [ref:: frontend/lib/api/client.ts]
 - [x] Stores Zustand par domaine [id:: FE-CORE-003] [statut:: done] [parite:: ok] [ref:: frontend/lib/store]
+- [~] **Socle de panneaux** (gauche/droite, empilables, redimensionnables, façon Claude/Cloudflare) — `panel-store` + `PanelDock` + 1er conso Assistant (bouton « Ask AI ») [id:: FE-CORE-006] [statut:: wip] [parite:: extra] [ref:: frontend/lib/store/panel-store.ts + components/layout/panel-dock.tsx] (PROD-8.9 v1, 20/06/2026 — reste : migrer issue-sheet, persistance largeur, mobile)
 - [x] i18n FR/EN (constants) [id:: FE-CORE-004] [statut:: wip] [parite:: ok] [ref:: frontend/lib/constants_*]
+- [x] Verrou menu « coming soon » — entrées non livrées non cliquables (Agents, Discussions) [id:: FE-CORE-005] [statut:: done] [parite:: extra] [ref:: frontend/components/layout/sidebar/app-sidebar.tsx] (PROD-1.1, 20/06/2026)
+- [x] Déclarer les 4 groupes de routes (MESSAGE/INTEGRATION/ATTACHMENT/ROADMAP) [id:: FE-CORE-010] [statut:: done] [parite:: ok] [ref:: frontend/lib/config/api-routes.ts] — vérifié présent 20/06/2026 (ex-PC-002)
 
 **À faire :**
-- [ ] Déclarer les 4 groupes de routes manquants (MESSAGE/INTEGRATION/ATTACHMENT/ROADMAP) [id:: FE-CORE-010] [statut:: broken] [parite:: ok] [prio:: P0] [ref:: frontend/lib/config/api-routes.ts] — voir `.ai/P0-fix-plan.md` (PC-002)
 - [ ] Corriger import `profile-service` (`./client`) [id:: FE-CORE-011] [statut:: broken] [prio:: P0] [ref:: frontend/lib/api/profile-service.ts] (PC-003)
 - [ ] Aligner la séquence refresh token [id:: FE-CORE-012] [statut:: todo] [prio:: P1] [besoin-backend:: BE-AUTH-001] [ref:: frontend/lib/api/client.ts] (PC-004)
 - [ ] Compléter i18n sur toutes les vues [id:: FE-CORE-013] [statut:: todo] [prio:: P2]
@@ -70,15 +72,17 @@ Les items <code>[besoin-backend:: BE-xxx]</code> renvoient à une tâche de la <
 - [x] Choix de plan + retour paiement Stripe [id:: FE-AUTH-002] [statut:: done] [parite:: extra] [ref:: frontend/app/payment]
 
 **À faire :**
-- [ ] Gestion d'abonnement (changer/annuler) reliée aux webhooks [id:: FE-AUTH-010] [statut:: todo] [parite:: extra] [prio:: P2] [besoin-backend:: BE-BILLING-001]
+- [x] Gestion d'abonnement self-service (Stripe Customer Portal — bouton « Gérer la facturation ») [id:: FE-AUTH-010] [statut:: done] [parite:: extra] [ref:: lib/api/stripe-service.ts openBillingPortal] (PROD-4.5, 20/06/2026)
 
 ## 3. Workspaces / Projets / Membres
 
 **Fait :**
 - [x] CRUD workspaces, membres, rôles, settings [id:: FE-WS-001] [statut:: done] [parite:: ok] [ref:: frontend/lib/store/workspace-store.ts]
 - [x] CRUD projets, membres, labels, statuts custom, archivage [id:: FE-PRJ-001] [statut:: done] [parite:: ok] [ref:: frontend/lib/store/project-store.ts]
+- [x] Profil de compétences membre (saisie skills + expertise, alimente Smart Assign — trou CDC #1) [id:: FE-SKILL-001] [statut:: done] [parite:: extra] [prio:: P1] [besoin-backend:: BE-SKILL-001] [ref:: frontend/components/members/member-skills-card.tsx] (PROD-1.2, 20/06/2026)
 
 **À faire :**
+- [ ] **Recherche & invitation façon GitHub** : ~5 propositions (avatar+username+email), multi-sélection, rôle ; invite projet → confirmation ajout workspace + option team (existante/nouvelle) [id:: FE-WS-011] [statut:: todo] [parite:: gap] [prio:: P2] [besoin-backend:: BE-WS-011] (PROD-3.4)
 - [ ] Templates de projet [id:: FE-PRJ-010] [statut:: todo] [parite:: gap] [prio:: P3] [besoin-backend:: BE-PRJ-010]
 - [ ] Rôle GUEST / accès externes [id:: FE-WS-010] [statut:: todo] [parite:: gap] [prio:: P3] [besoin-backend:: BE-WS-010]
 
@@ -86,11 +90,21 @@ Les items <code>[besoin-backend:: BE-xxx]</code> renvoient à une tâche de la <
 
 **Fait :**
 - [x] CRUD issues, statuts (Kanban), types, priorités, labels [id:: FE-ISS-001] [statut:: done] [parite:: ok] [ref:: frontend/app/(protected)/[workspace]/projects/[id]/issues]
-- [x] Commentaires, activité, relations [id:: FE-ISS-002] [statut:: done] [parite:: ok]
-- [x] Smart Assign (panel IA) [id:: FE-ISS-003] [statut:: done] [parite:: extra] [ref:: frontend/components/smart-assign]
+- [x] Commentaires, activité, relations (onglet Relations : ajout/suppression liens) [id:: FE-ISS-002] [statut:: done] [parite:: ok] (relations UI : PROD-2.2, 20/06/2026)
+- [x] Smart Assign (panel IA) — **mis en avant** (CTA + auto-ouvert) **+ « wow » v1** : pourquoi (raison Groq + skills qui matchent) + breakdown de score [id:: FE-ISS-003] [statut:: done] [parite:: extra] [ref:: frontend/components/smart-assign] (PROD-1.4/8.10, 20/06/2026)
+- [x] Smart Assign **à la création** d'issue (bouton « Suggest assignee » + best match/alternatives dans le modal) [id:: FE-ISS-004] [statut:: done] [parite:: extra] [prio:: P1] [besoin-backend:: BE-SA-001] [ref:: frontend/components/dialogs/create-issue-dialog.tsx] (PROD-1.3, 20/06/2026)
+- [x] **Multi-assign** : dialog « Auto-assign (N) » (toolbar board) → recommande + assigne en lot les issues non assignées [id:: FE-ISS-005] [statut:: done] [parite:: extra] [prio:: P1] [besoin-backend:: BE-SA-001] [ref:: frontend/components/dialogs/bulk-assign-dialog.tsx] (PROD-1.9, 20/06/2026)
 
 **À faire :**
-- [ ] Hiérarchie sous-issues (parent/enfant) [id:: FE-ISS-010] [statut:: todo] [parite:: partial] [prio:: P1] [besoin-backend:: BE-ISS-010]
+- [x] Hiérarchie sous-issues (onglet Sub-tasks : liste enfants + quick-add) [id:: FE-ISS-010] [statut:: done] [parite:: ok] [ref:: components/sheets/issue-sheet.tsx] (PROD-2.1, 20/06/2026)
+- [x] Onglets issue-sheet : Relations (PROD-2.2) + Checklist avec % (PROD-2.3) [id:: FE-ISS-020] [statut:: done] [parite:: ok] [ref:: components/sheets/issue-sheet.tsx] (20/06/2026)
+- [x] Supprimer une issue (en-tête issue-sheet + confirmation) [id:: FE-ISS-021] [statut:: done] [parite:: ok] (PROD-2.4, 20/06/2026)
+- [x] Cycles clarifiés (explication + indice cycle vide) [id:: FE-CYC-010] [statut:: done] [parite:: ok] (PROD-2.5, 20/06/2026)
+- [x] Filtres avancés câblés sur List + Backlog (en plus du board) [id:: FE-VIEW-010] [statut:: done] [parite:: ok] (PROD-2.6, 20/06/2026)
+- [x] Bascule d'onglets projet instantanée : `fetchIssues` cache-first par projet (`loadedProjectId`) [id:: FE-VIEW-011] [statut:: done] [parite:: ok] [ref:: lib/store/issue-store.ts] (PROD-2.7, 20/06/2026)
+- [x] Nettoyage UI dashboard/sidebar : retrait bandeau « operational » + badge « critical », scrollbar discrète, « New project » → modal (`?new=1`) [id:: FE-UI-010] [statut:: done] [parite:: ok] (PROD-8.2/8.6/8.7, 20/06/2026)
+- [x] Danger zones en rouge (variante `danger` sur SectionCard, façon GitHub) [id:: FE-UI-012] [statut:: done] [parite:: ok] (20/06/2026)
+- [x] Agents marqués « AI · » (page agents + dashboard) ; modals create-issue/project repassés en `modal` (overlay+focus-trap) ; `EditProjectDialog` (édition infos globales) [id:: FE-UI-011] [statut:: done] [parite:: ok] (PROD-8.4/8.5/2.10, 20/06/2026)
 - [ ] Estimates (points) sur l'issue + agrégat [id:: FE-ISS-011] [statut:: todo] [parite:: gap] [prio:: P1] [besoin-backend:: BE-ISS-011]
 - [ ] Time tracking / worklogs [id:: FE-ISS-012] [statut:: todo] [parite:: gap] [prio:: P3] [besoin-backend:: BE-ISS-012]
 - [ ] Bulk actions (multi-sélection) [id:: FE-ISS-013] [statut:: todo] [parite:: gap] [prio:: P2]
@@ -120,6 +134,7 @@ Les items <code>[besoin-backend:: BE-xxx]</code> renvoient à une tâche de la <
 - [ ] Réparer Discussions (route `/api`) [id:: FE-DISC-001] [statut:: broken] [parite:: extra] [prio:: P0] [besoin-backend:: BE-DISC-001] (PC-001)
 - [ ] Réparer Pages/wiki (route `/api`) [id:: FE-PAGE-001] [statut:: broken] [parite:: ok] [prio:: P0] [besoin-backend:: BE-PAGE-001] (PC-001)
 - [ ] Réparer Teams + compléter `team-store` [id:: FE-TEAM-001] [statut:: broken] [parite:: extra] [prio:: P1] [besoin-backend:: BE-TEAM-001] (PC-001/006)
+- [x] Teams : emoji/couleur à la création + Manage/Settings consolidé (« Gérer l'équipe ») [id:: FE-TEAM-010] [statut:: done] [parite:: ok] (PROD-3.6, 20/06/2026) ; reste assoc team↔opération (PROD-3.6b)
 
 ## 8. Notifications / Analytics / IA
 
@@ -127,6 +142,8 @@ Les items <code>[besoin-backend:: BE-xxx]</code> renvoient à une tâche de la <
 - [x] Inbox/notifications (mentions, assignations, alertes) [id:: FE-NOTIF-001] [statut:: done] [parite:: ok]
 - [x] Dashboard analytics (KPIs, burndown, throughput, capacité) [id:: FE-ANA-001] [statut:: done] [parite:: ok]
 - [x] AI Insights + Assistant (FAB/command palette) [id:: FE-IA-001] [statut:: wip] [parite:: extra]
+- [x] **Board temps réel** : hook `useProjectRealtime` (STOMP `/topic/projects.{id}`) patche le store en direct [id:: FE-RT-001] [statut:: done] [parite:: extra] [ref:: frontend/lib/hooks/use-project-realtime.ts] (PROD-1.6, 20/06/2026)
+- [x] **Export CSV** des issues (filtrées) depuis la toolbar du board [id:: FE-EXPORT-001] [statut:: done] [parite:: ok] [ref:: frontend/lib/utils/export-issues-csv.ts] (PROD-1.7, 20/06/2026)
 
 **À faire :**
 - [ ] Streaming réel de l'assistant (SSE) côté UI [id:: FE-IA-010] [statut:: todo] [parite:: extra] [prio:: P2] [besoin-backend:: BE-IA-001] (PC-009)
@@ -153,4 +170,4 @@ Les items <code>[besoin-backend:: BE-xxx]</code> renvoient à une tâche de la <
 > **Note Brain OS** — Les `[besoin-backend:: BE-xxx]` ci-dessus doivent exister dans [Backend.md](./Backend.md).
 > Items cassés = P0 du [Backlog](../13-roadmap/Roadmap_Backlog.md) / [`.ai/P0-fix-plan.md`](../../../taskforce-fullstack/.ai/P0-fix-plan.md).
 
-**Dernière mise à jour :** 09/06/2026 · **Projet :** Taskforce — Metz Numeric School 2025-2026
+**Dernière mise à jour :** 20/06/2026 · **Projet :** Taskforce — Metz Numeric School 2025-2026
