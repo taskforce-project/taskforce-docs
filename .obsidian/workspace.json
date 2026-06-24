@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "fa0a3546f614d9db",
+        "id": "83544ac65aaa882d",
         "type": "tabs",
         "children": [
           {
-            "id": "3c27af17a493598e",
+            "id": "07f54c374437a3f5",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -174,8 +174,9 @@
       "bases:Créer une nouvelle base": false
     }
   },
-  "active": "3c27af17a493598e",
+  "active": "07f54c374437a3f5",
   "lastOpenFiles": [
+    "v1/04-engineering/git-workflow/MIGRATION_VERSIONING.md",
     "Brain_OS.md",
     "v1/04-engineering/git-workflow/labels-reference.md"
   ]

@@ -71,12 +71,17 @@ Les items <code>[besoin-backend:: BE-xxx]</code> renvoient à une tâche de la <
 - [~] **Issue-sheet** : overflow horizontal corrigé (onglets scrollables) + responsive (corps empilé en mobile, sidebar métadonnées `w-full` → `sm:w-56 border-l`) [id:: FE-ISS-030] [statut:: wip] [parite:: ok] [ref:: frontend/components/sheets/issue-sheet.tsx] (QA2-15, 23/06/2026 ; reste : lier Page↔issue, clic membre → détail)
 - [x] **Liste projets** : multi-affichage **list/cards**, **pin** (favori, épinglés en tête), **tri** (santé/récent/nom/progression/ouvertes), archive en **icône directe** (hors « … »), **skeletons** [id:: FE-PRJ-020] [statut:: done] [parite:: ok] [ref:: frontend/app/(protected)/[workspace]/projects/page.tsx] (QA2-22, 23/06/2026 ; reste templates = back)
 - [x] **Board DnD fluide** : `DragOverlay` (clone `IssueCardPreview` suit le curseur, carte source estompée) [id:: FE-ISS-031] [statut:: done] [parite:: ok] [ref:: frontend/app/(protected)/[workspace]/projects/[id]/page.tsx] (QA2-14, 23/06/2026 ; reste kanban paramétrable « à discuter »)
-- [~] **UI transverse** : skeletons (projects/members/list), sweep boutons destructifs en rouge (flux principaux) [id:: FE-UI-027] [statut:: wip] [parite:: ok] (QA2-R1/R5, 23/06/2026 ; reste audit app-wide)
+- [x] **UI transverse — danger** : toutes les actions destructives user-facing en rouge (issue-sheet comment/attachment/relation/checklist/worklog, removes, delete/archive projet, delete team, `DeleteConfirmDialog`) [id:: FE-UI-027] [statut:: done] [parite:: ok] (QA2-R1/QA2-2, 23/06/2026)
+- [x] **UI transverse — skeletons** : projects (list+cards), members (workspace+projet), List/Backlog/Cycles, board kanban ; reste analytics charts (P3) [id:: FE-UI-028] [statut:: done] [parite:: ok] (QA2-R5, 23/06/2026)
 - [~] **Page projet — header & carte** : 2ᵉ breadcrumb retiré (header app suffit) + air onglets/toolbar ; **carte projet** : sparkline d'activité bleu (throughput réel par projet) à la place de la barre, **% déplacé** en pied [id:: FE-PRJ-021] [statut:: wip] [parite:: ok] (QA2-14/QA2-32, 23/06/2026)
 - [x] **Layout intérieur opération** : one-screen (`h-full` + scroll interne), **scroll par colonne** kanban, **filtres en ligne** (`InlineIssueFilters`), **marges alignées dashboard** (`mx-auto max-w-screen-2xl`, fin du full-bleed) → New Issue/Auto-assign alignés [id:: FE-PRJ-022] [statut:: wip] [parite:: ok] [ref:: frontend/app/(protected)/[workspace]/projects/[id]] (QA2-30, 23/06/2026 ; reste composant tabs dédié + vérif visuelle) ⚠️ rebuild non requis (front). **+ filtres en ligne aussi sur List/Backlog ; vue List : filtres + en-tête sticky, scroll interne ; bug `<button>` imbriqué (FilterRow) corrigé.**
-- [~] **Issue-sheet façon GitHub** : sheet élargi (max-w-4xl) + onglets `flex-wrap` (plus de scroll horizontal) [id:: FE-ISS-032] [statut:: wip] [parite:: ok] [ref:: frontend/components/sheets/issue-sheet.tsx] (QA2-31, 23/06/2026 ; reste colonne droite + densité interne)
+- [x] **Issue-sheet façon GitHub** : sheet élargi (max-w-4xl) + onglets `flex-wrap` + colonne droite repensée (`MetaRow` label-au-dessus/valeur-en-dessous, sidebar `sm:w-72`) → plus d'infos coupées [id:: FE-ISS-032] [statut:: done] [parite:: ok] [ref:: frontend/components/sheets/issue-sheet.tsx] (QA2-31, 23/06/2026)
 - [x] **Modal Upgrade dédié** : `UpgradeDialog` (3 plans, recommandé) monté global (`AppShell`) via `useUpgradeStore` ; CTA Pro = checkout Stripe direct ; tous les CTA recâblés (profil/switcher/members/analytics) [id:: FE-SUB-010] [statut:: done] [parite:: extra] [ref:: frontend/components/subscription/upgrade-dialog.tsx] (QA2-19, 23/06/2026)
 - [x] **My Queue en onglets** : All / Issues / Sprints / Pages (compteurs, onglet initial selon la route) [id:: FE-MYW-010] [statut:: done] [parite:: ok] [ref:: frontend/components/my-work/my-work-view.tsx] (QA2-23, 23/06/2026)
+- [~] **Help — vraie doc** : page `/help` dé-mockée (16 articles réels en accordéon, recherche, filtres catégories, contact mailto) [id:: FE-HELP-010] [statut:: wip] [parite:: ok] [ref:: frontend/app/(protected)/[workspace]/help/page.tsx] (QA2-25, 23/06/2026 ; reste étoffer le contenu + prompt assistant)
+- [x] **Onglet projet Teams** (remplace Members ; membres gérés via Settings → lien) + **case à cocher « done »** sur List/Backlog (icône statut cliquable → COMPLETED) [id:: FE-PRJ-023] [statut:: done] [parite:: ok] (QA3-7/QA3-9, 23/06/2026)
+- [~] **Settings workspace** : section Membres retirée (page dédiée) + section **Status** (ping API réel) ; reste notifs SMS/mail + logs/audit + Keycloak (back) [id:: FE-SET-011] [statut:: wip] [parite:: ok] (QA3-8, 23/06/2026)
+- [~] **Settings — Billing** : bouton Upgrade (placeholder mort) → ouvre le modal Upgrade ; Enterprise → contact sales ; copies de plan alignées sur les vraies limites [id:: FE-SET-010] [statut:: wip] [parite:: ok] (QA2-18, 23/06/2026 ; reste backend : logs/audit/export, status, notifs SMS/mail)
 
 **À faire :**
 - [ ] Corriger import `profile-service` (`./client`) [id:: FE-CORE-011] [statut:: broken] [prio:: P0] [ref:: frontend/lib/api/profile-service.ts] (PC-003)
@@ -155,6 +160,7 @@ Les items <code>[besoin-backend:: BE-xxx]</code> renvoient à une tâche de la <
 - [ ] Réparer Pages/wiki (route `/api`) [id:: FE-PAGE-001] [statut:: broken] [parite:: ok] [prio:: P0] [besoin-backend:: BE-PAGE-001] (PC-001)
 - [ ] Réparer Teams + compléter `team-store` [id:: FE-TEAM-001] [statut:: broken] [parite:: extra] [prio:: P1] [besoin-backend:: BE-TEAM-001] (PC-001/006)
 - [x] Teams : emoji/couleur à la création + Manage/Settings consolidé (« Gérer l'équipe ») [id:: FE-TEAM-010] [statut:: done] [parite:: ok] (PROD-3.6, 20/06/2026) ; reste assoc team↔opération (PROD-3.6b)
+- [x] **Teams par projet (QA2-21)** : page Teams globale **supprimée** du menu + route `/teams` → redirige Members ; gestion déplacée dans l'opération (`ProjectTeamsSection`) avec **création inline** d'équipe [id:: FE-TEAM-020] [statut:: done] [parite:: ok] [ref:: frontend/components/projects/project-teams-section.tsx] (23/06/2026)
 
 ## 8. Notifications / Analytics / IA
 
@@ -166,6 +172,7 @@ Les items <code>[besoin-backend:: BE-xxx]</code> renvoient à une tâche de la <
 - [x] **Export CSV** des issues (filtrées) depuis la toolbar du board [id:: FE-EXPORT-001] [statut:: done] [parite:: ok] [ref:: frontend/lib/utils/export-issues-csv.ts] (PROD-1.7, 20/06/2026)
 
 **À faire :**
+- [x] **Assistant câblé au backend** : `assistant-service` + route `ASSISTANT_ROUTES.CHAT` → `POST /api/workspaces/{slug}/assistant` ; adapter mock remplacé (corrige erreur de type), gestion erreurs, suggestions autoSend ; réponses réelles dès backend+Groq up [id:: FE-IA-002] [statut:: done] [parite:: extra] [ref:: frontend/components/assistant/assistant-fab.tsx] (QA2-16, 23/06/2026)
 - [ ] Streaming réel de l'assistant (SSE) côté UI [id:: FE-IA-010] [statut:: todo] [parite:: extra] [prio:: P2] [besoin-backend:: BE-IA-001] (PC-009)
 
 ## 9. Intégrations / Pièces jointes
