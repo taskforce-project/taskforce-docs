@@ -88,14 +88,15 @@ Les 5 contrôleurs sans <code>/api</code> sont injoignables aux URL appelées pa
 Services front dans `frontend/lib/api/`. Lecture : `fonction front` → `méthode HTTP chemin` → contrôleur.
 
 **Aligné ✅** — Auth (`auth-service` ↔ `AuthController`), Utilisateur (`user-service` ↔ `UserController`),
-Workspace (`workspace-service`), Projet + Labels (`project-service`, `label-service` ↔ `ProjectController`),
-Issue (`issue-service` ↔ `IssueController` : CRUD, `/statuses` + `/reorder`, `/types`, `/comments`,
+Workspace (`workspace-service`), Projet + Labels (`project-service`, `label-service` ↔ `ProjectController` :
+CRUD, `/members`, `/teams`, `/labels`, **`GET /{id}/activity?days=N`** = activité quotidienne pour la sparkline carte projet, QA2-32),
+Issue (`issue-service` ↔ `IssueController` : CRUD, **`GET /paged?page&size`** = liste paginée additive pour l'infinite-scroll backlog (QA2-33), `/statuses` + `/reorder`, `/types`, `/comments`,
 `/activity`, `/smart-assign`, `/relations`), Analytics (`analytics-service` : `/kpis`, `/throughput`,
 `/burndown`, `/capacity`, `/insights`), Notifications (`notification-service`), Sales, Avatars (`FileController`).
 
-**Cassé (404) ❌** — Cycles (`cycle-service` ↔ `CycleController`), Teams (`team-service` ↔ `TeamController`),
-Pages wiki (`page-service` ↔ `PageController`), Discussions (`discussion-service` ↔ `DiscussionController`) :
+**Cassé (404) ❌** — Cycles (`cycle-service` ↔ `CycleController`), Pages wiki (`page-service` ↔ `PageController`) :
 le front appelle `/api/workspaces/…`, le back sert `/workspaces/…`. Voir §4.1.
+> ⚠️ Note (24/06/2026) : **Discussions aligné** — `DiscussionController` porte bien `@RequestMapping("/api/workspaces/{slug}/discussions")`, feature fonctionnelle (list/create/pin/lock/state). Teams également corrigé (cf. Frontend.md FE-TEAM-*). Re-vérifier Cycles/Pages avant de les laisser ici.
 
 **Cassé (undefined) ❌** — Messages (`message-service`, `MESSAGE_ROUTES`), Intégrations
 (`integration-service`, `INTEGRATION_ROUTES`), Pièces jointes (`attachment-service`, `ATTACHMENT_ROUTES`),
