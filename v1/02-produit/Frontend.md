@@ -79,7 +79,8 @@ Les items <code>[besoin-backend:: BE-xxx]</code> renvoient à une tâche de la <
 - [x] **Modal Upgrade dédié** : `UpgradeDialog` (3 plans, recommandé) monté global (`AppShell`) via `useUpgradeStore` ; CTA Pro = checkout Stripe direct ; tous les CTA recâblés (profil/switcher/members/analytics) [id:: FE-SUB-010] [statut:: done] [parite:: extra] [ref:: frontend/components/subscription/upgrade-dialog.tsx] (QA2-19, 23/06/2026)
 - [x] **My Queue en onglets** : All / Issues / Sprints / Pages (compteurs, onglet initial selon la route) [id:: FE-MYW-010] [statut:: done] [parite:: ok] [ref:: frontend/components/my-work/my-work-view.tsx] (QA2-23, 23/06/2026)
 - [~] **Help — vraie doc** : page `/help` dé-mockée (16 articles réels en accordéon, recherche, filtres catégories, contact mailto) [id:: FE-HELP-010] [statut:: wip] [parite:: ok] [ref:: frontend/app/(protected)/[workspace]/help/page.tsx] (QA2-25, 23/06/2026 ; reste étoffer le contenu + prompt assistant)
-- [x] **Onglet projet Teams** (remplace Members ; membres gérés via Settings → lien) + **case à cocher « done »** sur List/Backlog (icône statut cliquable → COMPLETED) [id:: FE-PRJ-023] [statut:: done] [parite:: ok] (QA3-7/QA3-9, 23/06/2026)
+- [x] **Onglet projet Teams** (remplace Members) — **gestion complète** : créer équipe, voir/ajouter/retirer membres (recherche users), associer/dissocier, supprimer ; membres workspace via Settings projet + sidebar. **Case à cocher « done »** sur List/Backlog (icône statut → COMPLETED) [id:: FE-PRJ-023] [statut:: done] [parite:: ok] [ref:: frontend/components/projects/project-teams-section.tsx] (QA3-7/QA3-9, 23/06/2026)
+- [x] **Chat IA — composants ElevenLabs** : `matrix` (dot-matrix animé, empty-state) + `shimmering-text` (« réfléchit… », recréé — registry bloqué) [id:: FE-IA-003] [statut:: done] [parite:: extra] [ref:: frontend/components/assistant/assistant-fab.tsx] (QA3-10, 23/06/2026)
 - [~] **Settings workspace** : section Membres retirée (page dédiée) + section **Status** (ping API réel) ; reste notifs SMS/mail + logs/audit + Keycloak (back) [id:: FE-SET-011] [statut:: wip] [parite:: ok] (QA3-8, 23/06/2026)
 - [~] **Settings — Billing** : bouton Upgrade (placeholder mort) → ouvre le modal Upgrade ; Enterprise → contact sales ; copies de plan alignées sur les vraies limites [id:: FE-SET-010] [statut:: wip] [parite:: ok] (QA2-18, 23/06/2026 ; reste backend : logs/audit/export, status, notifs SMS/mail)
 
@@ -106,7 +107,8 @@ Les items <code>[besoin-backend:: BE-xxx]</code> renvoient à une tâche de la <
 
 **À faire :**
 - [x] **Members — bug limite plan** : footer codé en dur « /5 » → plan-aware (limite réelle via endpoint usage / `plan-limits` ; ENTERPRISE illimité, PRO 50 ; CTA upgrade seulement si limite atteinte) ; icône rouge sur « Remove » [id:: FE-WS-012] [statut:: done] [parite:: ok] [ref:: frontend/app/(protected)/[workspace]/members/page.tsx] (QA2-20, 23/06/2026)
-- [ ] **Members — vue projets** : qui est dans quel projet + filtre par projet [id:: FE-WS-013] [statut:: todo] [parite:: gap] [prio:: P2] [besoin-backend:: BE-WS-013] (QA2-20)
+- [x] **Members — vue projets** : chips « dans quel projet » + filtre par projet (front-only, dérivé de `project.members`) [id:: FE-WS-013] [statut:: done] [parite:: ok] (QA2-20, 23/06/2026)
+- [x] **Settings — Status & audit** : section Status (ping API + services) + **journal d'audit** (`GET /audit`) + **export CSV** (front-only) [id:: FE-SET-012] [statut:: done] [parite:: ok] (QA3-8, 23/06/2026)
 - [ ] **Recherche & invitation façon GitHub** : ~5 propositions (avatar+username+email), multi-sélection, rôle ; invite projet → confirmation ajout workspace + option team (existante/nouvelle) [id:: FE-WS-011] [statut:: todo] [parite:: gap] [prio:: P2] [besoin-backend:: BE-WS-011] (PROD-3.4)
 - [ ] Templates de projet [id:: FE-PRJ-010] [statut:: todo] [parite:: gap] [prio:: P3] [besoin-backend:: BE-PRJ-010]
 - [ ] Rôle GUEST / accès externes [id:: FE-WS-010] [statut:: todo] [parite:: gap] [prio:: P3] [besoin-backend:: BE-WS-010]
@@ -156,7 +158,7 @@ Les items <code>[besoin-backend:: BE-xxx]</code> renvoient à une tâche de la <
 
 **À faire / cassé :**
 - [ ] Réparer Chat (route `/api` + `MESSAGE_ROUTES`) puis retirer le mock [id:: FE-CHAT-001] [statut:: broken] [parite:: extra] [prio:: P0] [besoin-backend:: BE-CHAT-001] (PC-001/002/011)
-- [ ] Réparer Discussions (route `/api`) [id:: FE-DISC-001] [statut:: broken] [parite:: extra] [prio:: P0] [besoin-backend:: BE-DISC-001] (PC-001)
+- [x] **Discussions fonctionnelles** : list/create/pin/lock/delete/filtres/search câblés (`discussion-store` + `discussion-service`, `DiscussionController` porte bien `/api`) + **pilotage d'état** (Mark as answered / Close / Reopen via `updateDiscussion`) → rôle Q&R/annonces [id:: FE-DISC-001] [statut:: done] [parite:: extra] [ref:: frontend/app/(protected)/[workspace]/discussions/page.tsx] (PROD-6.7, 24/06/2026) ; **reste** vue thread + réponses (besoin back `DiscussionReply`) + déverrouillage sidebar
 - [ ] Réparer Pages/wiki (route `/api`) [id:: FE-PAGE-001] [statut:: broken] [parite:: ok] [prio:: P0] [besoin-backend:: BE-PAGE-001] (PC-001)
 - [ ] Réparer Teams + compléter `team-store` [id:: FE-TEAM-001] [statut:: broken] [parite:: extra] [prio:: P1] [besoin-backend:: BE-TEAM-001] (PC-001/006)
 - [x] Teams : emoji/couleur à la création + Manage/Settings consolidé (« Gérer l'équipe ») [id:: FE-TEAM-010] [statut:: done] [parite:: ok] (PROD-3.6, 20/06/2026) ; reste assoc team↔opération (PROD-3.6b)
@@ -170,9 +172,14 @@ Les items <code>[besoin-backend:: BE-xxx]</code> renvoient à une tâche de la <
 - [x] AI Insights + Assistant (FAB/command palette) [id:: FE-IA-001] [statut:: wip] [parite:: extra]
 - [x] **Board temps réel** : hook `useProjectRealtime` (STOMP `/topic/projects.{id}`) patche le store en direct [id:: FE-RT-001] [statut:: done] [parite:: extra] [ref:: frontend/lib/hooks/use-project-realtime.ts] (PROD-1.6, 20/06/2026)
 - [x] **Export CSV** des issues (filtrées) depuis la toolbar du board [id:: FE-EXPORT-001] [statut:: done] [parite:: ok] [ref:: frontend/lib/utils/export-issues-csv.ts] (PROD-1.7, 20/06/2026)
+- [x] **Sparkline activité projet** : carte projet branchée sur `GET …/projects/{id}/activity?days=14` (`getProjectActivity`) → vrai « issues créées/jour » sur 14 j, série continue, non gaté Pro [id:: FE-PROJ-030] [statut:: done] [parite:: ok] [ref:: frontend/app/(protected)/[workspace]/projects/page.tsx] (QA2-32, 24/06/2026)
+- [x] **Infinite-scroll backlog** : rendu incrémental par pages de 25 (`IntersectionObserver`, sentinel + spinner), reset au changement de filtre ; endpoint paginé back `…/issues/paged` prêt pour pagination serveur à grande échelle [id:: FE-ISSUE-033] [statut:: done] [parite:: ok] [ref:: frontend/app/(protected)/[workspace]/projects/[id]/backlog/page.tsx] (QA2-33, 24/06/2026)
+- [x] **PageShell partout** : `PageContainer`+`PageHeader` appliqués à toutes les pages contenu, **dont Settings** (fin du `max-w-5xl` ad-hoc) → layout/marges cohérents [id:: FE-LAYOUT-001] [statut:: done] [parite:: ok] [ref:: components/layout/page-shell.tsx · app/(protected)/[workspace]/settings/page.tsx] (PROD-8.1/QA2-18/QA2-R3, 24/06/2026)
+- [x] **Ligne Signals répartie** : `SignalRow` en ligne unique aérée (icône · type `w-32` · titre+extrait flexible · méta projet/issue/heure poussée à droite `ml-auto`) au lieu de l'empilement collé à gauche [id:: FE-INBOX-010] [statut:: done] [parite:: ok] [ref:: frontend/components/inbox/inbox-view.tsx] (QA3-12, 24/06/2026)
 
 **À faire :**
 - [x] **Assistant câblé au backend** : `assistant-service` + route `ASSISTANT_ROUTES.CHAT` → `POST /api/workspaces/{slug}/assistant` ; adapter mock remplacé (corrige erreur de type), gestion erreurs, suggestions autoSend ; réponses réelles dès backend+Groq up [id:: FE-IA-002] [statut:: done] [parite:: extra] [ref:: frontend/components/assistant/assistant-fab.tsx] (QA2-16, 23/06/2026)
+- [x] **Assistant analytics-aware** (socle) : back `AssistantService` injecte un **bloc métriques réelles** (total/ouvertes, créées 7j, vélocité 7j/30j, ouvertes par projet, charge par membre) dans le system prompt Groq → réponses chiffrées exactes ; empty-state du FAB pointe vers des questions analytics [id:: FE-IA-003] [statut:: done] [parite:: extra] [ref:: backend …/core/service/AssistantService.java · frontend/components/assistant/assistant-fab.tsx] (QA2-17 socle, 24/06/2026) ; **reste** graphe dans le chat (réponse structurée → recharts)
 - [ ] Streaming réel de l'assistant (SSE) côté UI [id:: FE-IA-010] [statut:: todo] [parite:: extra] [prio:: P2] [besoin-backend:: BE-IA-001] (PC-009)
 
 ## 9. Intégrations / Pièces jointes
@@ -197,4 +204,4 @@ Les items <code>[besoin-backend:: BE-xxx]</code> renvoient à une tâche de la <
 > **Note Brain OS** — Les `[besoin-backend:: BE-xxx]` ci-dessus doivent exister dans [Backend.md](./Backend.md).
 > Items cassés = P0 du [Backlog](../13-roadmap/Roadmap_Backlog.md) / [`.ai/P0-fix-plan.md`](../../../taskforce-fullstack/.ai/P0-fix-plan.md).
 
-**Dernière mise à jour :** 23/06/2026 · **Projet :** Taskforce — Metz Numeric School 2025-2026
+**Dernière mise à jour :** 24/06/2026 · **Projet :** Taskforce — Metz Numeric School 2025-2026
