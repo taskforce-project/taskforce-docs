@@ -91,7 +91,7 @@ Services front dans `frontend/lib/api/`. Lecture : `fonction front` → `méthod
 Workspace (`workspace-service`), Projet + Labels (`project-service`, `label-service` ↔ `ProjectController` :
 CRUD, `/members`, `/teams`, `/labels`, **`GET /{id}/activity?days=N`** = activité quotidienne pour la sparkline carte projet, QA2-32),
 Issue (`issue-service` ↔ `IssueController` : CRUD, **`GET /paged?page&size`** = liste paginée additive pour l'infinite-scroll backlog (QA2-33), `/statuses` + `/reorder`, `/types`, `/comments`,
-`/activity`, `/smart-assign`, `/relations`), Analytics (`analytics-service` : `/kpis`, `/throughput`,
+`/activity`, `/smart-assign`, `/relations`), Analytics (`analytics-service` : `/kpis`, **`/throughput?bucket=DAY|WEEK`** = série throughput, `WEEK` (8 sem., défaut) ou `DAY` (30 j, tendance « 1 mois » du dashboard ; 26/06/2026),
 `/burndown`, `/capacity`, `/insights`), Notifications (`notification-service`), Sales, Avatars (`FileController`).
 
 **Cassé (404) ❌** — Cycles (`cycle-service` ↔ `CycleController`), Pages wiki (`page-service` ↔ `PageController`) :
