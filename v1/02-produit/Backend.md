@@ -65,7 +65,7 @@ Groq. Les items <code>[demande-par:: frontend]</code> répondent à un <code>bes
 - [x] **Delete workspace** : `DELETE /api/workspaces/{slug}` (OWNER-only, cascade DB) [id:: BE-WS-002] [statut:: done] [parite:: ok] [ref:: WorkspaceService.deleteWorkspace] (PROD-3.3, 20/06/2026)
 - [x] **Limites par plan** : workspaces (FREE 2/PRO 10) + membres (FREE 5/PRO 50) enforced → 409 [id:: BE-WS-003] [statut:: done] [parite:: ok] [ref:: WorkspaceService.checkMemberLimit] (PROD-4.2, 20/06/2026) ; reste teams/agents + endpoint d'usage
 - [x] Projets / membres / labels / statuts / types [id:: BE-PRJ-001] [statut:: done] [parite:: ok]
-- [x] Issues : CRUD, commentaires, activité, relations, smart-assign [id:: BE-ISS-001] [statut:: done] [parite:: ok]
+- [x] Issues : CRUD, commentaires, activité, relations, smart-assign [id:: BE-ISS-001] [statut:: done] [parite:: ok] — **fix 02/07** : `addRelation` cassait contre PG (`operator does not exist: issue_relation_type = character varying`) car `IssueRelation.relationType` n'avait pas `@JdbcTypeCode(SqlTypes.NAMED_ENUM)` ; ajouté (+ retrait `length=20`), aligné sur `Issue.priority`/`IssueStatus.category` (aucune migration). Test d'intégration `should_add_relation` remis, vert.
 - [x] Smart Assign **preview** (dry-run à la création) + **bulk** (multi-assign) [id:: BE-SA-001] [statut:: done] [parite:: extra] [demande-par:: frontend] [ref:: core/api/IssueController.java (POST …/issues/smart-assign/{preview,bulk}) + SmartAssignService.preview/bulkRecommend] (PROD-1.3/1.9, 20/06/2026)
 - [x] Analytics (KPIs, burndown, throughput, capacité, insights) [id:: BE-ANA-001] [statut:: done] [parite:: ok]
 - [x] **Throughput bucketable** : `GET /analytics/throughput?bucket=DAY|WEEK` — `WEEK` = 8 sem. (défaut, inchangé), `DAY` = 30 j glissants (tendance « 1 mois » du dashboard). Logique factorisée `buildThroughput(projectIds, points, daily)` [id:: BE-ANA-002] [statut:: done] [parite:: extra] [ref:: core/service/AnalyticsService.java + core/api/AnalyticsController.java] (26/06/2026)
@@ -139,4 +139,4 @@ Groq. Les items <code>[demande-par:: frontend]</code> répondent à un <code>bes
 > (requête Dataview du [hub §4](./README.md)). Réparations P0 détaillées dans
 > [`.ai/P0-fix-plan.md`](../../../taskforce-fullstack/.ai/P0-fix-plan.md).
 
-**Dernière mise à jour :** 09/06/2026 · **Projet :** Taskforce — Metz Numeric School 2025-2026
+**Dernière mise à jour :** 02/07/2026 · **Projet :** Taskforce — Metz Numeric School 2025-2026
