@@ -126,8 +126,8 @@ Groq. Les items <code>[demande-par:: frontend]</code> répondent à un <code>bes
 
 ## 7. Qualité (tests, sécurité, API)
 
-- [ ] Couverture tests ≥ 50 % (JUnit/Mockito) + JaCoCo [id:: BE-QA-001] [statut:: todo] [prio:: P1] (TF-TEST-002)
-- [ ] Tests d'intégration (Testcontainers PostgreSQL/Keycloak) [id:: BE-QA-002] [statut:: todo] [parite:: extra] [prio:: P2]
+- [x] Couverture tests ≥ 50 % (JUnit/Mockito) + JaCoCo [id:: BE-QA-001] [statut:: done] [prio:: P1] (TF-TEST-002) — **02/07 : 86,1 % ligne (hors-brain, 5361/6226), 668 tests, 0 échec**. Gate `jacoco:check` **BUNDLE LINE ≥ 0,84** bloquant (`mvn verify`). 3 couches : unitaire (Mockito), intégration (**vrai Postgres** pgvector, Flyway, `ddl-auto=validate`), web (`@WebMvcTest` + SecurityConfig réel). Sécurité/RGPD ~100 % (JWT/OTP/RBAC/RateLimit/chiffrement AES-GCM). **Contract tests wire** (`MockRestServiceServer`) sur les sortants HTTP (Groq/GitHub/Slack/embeddings). Journal détaillé : [`.ai/tests-backend-journal.md`](../../../taskforce-fullstack/.ai/tests-backend-journal.md).
+- [x] Tests d'intégration (Postgres réel) [id:: BE-QA-002] [statut:: done] [parite:: extra] [prio:: P2] — **socle `@DataJpaTest` + Postgres pgvector sibling** (Testcontainers KO depuis conteneur vs Docker Desktop 29 → réseau Docker partagé via `scripts/it.ps1`). Keycloak/MinIO/Stripe = SDK non-RestTemplate → validés en **E2E** (non couvert par l'intégration back).
 - [ ] Compléter OpenAPI + publier la doc API [id:: BE-QA-003] [statut:: todo] [prio:: P1]
 - [ ] Revue OWASP + rate limiting + secrets management [id:: BE-SEC-002] [statut:: todo] [prio:: P1]
 - [ ] Scan dépendances (OWASP Dependency-Check) bloquant en CI [id:: BE-SEC-003] [statut:: todo] [prio:: P2]
