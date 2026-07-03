@@ -137,9 +137,9 @@ le <strong>socle minimal</strong> ; les items marqués ★ vont au-delà). À pi
 | ID | Tâche | Prio | Effort | RNCP | Réf |
 | -- | ----- | :--: | :----: | :--: | --- |
 | TF-TEST-001 | Couverture **front ≥ 50 %** (Vitest + RTL + MSW) + rapport publié | 🟠 P1 | L | C18 | PC-010 |
-| TF-TEST-002 | Couverture **back ≥ 50 %** (JUnit/Mockito) + rapport JaCoCo | 🟠 P1 | L | C25 | PC-010 |
+| TF-TEST-002 | Couverture **back ≥ 50 %** (JUnit/Mockito) + rapport JaCoCo — ✅ **02/07 : 86,1 % (668 tests), gate JaCoCo ≥ 0,84 bloquant** | ✅ done | L | C25 | PC-010 |
 | TF-TEST-003 | Plan de tests documenté (front & back), cohérent avec les specs | 🟠 P1 | M | C18/C25 | — |
-| TF-TEST-004 | Tests d'intégration back (Testcontainers : PostgreSQL, Keycloak) | 🟡 P2 | L | C25 | ★ |
+| TF-TEST-004 | Tests d'intégration back (**Postgres réel** pgvector + Flyway) — ✅ **02/07 socle `@DataJpaTest`** ; Keycloak/MinIO/Stripe → E2E | ✅ done | L | C25 | ★ |
 | TF-TEST-005 | ★ E2E Playwright sur les parcours clés (auth, issue, smart-assign) | 🟡 P2 | L | C18 | DT-022 |
 | TF-TEST-006 | ★ Tests de contrat API (front ↔ back) pour prévenir les régressions de routes | 🟡 P2 | M | C17/C24 | PC-001/002 |
 | TF-TEST-007 | Tests de non-régression + gate de couverture en CI | 🟡 P2 | M | C19/C26 | — |
