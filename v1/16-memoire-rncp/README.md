@@ -109,53 +109,53 @@ ajuster au fil de la rédaction.
 
 | Comp. | Intitulé court | Livrable | Où dans TaskForce | Statut |
 | :---: | -------------- | :------: | ----------------- | :----: |
-| C1 | Analyser la demande initiale | E1 | [CDC](../01-projet/01_CdCF.md), [Dossier Projet](../01-projet/Dossier_Projet.md) | 🟡 |
-| C2 | Conseil / expertise sur le CdCF | E1, E3 | [CdCF](../01-projet/01_CdCF.md) | 🟡 |
-| C3 | Caractéristiques projet (public, SEO, sécu, délais, budget) | E2 | [Dossier Projet](../01-projet/Dossier_Projet.md), [Étude business](../01-projet/Etude_business.md) | 🟡 |
-| C4 | Travailler en agile | E5, E6 | [Git Workflow](../04-engineering/git-workflow/README.md), app TaskForce (Issues/Cycles) | 🟡 |
-| C5 | Environnement de dev collaboratif | E4 | [Quickstart](../06-infra/quickstart/README.md), [GHCR](../06-infra/docker/GHCR_USAGE.md) | ✅ |
-| C6 | Maquettes wireframe | E7 | `assets/maquettes/` | 🟡 |
-| C7 | STB → dossier de conception | E8 | [Architecture §4](../03-architecture/Architecture.md), [CdCT](../01-projet/02_CdCT.md) | 🟡 |
-| C8 | Modélisation (entité-association, classes) | E8 | [Architecture §6](../03-architecture/Architecture.md), [Modules §4](../03-architecture/Modules.md) | 🟡 |
-| C9 | Architecture des bases de données / persistance | E8 | [Architecture §6](../03-architecture/Architecture.md) (Flyway V1–V35) | ✅ |
-| C10 | Architecture logicielle | E8 | [Architecture §4](../03-architecture/Architecture.md) | ✅ |
-| C11 | Conformité RGPD / CNIL | E9 | ⚠️ cas pro hors fil rouge — à produire | ⬜ |
-| C12 | Veille technologique | E10 | à rédiger (Groq, Next 16, Spring Boot 4…) | ⬜ |
+| C1 | Analyser la demande initiale | E1 | [CdCF v1.1](../01-projet/01_CdCF.md), [Dossier Projet](../01-projet/Dossier_Projet.md), [Bloc1 §C1](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C2 | Conseil / expertise sur le CdCF | E1, E3 | [Note Innovation](../17-veille/Note_Innovation_Distance_Critique.md), [ADR](../08-decisions/Journal_Decisions_ADR.md), [Bloc1 §C2](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C3 | Caractéristiques projet (public, SEO, sécu, délais, budget) | E2 | [Budget](../01-projet/Budget_Previsionnel.md), [Gantt](../01-projet/Gantt_Planning.md), [Registre Risques](../01-projet/Registre_Risques.md), [Bloc1 §C3](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C4 | Travailler en agile | E5, E6 | [Note Agile](../01-projet/Note_Methode_Agile.md), [Git Workflow](../04-engineering/git-workflow/README.md), app TaskForce (Cycles), [Bloc1 §C4](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C5 | Environnement de dev collaboratif | E4 | [Quickstart](../06-infra/quickstart/README.md), [GHCR](../06-infra/docker/GHCR_USAGE.md), `docker-compose.dev.yml`, [Bloc1 §C5](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C6 | Maquettes wireframe | E7 | `assets/maquettes/`, [Wireframes annotés](../14-design/Wireframes_Annotes.md), [Bloc1 §C6](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C7 | STB → dossier de conception | E8 | [Dossier Conception](../03-architecture/Dossier_Conception.md), [CdCT v2](../01-projet/CdCT_v2.md), [Diag. UC](../03-architecture/Diagramme_Cas_Usage_UML.md), [Bloc1 §C7](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C8 | Modélisation (entité-association, classes) | E8 | [MCD/MLD](../03-architecture/Modele_Donnees_MCD_MLD.md), [Diag. Classes](../03-architecture/Diagramme_Classes_UML.md), [Bloc1 §C8](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C9 | Architecture des bases de données / persistance | E8 | [Architecture C4](../03-architecture/Architecture_C4.md), [PS/PCA/PRA](../11-pca-pra/PS_PCA_PRA.md), Flyway V1–V53, [Bloc1 §C9](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C10 | Architecture logicielle | E8 | [Architecture C4](../03-architecture/Architecture_C4.md), [Modules](../03-architecture/Modules.md), [Bloc1 §C10](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C11 | Conformité RGPD / CNIL | E9 | [Audit RGPD](../07-securite/Audit_RGPD_Conformite.md), [Registre Art.30](../07-securite/Registre_Traitements_RGPD.md), `GdprService.java` (+effacement Keycloak), bannière cookies, [Bloc1 §C11](./Bloc1_Conception_Modelisation.md) — reste : double opt-in + mentions légales | 🟡 |
+| C12 | Veille technologique | E10 | [Veille Technologique](../17-veille/Veille_Technologique.md) (VT-001→006 avec ADR + preuves code), [Bloc1 §C12](./Bloc1_Conception_Modelisation.md) | ✅ |
 
 ### Bloc 2 — Front-end
 
 | Comp. | Intitulé court | Livrable | Où dans TaskForce | Statut |
 | :---: | -------------- | :------: | ----------------- | :----: |
-| C13 | Concevoir l'interface utilisateur | E11 | `frontend/` (Next.js), `assets/maquettes/` | 🟡 |
-| C14 | Éléments graphiques / charte | E11 | `frontend/components/ui`, logos `assets/images/` | 🟡 |
-| C15 | Mettre en œuvre l'UX (parcours, accessibilité) | E11 | `frontend/app`, [Architecture §3](../03-architecture/Architecture.md) | 🟡 |
-| C16 | Langage front (qualité, sécurité, écoconception) | E11 | headers/CORS/CSP — [Architecture §7](../03-architecture/Architecture.md) | 🟡 |
-| C17 | Consommer une API de façon sécurisée | E12 | [API](../05-api/API.md), `frontend/lib/api/client.ts` | 🟡 |
-| C18 | Tester le front-end (couverture ≥ 50 %) | E13 | `frontend/__tests__` (Vitest) — ⚠️ couverture à vérifier | 🟡 |
-| C19 | Industrialiser le front-end | E14 | `.github/workflows/frontend-tests.yml` | ✅ |
-| C20 | Performances SEO (≥ 70 %) | — | `landing-page/` (Astro) — ⚠️ à mesurer | ⬜ |
+| C13 | Concevoir l'interface utilisateur | E11 | `frontend/app/`, Radix/shadcn ARIA natif, axe-core CI, [Bloc2 §C13](./Bloc2_Frontend.md) | ✅ |
+| C14 | Éléments graphiques / charte | E11 | [Design System](../14-design/Design_System.md), `globals.css`, logos `assets/images/`, [Bloc2 §C14](./Bloc2_Frontend.md) | ✅ |
+| C15 | Mettre en œuvre l'UX (parcours, accessibilité) | E11 | 12 UC couverts, App Router, WCAG 2.1 AA, [Bloc2 §C15](./Bloc2_Frontend.md) | ✅ |
+| C16 | Langage front (qualité, sécurité, écoconception) | E11 | ESLint, TypeScript strict, CSP/CORS/HSTS headers, React Compiler, [Bloc2 §C16](./Bloc2_Frontend.md) | ✅ |
+| C17 | Consommer une API de façon sécurisée | E12 | `client.ts` (Axios+JWT+refresh), Stripe redirect, STOMP+auth, [Bloc2 §C17](./Bloc2_Frontend.md) | ✅ |
+| C18 | Tester le front-end (couverture ≥ 50 %) | E13 | **92 % Vitest** (gate 70 %), 746 tests, 3 specs Playwright E2E, [Bloc2 §C18](./Bloc2_Frontend.md) | ✅ |
+| C19 | Industrialiser le front-end | E14 | `frontend-tests.yml`, `e2e-tests.yml`, Dependabot, [Bloc2 §C19](./Bloc2_Frontend.md) | ✅ |
+| C20 | Performances SEO (≥ 70 %) | — | Astro SSG (HTML statique), meta/OG tags — ⚠️ Lighthouse non mesuré (TF-SEO-001), [Bloc2 §C20](./Bloc2_Frontend.md) | 🟡 |
 
 ### Bloc 3 — Back-end
 
 | Comp. | Intitulé court | Livrable | Où dans TaskForce | Statut |
 | :---: | -------------- | :------: | ----------------- | :----: |
-| C21 | Couche de persistance (sécurité en profondeur) | E15 | [Architecture §6](../03-architecture/Architecture.md), JPA/Flyway | ✅ |
-| C22 | Langage back (qualité, sécurité, écoconception) | E16 | [Architecture §4](../03-architecture/Architecture.md) (Spring Boot 4) | ✅ |
-| C23 | Système de paiement + monétisation | E17 | Stripe — ⚠️ webhooks stubés ([PC-005](../09-audits/Problemes_Connus.md)) | 🟡 |
-| C24 | Développer une API sécurisée | E18 | [API](../05-api/API.md), `SecurityConfig`, Swagger/OpenAPI | 🟡 |
-| C25 | Tester le back-end (couverture ≥ 50 %) | E19 | `backend/tf-api/src/test` — ⚠️ couverture à compléter | 🟡 |
-| C26 | Industrialiser le back-end | E20 | `.github/workflows/backend-tests.yml`, `release.yml` | ✅ |
+| C21 | Couche de persistance (sécurité en profondeur) | E15 | `WorkspaceAccessInterceptor`, `AuditableEntity`, `EncryptedStringConverter`, [Bloc3 §C21](./Bloc3_Backend.md) | ✅ |
+| C22 | Langage back (qualité, sécurité, écoconception) | E16 | Architecture `shared/core/modules`, Virtual Threads Java 21, Trivy/Semgrep, [Bloc3 §C22](./Bloc3_Backend.md) | ✅ |
+| C23 | Système de paiement + monétisation | E17 | Stripe Checkout + 5 webhooks + portail billing — ⚠️ PC-005 webhooks stubés, [Bloc3 §C23](./Bloc3_Backend.md) | 🟡 |
+| C24 | Développer une API sécurisée | E18 | JWT+Keycloak, `@Valid` DTOs, AES-256-GCM, OpenAPI `/swagger-ui.html`, [Bloc3 §C24](./Bloc3_Backend.md) | ✅ |
+| C25 | Tester le back-end (couverture ≥ 50 %) | E19 | **78 % JaCoCo** (gate 60 %), 670 tests, Testcontainers no-mock, [Bloc3 §C25](./Bloc3_Backend.md) | ✅ |
+| C26 | Industrialiser le back-end | E20 | `backend-tests.yml`, `release.yml`, images GHCR, Trivy+Semgrep+ZAP, [Bloc3 §C26](./Bloc3_Backend.md) | ✅ |
 
 ### Bloc 4 — Déploiement & production
 
 | Comp. | Intitulé court | Livrable | Où dans TaskForce | Statut |
 | :---: | -------------- | :------: | ----------------- | :----: |
-| C27 | Documentation technique + base de connaissances | E29 | **Ce Brain OS**, [technique/](../03-architecture/Architecture.md), Swagger | 🟡 |
-| C28 | Administration (domaine, DNS, certificats, sécurité) | E23 | `nginx/`, prod compose — ⚠️ à documenter | ⬜ |
-| C29 | Sélectionner une plateforme d'hébergement | E21 | diagramme de déploiement — à produire | ⬜ |
-| C30 | Administrer des services d'hébergement (cloud/conteneur) | E22 | `docker-compose.prod.yml`, Keycloak, bastion — ⚠️ à formaliser | 🟡 |
-| C31 | Déploiement automatisé (DevOps / CI-CD) | E24 | `.github/workflows/release.yml`, `version-management.yml`, [GHCR](../06-infra/docker/GHCR_USAGE.md) | 🟡 |
-| C32 | Supervision (sondes, alertes, journalisation) | E25–E28 | SigNoz (`docker-compose.tools.yml`), actuator/prometheus | 🟡 |
+| C27 | Documentation technique + base de connaissances | E29 | Ce Brain OS, OpenAPI auto-généré, `version-management.yml`, [Release Notes](../15-utilisateur/Release_Notes.md), [Bloc4 §C27](./Bloc4_Deploiement_Production.md) | ✅ |
+| C28 | Administration (domaine, DNS, certificats, sécurité) | E23 | `nginx/nginx.conf`, Let's Encrypt, DNS SPF/DKIM, OAuth callbacks, [Bloc4 §C28](./Bloc4_Deploiement_Production.md) | ✅ |
+| C29 | Sélectionner une plateforme d'hébergement | E21 | [Stratégie Hébergement](../06-infra/Strategie_Hebergement.md) (Option A VM + Option B Render), `render.yaml`, [Bloc4 §C29](./Bloc4_Deploiement_Production.md) — ⚠️ déploiement prod stand-by | 🟡 |
+| C30 | Administrer des services d'hébergement (cloud/conteneur) | E22 | `docker-compose.prod.yml`, réseaux Docker isolés, bastion SSH, [Bloc4 §C30](./Bloc4_Deploiement_Production.md) | ✅ |
+| C31 | Déploiement automatisé (DevOps / CI-CD) | E24 | 7 workflows GitHub Actions, images GHCR versionnées, [Pipeline CI/CD](../08-operations/Pipeline_CICD.md), [Bloc4 §C31](./Bloc4_Deploiement_Production.md) | ✅ |
+| C32 | Supervision (sondes, alertes, journalisation) | E25–E28 | OTel→SigNoz, 9 alertes Prometheus, `AuditService`, `backup.ps1`, ZAP/Trivy/Semgrep, [Bloc4 §C32](./Bloc4_Deploiement_Production.md) | ✅ |
 
 ## 4. Conventions de rédaction
 
@@ -175,6 +175,6 @@ Règles : rédaction **narrative** (paragraphes, pas de listes sèches) conform�
 > [Brain OS](../../Brain_OS.md). Les écarts connus (tests, RGPD, SEO, déploiement) sont des **chantiers de
 > rédaction**, tracés dans [Problèmes connus](../09-audits/Problemes_Connus.md).
 
-**Dernière mise à jour :** 08/06/2026  
-**Version :** 0.1  
+**Dernière mise à jour :** 05/07/2026  
+**Version :** 1.0  
 **Projet :** Taskforce — Metz Numeric School 2025-2026
