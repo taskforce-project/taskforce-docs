@@ -140,22 +140,21 @@ tags: [documentation, catalogue, livrables, senior, fullstack, soutenance, pdf]
 
 | Doc | Sujet | Statut | ⭐ | Emplacement |
 | --- | --- | :--: | :--: | --- |
-| **Manuel utilisateur** | Prise en main (collaborateur/manager) | 🟡 | ⭐ | `15-utilisateur/Manuel_Utilisateur.md` |
-| Guide d'installation | Démarrage stack | ✅ | ⭐ | `15-utilisateur/Guid_Installation.md` |
-| FAQ | Questions fréquentes | 🟡 | | `15-utilisateur/FAQ.md` |
-| **Release notes / CHANGELOG** | Historique versions | 🟡 | ⭐ | `15-utilisateur/Release_Notes.md` |
-| Guide d'administration | Config workspace/rôles/plans | ⬜ | | à créer |
+| **Manuel utilisateur** | 12 sections UC-01→12 : inscription/OTP, RBAC, workspaces, projets, issues/Kanban, Smart Assign, cycles, pages, chat STOMP, Stripe, RGPD | ✅ | ⭐ | `15-utilisateur/Manuel_Utilisateur.md` (05/07) |
+| Guide d'installation | Démarrage stack Docker Compose | ✅ | ⭐ | `15-utilisateur/Guid_Installation.md` |
+| **FAQ** | 6 thèmes : compte, tâches/IA, collaboration, facturation, données/RGPD, techniques | ✅ | | `15-utilisateur/FAQ.md` (05/07) |
+| **Release notes / CHANGELOG** (E29) | V1.0.0 soutenance RNCP — 15 catégories features, git history Oct 2025→Jul 2026, backlog prioritaire | ✅ | ⭐ | `15-utilisateur/Release_Notes.md` (05/07) |
+| Guide d'administration | Config workspace/rôles/plans (ADMIN/OWNER) | ⬜ | | backlog |
 
 ## 11. Légal & Conformité (Juriste)
 
 | Doc | Sujet | Statut | ⭐ | Emplacement |
 | --- | --- | :--: | :--: | --- |
-| **Politique de confidentialité** | RGPD, données, droits | 🟡 | ⭐ | front (page) → doc |
-| Politique cookies | Consentement | 🟡 | | front (bannière) → doc |
-| CGU / CGV | Conditions d'utilisation/vente | ⬜ | | à créer |
-| Mentions légales | Éditeur, hébergeur | ⬜ | | à créer |
-| **Registre des traitements (Art. 30)** | RGPD | ⬜ | ⭐ | à créer |
-| **Audit RGPD cas pro** (sujet externe) | Livrable E9 | ⬜ | ⭐ | à créer |
+| **Registre des traitements (Art. 30)** | 7 traitements RGPD documentés avec base légale, sous-traitants, droits | ✅ | ⭐ | `07-securite/Registre_Traitements_RGPD.md` (05/07) |
+| **Audit RGPD conformité** (E9) | Analyse conformité ~75%, droits personnes, Privacy by Design, 9 gaps tracés | ✅ | ⭐ | `07-securite/Audit_RGPD_Conformite.md` (05/07) |
+| **Politique de confidentialité + CGU** | Pages réelles landing (`PrivacyPolicyPageNew.tsx`, `TermsPageNew.tsx`) + analyse cohérence code↔politique + gaps légaux | ✅ | ⭐ | `07-securite/Politique_Confidentialite_CGU.md` (05/07) |
+| Politique cookies | Décrite dans Privacy Policy, pas de bannière interactive implémentée | 🟡 | | TF-RGPD-001 |
+| Mentions légales | Email contact présent (legal@taskforce.app), page dédiée LEN Art. 6 absente | 🟡 | | TF-RGPD-005 |
 
 ## 12. Veille & Innovation
 
