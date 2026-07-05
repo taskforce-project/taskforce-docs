@@ -47,7 +47,7 @@ service → store → routes côté frontend. L'état « Santé » est réconcil
 
 | Domaine | Backend (contrôleur · service) | Frontend (service · store) | Santé |
 | ------- | ------------------------------ | -------------------------- | :---: |
-| Auth & Inscription | `AuthController` · `AuthService`,`KeycloakService`,`OtpService`,`EmailService`,`JwtService` | `auth-service` · `auth-context` | ✅ (refresh/logout stubés) |
+| Auth & Inscription | `AuthController` · `AuthService`,`KeycloakService`,`KeycloakAuthService`,`OtpService`,`EmailService` | `auth-service` · `auth-context` | ✅ (OIDC RS256 Keycloak ; refresh/logout natifs) |
 | Facturation | `Stripe*Controller` · `StripeService` | `stripe-service` | ⚠️ webhooks stubés |
 | Profil utilisateur | `User`/`ProfileController` · `UserService`,`ProfileService` | `user`/`profile-service` · `user`/`profile-store` | ⚠️ import profile-service |
 | Workspace (tenant) | `WorkspaceController` · `WorkspaceService` | `workspace-service` · `workspace-store` | ✅ |
