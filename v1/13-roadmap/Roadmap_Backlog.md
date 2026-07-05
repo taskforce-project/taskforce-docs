@@ -166,12 +166,15 @@ le <strong>socle minimal</strong> ; les items marqués ★ vont au-delà). À pi
 
 | ID | Tâche | Prio | Effort | RNCP | Réf |
 | -- | ----- | :--: | :----: | :--: | --- |
-| TF-RGPD-001 | Bandeau de consentement cookies (caractéristiques techniques détaillées) | 🟠 P1 | M | C11/E9 | — |
-| TF-RGPD-002 | Vue « Politique de confidentialité & traitement des données personnelles » | 🟠 P1 | S | C11/E9 | — |
-| TF-RGPD-003 | Formulaire de demande d'accès aux données personnelles + traitement | 🟠 P1 | M | C11/E9 | — |
-| TF-RGPD-004 | Double opt-in sur les traitements collectant des données personnelles | 🟡 P2 | M | C11/E9 | — |
-| TF-RGPD-005 | Mentions légales + CGU/CGV | 🟡 P2 | S | C11 | — |
-| TF-RGPD-006 | Registre des traitements + analyse d'impact (collaborateurs : compétences/charge) | 🟡 P2 | M | C11 | ★ |
+| TF-RGPD-001 | **Bannière de consentement cookies** interactive (CNIL) — actuellement décrite dans Privacy Policy mais pas de bannière implémentée | 🟡 P2 | M | C11/E9 | Politique_Confidentialite_CGU §5 |
+| TF-RGPD-002 | ✅ **Politique de confidentialité** — **fait (05/07)** : `PrivacyPolicyPageNew.tsx` + `constants_en.ts` (privacy) | ✅ | — | C11/E9 | Politique_Confidentialite_CGU |
+| TF-RGPD-003 | ✅ **Accès/export/suppression RGPD** — **fait** : `GdprService.exportMyData` + `deleteMyAccount` + `GdprController` (`/api/gdpr/*`) | ✅ | — | C11/E9 | Audit_RGPD_Conformite §2 |
+| TF-RGPD-004 | Double opt-in sur les traitements collectant des données personnelles | 🟢 P3 | M | C11/E9 | — |
+| TF-RGPD-005 | **Mentions légales** dédiées (LEN Art. 6) + corriger sous-traitants dans `constants_en.ts` (remplacer AWS/GA par Render/MinIO) | 🟡 P2 | S | C11 | Politique_Confidentialite_CGU §4 |
+| TF-RGPD-006 | ✅ **Registre des traitements + audit RGPD** — **fait (05/07)** : `Registre_Traitements_RGPD.md` (7 traitements Art. 30) + `Audit_RGPD_Conformite.md` (E9) | ✅ | — | C11/E9 | Registre_Traitements_RGPD |
+| TF-RGPD-007 | **Suppression auto compte Keycloak** à l'effacement — `GdprService.deleteMyAccount` ne supprime pas le compte Keycloak côté IdP | 🟡 P2 | S | C11 | Audit_RGPD_Conformite §2.2 |
+| TF-RGPD-008 | **DPA formel Groq** — formaliser Data Processing Agreement avec Groq Inc. (USA) pour le contexte LLM Smart Assign | 🟡 P2 | S | C11 | Registre_Traitements_RGPD §T4 |
+| TF-RGPD-009 | **Procédure notification violations** (Art. 33 RGPD) — délai 72h CNIL non documenté comme procédure opérationnelle | 🟡 P2 | S | C11 | Audit_RGPD_Conformite §7 |
 
 ## 9. Conventions & process
 
