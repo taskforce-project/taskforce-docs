@@ -103,7 +103,9 @@ tags: [documentation, catalogue, livrables, senior, fullstack, soutenance, pdf]
 | Doc | Sujet | Statut | ⭐ | Emplacement |
 | --- | --- | :--: | :--: | --- |
 | **Politique de sécurité (SSI)** + posture | Défense en profondeur, OWASP Top 10 | ✅ | ⭐ | `07-securite/Sécurité.md` |
-| Analyse de menaces (threat model / STRIDE) | Surfaces d'attaque | ⬜ | | à créer |
+| **PSSI (Politique de Sécurité SI)** | DICP, principes directeurs, IAM/RBAC, protection données, OWASP, audit, rôles, gestion vulnérabilités | ✅ | ⭐ | `07-securite/PSSI.md` (05/07) |
+| **Plan de sécurisation (5 étapes) + S-SDLC** | Cycle de vie sécurisé 6 étapes, plan 5 étapes, DevSecOps, checklist 10 commandements | ✅ | ⭐ | `07-securite/Plan_Securisation_SSDLC.md` (05/07) |
+| **Analyse de menaces (threat model / STRIDE)** | DFD + 4 gardes, 6 catégories STRIDE × flux réels + preuves, risques résiduels | ✅ | ⭐ | `07-securite/Threat_Model_STRIDE.md` (05/07) |
 | **Audit / pentest** (OWASP ZAP, SAST/SCA) | Résultats + remédiation | ✅ | ⭐ | `07-securite/Sécurité.md` |
 | Gestion des secrets | Variables d'env, `.env`, Keycloak | 🟡 | | `06-infra/` |
 | **Conformité RGPD** (registre Art.30, politique, cookies, droits) | Traçabilité des traitements | 🟡 | ⭐ | à compléter (`07-securite/` + front) |
