@@ -144,6 +144,7 @@ le <strong>socle minimal</strong> ; les items marqués ★ vont au-delà). À pi
 | TF-TEST-006 | ★ Tests de contrat API (front ↔ back) pour prévenir les régressions de routes | 🟡 P2 | M | C17/C24 | PC-001/002 |
 | TF-TEST-007 | Tests de non-régression + gate de couverture en CI | 🟡 P2 | M | C19/C26 | — |
 | TF-TEST-008 | Tests d'accessibilité (axe) et UX (utilisateurs en situation de handicap) | 🟢 P3 | M | C18 | — |
+| TF-TEST-009 | **Tests de charge/performance** (k6/Gatling) sur endpoints critiques — vérifier les seuils PERF-01..05 du STB (actuellement validés en comportement, pas en latence) | 🟡 P2 | M | C25 | STB §1 |
 
 ## 7. Sécurité
 
@@ -155,9 +156,11 @@ le <strong>socle minimal</strong> ; les items marqués ★ vont au-delà). À pi
 | TF-SEC-004 | Gestion des secrets (hors repo, vault/CI secrets, rotation) | 🟠 P1 | M | C21 | — |
 | TF-SEC-005 | En-têtes HTTP de sécurité (HSTS, CSP, X-Frame-Options…) + SSL valide | 🟠 P1 | M | C16 | DT-019 |
 | TF-SEC-006 | Contrôle d'accès : revue des `@PreAuthorize`/checks workspace/projet | 🟠 P1 | M | C21/C24 | — |
-| TF-SEC-007 | ★ Modèle de menaces (threat model) + registre des risques | 🟢 P3 | M | C21 | ★ |
+| TF-SEC-007 | ★ Modèle de menaces (threat model) + registre des risques — ✅ **05/07 : STRIDE documenté** (`07-securite/Threat_Model_STRIDE.md`, 6 catégories × flux réels + risques résiduels) | 🟢 P3 | M | C21 | ★ |
 | TF-SEC-008 | Sécurité paiement : vérification signature webhook Stripe, PCI scope | 🟠 P1 | M | C23 | PC-005 |
 | **TF-SEC-009** | **Migrer l'émission des JWT vers Keycloak** (Authorization Code / ROPC) — supprimer `JwtService` + table `refresh_tokens` + décoder via `issuer-uri` JWK Keycloak (RS256). Révoque les tokens à la déconnexion, active le refresh natif OIDC. **Doc à mettre à jour après** : `Auth_Autorisation.md`, `ADR-003`, séquence login dans `Diagrammes_Sequence_UML.md`. | 🟠 P1 | L | C21/C24 | PC-019 |
+| TF-SEC-010 | **DAST ZAP baseline en CI** (bloquant sur alerte HIGH) — complète TF-SEC-002/003 (SAST/SCA déjà spécifiés en CI). Intègre `security-scan.ps1 -Dast` au pipeline avant release. | 🟡 P2 | M | C19/C21 | Threat_Model_STRIDE §4 |
+| TF-SEC-011 | **Rate limiting distribué** (Redis / Bucket4j distributed) — `RateLimitFilter` stocke les buckets en `ConcurrentHashMap` local ; incohérent en déploiement multi-instances. | 🟡 P2 | M | C30 | Threat_Model_STRIDE (D3) |
 
 ## 8. RGPD & légal
 
