@@ -70,7 +70,7 @@ Le `GdprService.deleteMyAccount()` exécute les étapes suivantes (code réel) :
 - `subscription_history` : obligation légale comptable (10 ans)
 - Contenu créé dans les workspaces : ownership transféré ou orphan (à définir)
 
-**Gap confirmé** : la suppression du compte Keycloak n'est pas automatisée. L'accès est techniquement coupé (`isActive=false` + tokens révoqués), mais l'identité reste dans l'IdP. → TF-RGPD-007.
+**✅ Corrigé (05/07/2026)** : la suppression du compte Keycloak est désormais automatisée — `GdprService.deleteMyAccount` appelle `KeycloakService.deleteUser` **après commit** (tolérant à l'échec, journalisé pour rejeu). L'identité est effacée côté IdP et les sessions invalidées. TF-RGPD-007 clos. *(Auparavant : accès coupé via `isActive=false` mais identité conservée dans l'IdP.)*
 
 ---
 
@@ -150,7 +150,7 @@ Le chiffrement AES-256-GCM est appliqué sur les colonnes à risque (code `Encry
 | Politique de confidentialité | ✅ Page dédiée | `landing-page/src/pages/privacy-policy.astro` + `PrivacyPolicyPageNew.tsx` |
 | CGU/CGV | ✅ Page dédiée | `landing-page/src/pages/terms.astro` + `TermsPageNew.tsx` |
 | Mentions légales | ⬜ Pas de page dédiée | Gap — mentions légales à ajouter dans la landing (nom, adresse, SIRET) |
-| Politique cookies | 🟡 Décrite dans Privacy Policy | Pas de bannière cookies interactive implémentée → TF-RGPD-002 |
+| Politique cookies | ✅ Notice d'information présente | `cookie-banner.tsx` (05/07) — cookies strictement nécessaires uniquement, donc consentement non requis CNIL ; pas de traceurs → TF-RGPD-001 clos |
 | Accès à l'export et à la suppression | ✅ | `GdprController` (`/api/gdpr/export`, `/api/gdpr/delete-account`) |
 
 ---
