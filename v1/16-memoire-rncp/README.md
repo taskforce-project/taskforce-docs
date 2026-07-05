@@ -26,6 +26,7 @@ Logo projet        : assets/images/logo_taskforce.png
 - [Bloc 2 — Front-end](./Bloc2_Frontend.md)
 - [Bloc 3 — Back-end](./Bloc3_Backend.md)
 - [Bloc 4 — Déploiement & production](./Bloc4_Deploiement_Production.md)
+- 📚 **[Catalogue exhaustif de la documentation](../Catalogue_Documentation.md)** · 🗺️ **[Roadmap Documentation](./Roadmap_Documentation.md)** · 📝 [Stratégie de documentation](./Strategie_Documentation.md)
 - [CDC initial](../01-projet/Dossier_Projet.md) · [Architecture technique](../03-architecture/Architecture.md)
 
 **Tags :** `#memoire` `#rncp` `#dossier-validation` `#dfs`
@@ -95,6 +96,14 @@ Légende statut : ✅ couvert (preuve prête) · 🟡 partiel (preuve existe, à
 Le statut initial ci-dessous est une <strong>estimation</strong> basée sur l'état du code (Brain OS) ; à
 ajuster au fil de la rédaction.
 </p>
+
+> **▶ État réel au 05/07/2026 (les statuts du tableau datent du 08/06 et sont périmés).** Depuis :
+> - **C18 tests front ✅** (Vitest v8, **92 % lignes**, 746 tests + **E2E Playwright** 4/4).
+> - **C25 tests back ✅** (JaCoCo, **78 %**, 670 tests : unit + `@WebMvcTest` + intégration Postgres réel).
+> - **C21/C24 sécurité 🟢** : en-têtes durcis **testés** (OWASP A05), IDOR fermés (`AuthorizationService`), chiffrement PII (AES-256-GCM). RGPD **de TaskForce** (audit + export/effacement) livré & validé — ⚠️ distinct de **C11/E9** (audit RGPD d'un **cas pro externe**, toujours ⬜).
+> - **C28/E28 détection de failles ✅** : pentest **OWASP ZAP** (0 HIGH, 4 MEDIUM CSP dev) + SAST Semgrep + SCA/images Trivy (`scripts/security-scan.ps1`).
+> - **C32/E25 journalisation ✅** : **audit backend** (`AuditLog`, 7 events) + **observabilité OTEL → SigNoz** + **logs front → serveur** (`ClientLogController` + `client-logger.ts`, 05/07) + **PS/PCA-PRA opérationnel testé** (`scripts/backup.ps1`). **E26 supervision ✅** : sondes actuator `health`/`prometheus` (corrigé : registry manquant) + OTEL→SigNoz + **9 règles d'alerte** (`observability/alerts/`, format Prometheus portable).
+> - **Reste prioritaire** : conception formalisée (C6 wireframes, C7/C8 UML/MCD/MLD, cas d'usage), **C11/E9 RGPD cas pro**, **C12/E10 veille**, **C20 SEO landing**, **Bloc 4** (C28–C31 déploiement : hébergement, DNS/TLS, prod sécurisée), gestion projet (E1–E6). CI (C19/C26 gates bloquants) reportée.
 
 ### Bloc 1 — Concevoir et modéliser
 
