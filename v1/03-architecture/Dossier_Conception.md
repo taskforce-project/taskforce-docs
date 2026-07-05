@@ -100,7 +100,7 @@ automatique des issues).
 | Famille | Exemple d'exigence | Source |
 |---|---|---|
 | PERF | API p95 < 200 ms ; smart-assign < 3 s | Prometheus histogram |
-| SEC | OWASP Top 10 couvert ; JWT HS512 ; HTTPS prod | `SecurityConfig.java` |
+| SEC | OWASP Top 10 couvert ; JWT RS256 (Keycloak OIDC) ; HTTPS prod | `SecurityConfig.java` |
 | QUAL | JaCoCo ≥ 60 % ; Vitest ≥ 90 % ; TS strict | `pom.xml` + `vitest.config.ts` |
 | DISP | RTO < 2 h ; PRA documenté | `PS_PCA_PRA.md` |
 | INT | Stripe + GitHub + Slack OAuth opérationnels | `docker-compose.dev.yml` |
@@ -298,8 +298,8 @@ Inscription (3 étapes) :
   3. POST /api/auth/complete-registration → création compte Keycloak + JWT
 
 Login :
-  → Keycloak OIDC (Resource Owner Password Grant ou Authorization Code)
-  → JWT HS512 validé par Spring OAuth2 Resource Server
+  → Keycloak OIDC (Resource Owner Password Grant)
+  → tokens RS256 émis par Keycloak, validés par Spring OAuth2 Resource Server (JWK + issuer)
 ```
 
 ### 6.2 Autorisation — RBAC au niveau service
@@ -316,7 +316,7 @@ Trois niveaux de vérification dans les services :
 | Risque OWASP | Contre-mesure implémentée |
 |---|---|
 | A01 Broken Access Control | RBAC service-level + tests `WorkspaceMemberGuardTest` |
-| A02 Crypto Failures | JWT HS512 ; TLS prod (Nginx) ; secrets env vars |
+| A02 Crypto Failures | JWT RS256 (Keycloak) ; TLS prod (Nginx) ; secrets env vars ; AES-256-GCM PII |
 | A03 Injection | JPA paramétré + `@Valid` Bean Validation |
 | A07 Auth Failures | Keycloak gère bruteforce + refresh rotation |
 | A09 Logging failures | `AuditLog` + SigNoz traces |
@@ -350,7 +350,7 @@ Les 10 décisions d'architecture qui ont le plus impacté la conception :
 |---|---|---|
 | ADR-001 | Spring Boot 4 + Maven + Java 21 | Tout le backend, 56 migrations Flyway |
 | ADR-002 | Multi-tenant logique + OWNER/ADMIN/MEMBER | `workspace_id` sur 40+ tables ; `AuthorizationService` |
-| ADR-003 | Keycloak IdP + JWT HS512 | Inscription 3 étapes ; `SecurityConfig` OAuth2 RS |
+| ADR-003 / ADR-011 | Keycloak IdP ; tokens **OIDC RS256** émis par Keycloak (ex-JWT HS512, migré) | Inscription 3 étapes ; `SecurityConfig` OAuth2 RS |
 | ADR-004 | Groq Java direct | `GroqService` dans `core/service/` ; ai-service vestigial |
 | ADR-005 | pgvector natif | `V51` + `KnowledgeNode.embedding vector(1536)` |
 | ADR-006 | RabbitMQ + STOMP | Architecture temps réel WebSocket + relay |
