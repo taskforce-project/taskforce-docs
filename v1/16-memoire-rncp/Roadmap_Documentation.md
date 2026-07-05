@@ -114,15 +114,15 @@ tags: [roadmap, documentation, production, memoire, rncp, soutenance]
 - [ ] **Guide d'administration** — ⬜ backlog (fonctionnalités ADMIN/OWNER — couvertes partiellement dans le Manuel)
 - ✅ Guide d'installation
 
-## Phase 10 — Veille & Innovation 🔭
-- [ ] ⭐ **Méthodologie de veille** + ≥3 entrées tracées (Groq, Next, Spring Boot 4…)
-- [ ] ⭐ **Note d'innovation / distance critique** (éco-responsabilité, inclusion, solutions originales)
+## Phase 10 — Veille & Innovation 🔭 ✅ **TERMINÉE (05/07)**
+- [x] ⭐ **Méthodologie de veille + 6 entrées tracées** — **fait (05/07)** : `17-veille/Veille_Technologique.md` (méthodologie sources/fréquence/processus, 6 entrées VT-001→006 : Spring Boot 4 Virtual Threads, Groq LPU, pgvector HNSW, SigNoz, OWASP/CNIL, Next.js 19 — chacune avec ADR, preuve code, suivi post-implémentation).
+- [x] ⭐ **Note d'innovation & distance critique** — **fait (05/07)** : `17-veille/Note_Innovation_Distance_Critique.md` (3 innovations : Smart Assign multi-dimensionnel + growth mode, Brain OS, observabilité sécurité ; 5 distances critiques : JWT HS512, rate limiting mono-instance, tests de charge absents, DPA Groq, Keycloak suppression ; éco-responsabilité : modèles légers/pgvector/Alpine/Groq LPU ; inclusion : WCAG 2.1 AA axe-core CI, growth mode Smart Assign, limites drag-and-drop/monolingue).
 
-## Phase 11 — Assemblage du dossier de validation 🎓
-- [ ] **Rédaction narrative** des 4 Blocs (`Bloc1..4`) — assembler les preuves par compétence
-- [ ] **Tableau d'équivalences** compétence ↔ partie du dossier (matrice `README.md` — maintenir à jour)
-- [ ] ⭐ **Présentation de synthèse (diapositives) au format PDF** (annexe obligatoire)
-- [ ] **Export & regroupement du bundle PDF** (tous les ⭐, ordre : Cadrage → Gestion → Conception → Réalisation → Qualité → Prod → Conformité → Utilisateur)
+## Phase 11 — Assemblage du dossier de validation 🎓 🟡 **En cours (05/07)**
+- [x] **Rédaction narrative** des 4 Blocs (`Bloc1..4`) — **fait (05/07)** : Bloc1 (C1–C12, v1.0), Bloc2 (C13–C20, v1.0), Bloc3 (C21–C26, v1.0), Bloc4 (C27–C32, v1.0) — critères cochés sur preuves réelles, narratif par compétence, gaps documentés honnêtement.
+- [x] **Tableau d'équivalences** compétence ↔ partie du dossier — **fait (05/07)** : `README.md` matrice mise à jour (statuts ✅/🟡/⬜ basés sur preuves réelles livrées).
+- [ ] ⭐ **Présentation de synthèse (diapositives) au format PDF** (annexe obligatoire) — ⬜ à produire
+- [ ] **Export & regroupement du bundle PDF** (tous les ⭐, ordre : Cadrage → Gestion → Conception → Réalisation → Qualité → Prod → Conformité → Utilisateur) — ⬜ à produire
 
 ---
 
