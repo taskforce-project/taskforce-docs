@@ -26,7 +26,7 @@ tags: [threat-model, stride, securite, menaces, owasp, risques, memoire, rncp, s
 | Actif | Sensibilité | Localisation |
 |---|---|---|
 | Credentials utilisateurs | 🔴 Secrète | Keycloak (hash) |
-| Tokens JWT / refresh | 🔴 Secrète | Client + table `refresh_tokens` |
+| Tokens JWT / refresh (émis par Keycloak) | 🔴 Secrète | Client (access) + cookie HttpOnly (refresh) ; sessions gérées par Keycloak |
 | Données personnelles (PII) | 🟠 Sensible | PostgreSQL (`users`, `enterprise_inquiries`) |
 | Données métier (issues, pages, chat) | 🟠 Confidentielle | PostgreSQL (multi-tenant) |
 | Secrets d'intégration (Stripe, Groq…) | 🔴 Secrète | Variables d'environnement |
@@ -66,14 +66,14 @@ Les **4 gardes** ①②③④ constituent la défense en profondeur côté backe
 
 | # | Menace | Vecteur | Mitigation implémentée | Preuve | Résiduel |
 |---|---|---|---|---|:---:|
-| S1 | Forger un JWT valide | Fabriquer un token sans le secret | Signature HS512 vérifiée par `NimbusJwtDecoder` | `SecurityConfig.jwtDecoder()`, `JwtServiceTest` | 🟢 Faible |
-| S2 | Rejouer un token volé | Vol de token (XSS, MITM) | TLS en transit + expiration courte de l'access token | `SecurityConfig`, `JwtService` | 🟠 Moyen (pas de révocation immédiate — TF-SEC-009) |
+| S1 | Forger un JWT valide | Fabriquer un token sans la clé privée | Signature **RS256** (clé privée détenue par Keycloak) vérifiée via JWK + issuer par `NimbusJwtDecoder` | `SecurityConfig.jwtDecoder()`, `AuthServiceTest` | 🟢 Faible |
+| S2 | Rejouer un token volé | Vol de token (XSS, MITM) | TLS + expiration courte + **révocation de session Keycloak** (`users().logout()`) | `SecurityConfig`, `KeycloakAuthService` | 🟢 Faible (révocation IdP possible) |
 | S3 | Brute-force de credentials | Essais massifs sur `/login` | Rate limiting 10 req/min/IP + Keycloak | `RateLimitFilter` (AUTH_STRICT) | 🟢 Faible |
 | S4 | Usurper une connexion WebSocket | Se connecter sans identité | Auth JWT au CONNECT STOMP | `StompAuthInterceptor`, `StompAuthInterceptorTest` | 🟢 Faible |
 | S5 | Faux compte à l'inscription | Email d'autrui | Vérification OTP (TTL 15 min) | `OtpService`, `V6` | 🟢 Faible |
 
-> **Point d'attention S2** : le secret HS512 est symétrique et partagé. La migration vers Keycloak
-> (RS256 asymétrique + révocation OIDC) réduirait le risque résiduel. → [[Roadmap_Backlog]] TF-SEC-009.
+> **✅ S2 traité (05/07/2026)** : migration effectuée vers **Keycloak RS256 asymétrique + révocation
+> OIDC** (`users().logout()`). Le risque résiduel de rejeu passe de moyen à faible. → [[Journal_Decisions_ADR|ADR-011]], TF-SEC-009.
 
 ### 3.2 🔧 Tampering — Altération de données
 
