@@ -73,8 +73,8 @@ tags: [tracabilite, exigences, tests, stb, qualite, couverture, memoire, rncp, s
 | SEC-02 | Headers HTTP OWASP (CSP, HSTS, X-Frame, nosniff…) | Présents sur toutes routes | `SecurityHeadersWebMvcTest` | ✅ |
 | SEC-03 | Rate limiting API | Actif | `RateLimitFilterTest` | ✅ |
 | SEC-04 | Chiffrement données sensibles au repos | `EncryptedStringConverter` | `EncryptedStringConverterTest` | ✅ |
-| SEC-05 | JWT HS512 | Signé HS512 | `JwtServiceTest` | ✅ |
-| SEC-06 | Durée de vie tokens | Access court + refresh DB | `JwtServiceTest` · `AuthServiceTest` (logout révoque refresh) | ✅ |
+| SEC-05 | JWT RS256 (Keycloak) | Signé RS256, validé via JWK + issuer | `AuthServiceTest` · `SecurityConfig` | ✅ |
+| SEC-06 | Durée de vie tokens | Access court + refresh **Keycloak natif** | `KeycloakAuthServiceTest` · `AuthServiceTest` (logout = `users().logout()`) | ✅ |
 | SEC-07 | Isolation multi-tenant | `workspace_id` vérifié | `AuthorizationServiceTest` · `CoreControllersWebMvcTest` (IDOR 403) | ✅ |
 | SEC-08 | Protection log-forging | Sanitisation `\n`/`\r` | `ClientLogControllerWebMvcTest` | ✅ |
 | SEC-09 | DAST ZAP baseline (0 alert HIGH) | 0 | `scripts/security-scan.ps1` (`-Dast`) — lancé manuellement | ⬜ |
@@ -105,7 +105,7 @@ tags: [tracabilite, exigences, tests, stb, qualite, couverture, memoire, rncp, s
 | CONF-01 | Export portabilité données | RGPD Art. 20 | `GdprServiceIntegrationTest` (export JSON, readOnly) | ✅ |
 | CONF-02 | Droit à l'oubli / anonymisation | RGPD Art. 17 | `GdprServiceIntegrationTest` (anonymize) | ✅ |
 | CONF-03 | Accessibilité WCAG 2.1 AA | WCAG 2.1 | `e2e/a11y.spec.ts` (axe-core, 0 violation critique) | ✅ |
-| CONF-04 | Sécurité authentification | OWASP ASVS L1 | `AuthControllerWebMvcTest` · `JwtServiceTest` · `RateLimitFilterTest` · `OtpServiceTest` | ✅ |
+| CONF-04 | Sécurité authentification | OWASP ASVS L1 | `AuthControllerWebMvcTest` · `AuthServiceTest` · `JwtIdentityResolverTest` · `RateLimitFilterTest` · `OtpServiceTest` | ✅ |
 | CONF-05 | HTTPS/TLS en production | TLS via Nginx | `docker-compose.prod.yml` (vérification manuelle) | ⬜ |
 
 ---
