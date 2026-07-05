@@ -4,7 +4,9 @@
 **Date :** 27/02/2026  
 **Auteur(s) :** Pierre MICHEL
 
-[![Type: Documentation Technique](https://img.shields.io/badge/Type-Documentation%20Technique-blue?style=for-the-badge)]() [![Statut: Draft](https://img.shields.io/badge/Statut-Draft-yellow?style=for-the-badge)]() [![Priorité: Critique](https://img.shields.io/badge/Priorité-Critique-red?style=for-the-badge)]()
+[![Type: Documentation Technique](https://img.shields.io/badge/Type-Documentation%20Technique-blue?style=for-the-badge)]() [![Statut: PS opérationnel](https://img.shields.io/badge/Statut-PS%20op%C3%A9rationnel%20(PCA%2FPRA%20cible)-green?style=for-the-badge)]() [![Priorité: Critique](https://img.shields.io/badge/Priorité-Critique-red?style=for-the-badge)]()
+
+> **Maj 05/07/2026** : le **Plan de Sauvegarde est opérationnel et testé** (`scripts/backup.ps1`, cycle backup→restore validé, cf. §2.2bis). PCA/PRA (bascule multi-site, WAL streaming, S3) = architecture cible à durcir au déploiement.
 
 ## Liens rapides
 
@@ -67,6 +69,29 @@ La base de données bénéficie d'une protection maximale avec un archivage WAL 
 | Fichiers utilisateurs | S3 versioning | Temps réel | 90 jours versions |
 | Configurations | Backup incrémental | À chaque modification | 365 jours |
 | Logs applicatifs | Agrégation continue | Temps réel | 90 jours |
+
+### 2.2bis Implémentation opérationnelle (V1 — livré & testé)
+
+> La §2.2 décrit l'architecture **cible** (WAL continu + S3 + 3-2-1). En **V1**, la sauvegarde/restauration
+> de la base est **opérationnelle et vérifiée de bout en bout** via un script dédié — le WAL streaming et
+> l'offsite S3 sont la trajectoire de durcissement (déploiement / post-V1).
+
+**Script** : `scripts/backup.ps1` (repo `taskforce-fullstack`).
+
+| Commande | Effet |
+| --- | --- |
+| `.\scripts\backup.ps1 backup` | `pg_dump -Fc` (format custom compressé) **dans** le conteneur → copie via `docker cp` vers `backups/taskforce-<horodatage>.dump` |
+| `.\scripts\backup.ps1 list` | liste les sauvegardes (taille, date) |
+| `.\scripts\backup.ps1 verify -File <dump>` | contrôle d'intégrité (`pg_restore --list`) |
+| `.\scripts\backup.ps1 restore -File <dump>` | restauration destructive (`pg_restore --clean --if-exists --no-owner`) |
+
+Choix : dump **format custom** (`-Fc`) plutôt que SQL brut → compression + restauration sélective + `pg_restore`.
+Copie **via le conteneur** (pas de pipe hôte) → aucune corruption binaire (même leçon que le seed UTF-8).
+`backups/` est **gitignored** (contient des données personnelles).
+
+**Test de reprise validé (04/07/2026)** : backup → suppression de 10 issues (267→257) → `restore` →
+**retour à 267** ✅. La restauration reconstitue fidèlement l'état du dump. À planifier (Tâche Windows / cron)
+pour tenir le **RPO 15 min** ; le RTO 4 h est confortable (restauration d'un dump < 1 min à cette échelle).
 
 ### 2.3 Infrastructure et réplication
 
