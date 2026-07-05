@@ -88,16 +88,17 @@ tags: [roadmap, documentation, production, memoire, rncp, soutenance]
 - [x] Gestion des secrets · Références conformité — **couvert** dans PSSI §3.3 + §5 (ISO 27034/OWASP ASVS L1). Config WAF → renvoyée Phase 7 (infra).
 - ✅ Politique de sécurité + posture OWASP (`Sécurité.md`) · Pentest ZAP/SAST/SCA · Plan réponse incident (🟡)
 
-## Phase 7 — Infra / DevOps / Prod 🚀
-- [ ] ⭐ **Architecture d'infrastructure / topologie**
-- [ ] ⭐ **Diagramme de déploiement** (E21)
-- [ ] ⭐ **Stratégie d'hébergement** (Guacamole / VM école)
-- [ ] **DNS / TLS / domaine + certificats** (E23)
-- [ ] ⭐ **Plan de déploiement** (procédure MEP) + **CI/CD pipeline**
-- [ ] ⭐ **Runbooks / Dossier d'exploitation** (`10-runbooks/` — vide)
-- [ ] Capacity planning / scaling
-- ✅ Observabilité + alertes (`observability/alerts/`) · PCA/PRA (`PS_PCA_PRA.md`)
-> ⚠️ Plusieurs items dépendent des **VM de l'école** (à préparer).
+## Phase 7 — Infra / DevOps / Prod 🚀 🟡 **Partielle (05/07 — stand-by VM école)**
+- [ ] ⭐ **Architecture d'infrastructure / topologie** — ⬜ (dépend du choix hébergement — voir [[Strategie_Hebergement]])
+- [ ] ⭐ **Diagramme de déploiement** (E21) — ⬜ (idem, deux options documentées)
+- [x] ⭐ **Stratégie d'hébergement** — **fait (05/07)** : `06-infra/Strategie_Hebergement.md` (Option A : VM école + `docker-compose.prod.yml` · Option B : Render + `render.yaml` · comparaison + recommandation · variables d'env requises · décision pendante stand-by).
+- [ ] **DNS / TLS / domaine + certificats** (E23) — ⬜ (dépend du choix hébergement)
+- [x] ⭐ **Pipeline CI/CD** — **fait (05/07)** : `08-operations/Pipeline_CICD.md` (7 workflows GitHub Actions réels : backend-tests, frontend-tests, e2e-tests, release, landing-tests, sync-badges, version-management — versioning SemVer indépendant par service, images GHCR, flux complet feature→dev→main).
+- [ ] ⭐ **Runbooks / Dossier d'exploitation** (`10-runbooks/` — vide) — ⬜ backlog TF-INFRA-009
+- [x] ✅ **Observabilité** — **fait (05/07)** : `06-infra/Observabilite.md` (OTel→SigNoz→ClickHouse, 5 pipelines, 9 alertes Prometheus (dispo/erreurs/saturation/sécurité), métriques Micrometer).
+- [ ] Capacity planning / scaling — ⬜ backlog
+- ✅ PCA/PRA (`PS_PCA_PRA.md`)
+> ⚠️ Architecture d'infra + Diagramme de déploiement + DNS/TLS restent en attente du choix d'hébergement (VM école stand-by). Deux options documentées : [[Strategie_Hebergement]].
 
 ## Phase 8 — Conformité & Légal ⚖️
 - [ ] ⭐ **Registre des traitements (Art. 30 RGPD)**
