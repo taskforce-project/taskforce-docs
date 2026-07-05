@@ -63,6 +63,10 @@ appliqué). Échelle d'effort : S ≤2h · M ½–1j · L 1–3j · XL &gt;3j.
 | PC-013 | 🟢 P3 | Command-palette « Create new issue » placeholder | Petit manque UX | S | Haute |
 | PC-014 | 🟢 P3 | Pas de feature flags IA | Ops ne peut pas toggler l'IA | M | Haute |
 | PC-015 | 🟢 P3 | Commentaire `context-path` périmé + chemin healthcheck | Induit en erreur ; bruit healthcheck | S | Moy. |
+| PC-019 | 🟠 P1 | **JWT émis par le backend** (pas Keycloak) — perte des bénéfices OIDC : révocation session, refresh natif, rotation clés, RS256 asymétrique | Sécurité auth dégradée vs une vraie intégration Keycloak | L | Haute |
+| PC-016 | ✅ Résolu (04/07) | **`canManage` toujours faux** page Membres (`/users/me` renvoie `id` en number, comparé en string → `"1"===1` faux) → gestion rôles/invitation/**redistribution** masquées **pour le OWNER** | Feature manager invisible | S | Haute |
+| PC-017 | ✅ Résolu (04/07) | **Export RGPD 500** : `GdprService.exportMyData` en `@Transactional(readOnly)` + INSERT audit → SQLSTATE 25006 (même pattern que FIX-006). Droit de portabilité **cassé** | Droit RGPD HS | S | Haute |
+| PC-018 | ✅ Résolu (30/06) | **Module test ne compilait plus** : `JwtServiceTest` appelait `JwtService.refreshAccessToken` (méthode supprimée, refresh migré dans `AuthService`) → toute la suite bloquée en silence | CI aveugle | S | Haute |
 
 ## 2. Détails par problème
 
