@@ -81,11 +81,11 @@ tags: [roadmap, documentation, production, memoire, rncp, soutenance]
 - [ ] **Rapport de recette / validation jury** (remplace le PV client — N/A projet solo)
 - ✅ Stratégie & plan de tests (`Tests.md`) · Rapport de couverture (78/92 %) · Dossier d'anomalies (`Problemes_Connus.md`)
 
-## Phase 6 — Sécurité 🔐
-- [ ] ⭐ **PSSI** (Politique de Sécurité SI)
-- [ ] ⭐ **Plan de sécurisation (5 étapes)** + **S-SDLC**
-- [ ] **Threat model (STRIDE)** + checklist « 10 commandements » + revue de code documentée
-- [ ] Gestion des secrets · Config WAF · Références conformité (ISO 27034/PCI-DSS/CNIL)
+## Phase 6 — Sécurité 🔐 ✅ **TERMINÉE (05/07)**
+- [x] ⭐ **PSSI** — **fait (05/07)** : `07-securite/PSSI.md` (DICP, 6 principes directeurs, IAM/RBAC, protection données + RGPD, couverture OWASP, journalisation/audit, rôles & responsabilités, gestion vulnérabilités — chaque règle ancrée dans le code réel).
+- [x] ⭐ **Plan de sécurisation (5 étapes)** + **S-SDLC** — **fait (05/07)** : `07-securite/Plan_Securisation_SSDLC.md` (S-SDLC 6 étapes conception→exploitation, plan 5 étapes cartographie→vérification, outillage DevSecOps Semgrep/Trivy/ZAP, checklist « 10 commandements », revue de code sécu).
+- [x] **Threat model (STRIDE)** — **fait (05/07)** : `07-securite/Threat_Model_STRIDE.md` (DFD + 4 gardes, 6 catégories STRIDE × flux réels avec preuves code, synthèse risques résiduels tracés au backlog, couverture STRIDE↔OWASP↔tests). Documente TF-SEC-007.
+- [x] Gestion des secrets · Références conformité — **couvert** dans PSSI §3.3 + §5 (ISO 27034/OWASP ASVS L1). Config WAF → renvoyée Phase 7 (infra).
 - ✅ Politique de sécurité + posture OWASP (`Sécurité.md`) · Pentest ZAP/SAST/SCA · Plan réponse incident (🟡)
 
 ## Phase 7 — Infra / DevOps / Prod 🚀
