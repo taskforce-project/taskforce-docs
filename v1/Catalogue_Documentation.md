@@ -115,14 +115,14 @@ tags: [documentation, catalogue, livrables, senior, fullstack, soutenance, pdf]
 
 | Doc | Sujet | Statut | ⭐ | Emplacement |
 | --- | --- | :--: | :--: | --- |
-| Architecture d'infrastructure / topologie | Conteneurs, réseau, volumes | 🟡 | ⭐ | `06-infra/Outils_Infra_Securite.md` |
-| **Diagramme de déploiement** | Hébergement (Guacamole/VM école) | ⬜ | ⭐ | à créer |
-| IaC / compose (dev/prod/tools) | `docker-compose.*`, `render.yaml` | 🟡 | | `06-infra/` |
-| **CI/CD pipeline** | Workflows GitHub, GHCR, release | 🟡 | ⭐ | `08-operations/DevOps.md` |
-| Stratégie d'hébergement | Cloud / on-prem / VM | ⬜ | ⭐ | à créer |
-| **DNS / TLS / domaine** | Certificats, reverse-proxy nginx | ⬜ | | à créer |
-| **Observabilité** (logs/traces/métriques/alertes) | OTEL/SigNoz + `alerts/` | ✅ | ⭐ | `observability/alerts/README.md` |
-| **Runbooks** (exploitation, incident, on-call) | Procédures d'ops | ⬜ | | `10-runbooks/` (vide) |
+| Architecture d'infrastructure / topologie | Conteneurs, réseau, volumes | 🟡 | ⭐ | `06-infra/Outils_Infra_Securite.md` — dépend choix hébergement |
+| **Diagramme de déploiement** (E21) | Hébergement (Guacamole/VM école ou Render) | ⬜ | ⭐ | à créer — dépend choix hébergement |
+| IaC / compose (dev/prod/tools) | `docker-compose.*`, `render.yaml` | ✅ | | `docker-compose.{yml,dev,prod,tools}.yml` + `render.yaml` |
+| **CI/CD pipeline** | 7 workflows GitHub Actions : tests, release, versioning SemVer indépendant, images GHCR | ✅ | ⭐ | `08-operations/Pipeline_CICD.md` (05/07) |
+| **Stratégie d'hébergement** | Option A : VM école + docker-compose.prod · Option B : Render · décision pendante | ✅ | ⭐ | `06-infra/Strategie_Hebergement.md` (05/07) |
+| **DNS / TLS / domaine** | Certificats, reverse-proxy nginx | ⬜ | | à créer — dépend choix hébergement |
+| **Observabilité** (logs/traces/métriques/alertes) | OTel→SigNoz→ClickHouse, 5 pipelines, 9 alertes Prometheus | ✅ | ⭐ | `06-infra/Observabilite.md` (05/07) |
+| **Runbooks** (exploitation, incident, on-call) | Procédures d'ops | ⬜ | | `10-runbooks/` (vide) — TF-INFRA-009 |
 | Capacity planning / scaling | Estimation charge (100k users) | 🟡 | | `03-architecture/` |
 
 ## 9. Qualité & Tests (QA)
