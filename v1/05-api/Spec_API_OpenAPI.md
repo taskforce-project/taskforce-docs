@@ -41,7 +41,7 @@ Le frontend lit systématiquement `response.data.data` (double `.data`).
 ### 1.2 Authentification
 
 - **Routes publiques** : aucun en-tête requis (liste complète §1.3).
-- **Routes protégées** : `Authorization: Bearer <jwt>` (token HS512 généré par `JwtService`).
+- **Routes protégées** : `Authorization: Bearer <jwt>` (token **RS256 émis par Keycloak**, validé via JWK + issuer).
 - **CSRF** : désactivé (API stateless, bearer token).
 
 ### 1.3 Routes publiques (sans JWT)
@@ -83,7 +83,7 @@ se fait dans les services via `AuthorizationService` :
 | `POST` | `/api/auth/select-plan` | Met à jour le plan sélectionné avant OTP | Public |
 | `POST` | `/api/auth/verify-otp` | Vérifie le code OTP (6 chiffres, TTL 15 min) | Public |
 | `POST` | `/api/auth/resend-otp` | Renvoi du code OTP | Public |
-| `POST` | `/api/auth/login` | Login (email + password) → JWT HS512 | Public |
+| `POST` | `/api/auth/login` | Login (email + password) → tokens Keycloak (RS256) | Public |
 | `POST` | `/api/auth/forgot-password` | Envoi email reset password | Public |
 | `POST` | `/api/auth/reset-password` | Reset password avec token email | Public |
 | `POST` | `/api/auth/refresh-token` | Renouvellement access token via refresh token | Public |
