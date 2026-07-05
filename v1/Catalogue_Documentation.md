@@ -160,12 +160,23 @@ tags: [documentation, catalogue, livrables, senior, fullstack, soutenance, pdf]
 
 | Doc | Sujet | Statut | ⭐ | Emplacement |
 | --- | --- | :--: | :--: | --- |
-| **Méthodologie de veille** + ≥3 entrées | Sources, fréquence (Groq, Next, Spring Boot 4…) | ⬜ | ⭐ | à créer |
-| Note d'innovation / distance critique | Éco-responsabilité, inclusion, solutions originales | 🟡 | ⭐ | à créer |
+| **Méthodologie de veille + 6 entrées tracées** | Sources/fréquence/processus, 6 entrées VT-001→006 (Spring Boot 4, Groq, pgvector HNSW, SigNoz, OWASP/CNIL, Next.js) avec ADR + preuves code | ✅ | ⭐ | `17-veille/Veille_Technologique.md` (05/07) |
+| **Note d'innovation & distance critique** | 3 innovations (Smart Assign, Brain OS, observabilité sécu) · 5 distances critiques · éco-responsabilité · inclusion/a11y | ✅ | ⭐ | `17-veille/Note_Innovation_Distance_Critique.md` (05/07) |
+
+## 13. Mémoire RNCP — Dossier de validation (32 compétences)
+
+| Doc | Sujet | Statut | ⭐ | Emplacement |
+| --- | --- | :--: | :--: | --- |
+| **Bloc 1 — Concevoir et modéliser** | C1–C12 : analyse demande, agile, env dev, wireframes, STB, modélisation, RGPD, veille — preuves réelles + critères cochés | ✅ | ⭐ | `16-memoire-rncp/Bloc1_Conception_Modelisation.md` (05/07) |
+| **Bloc 2 — Front-end** | C13–C20 : UI/UX/charte, parcours, qualité code front, API sécurisée, 92% Vitest, CI, SEO (Astro) | ✅ | ⭐ | `16-memoire-rncp/Bloc2_Frontend.md` (05/07) |
+| **Bloc 3 — Back-end** | C21–C26 : persistance sécurité-en-profondeur, Spring Boot 4 Virtual Threads, Stripe, API sécurisée OpenAPI, 78% JaCoCo, Trivy/ZAP | ✅ | ⭐ | `16-memoire-rncp/Bloc3_Backend.md` (05/07) |
+| **Bloc 4 — Déploiement & production** | C27–C32 : documentation auto-générée, nginx/TLS/DNS, hébergement (Option A VM + B Render), Docker, 7 workflows CI/CD, OTel→SigNoz 9 alertes, audit/backup/ZAP | ✅ | ⭐ | `16-memoire-rncp/Bloc4_Deploiement_Production.md` (05/07) |
+| **Matrice de couverture 32 compétences** | C1–C32 statuts ✅/🟡/⬜ avec liens vers preuves | ✅ | ⭐ | `16-memoire-rncp/README.md` (05/07) |
+| **Présentation de synthèse (slides PDF)** | Diapositives soutenance — annexe obligatoire dossier RNCP | ⬜ | ⭐ | à produire |
 
 ---
 
-## 13. Synthèse — priorités & bundle PDF soutenance
+## 15. Synthèse — priorités & bundle PDF soutenance
 
 ### 🔄 À REFAIRE en priorité (v2 technique)
 - **CdCF v2** + **CdCT v2** — refléter le vrai travail livré (fonctionnel **et** technique).
@@ -190,7 +201,7 @@ paiement) → **Qualité** (tests, couverture, recettes) → **Prod** (déploiem
 
 ---
 
-## 14. Compléments issus du référentiel école (slides C. Brasseur)
+## 16. Compléments issus du référentiel école (slides C. Brasseur)
 
 > Documents attendus par le cursus, à intégrer aux domaines ci-dessus. Sources : *Gestion de projet*,
 > *Tests & recettes*, *Application security*.
