@@ -35,7 +35,7 @@ tags: [tracabilite, exigences, tests, stb, qualite, couverture, memoire, rncp, s
 | PERF-04 | Chargement initial LCP | < 3 s | E2E `a11y.spec.ts` (Lighthouse integration) | 🟡 |
 | PERF-05 | Export RGPD JSON | < 5 s | `GdprServiceIntegrationTest` (assertion résultat, timer absent) | 🟡 |
 
-**Bilan PERF** : aucune exigence de performance n'est vérifiée par test de charge dédié (k6/Gatling non configurés — TF-PERF-001). Les tests existants valident le *comportement* mais pas les *seuils latence*.
+**Bilan PERF** : aucune exigence de performance n'est vérifiée par test de charge dédié (k6/Gatling non configurés — TF-TEST-009). Les tests existants valident le *comportement* mais pas les *seuils latence*.
 
 ---
 
@@ -80,7 +80,7 @@ tags: [tracabilite, exigences, tests, stb, qualite, couverture, memoire, rncp, s
 | SEC-09 | DAST ZAP baseline (0 alert HIGH) | 0 | `scripts/security-scan.ps1` (`-Dast`) — lancé manuellement | ⬜ |
 | SEC-10 | Signature webhooks Stripe HMAC | `Webhook.constructEvent` | `PaymentAndDataControllersWebMvcTest` (signature invalide → 400) | ✅ |
 
-**Bilan SEC** : 7/10 couvertes par tests automatiques. SEC-01 et SEC-09 dépendent du script Semgrep/Trivy/ZAP (lancé manuellement, à intégrer en CI — TF-SEC-012). SEC-08 supposé couvert — à confirmer si `ClientLogControllerWebMvcTest` teste bien la sanitisation.
+**Bilan SEC** : 7/10 couvertes par tests automatiques. SEC-01 et SEC-09 dépendent du script Semgrep/Trivy/ZAP (lancé manuellement, à intégrer en CI — TF-SEC-002/003 pour SAST/SCA, TF-SEC-010 pour DAST). SEC-08 supposé couvert — à confirmer si `ClientLogControllerWebMvcTest` teste bien la sanitisation.
 
 ---
 
@@ -159,13 +159,12 @@ tags: [tracabilite, exigences, tests, stb, qualite, couverture, memoire, rncp, s
 
 ### Gaps et actions recommandées
 
-| Priorité | ID | Libellé | Action |
+| Priorité | ID backlog | Libellé | Action |
 |:---:|---|---|---|
-| 🟠 P1 | TF-PERF-001 | Aucun test de charge (k6/Gatling) — PERF-01..05 non vérifiées par test | Créer suite k6 pour endpoints critiques |
-| 🟠 P1 | TF-SEC-012 | Semgrep/Trivy/ZAP non intégrés en CI — SEC-01/SEC-09 manuels | Ajouter job `security-scan` dans `backend-tests.yml` |
-| 🟡 P2 | TF-INT-008 | Test SMTP limité — intégration email non testée bout-en-bout | Ajouter test d'intégration Mailtrap/SMTP avec Testcontainers `mailhog` |
-| 🟡 P2 | TF-OPS-003 | DISP-01..04 sans test auto — PCA/PRA procédure uniquement | Créer runbook de restore testé + monitoring probe |
-| 🟢 P3 | TF-CT-008 | Règle `shared←core←modules` non vérifiée en CI | Ajouter `mvn dependency:analyze` ou ArchUnit dans CI |
+| 🟡 P2 | TF-TEST-009 | Aucun test de charge (k6/Gatling) — PERF-01..05 vérifiées en comportement, pas en latence | Créer suite k6 pour endpoints critiques |
+| 🟡 P2 | TF-SEC-002/003/010 | SAST/SCA (TF-SEC-002/003) et DAST ZAP (TF-SEC-010) non bloquants en CI — SEC-01/SEC-09 manuels | Intégrer `security-scan.ps1` au pipeline |
+| 🟠 P1 | TF-INFRA-006 | DISP-01..04 sans test auto — PCA/PRA procédure uniquement | Restore testé (TF-INFRA-006) + sonde monitoring |
+| 🟢 P3 | TF-CONV-002 | Règle `shared←core←modules` non vérifiée en CI | Ajouter ArchUnit ou `mvn dependency:analyze` (rattaché aux linters CI) |
 
 > ⚠️ **PC-019 / TF-SEC-009** : JWT émis par le backend (HS512) — une fois migré vers Keycloak
 > (RS256 OIDC), SEC-05 et SEC-06 devront être remappés vers les tests de validation JWK endpoint.
