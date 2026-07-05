@@ -141,7 +141,7 @@ migration `V4__workspace_members.sql` (colonne `role VARCHAR(20)`).
 
 ## ADR-003 — Keycloak comme Identity Provider + JWT HS512
 
-**Date** : Novembre 2025 | **Décideur** : Pierre MICHEL | **Statut** : ✅ Accepté
+**Date** : Novembre 2025 | **Décideur** : Pierre MICHEL | **Statut** : ✅ Accepté · ⚠️ **partiellement superseded par [[#ADR-011 — Émission des tokens par Keycloak (OIDC RS256), retrait du JWT HS512 custom|ADR-011]]** (05/07/2026) — le volet « JWT HS512 émis par le backend » est abandonné au profit de tokens Keycloak RS256. Keycloak reste l'IdP.
 
 ### Contexte
 
@@ -547,6 +547,59 @@ config) · `observability/alerts/` (9 règles Prometheus).
 - **✅ Positif** : 9 règles Prometheus conservées car Prometheus AlertManager = notification ops mature.
 - **⚠️ Risque** : SigNoz consomme ~1 Go RAM supplémentaire en prod — acceptable avec VM 8 Go.
 - **📝 Note** : Le CdCT v1 listait "Grafana/Prometheus" comme stack primaire — corrigé dans [[CdCT_v2]] §6.
+
+---
+
+## ADR-011 — Émission des tokens par Keycloak (OIDC RS256), retrait du JWT HS512 custom
+
+**Date** : Juillet 2026 | **Décideur** : Pierre MICHEL | **Statut** : ✅ Accepté — **supersède la partie « JWT HS512 » de [[#ADR-003 — Keycloak comme Identity Provider + JWT HS512|ADR-003]]**
+
+### Contexte
+
+L'ADR-003 avait retenu Keycloak comme IdP mais, par glissement pragmatique lors de l'implémentation de
+l'OTP, le backend **émettait ses propres JWT HS512** (`JwtService`, clé symétrique `JWT_SECRET`) au lieu
+de déléguer les tokens à Keycloak. Dette documentée **PC-019 / TF-SEC-009** : clé symétrique (fuite =
+tous les tokens compromis), pas de révocation de session native, pas de rotation de clés, recommandation
+ANSSI de préférer RS256/OIDC. Or `KeycloakAuthService` implémentait **déjà** le flux ROPC complet
+(authenticate/refresh/revoke) — ses tokens étaient simplement jetés.
+
+### Décision
+
+**Le backend ne signe plus aucun token.** Keycloak émet les access/refresh tokens (RS256) ; l'API agit en
+pur **Resource Server** :
+
+- **Validation** : `NimbusJwtDecoder` sur le JWK Set Keycloak (`/protocol/openid-connect/certs`) +
+  validation de l'`issuer` (`SecurityConfig.jwtDecoder`). Plus de décodeur HS512.
+- **Login** : `AuthService.login` renvoie directement les tokens de `KeycloakAuthService.authenticate` (ROPC).
+- **Refresh** : `KeycloakAuthService.refreshToken` (rotation gérée par l'IdP) — plus de table `refresh_tokens`.
+- **Logout** : `KeycloakService.logoutUser` (`users().logout()`) invalide toutes les sessions côté IdP.
+- **Identité courante** : inchangée — les contrôleurs résolvent l'utilisateur via le claim `email`
+  (présent dans le token Keycloak), donc **aucun des ~21 contrôleurs n'a été modifié**.
+- **Suppressions** : `JwtService`, `JwtDecoderConfig`, `TokenCleanupScheduler` (+ tests). Table
+  `refresh_tokens` conservée (pas de migration destructive) mais inutilisée.
+
+### Conséquence produit assumée
+
+L'**auto-login après vérification OTP / paiement est retiré** : Keycloak ne peut émettre un token sans mot
+de passe (absent à ce stade, l'OTP arrivant par email). Le parcours redirige désormais vers `/auth/login`
+(décision produit validée le 05/07). Alternatives écartées : Token Exchange Keycloak (surface de sécurité
+accrue — le back pourrait usurper n'importe qui) ; conserver un token HS512 pour ce seul cas (ne fermerait
+pas PC-019).
+
+### Preuve
+
+`SecurityConfig.java` (décodeur RS256) · `AuthService.java` (login/refresh/logout) ·
+`KeycloakAuthService.java` (ROPC déjà présent) · `KeycloakService.logoutUser` ·
+`application-prod.yml` (resourceserver.jwt issuer/jwk). **Vérifié : 658 tests backend + 54 frontend verts.**
+
+### Conséquences
+
+- **✅ Positif** : plus de clé symétrique ; rotation de clés et révocation de session gérées par l'IdP (ferme PC-019).
+- **✅ Positif** : surface de code auth réduite (3 classes + 2 tests supprimés) ; les tests contrôleurs, qui
+  mockent déjà le principal `Jwt` avec un claim `email`, restent valides sans modification.
+- **⚠️ Pré-requis déploiement** : le realm Keycloak doit émettre le claim `email` dans l'access token
+  (scope `email` par défaut) — sinon la résolution d'utilisateur échoue.
+- **📝 Note** : l'auto-login post-inscription est perdu (cf. ci-dessus) ; UX « login après inscription ».
 
 ---
 
