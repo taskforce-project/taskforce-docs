@@ -26,8 +26,8 @@ tags: [tracabilite, matrice, reconciliation, uc, entite, migration, test, memoir
 | Cas d'usage | Entité(s) principale(s) | Migration(s) Flyway | Test(s) représentatif(s) |
 |---|---|---|---|
 | **Inscription + OTP** | `User`, `OtpVerification` | `V1`, `V2`, `V3`, `V4` | `AuthServiceTest`, `OtpServiceTest`, `AuthControllerWebMvcTest` |
-| **Connexion (Keycloak/JWT)** | `User`, `RefreshToken` | `V1`, `V2`, `V3` | `AuthServiceTest`, `KeycloakAuthServiceTest`, `JwtServiceTest`, `JwtIdentityResolverTest` |
-| **Nettoyage tokens** | `RefreshToken` | `V2` | `TokenCleanupSchedulerTest` |
+| **Connexion (Keycloak OIDC RS256)** | `User` | `V1`, `V2`, `V3` | `AuthServiceTest`, `KeycloakAuthServiceTest`, `JwtIdentityResolverTest` |
+| ~~**Nettoyage tokens**~~ | — | — | *Retiré (ADR-011) : tokens gérés par Keycloak ; `TokenCleanupScheduler` + table `refresh_tokens` custom abandonnés.* |
 | **Gérer workspace & membres** | `Workspace`, `WorkspaceMember` | `V13`, `V14` | `WorkspaceServiceIntegrationTest` |
 | **Inviter des membres** | `WorkspaceInvitation` | `V42` | `WorkspaceInvitationServiceIntegrationTest` |
 | **Gérer projets** | `Project`, `ProjectMember`, `ProjectLabel` | `V15`, `V19`–`V21`, `V37`, `V41`, `V43`, `V45` | `ProjectServiceIntegrationTest`, `ProjectControllerWebMvcTest` |
