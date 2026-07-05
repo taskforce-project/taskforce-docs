@@ -157,6 +157,7 @@ le <strong>socle minimal</strong> ; les items marqués ★ vont au-delà). À pi
 | TF-SEC-006 | Contrôle d'accès : revue des `@PreAuthorize`/checks workspace/projet | 🟠 P1 | M | C21/C24 | — |
 | TF-SEC-007 | ★ Modèle de menaces (threat model) + registre des risques | 🟢 P3 | M | C21 | ★ |
 | TF-SEC-008 | Sécurité paiement : vérification signature webhook Stripe, PCI scope | 🟠 P1 | M | C23 | PC-005 |
+| **TF-SEC-009** | **Migrer l'émission des JWT vers Keycloak** (Authorization Code / ROPC) — supprimer `JwtService` + table `refresh_tokens` + décoder via `issuer-uri` JWK Keycloak (RS256). Révoque les tokens à la déconnexion, active le refresh natif OIDC. **Doc à mettre à jour après** : `Auth_Autorisation.md`, `ADR-003`, séquence login dans `Diagrammes_Sequence_UML.md`. | 🟠 P1 | L | C21/C24 | PC-019 |
 
 ## 8. RGPD & légal
 
