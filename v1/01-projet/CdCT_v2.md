@@ -196,8 +196,9 @@ avec repli SockJS sur `/ws-sockjs`.
 ### 5.2 Gestion des secrets
 
 Secrets injectés par variables d'environnement (fichiers `.env` non versionnés) :
-`JWT_SECRET`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `GROQ_API_KEY`, `KEYCLOAK_CLIENT_SECRET`,
+`KEYCLOAK_CLIENT_SECRET`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `GROQ_API_KEY`,
 `MINIO_ACCESS_KEY`, `MINIO_SECRET_KEY`, `MAILTRAP_*`. Jamais en dur dans le code.
+*(Plus de `JWT_SECRET` depuis ADR-011 : validation via la clé publique JWK de Keycloak.)*
 
 ### 5.3 Déploiement cible (VM école)
 
@@ -217,10 +218,10 @@ Script de backup : `scripts/backup.ps1` (PostgreSQL `pg_dump` + volumes MinIO).
 
 | Aspect | Implémentation réelle |
 |---|---|
-| **Authentification** | Keycloak OIDC + JWT HS512, refresh tokens en DB, OTP email (inscription / reset pwd) |
+| **Authentification** | Keycloak **OIDC RS256** (tokens émis par l'IdP), refresh/logout natifs, OTP email (inscription / reset pwd) — cf. ADR-011 |
 | **Autorisation** | RBAC multi-tenant (`WorkspaceRole` OWNER/ADMIN/MEMBER) + `ProjectRole` — vérification à chaque requête |
 | **OWASP A01 (broken access control)** | `requireMember`/`requireManager`/`assertIsOwner` + `WorkspaceAccessInterceptor` |
-| **OWASP A02 (cryptographic failures)** | HTTPS (prod), `EncryptedStringConverter` secrets sensibles, JWT HS512 |
+| **OWASP A02 (cryptographic failures)** | HTTPS (prod), `EncryptedStringConverter` (AES-256-GCM) sur PII sensibles, JWT **RS256** (Keycloak) |
 | **OWASP A03 (injection)** | Spring Data JPA paramétré, aucune concaténation SQL directe |
 | **OWASP A05 (security misconfiguration)** | Headers sécurité (CSP, HSTS, X-Frame-Options…) — `SecurityHeadersWebMvcTest` |
 | **OWASP A07 (auth failures)** | Rate limiting (`RateLimitFilter`), révocation refresh tokens |
