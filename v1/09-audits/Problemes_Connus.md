@@ -44,6 +44,12 @@ appliqué). Échelle d'effort : S ≤2h · M ½–1j · L 1–3j · XL &gt;3j.
 
 ## 1. File de priorités
 
+> **▶ MAJ 05/07/2026 (branche `test/v1-hardening`).** Le triage ci-dessous datait du snapshot `feat/dashboard` (08/06).
+> Vérifié sur le code actuel : **PC-001, PC-002, PC-003, PC-005 sont ✅ résolus** (préfixes `/api`, groupes de routes front,
+> import `profile-service`, webhooks Stripe câblés). **PC-004 & PC-019 ✅ résolus** par la migration auth **Keycloak OIDC**
+> (refresh/logout natifs IdP, décodeur RS256, `JwtService` custom supprimé — 658 tests backend verts). Restent surtout
+> les P2/P3 (PC-006/007/009/011/014).
+
 À traiter dans cet ordre.
 
 | ID | Prio | Titre | Impact | Effort | Conf. |
@@ -63,7 +69,7 @@ appliqué). Échelle d'effort : S ≤2h · M ½–1j · L 1–3j · XL &gt;3j.
 | PC-013 | 🟢 P3 | Command-palette « Create new issue » placeholder | Petit manque UX | S | Haute |
 | PC-014 | 🟢 P3 | Pas de feature flags IA | Ops ne peut pas toggler l'IA | M | Haute |
 | PC-015 | 🟢 P3 | Commentaire `context-path` périmé + chemin healthcheck | Induit en erreur ; bruit healthcheck | S | Moy. |
-| PC-019 | 🟠 P1 | **JWT émis par le backend** (pas Keycloak) — perte des bénéfices OIDC : révocation session, refresh natif, rotation clés, RS256 asymétrique | Sécurité auth dégradée vs une vraie intégration Keycloak | L | Haute |
+| PC-019 | ✅ Résolu (05/07) | **JWT émis par le backend** → **migré vers Keycloak OIDC (RS256)** : `JwtService`/HS512 supprimés, décodeur JWK + validation issuer, refresh/logout natifs IdP. Cf. TF-SEC-009. | Sécurité auth alignée OIDC | L | Haute |
 | PC-016 | ✅ Résolu (04/07) | **`canManage` toujours faux** page Membres (`/users/me` renvoie `id` en number, comparé en string → `"1"===1` faux) → gestion rôles/invitation/**redistribution** masquées **pour le OWNER** | Feature manager invisible | S | Haute |
 | PC-017 | ✅ Résolu (04/07) | **Export RGPD 500** : `GdprService.exportMyData` en `@Transactional(readOnly)` + INSERT audit → SQLSTATE 25006 (même pattern que FIX-006). Droit de portabilité **cassé** | Droit RGPD HS | S | Haute |
 | PC-018 | ✅ Résolu (30/06) | **Module test ne compilait plus** : `JwtServiceTest` appelait `JwtService.refreshAccessToken` (méthode supprimée, refresh migré dans `AuthService`) → toute la suite bloquée en silence | CI aveugle | S | Haute |
