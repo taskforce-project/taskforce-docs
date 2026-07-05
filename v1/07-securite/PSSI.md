@@ -59,14 +59,15 @@ La politique poursuit les quatre critères classiques de sécurité de l'informa
 | Règle | Implémentation | Preuve |
 |---|---|---|
 | Tout accès aux ressources métier exige un JWT valide | 3e `SecurityFilterChain` `@Order(2)` → `anyRequest().authenticated()` | `SecurityConfig.java` |
-| Les JWT sont signés (intégrité du token) | HS512 via `JwtService`, validé par `NimbusJwtDecoder` | `SecurityConfig.jwtDecoder()` |
+| Les JWT sont signés (intégrité du token) | **RS256 émis par Keycloak**, validés via son JWK Set + issuer par `NimbusJwtDecoder` | `SecurityConfig.jwtDecoder()` |
 | Vérification d'identité à l'inscription | OTP à usage unique, TTL 15 min | `OtpService`, migration `V6` |
 | Protection anti-brute-force | Rate limiting par IP (10 req/min sur login) | `RateLimitFilter` (Bucket4j) |
 | Référentiel d'identités centralisé | Keycloak (Admin REST API) | `KeycloakService` |
 
-> ⚠️ **Dette PC-019 / TF-SEC-009** : les JWT sont actuellement émis par le backend (HS512 symétrique)
-> et non par Keycloak (RS256/OIDC). Cible : déléguer l'émission à Keycloak pour bénéficier de la
-> révocation de session, du refresh natif et de la rotation de clés. Voir [[Roadmap_Backlog]].
+> ✅ **PC-019 / TF-SEC-009 résolus (05/07/2026, [[Journal_Decisions_ADR|ADR-011]])** : les tokens sont
+> désormais émis et signés par **Keycloak (RS256/OIDC)** ; le backend agit en Resource Server (plus de
+> `JwtService` ni de secret symétrique). Bénéfices acquis : révocation de session (`users().logout()`),
+> refresh OIDC natif, rotation de clés (JWK).
 
 ### 3.2 Autorisation (RBAC)
 
@@ -81,8 +82,9 @@ La politique poursuit les quatre critères classiques de sécurité de l'informa
 
 - **Aucun secret en dur** dans le code source (règle d'or #8) — tous via variables d'environnement.
 - `.env` **non versionné** (contrainte CT-05).
-- Secrets couverts : `JWT_SECRET`, `KEYCLOAK_ADMIN_PASSWORD`, `STRIPE_SECRET_KEY`,
+- Secrets couverts : `KEYCLOAK_CLIENT_SECRET`, `KEYCLOAK_ADMIN_PASSWORD`, `STRIPE_SECRET_KEY`,
   `STRIPE_WEBHOOK_SECRET`, `POSTGRES_PASSWORD`, clé de chiffrement (`EncryptionKeyHolder`).
+  *(Plus de `JWT_SECRET` depuis [[Journal_Decisions_ADR|ADR-011]] : la validation repose sur la clé publique JWK de Keycloak.)*
 
 ---
 
@@ -127,7 +129,7 @@ Synthèse — le détail par risque et les tests associés sont dans [[Sécurit�
 | A02 Cryptographic Failures | AES-256-GCM au repos + TLS | `EncryptedStringConverterTest` |
 | A03 Injection | JPA paramétré + validation `@Valid`/Zod | slices `@WebMvcTest` |
 | A05 Security Misconfiguration | En-têtes durcis (CSP/HSTS/X-Frame/nosniff/Referrer/Permissions) | `SecurityHeadersWebMvcTest` |
-| A07 Auth Failures | JWT + OTP + rate-limiting | `JwtServiceTest`, `RateLimitFilterTest` |
+| A07 Auth Failures | OIDC Keycloak (RS256) + OTP + rate-limiting | `AuthServiceTest`, `RateLimitFilterTest` |
 | A08 Data Integrity Failures | Signature HMAC webhooks Stripe + idempotence | `StripeWebhookServiceTest` |
 | A09 Logging Failures | `AuditLog` + sanitisation log-forging | `ClientLogController` |
 
