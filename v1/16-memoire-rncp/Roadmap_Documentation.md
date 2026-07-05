@@ -100,16 +100,18 @@ tags: [roadmap, documentation, production, memoire, rncp, soutenance]
 - ✅ PCA/PRA (`PS_PCA_PRA.md`)
 > ⚠️ Architecture d'infra + Diagramme de déploiement + DNS/TLS restent en attente du choix d'hébergement (VM école stand-by). Deux options documentées : [[Strategie_Hebergement]].
 
-## Phase 8 — Conformité & Légal ⚖️
-- [ ] ⭐ **Registre des traitements (Art. 30 RGPD)**
-- [ ] ⭐ **Audit RGPD cas pro** (sujet externe imposé — E9)
-- [ ] **Politique de confidentialité** (doc, depuis la page front) · **Politique cookies**
-- [ ] **CGU / CGV** · **Mentions légales**
+## Phase 8 — Conformité & Légal ⚖️ ✅ **TERMINÉE (05/07)**
+- [x] ⭐ **Registre des traitements (Art. 30 RGPD)** — **fait (05/07)** : `07-securite/Registre_Traitements_RGPD.md` (7 traitements, bases légales, sous-traitants, droits exercés, anonymisation — tout dérivé des migrations Flyway + `GdprService`).
+- [x] ⭐ **Audit RGPD conformité** (E9) — **fait (05/07)** : `07-securite/Audit_RGPD_Conformite.md` (analyse ~75 % conforme, droits personnes, Privacy by Design, 9 gaps tracés TF-RGPD-001/004/005/007/008/009 au backlog).
+- [x] ⭐ **Politique de confidentialité + CGU/CGV** — **fait (05/07)** : `07-securite/Politique_Confidentialite_CGU.md` (pages réelles landing `PrivacyPolicyPageNew.tsx` + `TermsPageNew.tsx` documentées, cohérence code↔politique vérifiée, gap sous-traitants `constants_en.ts` identifié → TF-RGPD-005).
+- [ ] **Politique cookies** (bannière interactive) — ⬜ backlog TF-RGPD-001
+- [ ] **Mentions légales** (page dédiée LEN Art. 6) — ⬜ backlog TF-RGPD-005
 
-## Phase 9 — Utilisateur & Support 👥
-- [ ] ⭐ **Manuel utilisateur** (finaliser)
-- [ ] **FAQ** · **Guide d'administration**
-- [ ] ⭐ **Release notes / CHANGELOG** (E29, consolider)
+## Phase 9 — Utilisateur & Support 👥 ✅ **TERMINÉE (05/07)**
+- [x] ⭐ **Manuel utilisateur** — **fait (05/07)** : `15-utilisateur/Manuel_Utilisateur.md` (12 sections : inscription/OTP, rôles RBAC, workspaces, membres, projets, issues/Kanban, Smart Assign, cycles, pages wiki, chat STOMP, plans Stripe, RGPD — toutes fonctionnalités V1 documentées, dérivées des 48 routes et des UC-01→12).
+- [x] ⭐ **Release notes / CHANGELOG** (E29) — **fait (05/07)** : `15-utilisateur/Release_Notes.md` (V1.0.0 soutenance RNCP — 15 catégories de features, daté git historique Oct 2025→Jul 2026, note sur le changelog marketing aspirationnel landing page v2.x, roadmap backlog prioritaire).
+- [x] **FAQ** — **fait (05/07)** : `15-utilisateur/FAQ.md` (6 thèmes : compte/connexion, tâches/IA, collaboration, facturation, données/RGPD, problèmes techniques — toutes réponses dérivées du code réel).
+- [ ] **Guide d'administration** — ⬜ backlog (fonctionnalités ADMIN/OWNER — couvertes partiellement dans le Manuel)
 - ✅ Guide d'installation
 
 ## Phase 10 — Veille & Innovation 🔭
