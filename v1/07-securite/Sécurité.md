@@ -22,7 +22,7 @@ tags: [securite, owasp, pentest, zap, trivy, semgrep, rgpd, defense-en-profondeu
 | **A02 Cryptographic Failures** | Chiffrement PII libre au repos (`EncryptedStringConverter`, AES-256-GCM) ; TLS en transit | `EncryptedStringConverterTest` |
 | **A03 Injection** | JPA paramétré (pas de SQL concaténé) ; validation `@Valid`/Zod | slices `@WebMvcTest` (`@Valid`→400) |
 | **A05 Security Misconfiguration** | En-têtes durcis : CSP, HSTS, X-Frame DENY, nosniff, Referrer-Policy, Permissions-Policy (`SecurityConfig`) | **`SecurityHeadersWebMvcTest`** |
-| **A07 Identification & Auth Failures** | Keycloak + JWT HS512, OTP, **rate-limiting** brute-force (`RateLimitFilter`), rotation/révocation refresh tokens | `JwtServiceTest`, `RateLimitFilterTest`, `OtpServiceTest` |
+| **A07 Identification & Auth Failures** | Keycloak **OIDC RS256** (tokens émis par l'IdP), OTP, **rate-limiting** brute-force (`RateLimitFilter`), refresh/logout natifs OIDC | `AuthServiceTest`, `RateLimitFilterTest`, `OtpServiceTest` |
 | **A09 Logging & Monitoring** | Journal d'audit (`AuditLog`) : login, rôles, suppression, RGPD, redistribution | hooks + `GET /audit` |
 
 ## 2. Chiffrement au repos (état V1)
