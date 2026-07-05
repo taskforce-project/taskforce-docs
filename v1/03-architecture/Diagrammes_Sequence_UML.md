@@ -37,7 +37,6 @@ sequenceDiagram
     participant OTP as OtpService
     participant MAIL as EmailService
     participant WS as WorkspaceService
-    participant JWT as JwtService
 
     U->>AC: POST /auth/register (email, pwd, plan)
     AC->>AS: register(request)
@@ -54,10 +53,9 @@ sequenceDiagram
     AS->>AS: userRepository.save(user)
     AS->>WS: createWorkspace(user)
     AS->>MAIL: sendWelcomeEmail
-    AS->>JWT: generateTokens(user)
-    AS-->>U: 200 (accessToken + refreshToken)
+    AS-->>U: 200 (verified=true, PAS de tokens)
 
-    note over U,AS: Plan PAYANT → redirection Stripe Checkout,<br/>puis GET /stripe/verify-session →<br/>completeRegistrationAfterPayment
+    note over U,AS: Auth émise par Keycloak (mot de passe requis, absent ici) →<br/>le front redirige vers /auth/login (ADR-011).<br/>Plan PAYANT → Stripe Checkout puis /stripe/verify-session
 ```
 
 ---
@@ -75,23 +73,21 @@ sequenceDiagram
     participant AS as AuthService
     participant KC as Keycloak
     participant INV as WorkspaceInvitationService
-    participant JWT as JwtService
     participant AUD as AuditService
 
     U->>AC: POST /auth/login (email, pwd)
     AC->>AS: login(request)
-    AS->>KC: authenticate(email, pwd)
+    AS->>KC: authenticate(email, pwd) — grant ROPC
     alt échec
         KC-->>AS: exception
         AS-->>U: 401 (identifiants incorrects)
     else succès
-        KC-->>AS: OK
+        KC-->>AS: access_token (RS256) + refresh_token
         AS->>KC: getUserByEmail → emailVerified ?
         AS->>AS: findByKeycloakId (crée si absent)
         AS->>INV: acceptPendingInvitations(user)
-        AS->>JWT: generateTokens(user)
         AS->>AUD: record(USER_LOGIN)
-        AS-->>U: 200 (tokens)
+        AS-->>U: 200 (tokens Keycloak + profil)
     end
 ```
 
