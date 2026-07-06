@@ -73,7 +73,7 @@ Utilisateur                Backend                    Stripe
        ├─▶ Crée le compte Keycloak
        ├─▶ Crée la Subscription { planType: PRO, status: ACTIVE,
        │       stripeCustomerId, stripeSubscriptionId }
-       └─▶ JwtService.generateTokens() → JWT + redirect app
+       └─▶ compte activé → redirect app /auth/login (tokens émis par Keycloak au login, ADR-011)
 ```
 
 **Idempotence** : `stripe_event_id` (UNIQUE) sur `subscription_history` — un événement
