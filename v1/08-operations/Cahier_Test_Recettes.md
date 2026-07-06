@@ -44,7 +44,7 @@ tags: [recettes, tests, scenarios, acceptance, uc, qualite, memoire, rncp, soute
 | UC02-02 | Mauvais mot de passe | `401 UNAUTHORIZED` | `KeycloakAuthServiceTest` | ✅ |
 | UC02-03 | Email inconnu | `401 UNAUTHORIZED` (pas de leak d'info) | `AuthServiceTest` | ✅ |
 | UC02-04 | Token invalide sur endpoint protégé | `401` → client retente le refresh | `CoreControllersWebMvcTest` | ✅ |
-| UC02-05 | Token expiré | `401` + séquence refresh → retry | `JwtServiceTest`, `client.test.ts` | ✅ |
+| UC02-05 | Token expiré | `401` + séquence refresh → retry | `AuthServiceTest`, `client.test.ts` | ✅ |
 | UC02-06 | Logout → refresh token révoqué | Refresh ultérieur retourne `401` | `AuthServiceTest` | ✅ |
 
 ---
@@ -187,7 +187,7 @@ tags: [recettes, tests, scenarios, acceptance, uc, qualite, memoire, rncp, soute
 | SEC-02 | IDOR — accès issue hors workspace | `403` même si ID devinable | `AuthorizationServiceTest` | ✅ |
 | SEC-03 | Rate limiting auth (`/api/auth/login`) | `429` après N tentatives rapides | `RateLimitFilterTest` | ✅ |
 | SEC-04 | Chiffrement donnée sensible (`EncryptedStringConverter`) | Valeur chiffrée en DB, décryptée à la lecture | `EncryptedStringConverterTest` | ✅ |
-| SEC-05 | JWT tampered (signature invalide) | `401` | `JwtServiceTest`, `CoreControllersWebMvcTest` | ✅ |
+| SEC-05 | JWT tampered (signature invalide) | `401` | `SecurityConfig` (décodeur RS256 rejette la signature), `CoreControllersWebMvcTest` | ✅ |
 | SEC-06 | Accessibilité WCAG 2.1 AA | Audit axe-core sans violation critique | E2E `a11y.spec.ts` | ✅ |
 
 ---
