@@ -74,7 +74,7 @@ tags: [documentation, catalogue, livrables, senior, fullstack, soutenance, pdf]
 | **Spec API (OpenAPI/Swagger)** | 33 contrôleurs / ~130 endpoints avec auth/rôle requis | ✅ | ⭐ | `05-api/Spec_API_OpenAPI.md` (05/07) |
 | Fiche domaine Backend | Services, persistance, IA | 🟡 | | `02-produit/Backend.md` |
 | Conventions de code back | `shared←core←modules`, `/api`, Flyway | ✅ | | `04-engineering/Conventions_Documentation.md` |
-| Auth & autorisation | JWT HS512, Keycloak Admin API, RBAC, OTP, StompAuthInterceptor | ✅ | ⭐ | `07-securite/Auth_Autorisation.md` (05/07) |
+| Auth & autorisation | OIDC RS256 (Keycloak), Admin API, RBAC, OTP, StompAuthInterceptor | ✅ | ⭐ | `07-securite/Auth_Autorisation.md` (v1.1, OIDC) |
 | Système de paiement | Stripe : Checkout, 5 webhooks, FSM PlanStatus, portail, idempotence | ✅ | ⭐ | `04-engineering/Systeme_Paiement_Stripe.md` (05/07) |
 | Gestion des erreurs / codes | `GlobalExceptionHandler`, 4xx/5xx | ⬜ | | backlog |
 
