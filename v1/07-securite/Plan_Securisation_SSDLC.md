@@ -64,7 +64,7 @@ Règles d'or appliquées à chaque commit (cf. `CLAUDE.md`) :
 
 - Tests unitaires/composant ciblés sécurité (priorité P0) — [[Politique_Tests]] §4.
 - Analyse statique et dynamique automatisée — `scripts/security-scan.ps1`.
-- **Preuve** : `SecurityHeadersWebMvcTest`, `JwtServiceTest`, `RateLimitFilterTest`,
+- **Preuve** : `SecurityHeadersWebMvcTest`, `AuthServiceTest`, `RateLimitFilterTest`,
   `EncryptedStringConverterTest`, `AuthorizationServiceTest`.
 
 ### 1.5 Étape 5 — Déploiement sécurisé
@@ -104,7 +104,7 @@ Démarche méthodique appliquée pour sécuriser l'application, du diagnostic à
 
 | Mesure | Statut | Preuve |
 |---|:---:|---|
-| JWT signé + validé (HS512) | ✅ | `SecurityConfig`, `JwtService` |
+| JWT signé + validé (RS256, Keycloak) | ✅ | `SecurityConfig` (décodeur JWK) |
 | OTP à l'inscription | ✅ | `OtpService` |
 | Rate limiting brute-force | ✅ | `RateLimitFilter` |
 | RBAC centralisé 3 niveaux | ✅ | `AuthorizationService` |
