@@ -267,7 +267,7 @@ La couche de persistance de TaskForce est construite sur **PostgreSQL 18** (SGBD
 
 L'architecture logicielle de TaskForce suit un modèle **en couches (layered architecture)** avec une organisation modulaire par domaine métier, conforme aux bonnes pratiques Spring Boot. Le backend est structuré en trois couches :
 
-1. **`shared/`** — Utilitaires transversaux : sécurité (`SecurityConfig`, `JwtService`, `RateLimitFilter`), CORS, audit (`AuditableEntity`), exceptions (`ApiException`), converters JPA (`EncryptedStringConverter`).
+1. **`shared/`** — Utilitaires transversaux : sécurité (`SecurityConfig`, `JwtIdentityResolver`, `RateLimitFilter`), CORS, audit (`AuditableEntity`), exceptions (`ApiException`), converters JPA (`EncryptedStringConverter`).
 2. **`core/`** — Domaine socle : `User`, `Workspace`, `WorkspaceMember`, RBAC (`AuthorizationService`), Keycloak Admin, Stripe, GDPR.
 3. **`modules/`** — Domaines métier isolés : `project`, `issue`, `smart-assign`, `cycle`, `page`, `chat`, `ai-document`, `notification`. Chaque module contient son propre `controller`, `service`, `repository`, `model`, `dto`.
 
