@@ -145,7 +145,7 @@ mais aucune bannière de consentement interactive n'est implémentée.
 
 **Cookies réellement déposés par l'app** (observable depuis les DevTools) :
 - `JSESSIONID` équivalent → JWT `access_token` (stocké `localStorage`, pas cookie)
-- `refresh_token` → cookie `HttpOnly; Secure; SameSite=Strict` (d'après `JwtService`)
+- `refresh_token` (émis par Keycloak) → cookie `HttpOnly; Secure; SameSite=Strict`
 - `taskforce-language` → `localStorage` (préférence langue landing)
 
 > Les tokens JWT sont des cookies HttpOnly, la donnée la plus sensible n'est pas accessible
