@@ -77,8 +77,9 @@ le cycle de vie d'abonnement post-checkout n'est pas reflété. Vérifier aussi 
 **DT-006 🟡 — Inquiry Sales sans notification.** `modules/sales/service/SalesService.java` — TODO :
 email de confirmation + alerte équipe sales. Les leads sont persistés mais personne n'est prévenu.
 
-**DT-007 🟡 — Refresh-token & logout non implémentés.** `AuthController` — TODO refresh + révocation des
-refresh tokens. `JwtService` existe mais la feature est inachevée.
+**DT-007 ✅ Résolu (05/07/2026) — Refresh-token & logout.** Migrés sur **Keycloak OIDC natif** (ADR-011) :
+`AuthService.refreshToken()` (grant `refresh_token`) et `logout()` (`KeycloakService.logoutUser` → révocation
+de toutes les sessions IdP). Le `JwtService` custom a été supprimé.
 
 **DT-008 🟡 — Streaming assistant simulé.** `AssistantController` découpe la réponse complète par groupes
 de ~5 mots pour *imiter* le SSE au lieu de streamer les tokens Groq (latence = complétion totale).
