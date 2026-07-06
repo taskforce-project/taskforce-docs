@@ -206,7 +206,7 @@ le <strong>socle minimal</strong> ; les items marqués ★ vont au-delà). À pi
 | TF-DOC-008 | ADRs des décisions clés (stack, multi-tenant, IA Groq, STOMP) | 🟡 P2 | M | C10 | — |
 | TF-DOC-009 | Note de préconisations techniques (E3) + planification/budget (E2) | 🟡 P2 | M | C2/C3 | — |
 | TF-DOC-010 | Note justifiant la méthode **agile** + trame de compte rendu (E5/E6) | 🟡 P2 | S | C4 | — |
-| TF-DOC-011 | **Sweep doc auth HS512→OIDC** — mentions résiduelles de `JwtService`/HS512 dans PSSI, Threat_Model_STRIDE, Diagrammes_Sequence_UML (login), CdCT_v2, Dossier_Conception, Sécurité.md, Modules.md, Table_Reconciliation. `Auth_Autorisation.md` déjà fait (v1.1). Découvert 05/07. | 🟡 P2 | M | C27 | ADR-011 |
+| TF-DOC-011 | ✅ **Résolu (05/07)** — sweep doc auth HS512→OIDC : `Auth_Autorisation.md` (v1.1) + 17 fichiers alignés (PSSI, STRIDE, séquences UML, CdCT_v2, Dossier_Conception, Sécurité, Modules, Table_Reconciliation, STB, Registre/Audit RGPD, Politique_Tests, Matrice_Tracabilité, Cahier_Recettes, Plan_SSDLC, Stripe, FAQ, Release_Notes, Catalogue, Bloc1). Restent volontairement les mentions **historiques** (ADR-003/011, Note d'innovation, veille ANSSI). | 🟡 P2 | M | C27 | ADR-011 |
 
 ## 11. Synthèse de couverture RNCP
 
