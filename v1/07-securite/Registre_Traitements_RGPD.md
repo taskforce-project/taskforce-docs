@@ -33,7 +33,7 @@ tags: [rgpd, registre, traitements, donnees-personnelles, art30, conformite, mem
 | **Durée de conservation** | Durée de vie du compte · Anonymisation à la demande (`GdprService.deleteMyAccount`) |
 | **Destinataires** | Keycloak (identité) · Backend Spring Boot (sessions) |
 | **Transferts hors UE** | Keycloak auto-hébergé (pas de transfert) |
-| **Mesures de sécurité** | Hash bcrypt Keycloak · JWT HS512 · Rate limiting · OTP |
+| **Mesures de sécurité** | Hash bcrypt Keycloak · JWT **RS256 (OIDC Keycloak)** · Rate limiting · OTP |
 | **Preuve** | `V1__init_schema.sql` · `V2__auth_and_subscriptions.sql` · `GdprService` |
 
 ---
