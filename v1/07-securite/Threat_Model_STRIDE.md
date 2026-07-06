@@ -79,7 +79,7 @@ Les **4 gardes** ①②③④ constituent la défense en profondeur côté backe
 
 | # | Menace | Vecteur | Mitigation implémentée | Preuve | Résiduel |
 |---|---|---|---|---|:---:|
-| T1 | Modifier le contenu d'un JWT | Altérer claims (rôle, userId) | Tag d'intégrité HMAC → token rejeté | `JwtServiceTest` (token falsifié → 401) | 🟢 Faible |
+| T1 | Modifier le contenu d'un JWT | Altérer claims (rôle, email) | Signature **RS256** vérifiée via JWK Keycloak → token altéré rejeté | `SecurityConfig.jwtDecoder()` (signature invalide → 401) | 🟢 Faible |
 | T2 | Injection SQL | Payload dans un champ | JPA paramétré (aucune concaténation) | Repos JPA, slices `@WebMvcTest` | 🟢 Faible |
 | T3 | Falsifier un webhook Stripe | POST forgé sur `/api/stripe/**` | Vérification signature HMAC `Webhook.constructEvent` | `PaymentAndDataControllersWebMvcTest` (sig invalide → 400) | 🟢 Faible |
 | T4 | Rejouer un webhook Stripe | Doublon d'événement | Idempotence `stripe_event_id UNIQUE` | `StripeWebhookServiceTest`, `V36` | 🟢 Faible |
@@ -154,7 +154,7 @@ au backlog — cohérent avec le résultat du pentest ZAP (0 HIGH/critique, cf. 
 
 | STRIDE | OWASP 2021 | Test principal |
 |---|---|---|
-| Spoofing | A07 Auth Failures | `JwtServiceTest`, `RateLimitFilterTest` |
+| Spoofing | A07 Auth Failures | `AuthServiceTest`, `JwtIdentityResolverTest`, `RateLimitFilterTest` |
 | Tampering | A03 Injection, A08 Data Integrity | `StripeWebhookServiceTest`, slices `@WebMvcTest` |
 | Repudiation | A09 Logging Failures | `AuditLog` + revue |
 | Info Disclosure | A01, A02 | `AuthorizationServiceTest`, `EncryptedStringConverterTest`, `SecurityHeadersWebMvcTest` |
