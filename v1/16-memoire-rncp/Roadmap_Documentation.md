@@ -66,7 +66,7 @@ tags: [roadmap, documentation, production, memoire, rncp, soutenance]
 
 ## Phase 4 — Réalisation (documentation) 🛠️ ✅ **TERMINÉE (05/07)**
 - [x] ⭐ **Spec API OpenAPI/Swagger** — **fait (05/07)** : `05-api/Spec_API_OpenAPI.md` (33 contrôleurs / ~130 endpoints, groupés par domaine, avec auth/rôle requis par endpoint).
-- [x] ⭐ **Auth & autorisation** — **fait (05/07)** : `07-securite/Auth_Autorisation.md` (JWT HS512 custom via JwtService, Keycloak comme référentiel identité, 3 chaînes SecurityFilterChain, RBAC OWNER/ADMIN/MEMBER, OTP inscription, StompAuthInterceptor).
+- [x] ⭐ **Auth & autorisation** — **fait (05/07, v1.1 OIDC)** : `07-securite/Auth_Autorisation.md` (tokens OIDC RS256 émis par Keycloak — ex-JWT HS512, migré ADR-011 ; SecurityFilterChain, RBAC OWNER/ADMIN/MEMBER, OTP inscription, StompAuthInterceptor).
 - [x] ⭐ **Système de paiement** — **fait (05/07)** : `04-engineering/Systeme_Paiement_Stripe.md` (Checkout, 5 webhooks, FSM PlanStatus, portail billing, idempotence stripe_event_id, variables d'env).
 - [ ] Gestion des erreurs / codes — ⬜ backlog (GlobalExceptionHandler documenté dans CdCT v2)
 - [x] ⭐ **Design system / charte graphique** — **fait (05/07)** : `14-design/Design_System.md` (tokens CSS globals.css, palette light/dark, shadcn/Radix composants, Inter + SF Pro, Lucide icons, a11y).
