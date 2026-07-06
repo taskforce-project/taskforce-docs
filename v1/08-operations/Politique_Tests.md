@@ -48,7 +48,7 @@ tags: [tests, qualite, politique, jacoco, vitest, playwright, testcontainers, me
 
 **Backend — JUnit 5 + Mockito + AssertJ**
 
-- Cible : services, mappers, utilitaires, sécurité (`JwtService`, `AuthorizationService`,
+- Cible : services, mappers, utilitaires, sécurité (`JwtIdentityResolver`, `AuthorizationService`,
   `OtpService`, `SmartAssignService`, `RedistributionService`)
 - Pattern : `@ExtendWith(MockitoExtension.class)`, dépendances mockées
 - Nommage : `<Classe>Test.java` dans le même package que la classe testée
@@ -64,7 +64,7 @@ tags: [tests, qualite, politique, jacoco, vitest, playwright, testcontainers, me
 **Backend — `@WebMvcTest`**
 
 - Cible : contrôleurs REST (surface API, codes HTTP, format `ApiResponse<T>`, `@Valid` → 400, 401/403/404)
-- Infrastructure : Spring MVC test slice, `JwtService` + `AuthorizationService` mockés
+- Infrastructure : Spring MVC test slice, principal `Jwt` mocké (`SecurityMockMvcRequestPostProcessors.jwt`) + `AuthorizationService` mocké
 - Chaque contrôleur a son propre `*WebMvcTest.java` :
 
 ```
@@ -151,7 +151,7 @@ Les tests suivants couvrent les risques les plus élevés et sont maintenus en p
 
 | Domaine | Tests clés | Criticité |
 |---|---|:---:|
-| **Sécurité auth** | `JwtServiceTest`, `KeycloakAuthServiceTest`, `AuthServiceTest`, `RateLimitFilterTest` | 🔴 P0 |
+| **Sécurité auth** | `AuthServiceTest`, `KeycloakAuthServiceTest`, `JwtIdentityResolverTest`, `RateLimitFilterTest` | 🔴 P0 |
 | **Autorisation RBAC** | `AuthorizationServiceTest`, `CoreControllersWebMvcTest` (401/403) | 🔴 P0 |
 | **Headers OWASP** | `SecurityHeadersWebMvcTest` (CSP, HSTS, X-Frame, nosniff) | 🔴 P0 |
 | **JWT** | `JwtServiceTest`, `JwtIdentityResolverTest`, `StompAuthInterceptorTest` | 🔴 P0 |
@@ -192,7 +192,7 @@ cd frontend && npm run test:coverage
 cd frontend && npm run e2e
 
 # Lancer seulement les tests de sécurité back
-cd backend/tf-api && ./mvnw test -Dtest="*SecurityHeadersWebMvcTest,*JwtServiceTest,*AuthorizationServiceTest"
+cd backend/tf-api && ./mvnw test -Dtest="*SecurityHeadersWebMvcTest,*AuthServiceTest,*AuthorizationServiceTest"
 ```
 
 ---
