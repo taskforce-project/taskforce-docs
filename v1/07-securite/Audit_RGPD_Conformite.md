@@ -118,7 +118,7 @@ Le chiffrement AES-256-GCM est appliqué sur les colonnes à risque (code `Encry
 | Mesure | Statut | Preuve |
 |---|---|---|
 | Chiffrement TLS en transit | ✅ | Nginx + TLS dans `docker-compose.prod.yml` |
-| JWT HS512 + rotation des tokens | ✅ | `JwtService`, `revokeAllUserTokens` |
+| JWT RS256 (Keycloak) + révocation de session | ✅ | `SecurityConfig`, `KeycloakService.logoutUser` |
 | Rate limiting | ✅ | `RateLimitFilter` (Bucket4j) 10–200 req/min |
 | 6 headers sécurité OWASP | ✅ | `applySecurityHeaders()` — CSP, HSTS, etc. |
 | Audit log immuable | ✅ | Table `audit_logs` — pas d'UPDATE/DELETE via API |
