@@ -169,7 +169,7 @@ Non. TaskForce délègue entièrement la gestion des paiements à **Stripe**. Au
 Oui. Plusieurs couches de protection sont en place :
 - **Chiffrement en transit** : TLS sur toutes les connexions
 - **Chiffrement en base** : AES-256-GCM sur les données sensibles libres (messages de contact Enterprise)
-- **Authentification** : JWT HS512 + tokens refresh HttpOnly
+- **Authentification** : tokens **OIDC RS256 émis par Keycloak** + refresh token HttpOnly
 - **Isolation** : chaque workspace est strictement isolé — aucun accès inter-workspace n'est possible
 - **Rate limiting** : protection anti-brute force sur toutes les API d'authentification
 
