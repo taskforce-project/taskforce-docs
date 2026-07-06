@@ -65,7 +65,7 @@ tags: [stb, specification, technique, besoin, exigences, performance, securite, 
 | SEC-02 | Headers de sécurité HTTP (OWASP A05) | CSP, HSTS, X-Frame-Options, X-Content-Type présents | `SecurityHeadersWebMvcTest` |
 | SEC-03 | Rate limiting API | Actif (filtre applicatif) | `RateLimitFilter` + `RateLimitFilterTest` |
 | SEC-04 | Chiffrement secrets sensibles au repos | `EncryptedStringConverter` sur colonnes critiques | `EncryptedStringConverterTest` |
-| SEC-05 | JWT — algorithme de signature | HS512 | `JwtService`, `application.yml` |
+| SEC-05 | JWT — algorithme de signature | **RS256 (émis par Keycloak)** | `SecurityConfig`, `application-prod.yml` (issuer/jwk) |
 | SEC-06 | Durée de vie tokens JWT | Access court (configurable) + refresh DB | `RefreshToken` table + nettoyage planifié |
 | SEC-07 | Isolation multi-tenant | `workspace_id` vérifié à chaque requête | `WorkspaceAccessInterceptor` |
 | SEC-08 | Protection log-forging (logs client) | Sanitisation `\n`/`\r` dans `ClientLogController` | `ClientLogController.java` |
