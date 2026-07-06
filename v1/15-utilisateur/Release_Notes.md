@@ -33,7 +33,7 @@ tags: [utilisateur, release-notes, changelog, versions, e29, rncp, soutenance]
 ### ✨ Authentification & sécurité
 
 - **Inscription en 3 étapes** avec vérification OTP email (TTL 15 min, 3 essais) — UC-01
-- **Connexion sécurisée** via Keycloak (référentiel identité) + JWT HS512 custom (`JwtService`) — UC-02
+- **Connexion sécurisée** via Keycloak — tokens **OIDC RS256 émis par l'IdP** (Resource Server côté API) — UC-02
 - Refresh tokens HttpOnly Secure SameSite=Strict avec rotation
 - **Rate limiting Bucket4j** : 10 req/min (auth), 200 req/min (default), 20 req/min (IA)
 - 6 **headers de sécurité OWASP** : CSP `default-src 'none'`, HSTS 31536000s, X-Frame DENY, nosniff, Referrer-Policy, Permissions-Policy
