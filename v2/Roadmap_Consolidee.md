@@ -1,55 +1,50 @@
-# Roadmap consolidée — TaskForce (v2 en tête, solde v1 à la fin)
+# Roadmap consolidée — TaskForce (RÉCONCILIÉE avec l'existant)
 
-> **Master roadmap** post-pivot (07/07/2026). Séquence le **pivot v2 « AI Delivery OS »** ([[IDEA]], [[Moteur_IA_World_Model_OODA]]) **devant**, et repousse le **backlog v1** ([[Roadmap_Backlog]]) à la fin — **sauf le socle RNCP, non négociable** (voir ⚠️).
-> Détail v2 par épic : [[Roadmap_v2]]. Détail v1 : [[Roadmap_Backlog]].
-
----
-
-## Vue d'ensemble (phases)
-
-| Phase | Contenu | Sortie |
-|---|---|---|
-| **0. Spécification** *(quasi finie)* | Vision + moteur + agents + benchmark + contrat API + données (les docs `v2/`) | Spec exécutable ✅ |
-| **1. Socle IA** | **IA-1** retrieval Brain OS · **IA-5** `ai-service` dockerisé · **contrat API** backend↔ai-service | Le cerveau branché |
-| **2. Flow AI-native = 🎯 tranche PFR** | **P1** (projet→cycles, issue→spec/prompt) · **IA-2** modèles · **IA-3 min** (1 boucle predict/reflect) · **1 agent COO** · **P4** human-in-the-loop · **P2** cockpit GitHub (lecture) | La démo qui prouve la thèse |
-| **3. Extension IA** | **IA-4** (3 agents complets CPO/CTO/COO) · boucle World Model complète · **P3** runs/checkpoints · **P5** chat-as-app | Produit riche |
-| **4. Reste v2** | GitHub 2-way/push · Slack sortant · fine-tune LoRA · Events API | Vision étendue |
-| **5. Solde backlog v1** | Les `TF-*` restants (finition pro, ★) | Nettoyage |
-
-> **Dépendance racine** : tout le track IA repose sur **IA-1 (retrieval)** → Phase 1 d'abord, toujours.
+> **Master roadmap** post-pivot + **post-recon (07/07/2026)**.
+> 🚨 **Correction majeure** : le moteur IA du v2 **existe déjà à ~80 %**, en **Java** (Brain OS, Phases 0→3 ✅, agent code-complet), **`env-gated`** (clé LLM + embeddings). On ne construit **pas** un service IA Python neuf → on **allume + on finit**. Le `ai-service` Python = fournisseur d'embeddings uniquement.
+> Le **critère de fin (wow-demo)** = la **Phase 4** déjà planifiée du Brain OS.
+> Détail moteur : `.ai/brain-os-roadmap.md` (repo app). Détail v2 : [[Moteur_IA_World_Model_OODA]]. Backlog v1 : [[Roadmap_Backlog]].
 
 ---
 
-## ⚠️ Le socle RNCP ne se décale PAS (PFR)
+## Ce qui existe déjà (ne PAS reconstruire)
 
-Le backlog v1 est mappé au **référentiel RNCP** (c'est le *socle minimal* du diplôme). On repousse la **finition pro** (★, P2/P3), **mais** ces items restent **obligatoires pour la soutenance** et tournent **EN PARALLÈLE** des phases 1-2, pas « à la toute fin » :
-
-| Item v1 | Pourquoi non négociable |
+| Brique v2 que j'avais « à faire » | Réalité |
 |---|---|
-| **TF-TEST-001** — couverture front ≥ 50 % | exigence référentiel (back déjà ✅ 86 %) |
-| **TF-SEC-*** P1 (OWASP, secrets, en-têtes, accès) | bloc sécurité RNCP |
-| **TF-INFRA-001→006** (hébergement, TLS, prod durcie, CD, backup) | bloc déploiement RNCP |
-| **TF-DOC-001** — **mémoire** (rédaction continue) | c'est le livrable noté |
-| **TF-DOC-004/005** (diagrammes conception, wireframes) | bloc conception |
+| IA-1 retrieval Brain OS | ✅ **fait** — `BrainSearchService` (pgvector cosine + ranking + compression) |
+| Agent + tool-calling + write-back | ✅ **code-complet** — `AgentService` (routing fast/deep, `search_brain`/`create_note`, `AgentToolRegistry`) |
+| Modèles hybride | ✅ **déjà l'archi** — Groq 8b (fast) + Claude Opus (deep), `env-gated` sur clé |
+| Brain OS invisible (moteur) + graphe | ✅ — noyau `AGENTS` caché, 1 workspace = 1 brain |
+| Node `ACTION_OODA` | ✅ **déjà prévu** dans les types de nodes |
 
-> Règle : **le v2 est la vitrine différenciante ; le socle RNCP est le passage obligé.** On mène les deux de front — le v2 fournit d'ailleurs de la matière au mémoire (innovation, veille IA, ADRs).
-
----
-
-## Ordre d'exécution conseillé (macro)
-
-1. **Finir Phase 0** (ADRs : Brain OS interne, World Model×OODA, contrat inter-services).
-2. **Phase 1** — IA-1 + contrat API + `ai-service` dockerisé.
-3. **Phase 2** — la tranche PFR (démontrable de bout en bout).
-4. **En parallèle 1→2** — socle RNCP (tests front, sécu P1, déploiement, mémoire).
-5. **Phases 3-4** — extension (post-démo).
-6. **Phase 5** — solde des `TF-*` restants.
+→ Ma spec [[Contrat_API_et_Donnees]] (archi Python-centrée) est **partiellement caduque** : les agents vivent en **Java**, pas dans un service Python. À corriger.
 
 ---
 
-## Threads « Phase 0 » restants
-- [ ] ADR « Brain OS interne, non exposé » · ADR « World Model × OODA » · ADR « contrat backend↔ai-service » (→ `v1/12-decisions/`)
-- [ ] Mesurer le benchmark sur un golden set ([[Benchmark_Modeles_IA]] §5)
-- [ ] Choix embeddings (bge-m3 local par défaut)
+## Phases (corrigées)
 
-**Dernière MAJ :** 07/07/2026 · Master roadmap post-pivot.
+| Phase | Contenu réel | Effort |
+|---|---|---|
+| **A · Allumer le moteur (via AI Gateway)** | Ollama local (Qwen 14B + bge-m3) ; **AI Gateway Python** (`/chat` `/embed`) devant Ollama ; `AiGatewayClient` Java branché dans `AgentService`+`EmbeddingClient` ; **migration V59** (`vector(1024)`). Vérifier l'agent (répond + write-back). Cf. [[Contrat_API_et_Donnees]]. | 🟠 **M** |
+| **B · 🎯 LE WOW = critère PFR** | **Phase 4 Brain OS** : issue → l'IA **propose** (spec + prompt + découpage + « déjà vu ? ») → **human-in-the-loop** (approve/reject/modify) → *(option)* **code agent** (Claude implémente → PR draft) → review. = *« ça avance tout seul, je copie le prompt, je valide »*. | 🔴 **L/XL** |
+| **C · C-level + World Model × OODA** | étendre l'agent unique → **3 agents** (CPO/CTO/COO, [[Agents_C_Level]]) + boucle **predict/reflect** stockée en nodes `ACTION_OODA` + edges (dans le brain existant, pas une nouvelle base) | 🔴 **L** |
+| **D · Reste** | marketplace (Agent Packs), GitHub 2-way, Slack sortant, fine-tune LoRA *(optionnel — le wow ne le nécessite pas)* | 🟡 |
+| **∥ Socle RNCP** *(en parallèle A→B)* | tests front (TF-TEST-001), sécu P1, déploiement (TF-INFRA), **mémoire** (TF-DOC-001) — **non négociable pour la soutenance** | 🟠 |
+
+---
+
+## 🎯 Le critère de fin (ce que tu pourras dire « c'est fini »)
+
+> **Démo de soutenance** : je crée un projet en 2 lignes → cycles + issues générés. J'ouvre une issue → l'IA a écrit la **spec** + le **prompt d'exécution**. Je **copie le prompt** (Claude Code), ça code → **PR draft**. Je **valide** (ou rejette/modifie). Le Brain OS s'est enrichi tout seul. **Effet waouw = le projet avance quasi seul, je copie + je valide.**
+
+C'est **exactement la Phase 4** ci-dessus. Tout le reste (C/D) est bonus post-démo.
+
+---
+
+## Ordre d'exécution
+1. **Phase A** (allumer — quelques heures).
+2. **Phase B** (le wow — le gros du build restant).
+3. **∥ Socle RNCP** en parallèle (obligatoire soutenance).
+4. Phases **C/D** si le temps le permet (différenciation).
+
+**Dernière MAJ :** 07/07/2026 · post-recon (moteur déjà là, on allume + on finit la Phase 4).
