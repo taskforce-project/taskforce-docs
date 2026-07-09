@@ -25,7 +25,7 @@
 
 | Phase | Contenu réel | Effort |
 |---|---|---|
-| **A · Allumer le moteur (via AI Gateway)** | Ollama local (Qwen 14B + bge-m3) ; **AI Gateway Python** (`/chat` `/embed`) devant Ollama ; `AiGatewayClient` Java branché dans `AgentService`+`EmbeddingClient` ; **migration V59** (`vector(1024)`). Vérifier l'agent (répond + write-back). Cf. [[Contrat_API_et_Donnees]]. | 🟠 **M** |
+| **A · Allumer le moteur (via AI Gateway)** | 🟢 **A1-A3+A5 FAITS (08/07)** : Ollama local (Qwen2.5 14B), Gateway Python `/v1/chat`, `LlmClient`/`AiGatewayClient`/sélecteur `LlmConfig`, `AgentService` rebranché. **Vérifié live** : agent génère via Qwen 14B sur GPU, **0 €** (~14 s, mode fast, `ai-service`→Ollama `host.docker.internal` OK). **Reste A4** : embeddings **bge-m3** + **migration V59** (`vector(1024)`) → retrieval sémantique. | 🟠 **M** |
 | **B · 🎯 LE WOW = critère PFR** | **Phase 4 Brain OS** : issue → l'IA **propose** (spec + prompt + découpage + « déjà vu ? ») → **human-in-the-loop** (approve/reject/modify) → *(option)* **code agent** (Claude implémente → PR draft) → review. = *« ça avance tout seul, je copie le prompt, je valide »*. | 🔴 **L/XL** |
 | **C · C-level + World Model × OODA** | étendre l'agent unique → **3 agents** (CPO/CTO/COO, [[Agents_C_Level]]) + boucle **predict/reflect** stockée en nodes `ACTION_OODA` + edges (dans le brain existant, pas une nouvelle base) | 🔴 **L** |
 | **D · Reste** | marketplace (Agent Packs), GitHub 2-way, Slack sortant, fine-tune LoRA *(optionnel — le wow ne le nécessite pas)* | 🟡 |
