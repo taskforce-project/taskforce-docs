@@ -1,97 +1,100 @@
-# Contrat API `backend ↔ ai-service` + Modèle de données IA (v2)
+# AI Gateway + Modèle de données IA (v2)
 
-> **Statut : conception (v2, non implémenté).** Spécifie le pont technique entre le **backend Java** (orchestrateur + système de vérité) et le **`ai-service` Python** (cerveau IA : retrieval, LLM, agents, boucle World Model). Support de [[Moteur_IA_World_Model_OODA]], [[Agents_C_Level]], [[Roadmap_v2]] (IA-1/IA-3/IA-5).
-
----
-
-## 1. Répartition des responsabilités
-
-| | **Backend Java** (`tf-api`) | **`ai-service` Python** (FastAPI) |
-|---|---|---|
-| Rôle | Orchestrateur, système de vérité, human-in-the-loop, sécurité/authz | Retrieval Brain OS, appels LLM, agents C-level, boucle predict/reflect |
-| Possède | tables **app** (projects/issues/cycles/decisions…) | index **Brain OS** (embeddings/nodes/edges) + **expériences** (predict/outcome) |
-| Ne fait pas | pas d'appel LLM direct (délègue) | pas d'écriture sur les tables app (renvoie des propositions) |
-
-**Base partagée** : un seul Postgres (**pgvector** déjà là). Le backend possède le schéma app ; l'`ai-service` possède le schéma `brain` (nodes/embeddings/edges/experiences). Chacun écrit **son** schéma.
+> **Statut : conception (v2).** Corrigé le 07/07 après recon : le moteur (agent + retrieval) existe **en Java** ; on ajoute une **AI Gateway Python** comme **couche modèle** (pas comme cerveau). Décision : **gateway dès la v1** (pour pouvoir swap/scaler les modèles + héberger le ML : embeddings, reranking, fine-tune).
+> Support de [[Moteur_IA_World_Model_OODA]], [[Benchmark_Modeles_IA]], [[Roadmap_Consolidee]].
 
 ---
 
-## 2. Transport
+## 1. Le principe : 3 couches, chacune à sa place
 
-- **Synchrone (REST)** : le backend appelle l'`ai-service` en HTTP pour les tâches courtes (retrieve, spec, décision). Réseau Docker interne (`http://ai-service:8000`), **jamais exposé** publiquement.
-- **Asynchrone (events)** : pour les tâches longues (run d'agent, réindexation) → **RabbitMQ** (déjà dans la stack). L'`ai-service` publie l'avancement ; le backend relaie en temps réel au front via **STOMP** (déjà là).
-- **Auth inter-services** : secret partagé (`AI_SERVICE_TOKEN`) en header + isolation réseau. (mTLS plus tard.)
-- **Toujours scopé workspace** : chaque appel porte `workspaceId` ; l'`ai-service` isole le retrieval sur ce brain (1 workspace = 1 brain).
+```
+┌─────────────────────────────────────────────────────────────┐
+│ BACKEND JAVA (tf-api)  — ORCHESTRATION + RETRIEVAL + VÉRITÉ  │
+│   AgentService (routing fast/deep, tool-calling, write-back) │
+│   BrainSearchService (pgvector kNN + graph-expansion)        │  ← lit Postgres DIRECTEMENT
+│   Human-in-the-loop, authz, système de vérité (app tables)   │
+└───────────────┬─────────────────────────────────────────────┘
+                │  HTTP (réseau Docker interne)
+                ▼
+┌─────────────────────────────────────────────────────────────┐
+│ AI GATEWAY (ai-service Python, FastAPI)  — COUCHE MODÈLE     │
+│   /chat   → routing modèle → Ollama (Qwen 14B) [/Groq/…]     │
+│   /embed  → Ollama (bge-m3)  [ou modèle d'embedding dédié]   │
+│   /rerank → (futur) cross-encoder                            │
+│   /health                                                    │
+└───────────────┬─────────────────────────────────────────────┘
+                │  HTTP OpenAI-compat
+                ▼
+        ┌───────────────┐
+        │    OLLAMA      │  (local, RTX 5070, gratuit)
+        │  Qwen 14B      │
+        │  bge-m3        │
+        └───────────────┘
+
+POSTGRES (pgvector + knowledge_nodes/edges) ← lu par BrainSearchService (Java)
+```
+
+**Pourquoi cette répartition :**
+- **Orchestration en Java** = on réutilise l'`AgentService` **code-complet** (routing, tools, write-back). On ne réécrit pas.
+- **Retrieval en Java** = les vecteurs sont dans Postgres avec le graphe → `BrainSearchService` fait *vector + graph-expansion + filtres SQL* en **une requête** (impossible à déporter proprement).
+- **Gateway en Python** = là où le ML vit (embeddings, reranking, éval, fine-tune plus tard). Le backend **ne connaît plus le modèle** : il parle au gateway. Swap Ollama→autre = zéro changement Java.
 
 ---
 
-## 3. Endpoints `ai-service` (contrat)
+## 2. Contrat de l'AI Gateway (Python)
 
-| Méthode | Endpoint | Entrée | Sortie | Sert |
+| Méthode | Endpoint | Entrée | Sortie | Rôle |
 |---|---|---|---|---|
-| `POST` | `/ai/retrieve` | `{workspaceId, query, k}` | `{chunks[], nodes[], score}` | IA-1 (fondation) |
-| `POST` | `/ai/decompose` | `{workspaceId, intention}` | `{cycles[], issues[], predictions}` | CPO (projet→découpage) |
-| `POST` | `/ai/spec` | `{workspaceId, issueId, context}` | `{spec, acceptance[], prompt, links[]}` | CPO (issue→spec+prompt) |
-| `POST` | `/ai/decide` | `{workspaceId, scope, subjectId, signals}` | `{decisions[]{agent, proposal, prediction, rationale}}` | Agents C-level |
-| `POST` | `/ai/reflect` | `{predictionId, observed}` | `{delta, learned}` | Boucle World Model |
-| `POST` | `/ai/index` | `{workspaceId, nodes[]}` | `{indexed}` | (ré)indexation Brain OS |
-| `GET` | `/ai/health` | — | `{status, model, version}` | ops |
+| `POST` | `/chat` | `{messages[], model?, tools?, json?}` | `{message, tool_calls?}` (format OpenAI) | génération / tool-calling |
+| `POST` | `/embed` | `{texts[]}` | `{vectors[][1024]}` | embeddings (bge-m3) |
+| `POST` | `/rerank` *(futur)* | `{query, docs[]}` | `{scores[]}` | reranking retrieval |
+| `GET`  | `/health` | — | `{status, models[]}` | ops |
 
-> **Règle d'or** : l'`ai-service` ne renvoie que des **propositions** (decisions/spec/predictions). **Rien n'est appliqué sans validation humaine** côté backend (gate `Act`).
+- **Auth interne** : `AI_GATEWAY_TOKEN` en header + réseau Docker (jamais exposé public).
+- **Config** : le gateway lit `AI_PROVIDER` (ollama|groq), l'URL Ollama, les noms de modèles. Le **routing modèle vit dans le gateway**, pas dans Java.
+- **Java** : un seul client `AiGatewayClient` remplace les appels Groq/Ollama directs dans `AgentService` + `EmbeddingClient`.
 
----
-
-## 4. Modèle de données — schéma `brain` (possédé par `ai-service`)
-
-### Retrieval (existe en partie : embeddings V51-56)
-- `brain_node` : unité de connaissance (spec, décision, doc, code-summary…) · `workspace_id`, `type`, `content`, `meta`
-- `brain_embedding` : `node_id`, `vector` (pgvector), `model` — *existe déjà*
-- `brain_edge` : `src`, `dst`, `relation` — graphe (auto-edges + hiérarchie existent)
-
-### World Model — les « expériences » (nouveau)
-```
-ai_prediction
-  id · workspace_id · agent (CPO|CTO|COO) · scope (issue|project|enterprise)
-  subject_id · action_proposed (jsonb) · prediction (jsonb: conséquences attendues)
-  created_at
-
-ai_outcome
-  id · prediction_id → ai_prediction · observed (jsonb: résultat réel)
-  delta (jsonb: prédit vs réel) · created_at
-```
-- Le couple `(prediction, delta)` est **ré-indexé** (embedding sur la situation) → un `Orient` futur **retrouve** les écarts passés similaires → l'agent devient « habile ».
-- **Métrique clé** : l'erreur moyenne de prédiction (agrégée sur `ai_outcome.delta`) doit **baisser** dans le temps (cf. [[Benchmark_Modeles_IA]] §5).
-
-### Côté app (possédé par le backend) — nouveau
-- `decision` : `workspace_id`, `scope`, `subject_id`, `agent`, `proposal (jsonb)`, `prediction_id`, `status (proposed|approved|rejected)`, `decided_by`, `decided_at` — c'est **l'objet produit visible** (le Brain reste invisible, cf. [[Moteur_IA_World_Model_OODA]] §7).
+> `OllamaService.java` (déjà écrit) = **provient de l'ancienne approche directe** → soit il devient l'implémentation *interne* si on garde un fallback Java, soit on le retire au profit du gateway. À trancher à l'implémentation (A3).
 
 ---
 
-## 5. Flux de référence (création de projet, bout en bout)
+## 3. Modèle de données — World Model (« expériences »)
+
+*(Inchangé et toujours valable — stocké dans le schéma brain existant, pas une nouvelle base.)*
+```
+ai_prediction  (id, workspace_id, agent CPO|CTO|COO, scope, subject_id,
+                action_proposed jsonb, prediction jsonb, created_at)
+ai_outcome     (id, prediction_id→ai_prediction, observed jsonb, delta jsonb, created_at)
+```
+- Le couple `(prediction, delta)` ré-indexé (embedding) → `Orient` futur retrouve les écarts → l'agent devient « habile ».
+- **Métrique** : erreur moyenne de prédiction (agrégée) doit baisser.
+- Représentable en **nodes `ACTION_OODA` + edges** dans `knowledge_nodes`/`knowledge_edges` (type de node déjà prévu) — pas de table neuve si on préfère.
+
+---
+
+## 4. Flux de référence (issue → spec + prompt, le wow)
 
 ```
-1. User: intention "je veux X"                      (front → backend)
-2. backend → ai-service POST /ai/decompose          (CPO)
-3. ai-service: retrieve(brain) → LLM → cycles+issues + prediction (COO)
-4. backend persiste en 'proposed' + crée 1 ai_prediction
-5. front: human-in-the-loop → Approve/Reject/Edit    (gate Act)
-6. si Approve → backend crée réellement cycles+issues (système de vérité)
-7. plus tard: résultat réel observé
-8. backend → ai-service POST /ai/reflect (observed)  → ai_outcome + delta
-9. delta ré-indexé → améliore les prédictions futures
+1. User ouvre une issue                                   (front → backend Java)
+2. AgentService (deep) : besoin de contexte
+   → BrainSearchService : embed(query) via Gateway /embed
+                        → pgvector kNN + graph-expansion (Postgres)
+   → chunks pertinents
+3. AgentService → Gateway /chat (Qwen 14B) : "rédige spec + prompt d'exécution"
+4. backend persiste en 'proposed' (+ ai_prediction pour le World Model)
+5. front : human-in-the-loop → Approve/Reject/Modify
+6. Approve → l'issue reçoit spec + prompt ; write-back node dans le brain
+7. (option) prompt copié → Claude Code → PR draft → observé → /reflect (delta)
 ```
 
 ---
 
-## 6. Dockerisation `ai-service` (IA-5)
-- Image Python (FastAPI + uvicorn) ; deps IA **installées dans l'image** (pip marche dans le conteneur ; cf. contrainte « pip bloqué en local »).
-- Healthcheck `/ai/health` ; variables : `AI_SERVICE_TOKEN`, `GROQ_API_KEY`, `DB_URL` (schéma brain), modèle(s) configurables.
-- Accès Postgres restreint au schéma `brain`.
+## 5. Migration à prévoir (bge-m3)
+- **V59** : `knowledge_nodes.embedding vector(384)` → **`vector(1024)`** (bge-m3) + recréer l'index HNSW + ré-embed les nodes existants. (Cf. [[Benchmark_Modeles_IA]] §4bis.)
 
 ---
 
-## 7. À trancher
-- [ ] Nom exact du modèle par endpoint (dépend de [[Benchmark_Modeles_IA]]).
-- [ ] Embeddings : local (bge-m3 dans l'image) vs API.
-- [ ] Réindexation : synchrone à l'écriture, ou batch via RabbitMQ.
-- [ ] ADR « contrat inter-services » à formaliser (`v1/12-decisions/`).
+## 6. À trancher à l'implémentation
+- [ ] `OllamaService.java` : le garder (fallback Java direct) ou tout passer par le gateway ?
+- [ ] Réindexation embeddings : synchrone à l'écriture, ou batch (RabbitMQ).
+- [ ] ADR « AI Gateway » (`v1/12-decisions/`).
