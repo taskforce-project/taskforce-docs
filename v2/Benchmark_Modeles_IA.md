@@ -61,6 +61,21 @@ Coût ($/M tokens in/out) · Latence (p50/p95) · Fenêtre de contexte · **Qual
 
 ---
 
+## 4bis. ✅ Décision retenue — stack IA locale (07/07, contrainte : ZÉRO coût v1)
+
+Groq **gratuit mais bloqué** sur le réseau du poste (403) ; Anthropic/OpenAI **payants → exclus v1**. → **self-host local Ollama**, sur la machine (RTX 5070 **8 Go VRAM** + **32 Go RAM** + CPU 10 cœurs).
+
+| Rôle | Choix | Justif |
+|---|---|---|
+| **LLM principal** | **`qwen2.5:14b-instruct`** (un seul) | 8 Go VRAM + 32 Go RAM → tourne (débordement CPU), **~8-20 tok/s** (réaliste) → une spec de 1000 tokens ≈ 60-120 s. OK pour génération **non temps-réel** (tu économises 30 min derrière). Gros gain vs 7B. **Un seul modèle = pas de swap.** |
+| **Fallback** | `qwen2.5:7b-instruct` | si le 14B est ressenti trop lent → bascule 1 ligne de config |
+| **Coder** | *plus tard* (7B pour coexister, ou swap) | le 14B-Instruct génère déjà bien les prompts Claude Code |
+| **Embeddings** | **BGE-M3** (1024d) | qualité FR/multilingue ; ⚠️ **migration V59** `vector(1024)` + ré-embed (actuel = all-MiniLM 384d) |
+| **Vector DB** | **pgvector (existant)** — **PAS** de Qdrant/Chroma | vecteurs co-localisés avec graphe + relationnel → vector + graph-expansion + filtres SQL en **1 requête** ; une DB séparée casserait le graph-expansion + 2e source à synchroniser. Reconsidérer à 10M+ nodes. |
+
+> ⚠️ **VRAM ≠ RAM** : la VRAM (8 Go) = vitesse (couches sur GPU) ; la RAM (32 Go) = capacité (débordement CPU). Le 14B *tient* grâce à la RAM, *ralentit* à cause de la VRAM — acceptable pour de la génération.
+> Setup (install Ollama + `pull`) = **réseau propre 1×** (le proxy du poste corrompt les gros downloads), puis 100 % offline.
+
 ## 5. Le vrai benchmark : à mesurer sur NOS tâches (méthodo)
 
 Les tableaux ci-dessus orientent ; **la décision se prend sur nos données**. Protocole :
