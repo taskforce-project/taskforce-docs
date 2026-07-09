@@ -29,6 +29,8 @@ related:
 | [[Agents_C_Level]] | **3 agents** — CPO / CTO / COO |
 | [[Benchmark_Modeles_IA]] | **Modèles** — décision : Ollama local (Qwen 14B) + bge-m3 + pgvector, gratuit |
 | [[Contrat_API_et_Donnees]] | **AI Gateway** (Python) + schéma « expériences » World Model + flux bout-en-bout |
+| [[Connecteurs_et_Catalogue]] | **Système d'intégrations** — catalogue déclaratif (47 outils, 16 catégories) + API/UI générique ; ajouter un outil = une ligne |
+| [[Data_Flywheel_et_Apprentissage]] | **RAG→LoRA** — pourquoi on n'entraîne pas Qwen aujourd'hui ; collecter le corpus produit (draft vs final + signal) pour un LoRA de préférences demain |
 | [[Roadmap_Consolidee]] | **Master roadmap** — phases A→D + socle RNCP en parallèle |
 
 ## Décisions actées (07/07/2026)
