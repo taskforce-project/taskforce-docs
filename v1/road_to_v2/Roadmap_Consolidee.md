@@ -25,7 +25,7 @@
 
 | Phase | Contenu réel | Effort |
 |---|---|---|
-| **A · Allumer le moteur (via AI Gateway)** | 🟢 **A1-A3+A5 FAITS (08/07)** : Ollama local (Qwen2.5 14B), Gateway Python `/v1/chat`, `LlmClient`/`AiGatewayClient`/sélecteur `LlmConfig`, `AgentService` rebranché. **Vérifié live** : agent génère via Qwen 14B sur GPU, **0 €** (~14 s, mode fast, `ai-service`→Ollama `host.docker.internal` OK). **Reste A4** : embeddings **bge-m3** + **migration V59** (`vector(1024)`) → retrieval sémantique. | 🟠 **M** |
+| **A · Allumer le moteur (via AI Gateway)** | 🟢 **A1→A5 FAITS (08/07) — Phase A terminée.** Ollama local (Qwen2.5 14B) + Gateway Python `/v1/chat`, `LlmClient`/`AiGatewayClient`/sélecteur `LlmConfig`, `AgentService` rebranché (chat vérifié live, Qwen 14B GPU, **0 €**, ~14 s). **A4 fait** : embeddings **bge-m3 1024d** via Ollama (`EmbeddingService`→`OllamaGateway.embed`, repli lexical 1024d), `config.embedding_dim=1024`, `EmbeddingClient.DIMENSIONS=1024`, **migration V59** (`knowledge_nodes.embedding vector(384)→vector(1024)` + HNSW recréé). **Vérifié live** : `/health` bge-m3/1024, embed `real=true` 1024d, recherche brain = **5 hits** (cosine 0.44–0.51), **19/19 nodes ré-embeddés** en 1024d. | ✅ **DONE** |
 | **B · 🎯 LE WOW = critère PFR** | **Phase 4 Brain OS** : issue → l'IA **propose** (spec + prompt + découpage + « déjà vu ? ») → **human-in-the-loop** (approve/reject/modify) → *(option)* **code agent** (Claude implémente → PR draft) → review. = *« ça avance tout seul, je copie le prompt, je valide »*. | 🔴 **L/XL** |
 | **C · C-level + World Model × OODA** | étendre l'agent unique → **3 agents** (CPO/CTO/COO, [[Agents_C_Level]]) + boucle **predict/reflect** stockée en nodes `ACTION_OODA` + edges (dans le brain existant, pas une nouvelle base) | 🔴 **L** |
 | **D · Reste** | marketplace (Agent Packs), GitHub 2-way, Slack sortant, fine-tune LoRA *(optionnel — le wow ne le nécessite pas)* | 🟡 |
@@ -47,4 +47,4 @@ C'est **exactement la Phase 4** ci-dessus. Tout le reste (C/D) est bonus post-d�
 3. **∥ Socle RNCP** en parallèle (obligatoire soutenance).
 4. Phases **C/D** si le temps le permet (différenciation).
 
-**Dernière MAJ :** 07/07/2026 · post-recon (moteur déjà là, on allume + on finit la Phase 4).
+**Dernière MAJ :** 08/07/2026 · **Phase A terminée** (A4 embeddings bge-m3 1024d vérifiés live). **Prochaine : Phase B (le wow).**
