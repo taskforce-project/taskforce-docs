@@ -27,7 +27,7 @@ tags: [stb, specification, technique, besoin, exigences, performance, securite, 
 |---|---|---|---|
 | PERF-01 | Temps de réponse API REST (p95, endpoints courants) | < 200 ms | Prometheus `http_server_requests_seconds` histogram |
 | PERF-02 | Temps de réponse smart-assign (scoring + Groq) | < 3 s (appel LLM inclus) | Prometheus / SigNoz traces |
-| PERF-03 | Débit WebSocket STOMP (messages chat) | Fonctionnel en temps réel | Tests E2E Playwright `chat` |
+| PERF-03 | Débit WebSocket STOMP (notifications / issues temps réel) | Fonctionnel en temps réel | Vérif live (endpoints 200) — *chat retiré le 11/07/2026, STOMP conservé pour notifs/issues/workflows* |
 | PERF-04 | Chargement initial de l'application (LCP) | < 3 s (réseau normal) | Lighthouse / axe-core |
 | PERF-05 | Temps de génération export RGPD JSON | < 5 s (données utilisateur standard) | `GdprServiceIntegrationTest` |
 
