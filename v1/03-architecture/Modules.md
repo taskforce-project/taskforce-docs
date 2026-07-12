@@ -57,8 +57,8 @@ service → store → routes côté frontend. L'état « Santé » est réconcil
 | Roadmap | `RoadmapController` · `IssueService` | `issue-service.getScheduledIssues` | ❌ route front absente |
 | Teams | `TeamController` · `TeamService` | `team-service` · `team-store` | ❌ 404 + store incomplet |
 | Pages (wiki) | `PageController` · `PageService` | `page-service` · `page-store` | ❌ 404 (`/api`) |
-| Discussions | `DiscussionController` · `DiscussionService` | `discussion-service` · `discussion-store` | ❌ 404 (`/api`) |
-| Chat (temps réel) | `ChannelController`,`ChatWebSocketController` · `ChannelService`,`ChatMessageService` | `message-service` · `message-store` (+ mock `messages/data.ts`) | ❌ 404 + route absente + mock |
+| ~~Discussions~~ | — | — | ⛔️ Supprimé (11/07/2026, migration V64 — hors CdC) |
+| ~~Chat (temps réel)~~ | — | — | ⛔️ Supprimé (11/07/2026, migration V64 — hors CdC ; STOMP conservé pour notifs/issues/workflows) |
 | Notifications/Inbox | `NotificationController` · `NotificationService` | `notification-service` · `notification-store` | ✅ |
 | Analytics | `AnalyticsController` · `AnalyticsService` | `analytics-service` | ✅ |
 | Assistant IA | `AssistantController` · `AssistantService`,`GroqService` | FAB / command palette | ⚠️ streaming simulé |
