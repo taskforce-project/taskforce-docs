@@ -64,12 +64,13 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | ProjectController | `/api/workspaces/{slug}/projects` | ✅ |
 | IssueController | `/api/workspaces/{slug}/projects/{projectId}/issues` | ✅ |
 | AnalyticsController | `/api/workspaces/{slug}/analytics` | ✅ |
+| AnalysisController | `/api/workspaces/{slug}` (→ `/analysis`, `/projects/{id}/brief`, `/priorities/{id}`) | ✅ |
 | AssistantController | `/api/workspaces/{slug}/assistant` | ✅ |
 | ProfileController | `/api/workspaces/{slug}/profile` | ✅ |
 | NotificationController | `/api/workspaces/{slug}/notifications` | ✅ |
 | RoadmapController | `/api/workspaces/{slug}/roadmap` | ✅ |
 | WebhookController | `/api/workspaces/{slug}/webhooks` | ✅ |
-| IntegrationController | `/api/workspaces/{slug}/integrations/...` + `/api/integrations/*/callback` | ✅ |
+| IntegrationController | `/api/workspaces/{slug}/integrations/...` (+ `/connectors/{key}` générique) + `/api/integrations/*/callback` | ✅ |
 | StripeController / StripeWebhookController | `/api/stripe` · `/api/webhooks` | ✅ |
 | SalesController | `/api/sales` | ✅ |
 | FileController / AttachmentController (ged) | `/api/files` · `/api/workspaces/{slug}/projects/{projectId}/issues/{issueId}/attachments` | ✅ |
@@ -92,7 +93,17 @@ Workspace (`workspace-service`), Projet + Labels (`project-service`, `label-serv
 CRUD, `/members`, `/teams`, `/labels`, **`GET /{id}/activity?days=N`** = activité quotidienne pour la sparkline carte projet, QA2-32),
 Issue (`issue-service` ↔ `IssueController` : CRUD, **`GET /paged?page&size`** = liste paginée additive pour l'infinite-scroll backlog (QA2-33), `/statuses` + `/reorder`, `/types`, `/comments`,
 `/activity`, `/smart-assign`, `/relations`), Analytics (`analytics-service` : `/kpis`, **`/throughput?bucket=DAY|WEEK`** = série throughput, `WEEK` (8 sem., défaut) ou `DAY` (30 j, tendance « 1 mois » du dashboard ; 26/06/2026),
-`/burndown`, `/capacity`, `/insights`), Notifications (`notification-service`), Sales, Avatars (`FileController`).
+`/burndown`, `/capacity`, `/insights`, **`POST /chart`** = génération de graphe par l'IA (2 modes : série temporelle ou **répartition « X par Y » calculée en base** via un moteur de requête whitelisté — le modèle interroge la vraie DB sans écrire de SQL ; 10/07/2026), **`POST /breakdown`** = ré-exécution d'une répartition, **`GET/POST /charts`** + **`DELETE /charts/{id}`** = graphes épinglés « Custom »), Notifications (`notification-service`), Sales, Avatars (`FileController`).
+
+**Workflows d'analyse IA ✅** (10/07/2026) — `analysis-service` ↔ `AnalysisController`. L'analyse est **asynchrone** :
+`POST /analysis` (`{projectId, depth}`) rend immédiatement un job, exécuté en `@Async` par `AnalysisJobRunner` ;
+`GET /analysis` (dock) · `GET /analysis/{jobId}` · `DELETE /analysis/{jobId}` (masquage) ·
+`POST /analysis/{jobId}/answer` (HITL — reprise après clarification du modèle).
+La décision produite est persistée : `GET /projects/{projectId}/brief` (→ `null` si aucune analyse aboutie), et chaque
+priorité est actionnable : `POST /priorities/{id}/accept` (→ crée l'issue liée), `/pin`, `/dismiss` (bascules), `PUT /priorities/{id}` (édition).
+Le job publie son plan d'étapes sur `/topic/analysis.{workspaceId}` (STOMP) ; **le front n'y est pas encore abonné** et
+retombe sur un polling 5 s tant qu'un workflow est actif.
+> Remplace l'ancien `POST /projects/{projectId}/decision` (synchrone, non persisté), **supprimé** le 10/07/2026 avec `DecisionController`.
 
 **Cassé (404) ❌** — Cycles (`cycle-service` ↔ `CycleController`), Pages wiki (`page-service` ↔ `PageController`) :
 le front appelle `/api/workspaces/…`, le back sert `/workspaces/…`. Voir §4.1.
