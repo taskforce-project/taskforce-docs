@@ -56,7 +56,7 @@ fil rouge de certification Développeur Full Stack — Metz Numeric School 2025-
 | **Modules optionnels** | LIMS / Qualité / GED activables | ⬜ **Non livrés** — anticipés dans l'architecture, backlog post-V1 |
 | **Smart-assign** | Algorithme d'assignation décrit conceptuellement | ✅ Livré : scoring multi-critères + LLM Groq + `IssueWorklog` charge réelle |
 | **Redistribution auto** | Non prévu dans v1 | ✅ Livré : preview plan → validation manager → apply (journalisé) |
-| **Chat temps réel** | Non prévu | ✅ Livré : canaux, chat STOMP/SockJS, temps réel RabbitMQ |
+| **Chat temps réel** | Non prévu | ⛔️ Retiré (11/07/2026) : hors CdC, on n'out-Slack pas Slack → intégration Slack/Teams visée à la place. (Avait été livré — canaux STOMP — puis supprimé, migration V64.) |
 | **Pages wiki** | Non prévu | ✅ Livré : pages Markdown par projet |
 | **Cycles (sprints)** | Non prévu explicitement | ✅ Livré : DRAFT → ACTIVE → COMPLETED, avec CycleIssue |
 | **Brain OS** | Non prévu | ✅ Livré : knowledge graph pgvector, assistant IA Groq |
