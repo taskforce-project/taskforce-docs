@@ -33,9 +33,9 @@ Le backend (conteneur) appelle Ollama sur l'hôte via `host.docker.internal`. Pa
 
 ## 3. Télécharger les modèles (réseau propre)
 ```bash
-ollama pull qwen2.5:14b-instruct    # cerveau principal (~9 Go) — FR + JSON structuré
+ollama pull qwen3:14b               # cerveau principal (~9 Go) — raisonnement/agent (MAJ 09/07, ex qwen2.5:14b-instruct)
 ollama pull qwen2.5:7b-instruct     # fallback rapide (~4.7 Go) si le 14B est trop lent
-ollama pull bge-m3                  # embeddings 1024d (recherche sémantique)
+ollama pull bge-m3                  # embeddings 1024d — INCHANGÉ (ne monte pas de version)
 ```
 
 ## 4. Vérifier + confirmer l'usage GPU
