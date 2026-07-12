@@ -65,12 +65,22 @@ Coût ($/M tokens in/out) · Latence (p50/p95) · Fenêtre de contexte · **Qual
 
 Groq **gratuit mais bloqué** sur le réseau du poste (403) ; Anthropic/OpenAI **payants → exclus v1**. → **self-host local Ollama**, sur la machine (RTX 5070 **8 Go VRAM** + **32 Go RAM** + CPU 10 cœurs).
 
+> **MAJ 09/07 — Qwen3 + routing par tiers.** Bench réel sur le poste (8 Go VRAM) : un **14B déborde en RAM → ~60-170s et TRÈS variable** ; le **8B = ~18s, régulier**, JSON propre, référence les vraies issues. Décision : **8B par défaut** (réactif), **14B « deep » en opt-in**. Le gateway route un *tier* logique → modèle + thinking.
+
+| Tier | Modèle | Usage | Temps (poste) |
+|---|---|---|---|
+| **`fast`** *(défaut)* | **`qwen3:8b`** | spec, décision, agent, chat interactif — tout le courant | **~18-30s** |
+| **`deep`** *(opt-in « Approfondir »)* | **`qwen3:14b` + thinking** | analyse approfondie quand la qualité prime et qu'on accepte d'attendre | ~90-170s |
+| **`standard`** *(dispo)* | `qwen3:14b` sans thinking | palier intermédiaire | ~60-110s |
+
+Détails : câblage côté gateway `OllamaGateway.resolve_tier` (fast→8b/no-think, deep→14b/think) + `/no_think` injecté (Qwen3) ; `OLLAMA_MODEL=qwen3:14b`, `OLLAMA_MODEL_FAST=qwen3:8b`. **Java** : `LlmClient.chatCompletion(..., tier)` ; endpoints `?deep=true` (spec, décision).
+
 | Rôle | Choix | Justif |
 |---|---|---|
-| **LLM principal** | **`qwen2.5:14b-instruct`** (un seul) | 8 Go VRAM + 32 Go RAM → tourne (débordement CPU), **~8-20 tok/s** (réaliste) → une spec de 1000 tokens ≈ 60-120 s. OK pour génération **non temps-réel** (tu économises 30 min derrière). Gros gain vs 7B. **Un seul modèle = pas de swap.** |
-| **Fallback** | `qwen2.5:7b-instruct` | si le 14B est ressenti trop lent → bascule 1 ligne de config |
-| **Coder** | *plus tard* (7B pour coexister, ou swap) | le 14B-Instruct génère déjà bien les prompts Claude Code |
-| **Embeddings** | **BGE-M3** (1024d) | qualité FR/multilingue ; ⚠️ **migration V59** `vector(1024)` + ré-embed (actuel = all-MiniLM 384d) |
+| **Embeddings** | **BGE-M3** (1024d) — **inchangé** | l'embedding ne monte PAS de version avec Qwen3 ; bge-m3 reste le meilleur multilingue. ✅ **migration V59 faite** (`vector(1024)`, ré-embed effectué). |
+| **Coder** *(plus tard)* | `qwen2.5-coder` **ou** délégation Claude Code | en v1 le code est **délégué à Claude Code** (flux « copie le prompt ») → pas de coder local nécessaire. Seam de routing prêt (ajouter un tier `code`). |
+| ⚠️ **Swap VRAM** | 1 seul modèle tient dans 8 Go | alterner 8b↔14b recharge (~30s). Ollama garde le dernier chaud ~5 min → enchaîner les tâches du même tier reste rapide. |
+| **Vector DB** | **pgvector (existant)** — **PAS** de Qdrant/Chroma | vecteurs co-localisés avec graphe + relationnel → vector + graph-expansion + filtres SQL en **1 requête** ; une DB séparée casserait le graph-expansion. Reconsidérer à 10M+ nodes. |
 | **Vector DB** | **pgvector (existant)** — **PAS** de Qdrant/Chroma | vecteurs co-localisés avec graphe + relationnel → vector + graph-expansion + filtres SQL en **1 requête** ; une DB séparée casserait le graph-expansion + 2e source à synchroniser. Reconsidérer à 10M+ nodes. |
 
 > ⚠️ **VRAM ≠ RAM** : la VRAM (8 Go) = vitesse (couches sur GPU) ; la RAM (32 Go) = capacité (débordement CPU). Le 14B *tient* grâce à la RAM, *ralentit* à cause de la VRAM — acceptable pour de la génération.
