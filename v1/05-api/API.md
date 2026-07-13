@@ -66,6 +66,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | AnalyticsController | `/api/workspaces/{slug}/analytics` | ✅ |
 | AnalysisController | `/api/workspaces/{slug}` (→ `/analysis`, `/projects/{id}/brief`, `/priorities/{id}`) | ✅ |
 | AssistantController | `/api/workspaces/{slug}/assistant` | ✅ |
+| McpActionController | `/api/workspaces/{slug}/mcp` (→ `/actions/execute`, `/servers`) | ✅ |
 | ProfileController | `/api/workspaces/{slug}/profile` | ✅ |
 | NotificationController | `/api/workspaces/{slug}/notifications` | ✅ |
 | RoadmapController | `/api/workspaces/{slug}/roadmap` | ✅ |
@@ -104,6 +105,16 @@ priorité est actionnable : `POST /priorities/{id}/accept` (→ crée l'issue li
 Le job publie son plan d'étapes sur `/topic/analysis.{workspaceId}` (STOMP) ; **le front n'y est pas encore abonné** et
 retombe sur un polling 5 s tant qu'un workflow est actif.
 > Remplace l'ancien `POST /projects/{projectId}/decision` (synchrone, non persisté), **supprimé** le 10/07/2026 avec `DecisionController`.
+
+**Hôte MCP ✅** (12/07/2026) — `McpActionController` (`/api/workspaces/{slug}/mcp`). TaskForce **consomme** des
+serveurs MCP externes : un connecteur du workspace portant un `mcpUrl` (config chiffrée) expose ses outils à
+Cortex (découverte `tools/list`, namespacing `<connecteur>__<outil>`, fusion dans la boucle de tool-calling).
+Les **écritures externes** sont **proposées** (toolCall `pending`) puis exécutées après validation via
+`POST /mcp/actions/execute` (`{toolRef, arguments}`). Gestion des serveurs : `GET /mcp/servers` (joignabilité
++ outils après allow-list `mcpAllow`), `POST /mcp/servers` (`{connectorKey, mcpUrl, mcpToken?, mcpAllow?}` →
+config **chiffrée**), `DELETE /mcp/servers/{connectorKey}`. **Gate BUSINESS+** (`PlanFeature.INTEGRATIONS` →
+409 sinon). Backend complet (cycle connect→execute→disconnect vérifié en HTTP) ; le front (dialog de connexion
++ bouton d'approbation des actions `pending`) reste à faire. Détail : [IA-MCP-002](../02-produit/IA.md).
 
 **Cassé (404) ❌** — Cycles (`cycle-service` ↔ `CycleController`), Pages wiki (`page-service` ↔ `PageController`) :
 le front appelle `/api/workspaces/…`, le back sert `/workspaces/…`. Voir §4.1.
