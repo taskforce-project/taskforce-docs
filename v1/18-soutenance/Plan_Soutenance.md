@@ -270,4 +270,84 @@ explication) → accepter → (bonus) chat temps réel dans une 2ᵉ fenêtre.
 > [[Diagrammes_Sequence_UML]] · [[Note_Innovation_Distance_Critique]] · [[Journal_Decisions_ADR]] ·
 > [[Bloc2_Frontend]] · [[Bloc3_Backend]] · [[Release_Notes]]
 
+## 7. Criteres attendus par le jury - auto-audit TaskForce (12/07/2026)
+
+> Contexte : le **prof** a donne un retour sur le projet **QualiTrack** d'un camarade ; ce retour revele
+> **ce que le jury attend** a l'oral et dans le dossier. On s'en sert ici pour **auto-auditer TaskForce**
+> contre ces criteres (ce ne sont PAS des critiques de TaskForce). Reference : `QualiTrack_Documentation.pdf`,
+> `QualiTrack_Soutenance.pptx`. Verdict par critere : vert = on l'a, jaune = partiel, rouge = manquant.
+
+### 7.1 Caracteres "IA" a purger (tout le deck)
+Un jure reticent a l'IA juge mal les tirets longs, fleches, puces exotiques et emojis decoratifs.
+Passe de nettoyage sur les slides (et ce document) : remplacer les tirets longs par des tirets simples,
+les fleches par "vers"/"puis", retirer les puces decoratives superflues. **A faire avant impression.**
+
+### 7.2 Le front est le vrai trou (oral = ~10 min front / 10 min back)
+Le plan a bien 4 slides front (5 a 8) mais il faut du **concret montrable** :
+- [ ] **Techno front expliquee** : composants (Radix/shadcn), application du CSS (Tailwind + tokens
+  `globals.css`), minification (build Next en prod), TypeScript strict. Slide 7 a etoffer.
+- [ ] **Maquette vs realite** : captures de la maquette et leur correspondance avec l'app livree.
+- [ ] **Tests front montres** : rapport Vitest + un E2E Playwright qui tourne (via le cahier de recette).
+- [ ] **Accessibilite chiffree** : lancer un **Lighthouse** (perf / accessibilite / SEO / best practices)
+  et montrer le score. **PAS ENCORE PRODUIT** - a generer.
+- [ ] **Workflow de validation front** : linter `eslint.config.mjs` (present) + workflow `frontend-tests`.
+
+### 7.3 Back + securite + tests (deja tres bien - a valoriser)
+- [ ] Mettre en avant **"tests dans la CI"** comme preuve du pilier Workflow/automatisation : `backend-tests.yml`
+  existe deja et lance les tests. A dire explicitement (slide 13).
+
+### 7.4 DevOps = slide tampon (non note cette soutenance)
+- [ ] Reduire les slides 14 a 15 au strict minimum (bloc 4 optionnel a l'oral). Garder une slide tampon.
+
+### 7.5 Schema d'architecture logicielle
+- [ ] En faire une **vraie slide** : `Architecture_C4.md` existe deja (reutilisable dans le document).
+
+### 7.6 Verification realite (repo, 12/07) - a savoir avant l'oral
+| Critique camarade | Realite verifiee |
+|---|---|
+| "pas de tests front automatises" | **Faux** : 61 fichiers `.test/.spec` + `vitest.config.ts` + `playwright.config.ts` |
+| "tests pas dans la CI" | **Faux** : 7 workflows, dont `backend-tests` / `frontend-tests` / `e2e-tests` (declenches sur main/dev/feature) |
+| "pas de branche develop" | **Nuance** : `origin/dev` existe (nommee `dev`, pas `develop`) |
+| back tests | 69 fichiers de tests ; linter front present |
+
+> **RISQUE MAJEUR pour l'oral** : `origin/main` est **~2394 commits en retard** sur la branche de travail
+> `chore/v1-closure`. Un jure qui clone le repo par defaut voit un TaskForce **perime** (sans les tests,
+> la CI, ni les features recentes). **Action prioritaire : fusionner le travail vers `dev` puis `main`**
+> pour que la vue publique reflete la realite. Sinon le diagnostic du camarade devient vrai aux yeux du jury.
+> **A confirmer aussi** : etat vert des workflows dans l'onglet **Actions** GitHub (`gh` non authentifie ici).
+
+> Questions precises attendues (le prof previent via QualiTrack) : "montre-moi les tests de ton Model X",
+> "montre-moi le cheminement d'une requete HTTP dans tes 5 couches". Preparer 1 exemple concret de chaque.
+
+### 7.7 Verdict par critere (auto-audit TaskForce, 12/07)
+
+> VERT = on l'a (a montrer) · JAUNE = partiel (a renforcer) · ROUGE = manquant (a produire).
+
+| Bloc | Critere attendu | Verdict TaskForce |
+|---|---|---|
+| Front | Techno front dans les slides (composants, application CSS, minification) | JAUNE (documente, pas dans les slides) |
+| Front | Maquette vs reel (captures) | JAUNE (wireframes ok, captures a assembler) |
+| Front | Tests front montres | VERT (61 tests Vitest/Playwright) |
+| Front | Accessibilite Lighthouse (perf/a11y/SEO/best-practices) | ROUGE (a produire) |
+| Front | Workflow de validation front (linter) | VERT (eslint + workflow frontend-tests) |
+| Back | Tests back + couverture | VERT (69 fichiers, ~78 % JaCoCo, Testcontainers) |
+| Back | Tests dans la CI | VERT (backend-tests + e2e-tests) |
+| Back | Securite | VERT (OIDC, RBAC, chiffrement, ZAP) |
+| Doc | Cahier de recette >= 50 % (reussite + echec) | JAUNE (existe, cas d'echec/front a etoffer) |
+| Doc | Schema d'architecture logicielle | VERT (Architecture_C4.md) |
+| Doc | Un seul gros document (bundle PDF) | ROUGE (a assembler, Phase 11) |
+| Doc | Caracteres IA purges | ROUGE (PPT + bundle) |
+| Projet | Branche dev | VERT (origin/dev) |
+| Projet | Couverture >= 50 % | VERT (back ~78 % / front ~92 %) |
+| Projet | main a jour (repo public vu par le jury) | ROUGE (~2394 commits de retard) |
+| Projet | CI verte confirmee | JAUNE (a verifier onglet Actions) |
+| Projet | Q&A anticipe (tests Model X, requete HTTP 5 couches) | JAUNE (a preparer) |
+
+> **A finir - ROUGE** : Lighthouse (SOUT-03) · purge caracteres IA (SOUT-06) · bundle PDF (SOUT-07) · main a jour (SOUT-01).
+> **A renforcer - JAUNE** : contenu front des slides (SOUT-05) · cahier de recette (SOUT-04) · CI verte (SOUT-02) · prep Q&A.
+> **VERT** : le reste (on l'a, il faut le montrer).
+
+---
+
 **Dernière mise à jour :** 06/07/2026 · **Version :** 1.0 (calibrée blocs 2 & 3 + matrice de couverture)
+**Addendum 12/07/2026 :** critères jury (retour prof sur QualiTrack) + auto-audit vert/jaune/rouge (section 7).
