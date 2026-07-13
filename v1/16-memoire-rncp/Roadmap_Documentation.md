@@ -133,3 +133,28 @@ et enfin **11** (assemblage + PDF). Le **déploiement (Phase 7)** attend les VM.
 
 > Estimation : ~20–25 documents **à créer** (⬜) + ~15 à **finaliser** (🟡) + 2 à **refaire** (CdCF/CdCT v2).
 > Le reste (~30) est **déjà couvert**. On coche ici au fur et à mesure.
+
+---
+
+## Criteres jury pour le dossier - auto-audit (12/07/2026)
+
+> Deduits du retour du **prof** sur le projet QualiTrack d'un camarade (partage en reference). On verifie
+> que **TaskForce** remplit ces attentes (ce ne sont pas des critiques de notre dossier) :
+
+- [ ] **Caracteres "IA" a purger** dans TOUT le bundle avant export PDF (tirets longs, fleches,
+  emojis/puces decoratives) : un jure reticent a l'IA le penalise. Passe de nettoyage finale.
+- [ ] **Cahier de recette a renforcer** (`08-operations/Cahier_Test_Recettes.md`) : juge "un peu leger en
+  fonctionnalites". Viser **au moins 50 % des fonctionnalites** couvertes, avec **cas de reussite ET cas
+  d'echec anticipes**. Note : contrairement a ce que pense le camarade, **61 tests front automatises
+  existent** (Vitest/Playwright) - les referencer dans le cahier. Verifier la couverture reelle
+  scenarios vs fonctionnalites (le doc annonce 79 scenarios / 97 % automatises : confirmer).
+- [ ] **Schema d'architecture logicielle** : `03-architecture/Architecture_C4.md` existe deja (Phase 0) ;
+  s'assurer qu'il est **dans le bundle** et lisible (reutilisable en slide PPT, cf. Plan_Soutenance 7.5).
+- [ ] **Assemblage "un seul gros document"** : le camarade rend UN document ; nous en avons ~97 separes.
+  Prioriser la **Phase 11 "bundle PDF"** (regroupement dans l'ordre). Le camarade montrera son document
+  QualiTrack pour comparer la structure (a suivre - fichiers de reference : `QualiTrack_Documentation.pdf`
+  + `QualiTrack_Soutenance.pptx`).
+
+> Verification realite (repo, 12/07) : tests front, CI de tests et branche `dev` **existent** (le camarade
+> a juge sur `main`, qui est ~2394 commits en retard). Priorite projet : fusionner vers `main` pour que la
+> vue publique reflete la realite (detail dans `18-soutenance/Plan_Soutenance.md` section 7.6).
