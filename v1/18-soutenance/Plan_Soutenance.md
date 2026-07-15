@@ -3,10 +3,10 @@ id: plan-soutenance
 title: Plan de soutenance — TaskForce (15-20 min + Q&A)
 doc_type: soutenance
 statut: en-cours
-version: 1.0
-date: "06/07/2026"
+version: 2.0
+date: "14/07/2026"
 auteur: Pierre MICHEL
-tags: [soutenance, plan, slides, script, demo, qa, rncp, dfs, couverture]
+tags: [soutenance, plan, slides, script, demo, qa, rncp, dfs, couverture, front, back]
 ---
 
 # 🗺️ Plan de soutenance — TaskForce
@@ -19,6 +19,84 @@ tags: [soutenance, plan, slides, script, demo, qa, rncp, dfs, couverture]
 >
 > 👉 Conséquence : **le pic de la soutenance = la démo front puis la partie back (code + API +
 > sécurité + tests).** Ce plan est calibré ainsi.
+
+---
+
+## ⭐ Architecture v2 (deck généré, post-retour prof du 14/07)
+
+> **MAJ 14/07** : refonte du plan après le retour d'un camarade + prof sur un deck de promo.
+> Objectif : **~10 min front / ~10 min back** (l'oral n'évalue que les blocs 2 et 3), un front
+> beaucoup plus développé, et **aucun caractère « signature IA »** (voir mémoire
+> `soutenance-avoid-ai-characters`). Les sections 1 à 6 ci-dessous restent des **références**
+> (scripts de démo, matrice de couverture, Q&A) ; la structure de slides officielle est celle-ci.
+
+**Version générée (v3, ancrée sur le code réel) :** `TaskForce_Soutenance_v3.pptx` (racine repo `C:\Taskforce\`).
+27 slides principales + 5 annexes tampon. Notes orateur intégrées (mode présentateur).
+Construit sur le template Figma (fonds réutilisés). Distinction visuelle : **front sur fonds
+clairs, back sur fonds sombres**. **Contenu vérifié contre le code** (5 explorations du dépôt).
+
+**Chiffres démontrables (à privilégier ; les anciens du mémoire sont périmés) :**
+- Front : Next.js **16.1**, React **19**, TS strict, Tailwind **4**, Turbopack. shadcn sur Radix, **165 composants** (74 primitives). **18 stores Zustand**. **706 tests Vitest**, couverture **92 % sur le périmètre logique** (lib/hooks/auth ; reste en E2E ; gate 70 % non bloquante). **axe-core WCAG 2.1 AA** en E2E. Lighthouse : sur la **landing** seulement, app à mesurer.
+- Back : Spring Boot **4.0**, Java **21**, Maven. **49 entités, 68 migrations Flyway**. **35 contrôleurs, 200+ endpoints**, OpenAPI. Keycloak **OIDC RS256** (aucun mot de passe stocké). **692 tests**, **~72 % de lignes JaCoCo** (intégration vrai Postgres+pgvector, pas de mock). Rate limiting Bucket4j **+ Redis**.
+- IA : smart-assign = règles Java + **score sémantique LLM** (pas pgvector) ; **Ollama Qwen local gratuit** ; Brain OS + Spec IA + decision board + Cortex + MCP **codés**.
+- Cahier de recette : **97 %** (79 scénarios, 77 automatisés). Pricing : **FREE / BASIC 10 / BUSINESS 16 / ENTERPRISE** par siège.
+
+**À NE PAS revendiquer (non démontrable dans le code) :** Virtual Threads, API versionnée, Testcontainers actif, Checkstyle, scans Semgrep/Trivy en CI, gate de couverture bloquante, prod active.
+**Manques assumés au jury :** pas de prod active (IaC prête), Lighthouse app, scans en CI, mentions légales, jeton de refresh en localStorage.
+
+### Retours pris en compte
+- **Front à parité du back** : 7 slides front (techno, composants, style + minification CSS,
+  maquette vs réel, accessibilité + Lighthouse, tests + cahier de recette + linter/CI).
+- **DevOps = 1 slide tampon** (non noté à cette soutenance).
+- **Caractères IA purgés** : pas de tiret long, de flèche, de middot ni d'emoji (vérifié par scan
+  sur slides + notes). Remplacés par « vers » / « puis » / virgules.
+- **Annexes** pour les questions (modèle de données, isolation, tests, vision).
+
+### Rôles des fonds du template
+- **T1** swirl : titre. **T2/T3/T4** swirl sombre : contenu (back). **T5/T6** clair : contenu (front).
+- **T7** (bandeau blanc à gauche + orange) : **titre de section**. **T8** tout orange : **call to action**.
+
+### Structure slide par slide
+
+| # | Fond | Sujet |
+|:-:|:--:|------|
+| 1 | T1 | Titre |
+| 2 | T2 | Contexte : répartir à la main ne passe pas à l'échelle |
+| 3 | T4 | La solution + périmètre V1 |
+| 4 | T3 | Gestion de projet (agile, priorisation, veille) |
+| 5 | T2 | Architecture + stack — *visuel C4 à insérer* |
+| 6 | **T7** | Section « Partie 1 : Front-end » |
+| 7 | T6 | Front, technologie : Next.js, React, TS strict |
+| 8 | T5 | Front, composants : design system Radix — *capture* |
+| 9 | T6 | Front, style : Tailwind, tokens, CSS minifié |
+| 10 | T5 | Front, maquette vs réel — *captures Figma vs écran* |
+| 11 | T6 | Front, accessibilité + Lighthouse (axe-core, WCAG) — *capture* |
+| 12 | T5 | Front, tests : Vitest 92 %, Playwright, cahier de recette, CI |
+| 13 | **T7** | Section « Partie 2 : Back-end » |
+| 14 | T2 | Back, archi : Spring Boot 4, Java 21, modules |
+| 15 | T3 | Back, données : pgvector, Flyway, chiffrement — *visuel MCD* |
+| 16 | T4 | Back, API sécurisée : Swagger, OIDC, rate limiting |
+| 17 | T2 | Smart Assign, le moteur IA (différenciateur) |
+| 18 | T5 | Paiement Stripe |
+| 19 | T3 | Sécurité en profondeur + migration JWT vers OIDC |
+| 20 | T6 | Back, tests : JaCoCo 78 %, Testcontainers, CI |
+| 21 | T5 | Production / DevOps (slide tampon) |
+| 22 | T3 | Distance critique (assumé / corrigé, 2 colonnes) |
+| 23 | **T8** | Call to action : « L'IDE exécute. TaskForce orchestre. » (vision future) |
+| 24 | T1 | Merci + questions |
+| A25 | T7 | Annexes (divider) |
+| A26 | T2 | Annexe : modèle de données |
+| A27 | T4 | Annexe : isolation multi-tenant |
+| A28 | T6 | Annexe : couverture de tests |
+| A29 | T5 | Annexe : vision détaillée |
+
+### À compléter (placeholders déjà posés dans le pptx)
+- Diagramme **C4** (slide 5), **MCD** (slide 15).
+- **Captures** : composants (8), maquette Figma vs réel (10), rapport **Lighthouse** (11).
+- Revérifier les **chiffres** (92 % front / 78 % back / 746 / 658) s'ils ont évolué.
+- **Cahier de recette** à ≥ 50 % (SOUT, roadmap).
+
+> 🔗 Voir aussi : mémoire `soutenance-avoid-ai-characters`, `taskforce-docs/v1/18-soutenance/README.md`.
 
 ---
 

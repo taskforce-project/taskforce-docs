@@ -22,7 +22,7 @@ tags: [soutenance, presentation, rncp, dfs, oral, jury, demo]
 
 ## Ce qu'il reste à produire
 
-- [ ] Slides (support visuel) — à générer une fois le plan validé (voir *séparation des rôles* ci-dessous).
+- [x] Slides (support visuel) — **v3 générée, ancrée sur le code réel** : `TaskForce_Soutenance_v3.pptx` (27 slides + 5 annexes, notes intégrées, sans caractères IA, chiffres vérifiés contre le dépôt). Voir [[Plan_Soutenance#⭐ Architecture v2 (deck généré, post-retour prof du 14/07)]]. Reste : insérer les 7 visuels (C4, MCD, Swagger, écran Smart Assign, composants, maquette vs réel, Lighthouse) et mesurer le Lighthouse de l'app.
 - [ ] Répétition chronométrée (viser 17 min pour garder une marge).
 - [ ] Environnement de démo stable (jeu de données seed, workspace de démo, secours vidéo si réseau HS).
 - [ ] Export PDF des slides (annexe obligatoire du dossier de validation).
