@@ -4,7 +4,7 @@ title: État Produit — IA
 doc_type: register
 statut: active
 version: 0.1
-date: "09/06/2026"
+date: "16/07/2026"
 auteur: Pierre MICHEL
 review_cycle: weekly
 tags: [produit, suivi, ia, groq]
@@ -16,7 +16,7 @@ related:
 
 # État Produit — IA (`ai-service/` + Groq)
 
-**Version :** 0.1 · **Date :** 09/06/2026 · **Auteur :** Pierre MICHEL
+**Version :** 0.1 · **Date :** 16/07/2026 · **Auteur :** Pierre MICHEL
 
 [![Type: Suivi Produit](https://img.shields.io/badge/Type-Suivi%20Produit-orange?style=for-the-badge)]() [![Répertoire: IA](https://img.shields.io/badge/R%C3%A9pertoire-IA-blue?style=for-the-badge)]()
 
@@ -42,6 +42,7 @@ related:
 - [x] **Quota IA enforced sur TOUS les chemins (pas seulement le chat Cortex)** : avant, seul `AgentService` gatait+comptait ; smart-assign, génération de graphes, spec d'issue, analyses async et compression d'historique **brûlaient des tokens sans gate ni comptage** (quota contournable + conso sous-évaluée). Helper unique **`AiMeter.metered(wsId, work)`** (gate `assertWithinQuota` AVANT l'appel → capture ThreadLocal → `record` best-effort ; ré-entrant) sur les 5 chemins. Dégradation gracieuse (au-dessus du plafond : pas d'appel LLM → repli déterministe ; l'async → job en échec avec message d'upsell). La compression (IA-AS-008) et les workflows (IA-DEC-002) sont désormais **comptés**. Vérifié : `SmartAssignServiceTest` 35/35 + `ChartSpec`/`AiConversation` verts. [id:: IA-QUOTA-001] [statut:: done] [parite:: extra] [ref:: core/service/AiMeter.java + {SmartAssignService,agent/ChartSpecService,agent/IssueAiService,agent/AnalysisJobRunner,AiConversationService}.java] (13/07/2026)
 - [x] **Politique de gating IA tranchée : IA incluse partout, métrée par TOKENS** (décision user 13/07) : le front cachait Cortex aux FREE (`AI_ASSISTANT`) alors que le back ne gatait pas — incohérent, et le code différait la politique. Décision : **assistant Cortex + insights + smart-assign inclus dès FREE**, bornés par le quota tokens ; les murs payants (BUSINESS+) = capacités de **scale** (analytics avancées, intégrations, historique illimité `UNLIMITED_HISTORY`). `PlanFeatureService.MATRIX` + `plan-features.ts` alignés (FREE/BASIC gagnent AI_ASSISTANT + AI_INSIGHTS). [id:: IA-GATING-001] [statut:: done] [parite:: extra] [ref:: core/service/PlanFeatureService.java + frontend/lib/config/plan-features.ts] (13/07/2026)
 - [x] **Consommation de tokens en direct (façon Claude)** — usage **réel** de bout en bout : Ollama renvoie `usage` → `ollama_gateway.chat` le remonte `(model, message, usage)` → `ChatResponse.usage` → `AiGatewayClient` **accumule par thread** (`LlmUsage` + `ThreadLocal`, sommé sur les itérations de la boucle de tool-calling) → `AgentService` injecte `AssistantAnswer.AssistantUsage {promptTokens, completionTokens, totalTokens}`. Front : compteur `TokenMeter` **animé** (count-up) — header du panneau Cortex « N tokens » (total session) + footer par message « MODE · N tokens (prompt↑ completion↓) ». Le modèle se nomme **Cortex** (system prompt + UI). Vérifié live (msg réel → 870 tokens : 589↑/281↓). Quota/plafond = à venir (dépend des plans). [id:: IA-AS-003] [statut:: done] [parite:: extra] [ref:: ai-service/app/services/ollama_gateway.py + core/service/{AiGatewayClient,LlmUsage}.java + core/service/agent/AgentService.java + frontend/components/chat/token-meter.tsx] (11/07/2026)
+- [x] **Le Brain OS s'alimente de l'activité projet (ingestion automatique)** : jusqu'ici le graphe ne se nourrissait **que** du seed, de l'humain et de 2 actions explicites (spec approuvée, `create_note`) — mesuré en base : **267 issues, 137 commentaires, 0 node avec `ref_type` non nul**, et **aucun** listener ne touchait le brain. Désormais la **clôture d'un cycle** écrit sa **rétro** (`ACTION_OODA`, domaine `HISTORIQUE`, `refType=CYCLE`) et chaque **issue terminée** rafraîchit le relevé du cycle en cours. **Le contrat d'écriture est celui d'un agent** (`AGENTS.md` §2) : les faits viennent **du SQL**, le LLM (Qwen tier `fast`, **7ᵉ chemin métré par `AiMeter`**) ne reçoit **que** ces faits et se borne à les rédiger — ses suggestions sont étiquetées « propositions à valider », jamais des décisions actées. Le graphe étant relu par le RAG, un fait inventé y deviendrait une vérité citée : d'où la règle. **Upsert** par `refType/refId` (une fiche par cycle, pas un node par événement) ; rendu **Obsidian** (`#tags` + `[[wikilinks]]` → arêtes auto vers le hub de domaine). **Robustesse** : `@TransactionalEventListener(AFTER_COMMIT)` + `@Async` (une ingestion KO ne peut pas annuler une clôture ; la requête ne paie pas le LLM), appel LLM **hors transaction**, et repli déterministe sur LLM absent / quota 409 / timeout → **le node sort dans tous les cas**. **Concurrence** : l'upsert était un *check-then-act* (4 issues terminées coup sur coup → 4 doublons en 240 ms) → **verrou pessimiste** sur la ligne du cycle + migration **`V69`** (index partiel `uq_knodes_cycle_ref` : l'invariant vit dans le schéma). Vérifié **e2e** via `scripts/scenario/play.mjs`, qui joue un projet par la **vraie API** (un SQL ne traverse pas Spring → ne déclenche rien : c'est pourquoi le seed laisse le brain vide) : rétro exacte (4/5 livrées, 80 %, 13/21 pts), synthèse Qwen sans fait inventé, node relié et embeddé, 2 cycles → 2 nodes. **30 tests**. **Hors périmètre** : issues hors cycle, commentaires, PR. [id:: IA-INGEST-001] [statut:: done] [parite:: extra] [ref:: core/service/brain/{BrainIngestionService,BrainIngestionListener}.java + core/event/{Cycle,Issue}CompletedEvent.java + db/migration/V69__brain_ingestion_one_node_per_cycle.sql] (16/07/2026)
 - [x] AI Insights (analytics) [id:: IA-IN-001] [statut:: wip] [parite:: extra]
 - [x] Décision par projet (boucle OODA) : métriques réelles + RAG Brain OS → situation, risques, 3 priorités ; repli déterministe si LLM absent [id:: IA-DEC-001] [statut:: done] [parite:: extra] [ref:: core/service/agent/DecisionService.java]
 - [x] **Workflows d'analyse asynchrones** : le job tourne en arrière-plan, son plan d'étapes est persisté et observable en direct (dock « Workflows IA ») ; le brief produit est persisté et ses 3 priorités sont **actionnables** (accepter → issue, épingler, éditer, écarter) [id:: IA-DEC-002] [statut:: done] [parite:: extra] [ref:: core/service/agent/AnalysisJobRunner.java] (10/07/2026)
@@ -62,11 +63,28 @@ related:
 - [ ] Cache Insights (`ai_runs`/`insight_snapshots`) + garde quota/timeout Groq [id:: IA-IN-002] [statut:: todo] [prio:: P2] [besoin-backend:: BE-IA-002] (PC-007)
 - [ ] Feature flags IA [id:: IA-CFG-001] [statut:: todo] [prio:: P2] [besoin-backend:: BE-IA-003] (PC-014)
 - [ ] Décision `ai-service` Python : supprimer ou documenter legacy [id:: IA-LEG-001] [statut:: todo] [prio:: P3] [besoin-backend:: BE-IA-004] (PC-012)
+- [ ] **Ingestion Brain OS au-delà du cycle** : les issues **hors cycle** (259 des 267 du seed), les **commentaires** et les **PR** ne laissent aucune trace dans le graphe. Choix assumé — le grain d'ingestion est le **lot** (le cycle), pas l'événement isolé : un node par événement ferait exploser le graphe (cf. estimation 25 M nodes, `brain-os-roadmap.md` §4). À rouvrir seulement avec un grain d'agrégation défini (rétro **de projet** ? digest **hebdomadaire** ?). [id:: IA-INGEST-002] [statut:: todo] [prio:: P2]
 
 ## ▶ Prochaine action
-Brancher le dock sur STOMP (`IA-DEC-004`) : le backend publie déjà chaque transition de plan sur
-`/topic/analysis.{workspaceId}`, mais `lib/hooks/use-stomp.ts` ne sait s'abonner qu'aux canaux de chat.
-Extraire la connexion/fallback SockJS du hook avant d'ajouter un second abonnement (ne pas dupliquer les ~90 lignes).
+Brancher le dock « Workflows IA » sur STOMP (`IA-DEC-004`) — **toujours valable, vérifié dans le code
+le 16/07/2026** : le backend publie bien chaque transition de plan sur `/topic/analysis.{workspaceId}`
+(`AnalysisJobService:350`, best-effort dans un try/catch), **aucun** abonné n'existe côté front, et le
+dock retombe sur un `setInterval(fetchJobs, 5000)` tant qu'une analyse est active
+(`components/workflows/workflows-button.tsx:27`).
+
+**Le chemin d'implémentation, lui, a changé** depuis la suppression du chat humain (`TF-CHAT-REMOVE`,
+migration `V64`) : `lib/hooks/use-stomp.ts` n'est plus qu'un **constructeur d'URL de 19 lignes**
+(`buildRealtimeUrls`) — plus aucun client STOMP, plus aucun abonnement, donc **rien à en extraire**.
+
+La duplication est ailleurs : `use-notifications-realtime.ts` et `use-project-realtime.ts` portent
+**chacun** le même bloc d'environ 45 lignes (client `@stomp/stompjs` + `connectHeaders` Bearer + repli
+SockJS sur `onWebSocketClose` + dispose), au topic et au handler près. Un troisième abonnement le
+triplerait.
+
+⇒ Factoriser ce bloc (par exemple `useStompSubscription(topic, handler, enabled)`, à côté de
+`buildRealtimeUrls`), migrer les deux hooks existants dessus, puis ajouter l'abonnement à
+`/topic/analysis.{workspaceId}` qui patche le store des jobs — le polling 5 s redevenant un filet de
+sécurité plutôt que le mécanisme principal.
 
 ---
 **Dernière mise à jour :** 13/07/2026 · **Projet :** Taskforce — Metz Numeric School 2025-2026
