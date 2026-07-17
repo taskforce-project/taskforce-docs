@@ -19,6 +19,13 @@ related:
 > **À lire en PREMIER par tout agent (Copilot, Claude…) ouvrant ce vault.** C'est le « kernel » de
 > l'OS : comment s'orienter, choisir la prochaine action, et entretenir le système tout seul.
 
+> **🔬 Aiguillage de mode** — ce contrat régit le **mode développement**. Si l'utilisateur dit
+> « **mode recherche** », « on réfléchit », « brainstorm », ou ouvre un sujet théorique (world model,
+> formalisme, architecture cognitive) : lire [`recherche/CLAUDE.md`](./recherche/CLAUDE.md) et
+> appliquer **ce contrat-là**. Les deux ne s'appliquent **jamais en même temps** — le mode recherche
+> autorise la spéculation (étiquetée) mais **interdit de coder** ; le mode développement fait
+> l'inverse.
+
 ## 0. Rituel de démarrage de session (OBLIGATOIRE)
 
 Quand l'utilisateur dit « go », « on commence », « prochaine action ? » ou ouvre une session de travail,
