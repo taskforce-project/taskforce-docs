@@ -64,6 +64,14 @@ Ce fichier est le <strong>point d'entrée unique</strong> (Map of Content) vers 
 [📋 Backlog / Roadmap technique](./v1/13-roadmap/Roadmap_Backlog.md) ·
 [📐 Conventions du vault](./v1/04-engineering/Conventions_Documentation.md) · templates dans [`_templates/`](./templates/Template_Doc_Technique.md).
 
+**🔬 R&D / Recherche :** [section `recherche/`](./recherche/README.md) — espace de réflexion théorique
+(world model, formalisme, moteur de décision) · [contrat du mode recherche](./recherche/CLAUDE.md) (dire « **mode recherche** »).
+
+> ⚠️ **`recherche/` est la seule zone du vault exemptée de la règle d'or n°1** (« ne rien inventer »).
+> En échange : chaque affirmation y est étiquetée `[ÉTABLI]` · `[DÉDUIT]` · `[HYPOTHÈSE]`, et **rien
+> n'en sort** sans passer par une démonstration (code + mesure), une tâche du backlog, ou un ADR.
+> **Ce n'est pas un livrable de soutenance.**
+
 > **Priorité actuelle = PRODUIT** (atteindre le niveau des outils de référence : Plane, Linear, GitHub…), mémoire RNCP ensuite. Suivi : [`produit/`](./v1/02-produit/README.md).
 
 Documentation projet/métier complémentaire : [Dossier Projet](./v1/01-projet/Dossier_Projet.md) ·
