@@ -73,6 +73,7 @@ appliqué). Échelle d'effort : S ≤2h · M ½–1j · L 1–3j · XL &gt;3j.
 | PC-016 | ✅ Résolu (04/07) | **`canManage` toujours faux** page Membres (`/users/me` renvoie `id` en number, comparé en string → `"1"===1` faux) → gestion rôles/invitation/**redistribution** masquées **pour le OWNER** | Feature manager invisible | S | Haute |
 | PC-017 | ✅ Résolu (04/07) | **Export RGPD 500** : `GdprService.exportMyData` en `@Transactional(readOnly)` + INSERT audit → SQLSTATE 25006 (même pattern que FIX-006). Droit de portabilité **cassé** | Droit RGPD HS | S | Haute |
 | PC-018 | ✅ Résolu (30/06) | **Module test ne compilait plus** : `JwtServiceTest` appelait `JwtService.refreshAccessToken` (méthode supprimée, refresh migré dans `AuthService`) → toute la suite bloquée en silence | CI aveugle | S | Haute |
+| PC-020 | ✅ Résolu (16/07) | **Le RAG du Brain OS n'avait jamais fonctionné** : `DecisionService.retrieveContext` en `@Transactional(readOnly)` → `BrainSearchService.retrieveRelevant` → `backfillMissingEmbeddings` → **`UPDATE`** dans la tx en lecture seule → Postgres avorte la tx → le `SELECT … <=> …` suivant meurt en **25P02**. Le `try/catch` masquait la cause. **19 nodes du seed n'ont jamais pu s'indexer** ; l'analyse tombait en repli **sans le dire**. Correctif : `BrainEmbeddingWriter` (bean séparé, `REQUIRES_NEW` → 1 tx par vecteur). Vérifié : 78/78 indexés, job 10 `DONE` vs jobs 8/9 `FAILED`. **4ᵉ occurrence du motif** (FIX-006 a+b, PC-017, celle-ci). | RAG décoratif : l'IA répondait sans le contexte | S | Haute |
 
 ## 2. Détails par problème
 
