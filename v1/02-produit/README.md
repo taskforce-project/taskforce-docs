@@ -58,7 +58,9 @@ le frontend a besoin.
 - **Sécurité :** OWASP A01 (IDOR `AuthorizationService`+interceptor), A02 (chiffrement `EncryptedStringConverter`), **A05 en-têtes durcis testés** (`SecurityHeadersWebMvcTest` — CSP/HSTS/X-Frame/nosniff), A07 (JWT/OTP/rate-limit), A09 (audit).
 - **RGPD (C11) ✅ cœur :** export portabilité **corrigé** (était 500 → 200, bug QF-5) **et complété** (profil + memberships + skill profiles + worklogs) ; **anonymisation validée** (`GdprServiceIntegrationTest` 3/3). Reste : chiffrement disque (déploiement), registre Art.30, purge Keycloak.
 - **Bugs trouvés & corrigés (QA/validation) :** **QF-1** `canManage` toujours faux (page Membres — id number vs string) masquait rôles/invitation/redistribution ; **QF-5** export RGPD 500 ; `JwtServiceTest` ne compilait plus (méthode supprimée). Détail : [Problèmes connus](../09-audits/Problemes_Connus.md).
-- **▶ Prochaine action :** **config & hors-app** — PCA/PRA **opérationnel** (cron backup + restauration testée) + **audit sécu/pentest** (OWASP ZAP) → **CI** (gates JaCoCo/Vitest bloquants + scan CVE) → **déploiement** (Guacamole/VM école) → **doc** (conception C1–C12, registre RGPD).
+- **Lot 20/07/2026 (branche `chore/v1-closure`) :** 3 problèmes remontés par l'usage, **tous résolus et vérifiés en live**, et dans les 3 cas **l'hypothèse de départ était fausse** — aperçu des pièces jointes (cause : notre **CSP**, pas MinIO), lignes mortes du Signal Center (liens de notification `NULL` en base → migration `V71`, **265/266** résolues), blocages de rate limiting (les préflights CORS `OPTIONS` consommaient le quota ; `Retry-After` désormais émis **et exposé au JS**). Contrat API : 2 endpoints agrégés `GET …/my-cycles` + `GET …/my-pages` — « Ma file » passe de `3+2N` à **3 appels**. Détail : [PC-031/032/033](../09-audits/Problemes_Connus.md).
+- **UI en anglais — EN COURS (décision produit 20/07) :** l'**interface applicative** passe en anglais ; **commentaires de code et documentation restent en français**. Fait : Signal Center, « Ma file », notifications (back + seed). Reste **mesuré** : ~1000 chaînes dans ~110 fichiers front, messages back, catalogue de connecteurs, seed, **prompts LLM**. **Bloqueur identifié** : deux systèmes i18n concurrents (`lib/i18n/index.tsx`, défaut `en` / `lib/store/preferences-store.ts`, défaut `fr`) — le sélecteur de langue des réglages ne pilote que le premier, et ~95 % des fichiers codent leurs chaînes en dur.
+- **▶ Prochaine action :** **unifier les deux systèmes i18n** (FE-CORE-015) **avant** de traduire à grande échelle — sinon la contradiction est figée dans ~110 fichiers de plus ; puis **config & hors-app** — PCA/PRA **opérationnel** (cron backup + restauration testée) + **audit sécu/pentest** (OWASP ZAP) → **CI** (gates JaCoCo/Vitest bloquants + scan CVE) → **déploiement** (Guacamole/VM école) → **doc** (conception C1–C12, registre RGPD).
 - **Backlog « plus » :** hors chemin V1, cf. `.ai/backlog-post-v1.md` (Brain OS Phases 4/5, niveau Plane, RBAC granulaire, intégrations…).
 
 </div>
@@ -203,6 +205,6 @@ SORT prio
 > **Note Brain OS** — Registre vivant, revue hebdomadaire. Quand un domaine atteint la parité, basculer
 > ses items en `[statut:: done]` et mettre à jour la matrice §2.
 
-**Dernière mise à jour :** 09/06/2026  
+**Dernière mise à jour :** 20/07/2026  
 **Version :** 1.0  
 **Projet :** Taskforce — Metz Numeric School 2025-2026
