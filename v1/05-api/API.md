@@ -69,6 +69,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | McpActionController | `/api/workspaces/{slug}/mcp` (→ `/actions/execute`, `/servers`) | ✅ |
 | ProfileController | `/api/workspaces/{slug}/profile` | ✅ |
 | NotificationController | `/api/workspaces/{slug}/notifications` | ✅ |
+| MyWorkController | `/api/workspaces/{slug}` (→ `/my-issues`, `/my-cycles`, `/my-pages`) | ✅ |
 | RoadmapController | `/api/workspaces/{slug}/roadmap` | ✅ |
 | WebhookController | `/api/workspaces/{slug}/webhooks` | ✅ |
 | IntegrationController | `/api/workspaces/{slug}/integrations/...` (+ `/connectors/{key}` générique) + `/api/integrations/*/callback` | ✅ |
@@ -115,6 +116,29 @@ Les **écritures externes** sont **proposées** (toolCall `pending`) puis exécu
 config **chiffrée**), `DELETE /mcp/servers/{connectorKey}`. **Gate BUSINESS+** (`PlanFeature.INTEGRATIONS` →
 409 sinon). Backend complet (cycle connect→execute→disconnect vérifié en HTTP) ; le front (dialog de connexion
 + bouton d'approbation des actions `pending`) reste à faire. Détail : [IA-MCP-002](../02-produit/IA.md).
+
+**« Ma file » — endpoints agrégés ✅** (20/07/2026) — `MyWorkController` (`/api/workspaces/{slug}`). La vue est
+**cross-projets** : elle affichait ses cycles et ses documents en rappelant l'API **projet par projet**, soit
+`3 + 2N` requêtes par affichage (N = nombre de projets) — assez pour épuiser le quota de rate limiting à
+l'usage normal. Deux endpoints agrégés remplacent ces boucles :
+`GET /my-cycles` → `ApiResponse<List<MyWorkCycleResponse>>` avec
+`MyWorkCycleResponse = { projectId, projectName, cycle: CycleResponse }` (décompte d'issues groupé en **une**
+requête, `CycleIssueRepository.countByCycleIds`) et `GET /my-pages` →
+`ApiResponse<List<MyWorkPageResponse>>` avec `MyWorkPageResponse = { projectId, projectName, page: PageResponse }`
+(borné à **50 documents récents**). Périmètre des deux : les projets visibles par l'appelant
+(`ProjectVisibilityGuard.viewableProjectIds`). L'enveloppe `{projectId, projectName}` est nécessaire parce que
+`CycleResponse`/`PageResponse` sont normalement servis depuis une route **déjà scopée par projet**.
+Mesure : « Ma file » passe de `3+2N` à **3 appels**, 0 appel par projet.
+> ⚠️ `MyWorkController` passe de `@RequestMapping("…/my-issues")` à `@RequestMapping("/api/workspaces/{slug}")`
+> + `@GetMapping("/my-issues")` : **l'URL externe de `/my-issues` est inchangée**.
+
+**En-têtes de rate limiting exposés ✅** (20/07/2026) — le 429 était muet côté client : `RateLimitFilter`
+n'émettait aucun `Retry-After`, et le profil `DEFAULT` (200 req/60 s, `refillIntervally`) rend tous les jetons
+d'un coup en fin de fenêtre — l'attente réelle va donc de **0 à 60 s**, indevinable. Le filtre émet désormais
+**`Retry-After`** et **`X-RateLimit-Remaining`**, tous deux **listés dans `CorsConfig.setExposedHeaders`** :
+sans cette déclaration, le navigateur les masque au JavaScript en cross-origin et le contrat reste inutilisable.
+Les préflights `OPTIONS` sont par ailleurs **exclus du comptage** (`shouldNotFilter`) — ils consommaient un
+jeton chacun, divisant le quota réel par deux. Cf. [PC-033](../09-audits/Problemes_Connus.md).
 
 **Cassé (404) ❌** — Cycles (`cycle-service` ↔ `CycleController`), Pages wiki (`page-service` ↔ `PageController`) :
 le front appelle `/api/workspaces/…`, le back sert `/workspaces/…`. Voir §4.1.
@@ -177,6 +201,6 @@ Front : `AUTH_ROUTES.REFRESH_TOKEN = /api/auth/refresh` ; back : méthode mappé
 
 > **Note Brain OS** — Vérifié dans le code au 08/06/2026 (branche `feat/dashboard`).
 
-**Dernière mise à jour :** 08/06/2026  
+**Dernière mise à jour :** 20/07/2026  
 **Version :** 1.0  
 **Projet :** Taskforce — Metz Numeric School 2025-2026
