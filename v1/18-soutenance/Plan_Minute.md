@@ -3,10 +3,10 @@ id: soutenance-plan-minute
 title: Plan minuté de la soutenance (étape 1)
 doc_type: soutenance
 statut: a-valider
-version: 1.0
+version: 2.0
 date: "21/07/2026"
 auteur: Pierre MICHEL
-tags: [soutenance, rncp, oral, plan, timing, bc02, bc03]
+tags: [soutenance, rncp, oral, plan, timing, bc02, bc03, grille]
 ---
 
 # Plan minuté de la soutenance
@@ -14,152 +14,286 @@ tags: [soutenance, rncp, oral, plan, timing, bc02, bc03]
 > Étape 1 de la méthode définie dans `.ai/soutenance-brief.md`. **À valider avant toute rédaction
 > du texte oral.** Cadre officiel : 20 minutes de présentation démonstration comprise, puis 15
 > minutes de questions. Ordre imposé : bloc BC02 (front) puis bloc BC03 (back).
+>
+> **v2.0** : plan reconstruit sur la grille d'évaluation réelle du jury
+> (`taskforce-docs/memoire/Grille_évaluation_vierge_DFS_25-26.xlsx`) et sur trois audits de code
+> menés le 21/07/2026. La v1.0 couvrait les 14 compétences mais laissait 19 critères de notation
+> sans aucune diapositive.
 
-## 1. La décision de densité
+## 1. Le principe directeur
 
-Le deck actuel `TaskForce_Soutenance_v3.pptx` compte **32 diapositives**, soit 37 secondes chacune
-si la démonstration ne prenait aucun temps. C'est intenable.
+Le jury ne coche pas des compétences, il coche **des critères, un par un**, sur la grille Excel de
+l'école. Il y a **26 critères sur BC02** et **22 sur BC03**. Chaque diapositive est donc conçue pour
+faire cocher trois à cinq lignes de cette grille, et le vocabulaire du critère doit être prononcé à
+voix haute.
 
-**Proposition retenue : 23 diapositives principales**, dont 2 séparateurs de partie et 2 cartons de
-démonstration. Il reste donc **19 diapositives parlées** pour 15 minutes de discours, soit environ
-48 secondes chacune, et **4 minutes 10 de démonstration live** répartie en deux temps.
-
-La démonstration est coupée en deux volontairement : un passage côté utilisateur dans la partie
-front, un passage sur le smart-assign dans la partie back. Cela sert les deux blocs au lieu d'un
-seul, et évite le trou de 5 minutes sans slide qui casserait le minutage.
+**24 diapositives principales** plus **3 diapositives tampon**. Dix-neuf diapositives parlées,
+4 minutes de démonstration en deux temps, 19 minutes 20 au total.
 
 ## 2. Le plan, diapositive par diapositive
 
-Le fond indiqué renvoie au gabarit existant : T1 titre, T2 T3 T4 fonds sombres, T5 T6 fonds clairs,
-T7 séparateur de section, T8 pleine page orange.
+Fonds du gabarit : T1 titre, T2 T3 T4 sombres, T5 T6 clairs, T7 séparateur, T8 pleine page orange.
 
-### Ouverture (2 min 30)
+### Ouverture (2 min 25)
 
-| # | Fond | Message unique | Durée | Compétence |
+| # | Fond | Message unique | Durée | Critères visés |
 |---|---|---|---|---|
-| 1 | T1 | Qui je suis, mon parcours, et TaskForce en une phrase | 0:45 | Introduction imposée |
-| 2 | T2 | Le problème client, et ce que le cahier des charges demandait | 0:45 | Contexte, C2 |
-| 3 | T2 | L'architecture d'ensemble et les choix de stack, écart au CDC assumé | 1:00 | Motivation des choix |
+| 1 | T1 | Qui je suis, mon parcours, TaskForce en une phrase | 0:45 | Note pédagogique p. 5 |
+| 2 | T2 | Le problème, la demande du client, les objectifs | 0:45 | Note pédagogique p. 5 |
+| 3 | T2 | L'architecture d'ensemble et le parcours d'une requête | 0:55 | Cadre des deux blocs |
 
-La diapositive 3 porte le premier point sensible : le CDC impose PHP ou Node, le projet est en Java
-Spring Boot. L'écart est annoncé **par moi, en 30 secondes**, pas subi en questions.
+La diapositive 3 **ne justifie aucune technologie**. Elle pose la carte. Chaque bloc justifie ensuite
+sa propre pile au moment où il la prouve, ce qui supprime la redondance de la v1.0 et sert deux
+critères distincts, C15-1 pour le front et C22-1 pour le back.
 
-### Partie 1, front-end, bloc BC02 (8 min 05)
+Parcours à annoncer en diapositive 1, tiré du CV : Head of Engineering chez Plania, unité de
+TechGuys, sur un SaaS à 12 000 dollars de revenu mensuel récurrent, après un poste de lead
+technique sur des comptes entreprise, un LIMS pharmaceutique conforme 21 CFR Part 11 chez
+Nancyclotep, et un stage au LORIA. Statut étudiant-entrepreneur.
 
-| # | Fond | Message unique | Durée | Compétence |
+### Partie 1, front-end, bloc BC02 (8 min 00)
+
+| # | Fond | Message unique | Durée | Critères visés |
 |---|---|---|---|---|
 | 4 | T7 | Séparateur, Partie 1 Front-end | 0:10 | |
-| 5 | T6 | La technologie front retenue et pourquoi elle | 0:50 | C16 |
-| 6 | T5 | De la maquette à l'écran livré, et la position honnête sur les wireframes | 0:50 | C13 |
-| 7 | T5 | Le design system et la charte, 165 composants sur base accessible | 0:45 | C14 |
-| 8 | T6 | Le style, des tokens au CSS purgé et minifié | 0:45 | C14, C16 |
-| 9 | T7 | **Démonstration côté utilisateur**, un parcours réel de bout en bout | 2:10 | C15 |
-| 10 | T6 | Consommer l'API de façon sécurisée depuis le client | 0:45 | C17 |
-| 11 | T5 | Accessibilité, performances et SEO, ce qui est mesuré et ce qui ne l'est pas | 0:50 | C15, C20 |
-| 12 | T6 | Tester et industrialiser le front, du linter au cahier de recette | 0:55 | C18, C19 |
+| 5 | T6 | La technologie front, pourquoi elle, et comment le code est organisé | 0:50 | C15-1, C15-2, C16-1, C16-5 |
+| 6 | T5 | De la conception aux écrans livrés, et les cas d'usage couverts | 0:45 | C13-1, C13-3, C15-3 |
+| 7 | T5 | La charte du client, traduite en design system | 0:40 | C14 |
+| 8 | T6 | Sécurité, écoconception et chaîne de build du front | 0:55 | C16-2, C16-3, C16-4, C19-3 |
+| 9 | T7 | **Démonstration côté utilisateur** | 1:55 | C13-1, C13-2, C15-3, C15-4 |
+| 10 | T6 | Consommer l'API de façon sécurisée | 0:45 | C17-1, C17-2, C17-3, C17-4 |
+| 11 | T5 | L'accessibilité, et jusqu'où elle est vérifiée | 0:45 | C13-2, C15-4 |
+| 12 | T5 | Le référencement et la mesure d'audience | 0:45 | C20-1, C20-2, C20-3, C20-4 |
+| 13 | T6 | Tester et industrialiser le front | 1:00 | C18-1 à C18-4, C19-1, C19-2 |
 
-### Partie 2, back-end, bloc BC03 (7 min 25)
+Trois diapositives sont nouvelles par rapport à la v1.0 : la 8, la 11 et la 12. La v1.0 faisait porter
+l'accessibilité, la performance et les quatre critères de C20 à une seule diapositive de 50 secondes.
 
-| # | Fond | Message unique | Durée | Compétence |
+### Partie 2, back-end, bloc BC03 (7 min 35)
+
+| # | Fond | Message unique | Durée | Critères visés |
 |---|---|---|---|---|
-| 13 | T7 | Séparateur, Partie 2 Back-end | 0:10 | |
-| 14 | T2 | Une architecture en couches, isolée workspace par workspace | 0:50 | C22, C21 |
-| 15 | T3 | Le modèle de données, versionné et protégé | 0:50 | C21 |
-| 16 | T4 | Une API REST documentée et sécurisée | 0:55 | C24 |
-| 17 | T7 | **Démonstration du smart-assign**, le différenciateur, avec son explication | 2:00 | C24 en action |
-| 18 | T4 | Le moteur IA, local, gratuit et sobre | 0:45 | C22 écoconception |
-| 19 | T6 | Le paiement et la monétisation | 0:45 | C23 |
-| 20 | T3 | Tester et industrialiser le back, et la dette que j'ai corrigée | 1:10 | C25, C26 |
+| 14 | T7 | Séparateur, Partie 2 Back-end | 0:10 | |
+| 15 | T2 | L'architecture back, le choix Java Spring, et où vivent les rôles | 0:55 | C22-1, C22-3, C22-4, C22-8 |
+| 16 | T3 | La persistance et la sécurité en profondeur | 0:55 | C21 (six items) |
+| 17 | T3 | Le modèle de données qui rend le smart-assign possible | 0:45 | C21, C22-2 |
+| 18 | T7 | **Démonstration du smart-assign** | 2:00 | C22-2 |
+| 19 | T4 | L'API sécurisée, lue au filtre de l'OWASP | 0:55 | C24-1, C24-2, C24-3 |
+| 20 | T4 | De l'IA locale à la monétisation | 0:55 | C22-5, C23-1, C23-2, C23-3 |
+| 21 | T6 | Tester et industrialiser le back | 1:00 | C25-1, C25-2, C26-1, C26-2, C26-3 |
 
-### Conclusion (1 min 30)
+La diapositive 20 suit exactement l'enchaînement voulu : le modèle tourne en local donc il ne coûte
+rien, ce coût marginal nul rend le modèle économique tenable, voici la tarification par siège et sa
+cible, et voici comment les plans débloquent les fonctionnalités.
 
-| # | Fond | Message unique | Durée | Compétence |
+### Conclusion (1 min 20)
+
+| # | Fond | Message unique | Durée | Critères visés |
 |---|---|---|---|---|
-| 21 | T3 | Bilan, ce que j'assume et ce que j'ai déjà corrigé | 0:50 | Esprit critique |
-| 22 | T8 | Ce que je ferais ensuite, les améliorations possibles | 0:25 | Conclusion imposée |
-| 23 | T1 | Merci, questions | 0:15 | |
+| 22 | T3 | Bilan, ce que j'assume et ce que j'ai corrigé | 0:45 | Esprit critique |
+| 23 | T8 | Les améliorations possibles | 0:20 | Note pédagogique p. 6 |
+| 24 | T1 | Merci, questions | 0:15 | |
 
-**Total : 19 minutes 30.** Marge de 30 secondes, plus 20 secondes de coussin dans chaque
-démonstration. Répartition front 8:05 contre back 7:25, soit 52 contre 48, cohérent avec le retour
-du professeur qui jugeait la partie front trop faible.
+**Total : 19 minutes 20.** Marge de 40 secondes. Front 8:00 contre back 7:35.
 
-## 3. Couverture du référentiel
+### Les trois diapositives tampon
 
-Les huit compétences du bloc BC02 et les six du bloc BC03 sont couvertes, chacune par une
-diapositive dédiée ou par la démonstration.
+Le professeur limite à trois les diapositives hors grille. Retenues, dans cet ordre de probabilité :
 
-| Bloc | Compétence | Portée par |
+1. Le détail des pondérations du smart-assign (0,45 sémantique, 0,22 charge, 0,15 historique, 0,10 disponibilité, 0,08 labels, bonus de montée en compétence plafonné à 15).
+2. Le tableau OWASP complet, avec les deux catégories non couvertes.
+3. Le RGPD et l'observabilité.
+
+**Argument à opposer si le nombre de diapositives hors grille est contesté** : la Note pédagogique
+impose elle-même, page 5 et 6, la présentation du candidat, le parcours professionnel, le contexte,
+le bilan et les améliorations possibles. Les diapositives 1, 2, 22 et 23 ne sont pas des diapositives
+tampon, ce sont des diapositives exigées.
+
+## 3. Le cahier des charges et le choix de la pile technique
+
+Position corrigée par rapport à la v1.0. Le CDC, page 2 et 3, sous le titre « 5. Exigences
+Techniques », écrit ceci :
+
+- Back-end : PHP (Symfony) ou Node.js
+- Front-end : React ou Vue.js
+- Base de données : MySQL ou PostgreSQL
+
+**Deux lignes sur trois sont respectées** : Next.js est un framework React, et la base est
+PostgreSQL. Le seul point de divergence est le back-end.
+
+Ce point ne se présente pas comme un écart mais comme **un choix technique justifié**. Le critère
+C22-1 demande littéralement « un choix de technologies et frameworks back-end **adaptés** », pas un
+choix conforme au cahier des charges. La grille récompense la pertinence, pas l'obéissance.
+
+Réserve importante : le CDC **n'écrit nulle part** que ces technologies sont indicatives ou données
+en exemple. Ne pas bâtir l'argumentaire sur cette affirmation, qui est orale. Bâtir sur la
+justification technique, et ne mentionner la consigne orale de l'école que si le jury insiste.
+
+## 4. Chiffres vérifiés le 21/07/2026, à utiliser tels quels
+
+Trois audits de code menés le 21/07 ont corrigé la totalité des chiffres qui circulaient.
+
+| Indicateur | Valeur réelle | Ce qui circulait |
 |---|---|---|
-| BC02 | C13 concevoir l'interface | 6 |
-| BC02 | C14 éléments graphiques et charte | 7, 8 |
-| BC02 | C15 UX, parcours, accessibilité | 9, 11 |
-| BC02 | C16 langage front, qualité, sécurité, écoconception | 5, 8 |
-| BC02 | C17 consommer une API de façon sécurisée | 10 |
-| BC02 | C18 tester le front | 12 |
-| BC02 | C19 industrialiser le front | 12 |
-| BC02 | C20 performances SEO | 11 |
-| BC03 | C21 couche de persistance | 14, 15 |
-| BC03 | C22 langage back, qualité, sécurité, écoconception | 14, 18 |
-| BC03 | C23 paiement et monétisation | 19 |
-| BC03 | C24 API sécurisée | 16, 17 |
-| BC03 | C25 tester le back | 20 |
-| BC03 | C26 industrialiser le back | 20 |
+| Tests front | **709 unitaires** plus 7 de bout en bout | 746, puis 706 |
+| Couverture front | **92,33 % de lignes sur le périmètre logique** (4310/4668) | « 92 % du front » |
+| Rapport de couverture front | daté du **04/07**, code modifié les 20 et 21/07 | présenté comme actuel |
+| Tests back | **759 cas exécutés**, 0 échec, le 21/07 à 07h36 | 658, puis 670, puis 692 |
+| Couverture back | **71,3 % de lignes** (5838/8186), 66 % instructions, 52 % branches | 78 %, et 86,1 % dans une fiche |
+| Composants front | **189 fichiers**, dont **77** primitives | 165 dont 74 |
+| Tokens CSS | **165 déclarations** | non chiffré |
+| Migrations Flyway | 68 | 71 |
+| Entités JPA | 49 | 49 |
+| Contrôleurs | 35 | 35 |
 
-## 4. Ce qui sort du deck actuel
+Périmètre de couverture front, à préciser systématiquement : `vitest.config.ts` n'inclut que `lib`,
+`hooks` et `components/auth`. Les 47 routes et environ 180 fichiers de composants sont hors mesure,
+par décision assumée et commentée dans le fichier, au motif qu'ils sont couverts par Playwright.
 
-Neuf diapositives quittent le corps de la présentation. Aucune n'est supprimée, toutes basculent en
-annexe et restent disponibles pendant les 15 minutes de questions.
+## 5. Le scénario de démonstration
 
-| Diapositive v3 | Sort parce que | Devient |
-|---|---|---|
-| 03 Gestion de projet | Non notée sur BC02 et BC03 | Annexe |
-| Production, prêt à déployer | Bloc 4, évalué séparément le 05/10 | Annexe |
-| Transverse RGPD et observabilité | Une ligne suffit sur la diapositive 20 | Annexe |
-| Contexte et Solution, deux diapositives | Fusionnées | Diapositive 2 |
-| Moteur IA détaillé, isolation détaillée | Trop fin pour l'exposé | Annexes déjà prévues |
-| Vision v2 « AI Delivery OS » | Hors périmètre noté, consomme du temps | Réduite à 25 secondes sur la 22 |
+Le seed `backend/tf-api/seed/dev_seed.sql` est exploitable tel quel : workspace `taskforce-demo`,
+9 membres, 8 profils de compétences différenciés, environ 267 issues dont une ouverte sur quatre
+non assignée, 12 décisions d'affectation historisées.
 
-## 5. Ce qui entre et qui manquait
+**Démonstration front, 1 min 55.** Connexion, tableau de bord du workspace, navigation vers un
+projet, vue Kanban avec glisser-déposer, ouverture d'une issue, bascule de thème, passage en
+affichage mobile. Le parcours doit faire prononcer les mots des critères : cas d'usage couverts,
+navigation clavier, responsive.
 
-| Apport | Raison |
-|---|---|
-| Diapositive 11 étendue au **SEO** | C20 n'était couverte nulle part dans le deck v3 |
-| Deux cartons de **démonstration** | La démonstration n'était pas minutée du tout |
-| Diapositive 19 **paiement** conservée en corps | C23 est une compétence notée, pas un bonus |
-| Écart au CDC annoncé en diapositive 3 | Vaut mieux assumé que subi en questions |
-| Position honnête sur les maquettes en 6 | C13 exige des maquettes « précédemment validées » |
+**Démonstration back, 2 min 00.** Deux exécutions du smart-assign, choisies pour prouver que la
+logique varie avec les données :
+
+1. **API-4, « Rate limiting sur l'authentification »**, non assignée, priorité haute, 5 points,
+   labels côté API. Marcus Webb (java, spring, sql, api, 40 h par semaine, senior, bon historique)
+   doit sortir devant Lina Park (design, ui, ux, figma, 32 h).
+2. **WEB-4, « Dark mode incomplet »**, labels css et ui, 3 points, sur le projet WEB qui a le mode
+   montée en compétence actif. Diego Santos, junior en apprentissage de TypeScript et React, doit
+   remonter avec le facteur de tâche formatrice.
+
+Dans les deux cas, ouvrir le détail des sous-scores : score sémantique, charge, historique,
+disponibilité, correspondance de labels. C'est ce qui prouve que la recommandation est auditable et
+non une boîte noire.
+
+Plan de repli : capture vidéo des deux exécutions, réalisée et testée avant le 25/09.
 
 ## 6. Visuels à produire
 
 | Diapositive | Visuel | État |
 |---|---|---|
 | 3 | Diagramme C4, vue conteneurs | À exporter |
-| 6 | Maquette Figma et écran réel côte à côte | À capturer |
-| 7 | Planche de composants du design system | À capturer |
-| 11 | Rapport Lighthouse, accessibilité et SEO | **À mesurer**, lot `C3` |
-| 15 | Modèle de données | À exporter |
-| 16 | Swagger UI | À capturer |
-| 17 | Écran Smart Assign avec son explication | À capturer |
+| 6 | Wireframe et écran livré, côte à côte | **À produire**, voir §7 |
+| 7 | Planche du design system | À capturer |
+| 8 | Taille du CSS et du bundle après build | **À mesurer**, voir §7 |
+| 11 | Rapport d'accessibilité | À produire |
+| 12 | Rapport SEO et tableau de bord d'audience | **À produire**, voir §7 |
+| 17 | Modèle de données ciblé, 7 entités | À dessiner |
+| 19 | Tableau OWASP, 10 lignes | À composer |
+| 21 | Couverture et chaîne d'intégration continue | À capturer |
 
-## 7. Points bloquants avant la rédaction du texte
+## 7. À faire côté produit avant la soutenance
 
-1. **Les chiffres divergent selon la source.** La matrice de compétences annonce 92 % et 746 tests
-   au front, 78 % et 670 tests au back. Le deck v3, construit sur une lecture du code, annonce 706
-   tests au front et 692 tests pour environ 72 % au back. Aucun script oral ne doit être écrit avant
-   la re-mesure du lot `C3`.
-2. **La matrice revendique des éléments que le code ne démontre pas** : Virtual Threads,
-   Testcontainers, scans Semgrep et Trivy en intégration continue. Le jury lit le dossier. À
-   trancher dans le chat projet.
-3. **C20 est en jaune** : Lighthouse n'est pas mesuré. Soit on mesure avant le 25/09, soit la
-   diapositive 11 assume la mesure manquante.
-4. **C23 est en jaune** : les webhooks Stripe sont partiellement simulés (PC-005). Cela conditionne
-   ce que la diapositive 19 peut affirmer.
-5. **Le parcours professionnel de la diapositive 1** doit être fourni, je ne l'invente pas.
+Liste destinée au chat projet. Classée par rapport entre l'effort et le nombre de critères gagnés.
 
-## 8. Suite
+**Bloquant, sinon une diapositive entière n'a aucune preuve**
 
-Une fois ce plan validé : rédaction du texte oral complet, puis scénario de démonstration avec plan
-de repli, puis liste de questions probables, puis report dans le PowerPoint.
+1. **Lancer un build de production du front.** `frontend/.next/` est vide et `landing-page/dist/`
+   n'existe pas. Aucun fichier CSS de production n'existe sur le disque, donc la diapositive 8 ne
+   peut rien montrer. Un build donne la taille réelle du CSS et du bundle, ce qui est exactement ce
+   que demande C19-3, « la chaîne de build permet effectivement d'améliorer les performances ».
+2. **Produire les wireframes de TaskForce.** Les 14 images de `taskforce-docs/assets/maquettes/`
+   sont brandées **« TaskFlow AI »**, avec une navigation et une palette qui ne correspondent pas à
+   l'application. C13-3 exige la conformité aux maquettes validées : en l'état, un juré qui ouvre le
+   dossier voit une contradiction. Soit on produit les wireframes de TaskForce, soit on retire ces
+   images du dossier.
+3. **Relancer la couverture front.** Le rapport date du 04/07, le code a bougé les 20 et 21/07.
+4. **Corriger les identifiants de prix Stripe.** `STRIPE_PRICE_ID_BASIC` et
+   `STRIPE_PRICE_ID_BUSINESS` ont la **même valeur** dans les deux `.env.dev`, et
+   `STRIPE_ENTERPRISE_PRICE_ID` n'est pas défini. Conséquence démontrable : un abonnement Business
+   est reclassé Basic au premier événement `customer.subscription.updated`, et un paiement
+   Enterprise échouerait. C'est C23-1, « l'intégration du système de paiement est fonctionnelle ».
 
-> Voir aussi : [[Plan_Soutenance]] pour l'architecture détaillée du deck v3, et
-> [[README|Matrice des 32 compétences]] pour les critères d'évaluation littéraux.
+**Critères gagnés pour un effort très faible**
+
+5. **Rendre ESLint bloquant** dans `frontend-tests.yml` : l'étape est en `continue-on-error: true`,
+   donc une erreur d'analyse statique ne casse rien. C16-1 porte précisément sur ce point.
+6. **Ajouter un `dependabot.yml`.** Il n'en existe aucun, alors que la documentation en revendique
+   un. C19-2 et C26-2 demandent tous deux « une gestion des dépendances est mise en œuvre ».
+7. **Ajouter `npm audit` au workflow du front.** Il n'existe que sur la landing. C16-3 demande des
+   composants tiers « à jour et sans vulnérabilité connue ».
+8. **Ajouter le reporter `json-summary` à Vitest.** Le commentaire de couverture sur les pull
+   requests lit `coverage-summary.json`, qui n'est jamais produit. La preuve d'industrialisation est
+   donc invisible.
+9. **Faire échouer le test axe sur `serious`, pas seulement sur `critical`.** Les défauts de
+   contraste sont classés `serious` par axe : aujourd'hui ils ne font pas échouer le test, donc
+   l'accessibilité des contrastes n'est pas réellement vérifiée. Le dernier passage local de ce test,
+   sur la page des membres, était d'ailleurs en échec.
+10. **Vérifier la variable de dépôt `E2E_ENABLED`.** Le workflow de bout en bout est gardé par
+    `if: vars.E2E_ENABLED == 'true'` : s'il n'est pas activé, il ne s'exécute jamais et un job ignoré
+    remonte tout de même en succès.
+
+**Ce qui manque pour C20, aujourd'hui à zéro**
+
+11. **Un outil de mesure d'audience.** C20-2 et C20-3 exigent un outil de mesure d'audience et de
+    performance marketing, et son intégration fonctionnelle. Il n'y en a aucun. Recommandation :
+    Plausible ou Matomo auto-hébergé, cohérent avec le discours RGPD et sans bandeau de cookies.
+12. **Un `sitemap.xml`.** Le `robots.txt` de la landing en déclare un qui n'existe pas, donc il
+    pointe vers une erreur 404.
+13. **Les données structurées JSON-LD**, absentes des deux projets.
+14. **La clé `site:` dans `astro.config.mjs`**, sans laquelle la balise canonique de la landing est
+    relative, donc non conforme.
+15. **Les métadonnées de l'application Next**, limitées à un titre et une description : ni Open
+    Graph, ni robots, ni manifeste, ni canonique.
+
+**Ce qui rendrait la partie accessibilité et performance réellement professionnelle**
+
+16. **Mesure terrain des Core Web Vitals** avec la bibliothèque `web-vitals`, expédiée vers
+    OpenTelemetry et SigNoz, qui sont déjà en place. La mesure en conditions réelles vaut mieux
+    qu'un audit de laboratoire, et c'est un argument que peu de candidats tiennent.
+17. **Budgets de ressources** dans la configuration Lighthouse, et audit rendu bloquant. Aujourd'hui
+    Lighthouse ne tourne que sur la landing, uniquement sur les pull requests, et en
+    `continue-on-error: true`, donc sans aucun pouvoir de blocage.
+18. **Un passage au lecteur d'écran NVDA**, filmé, sur un parcours complet. C'est la preuve
+    d'accessibilité la plus convaincante devant un professionnel.
+
+**À trancher, car cela conditionne ce qui peut être affirmé**
+
+19. **Le seuil JaCoCo de 84 % ne s'exécute jamais.** L'exécution `jacoco-check` n'a pas de phase
+    déclarée, elle tombe donc en `verify`, alors que l'intégration continue lance `mvn clean test`.
+    Si on l'active, la construction échoue, puisque la couverture réelle est de 71,3 %. Deux options :
+    abaisser le seuil à une valeur vraie et rendre le contrôle bloquant, ou monter la couverture.
+    La première option est honnête et se raconte bien.
+20. **L'image Docker du back est construite avec `SKIP_TESTS=true`**, et le job de publication ne
+    dépend d'aucun job de test. C26-3 parle d'une chaîne de build qui améliore « les performances
+    **et la sécurité** ».
+
+## 8. Ce qu'il ne faut pas affirmer devant le jury
+
+Établi par audit du code le 21/07/2026. Chaque ligne est une affirmation que le code contredit.
+
+| Ne pas dire | Dire à la place |
+|---|---|
+| « Le smart-assign utilise pgvector et des embeddings » | Le score sémantique est demandé à un modèle de langage qui répond en JSON. La colonne `member_skill_profiles.embedding` existe mais n'est jamais lue. pgvector est utilisé, mais pour la recherche du Brain OS. |
+| « Le service Python calcule le score » | Le service Python est une passerelle vers le modèle local et un calculateur d'embeddings. Ses points d'entrée smart-assign existent mais ne sont appelés par personne. |
+| « Nos tests d'intégration utilisent Testcontainers » | Un vrai PostgreSQL avec pgvector, lancé en conteneur voisin, avec les vraies migrations Flyway et `ddl-auto=validate`. Testcontainers a été écarté pour incompatibilité avec le proxy Docker Desktop, et c'est documenté dans la classe socle. |
+| « Nous couvrons les dix catégories de l'OWASP » | Huit sur dix. La falsification de requête côté serveur n'a aucune parade sur les webhooks sortants, et il n'y a aucune analyse de dépendances automatisée. Les deux sont assumés. |
+| « Le flux OIDC est Authorization Code » | C'est un flux par mot de passe direct, choisi pour garder un formulaire de connexion sans redirection. Ce grant est déprécié par OAuth 2.1, c'est un arbitrage assumé. |
+| « Les jetons sont stockés de façon sécurisée » | Jeton d'accès et de rafraîchissement en `localStorage`, sans cookie `HttpOnly`. Arbitrage assumé, corrigé dans la feuille de route. |
+| « Toutes les données personnelles sont chiffrées » | Le chiffrement AES-256-GCM porte sur quatre colonnes sensibles : jetons d'intégration, configuration de connecteur, et deux champs de demande entreprise. |
+| « L'OTP est un second facteur » | C'est un code à six chiffres envoyé par courriel, à l'inscription et à la réinitialisation de mot de passe. Il n'intervient pas à la connexion. |
+| « Les rôles projet contrôlent les accès » | Les rôles projet servent de liste d'appartenance pour les projets privés. Le contrôle d'accès réel s'appuie sur les rôles de workspace. |
+| « Les scans de sécurité tournent en intégration continue » | Trivy, Semgrep et OWASP ZAP sont lancés par un script manuel. Aucun des sept workflows n'est un workflow de sécurité. |
+| « L'application est auditée par Lighthouse » | Lighthouse ne tourne que sur la landing, sur les pull requests, et sans pouvoir bloquer. |
+| « Backend couvert à 78 % » | 71,3 % de lignes, mesuré le 21/07 à 07h37. |
+
+Deux points ne sont **pas** des défauts et ne doivent pas être présentés comme tels, car ce sont des
+décisions produit assumées : l'absence de plafond de membres par plan, qui relève d'une tarification
+par siège, et l'IA disponible dès le plan gratuit, métrée par jetons plutôt que verrouillée par plan.
+
+## 9. Suite
+
+Une fois ce plan validé : rédaction du texte oral complet, puis liste de questions probables, puis
+report dans le PowerPoint.
+
+> Voir aussi : [[Plan_Soutenance]] pour l'historique du deck v3, et
+> [[README|Matrice des 32 compétences]], dont les chiffres sont périmés au regard du §4.
