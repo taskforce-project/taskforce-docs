@@ -227,7 +227,11 @@ Les items <code>[besoin-backend:: BE-xxx]</code> renvoient à une tâche de la <
 
 ## 10. Qualité (tests, a11y, perf, sécurité)
 
+**Fait :**
+- [x] **Analyse statique propre sur tout le dépôt (21/07/2026)** — `npx eslint .` → **0 erreur / 21 avertissements**, `npx tsc --noEmit` → **0 erreur**. Point de départ réel : **185 erreurs / 586 avertissements** sur 65 fichiers (les « eslint verts » antérieurs ne portaient que sur les fichiers touchés par chaque lot). Traitement : `e2e/axe.min.js` exclu (axe-core vendorisé, 24 err + 568 warn) ; `no-explicit-any` désactivé **sur les seuls fichiers de test** (fixtures partielles) et **corrigé** dans `auth-service.ts` ; `<a>` → `<Link>` (3 balises) ; 14 apostrophes échappées ; 13 variables mortes supprimées. Deux défauts réels corrigés : `usePagination` bornait la page dans un effet (rendu en cascade → bornage pendant le rendu, tests 8/8) et `SidebarMenuSkeleton` tirait sa largeur avec `Math.random()` au rendu (erreur d'hydratation latente). Reste 20 avertissements `set-state-in-effect` assumés : motif de chargement dupliqué sur 17 points d'appel, extraction en hook `useAsyncData` reportée après soutenance. [id:: FE-QA-007] [statut:: done] [parite:: ok] [ref:: frontend/eslint.config.mjs] (C4, `.ai/roadmap.md` §4.A)
+
 **À faire :**
+- [ ] ⚠️ **Réparer les 41 tests front au rouge** (10 fichiers sur 716 tests) — **bloque la re-mesure de couverture** (`C3`, critère C18). Causes vérifiées, sans lien avec le lot C4 : mock de `./client` sans l'export `AI_TIMEOUT_MS` ; tests cherchant des libellés français supprimés au passage à l'anglais (« Gratuit », « Passer à Pro ») ; signatures de routes et forme d'enveloppe changées depuis. [id:: FE-QA-008] [statut:: todo] [prio:: P0]
 - [ ] Couverture tests ≥ 50 % (Vitest+RTL+MSW) + rapport [id:: FE-QA-001] [statut:: todo] [prio:: P1] (TF-TEST-001)
 - [ ] E2E Playwright parcours clés [id:: FE-QA-002] [statut:: todo] [parite:: extra] [prio:: P2]
 - [ ] Audit accessibilité WCAG 2.1 AA (axe, clavier, ARIA) [id:: FE-QA-003] [statut:: todo] [prio:: P1]
@@ -240,4 +244,4 @@ Les items <code>[besoin-backend:: BE-xxx]</code> renvoient à une tâche de la <
 > **Note Brain OS** — Les `[besoin-backend:: BE-xxx]` ci-dessus doivent exister dans [Backend.md](./Backend.md).
 > Items cassés = P0 du [Backlog](../13-roadmap/Roadmap_Backlog.md) / [`.ai/P0-fix-plan.md`](../../../taskforce-fullstack/.ai/P0-fix-plan.md).
 
-**Dernière mise à jour :** 20/07/2026 · **Projet :** Taskforce — Metz Numeric School 2025-2026
+**Dernière mise à jour :** 21/07/2026 · **Projet :** Taskforce — Metz Numeric School 2025-2026
