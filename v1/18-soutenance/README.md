@@ -16,6 +16,8 @@ tags: [soutenance, presentation, rncp, dfs, oral, jury, demo]
 
 ## Contenu du dossier
 
+- [⏱️ Plan minuté](./Plan_Minute.md) — **document de travail actif** : 23 diapositives pour 20 min
+  démo comprise, couverture C13→C20 puis C21→C26, ce qui bascule en annexe. À valider.
 - [🗺️ Plan de soutenance](./Plan_Soutenance.md) — architecture de la présentation slide-par-slide,
   timing, arc narratif, script de démo, préparation Q&A.
 - `assets/` — captures d'écran, exports de diagrammes, PDF des slides (à déposer).
