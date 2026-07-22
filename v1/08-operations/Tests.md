@@ -23,13 +23,19 @@ tags: [tests, coverage, qa, jacoco, vitest, playwright]
 | **Intégration** | Postgres **réel** (`AbstractIntegrationTest`) + Flyway + `ddl-auto=validate` | — |
 | **E2E** | — | **Playwright** (parcours bout-en-bout sur la stack complète) |
 
-## Résultats (05/07/2026)
+## Résultats (re-mesurés les 21 et 22/07/2026)
 
 | Périmètre | Tests | Couverture lignes | Outil |
 | --- | --- | --- | --- |
-| **Backend** | **670** (0 échec) | **78 %** (≈ 81 % hors Brain OS) | JaCoCo |
-| **Frontend** (logique) | **746** (0 échec) | **92 %** | Vitest **v8** |
-| **Frontend E2E** | **4/4** | parcours (pas de %) | Playwright |
+| **Backend** | **786** (0 échec, 1 skip) | **73,71 %** (6032/8183) · branches 53,16 % | JaCoCo |
+| **Frontend** (logique) | **785** (0 échec) | **88,83 %** · branches 87,24 % | Vitest **v8** |
+| **Frontend E2E** | 4 parcours | parcours (pas de %) | Playwright |
+
+> ⚠️ **Les chiffres du 05/07 (« 670 tests / 78 % » et « 746 / 92 % ») étaient périmés.** Côté backend
+> la couverture a **baissé** depuis les 86,1 % du 02/07 : ~1 970 lignes de couche IA/agent et de
+> catalogue de connecteurs sont arrivées quasiment sans tests. La dérive n'a pas été détectée parce
+> que le gate JaCoCo se lie à la phase `verify`, que ni le script de test ni la CI n'appellent
+> (`PC-028`). Seuil réaligné sur le mesuré le 22/07.
 
 **Priorisation par criticité** (exigence produit) : sécurité / session / JWT / auth / RGPD / paiement couverts à ~100 %.
 
