@@ -207,13 +207,34 @@ tags: [rgpd, registre, traitements, donnees-personnelles, art30, conformite, mem
 > des commentaires retraçant la décision, aucun appel. Un registre qui déclare un transfert hors UE
 > inexistant est aussi fautif qu'un registre qui en omet un.
 
-### Limite connue — conservation non automatisée
+### Application des durées de conservation
 
-Les durées de conservation ci-dessus sont **déclarées mais pas appliquées par une tâche planifiée**.
-Les méthodes de purge existent (`OtpVerificationRepository`, `RefreshTokenRepository`,
-`OtpService`) mais ne sont pas cadencées : les seuls `@Scheduled` du projet concernent les alertes
-métier (échéances, surcharge), pas la rétention. À traiter avant une exploitation réelle ; sans
-incidence sur la démonstration, où le volume de données est celui du jeu de test.
+**Mise à jour du 22/07/2026.** Les durées de conservation étaient jusqu'ici **déclarées mais jamais
+appliquées** : les méthodes de purge existaient sans être cadencées, les seuls `@Scheduled` du
+projet portant sur les alertes métier (échéances, surcharge). `RetentionScheduler` comble ce vide.
+
+| Donnée | Échéance appliquée | Preuve |
+|---|---|---|
+| Codes OTP | Expirés depuis plus de 7 jours | `OtpService.cleanupExpiredOtps()` |
+| States OAuth | Dès l'expiration (jeton anti-CSRF à usage unique) | `OAuthStateRepository.deleteByExpiresAtBefore` |
+| Invitations sans suite | Expirées depuis plus de 30 jours (`taskforce.retention.invitation-grace-days`) | `WorkspaceInvitationRepository.deleteStaleInvitations` |
+
+Le job tourne quotidiennement à 03:30 (`taskforce.retention.cron`), décalé des jobs d'alerte de
+08:00 et 08:30. Chaque purge est isolée des autres : un incident sur une table ne gèle pas la
+rétention entière. Preuve : `RetentionScheduler.java` + `RetentionSchedulerTest` (6 cas).
+
+Ces trois traitements ont en commun de **porter leur propre date d'expiration**. Les purger une fois
+expirés n'invente aucune politique de conservation : cela applique l'échéance que la donnée déclare
+déjà. L'invitation est le cas le plus sensible des trois — elle porte l'adresse d'une personne qui
+n'est jamais devenue utilisatrice.
+
+#### Reste ouvert — durée de conservation du journal d'audit
+
+Le traitement n°5 porte la mention « durée à définir en prod », et sa table est déclarée
+**immuable**. Fixer cette durée relève du **responsable de traitement**, pas du développeur :
+la trancher dans le code reviendrait à inventer une politique et à contredire une mesure de
+sécurité annoncée au registre. Le journal d'audit est donc **volontairement hors du périmètre**
+de `RetentionScheduler`, et la décision reste à prendre avant une exploitation réelle.
 
 ---
 
