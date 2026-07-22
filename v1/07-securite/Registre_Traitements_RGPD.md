@@ -167,16 +167,53 @@ tags: [rgpd, registre, traitements, donnees-personnelles, art30, conformite, mem
 
 ---
 
+## Traitement n°8 — Assistance par modèle de langage (Cortex, spécifications, décisions)
+
+| Champ | Valeur |
+|---|---|
+| **Finalité** | Génération de spécifications d'issue, briefs de décision, réponses de l'assistant, classement des candidats au smart-assign |
+| **Base légale** | Exécution du contrat (Art. 6.1.b) — fonctionnalité du service souscrit |
+| **Catégories de personnes** | Membres d'un workspace dont le contenu de travail est soumis au modèle |
+| **Données transmises** | Titre et description d'issue, libellés, noms d'affichage des candidats, métriques de charge. **Pas de mot de passe, ni jeton, ni donnée de paiement** |
+| **Source** | Contenu saisi par les utilisateurs dans l'application |
+| **Durée de conservation** | **Aucune conservation par le modèle** : l'inférence est sans état, rien n'est réutilisé pour un entraînement |
+| **Destinataires** | **Aucun tiers.** Le modèle (Qwen3 via Ollama) est **auto-hébergé** ; l'application ne parle qu'à `ai-service`, qui parle au modèle local |
+| **Transferts hors UE** | **Aucun** |
+| **Mesures de sécurité** | Passerelle interne unique (`AiGatewayClient` → `ai-service`), jamais d'appel direct depuis les services métier · quotas par compte (`AiMeter`) · dégradation en repli déterministe si le modèle est injoignable |
+| **Preuve** | `LlmConfig` · `AiGatewayClient` · `ai-service/app/services/ollama_gateway.py` · `SmartAssignService` (repli `java-fallback`) |
+
+> **Point notable pour la conformité.** Le choix d'un modèle auto-hébergé plutôt qu'une API tierce
+> (OpenAI, Anthropic, Groq…) supprime tout transfert de contenu de travail hors de l'infrastructure.
+> C'est l'argument le plus fort du registre : aucune donnée client ne quitte le périmètre maîtrisé
+> pour alimenter un service d'IA externe.
+
+---
+
 ## Synthèse des sous-traitants (Art. 28)
 
 | Sous-traitant | Pays | Données transmises | Garantie |
 |---|---|---|---|
 | **Keycloak** (auto-hébergé) | EU (VM école / Render Frankfurt) | Credentials, keycloakId | Auto-hébergé — pas de tiers |
 | **Stripe Inc.** | USA | stripe_customer_id, montants | DPA Stripe (SCCs) |
-| **Groq Inc.** | USA | Contexte de tâche (pas de PII directes) | CGU Groq — DPA à formaliser |
+| ~~**Groq Inc.**~~ | ~~USA~~ | **Aucune — retiré le 16/07/2026** | Sans objet |
 | **GitHub Inc.** | USA | OAuth token, meta workspace | DPA GitHub (SCCs) |
 | **Slack Technologies** | USA | OAuth token, channel meta | DPA Slack (SCCs) |
 | **MinIO** (auto-hébergé) | EU (VM école / Render Frankfurt) | Fichiers uploadés | Auto-hébergé |
+| **Ollama / Qwen3** (auto-hébergé) | EU / poste de développement | Contenu d'issue soumis à l'inférence | Auto-hébergé — **aucun tiers, aucun transfert** |
+
+> **Mise à jour du 22/07/2026.** Groq Inc. figurait dans ce tableau comme destinataire du « contexte
+> de tâche ». C'était **inexact depuis le 16/07** : `GroqService`, `GroqConfig` et la branche
+> `ai.provider=groq` ont été supprimés (`TF-AI-GROQ-CLEANUP`). Vérifié le 22/07 — il ne subsiste que
+> des commentaires retraçant la décision, aucun appel. Un registre qui déclare un transfert hors UE
+> inexistant est aussi fautif qu'un registre qui en omet un.
+
+### Limite connue — conservation non automatisée
+
+Les durées de conservation ci-dessus sont **déclarées mais pas appliquées par une tâche planifiée**.
+Les méthodes de purge existent (`OtpVerificationRepository`, `RefreshTokenRepository`,
+`OtpService`) mais ne sont pas cadencées : les seuls `@Scheduled` du projet concernent les alertes
+métier (échéances, surcharge), pas la rétention. À traiter avant une exploitation réelle ; sans
+incidence sur la démonstration, où le volume de données est celui du jeu de test.
 
 ---
 
