@@ -14,7 +14,7 @@ tags: [tests, qualite, politique, jacoco, vitest, playwright, testcontainers, me
 > Définition formelle de la stratégie de tests : niveaux, outils, seuils de couverture,
 > règles de non-régression et intégration CI. Complémentaire à [[Tests]] (résultats chiffrés).
 >
-> **Résultats au 05/07/2026** : backend 670 tests / 78 % couverture · frontend 746 tests / 92 %.
+> **Résultats re-mesurés les 21 et 22/07/2026** : backend **786 tests / 73,71 %** · frontend **785 tests / 88,83 %**, les deux suites entièrement vertes. *(Les valeurs du 05/07 — « 670 / 78 % » et « 746 / 92 % » — étaient périmées ; voir [Tests.md](./Tests.md).)*
 
 ---
 
@@ -121,9 +121,9 @@ unitaire ne peut pas — navigation multi-pages, STOMP temps réel, retours Stri
 
 | Périmètre | Seuil minimum | Seuil actuel | Outil gate |
 |---|:---:|:---:|---|
-| Backend — lignes | **60 %** (configuré) | **78 %** | JaCoCo `<limit>` dans `pom.xml` |
-| Backend — branches | Non configuré | ~70 % (estimé) | — |
-| Frontend — logique | **Non imposé (CI)** | **92 %** | Vitest v8 |
+| Backend — lignes | **70 %** (configuré 22/07) | **73,71 %** | JaCoCo `<limit>` dans `pom.xml` — ⚠️ ne se déclenche que sur `mvn verify` (`PC-028`) |
+| Backend — branches | Non configuré | **53,16 %** (mesuré) | — |
+| Frontend — logique | Seuils par chemin (`vitest.config.ts`) | **88,83 %** | Vitest v8 |
 | Couverture sécurité | **~100 % cible** | ~100 % | Revue manuelle |
 
 **Gate JaCoCo** : configuré dans `pom.xml`. Le build Maven fail si la couverture
