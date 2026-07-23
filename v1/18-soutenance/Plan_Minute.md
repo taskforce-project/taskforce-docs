@@ -129,17 +129,19 @@ Réserve importante : le CDC **n'écrit nulle part** que ces technologies sont i
 en exemple. Ne pas bâtir l'argumentaire sur cette affirmation, qui est orale. Bâtir sur la
 justification technique, et ne mentionner la consigne orale de l'école que si le jury insiste.
 
-## 4. Chiffres vérifiés le 21/07/2026, à utiliser tels quels
+## 4. Chiffres vérifiés, à utiliser tels quels
 
-Trois audits de code menés le 21/07 ont corrigé la totalité des chiffres qui circulaient.
+> **Actualisé le 23/07/2026.** Les valeurs de couverture et de volumétrie de tests du 21/07 ont elles
+> aussi vieilli : la semaine du 21 au 23 a vu 41 tests front réparés, une cinquantaine ajoutés, et
+> deux classes de tests back créées. Les lignes concernées portent désormais la mesure du 23/07 ;
+> l'ancienne valeur est conservée en regard, puisque c'est l'écart qui doit être connu avant l'oral.
 
 | Indicateur | Valeur réelle | Ce qui circulait |
 |---|---|---|
-| Tests front | **709 unitaires** plus 7 de bout en bout | 746, puis 706 |
-| Couverture front | **92,33 % de lignes sur le périmètre logique** (4310/4668) | « 92 % du front » |
-| Rapport de couverture front | daté du **04/07**, code modifié les 20 et 21/07 | présenté comme actuel |
-| Tests back | **759 cas exécutés**, 0 échec, le 21/07 à 07h36 | 658, puis 670, puis 692 |
-| Couverture back | **71,3 % de lignes** (5838/8186), 66 % instructions, 52 % branches | 78 %, et 86,1 % dans une fiche |
+| Tests front | **805 unitaires** (63 fichiers), 0 échec, le 23/07 | 746, puis 706, puis 709 |
+| Couverture front | **89,55 % de lignes sur le périmètre logique**, le 23/07 | « 92 % », puis 92,33 % |
+| Tests back | **792 cas exécutés**, 0 échec, le 23/07 | 658, puis 670, puis 692, puis 759 |
+| Couverture back | **73,71 % de lignes**, le 22/07 | 78 %, 86,1 % dans une fiche, puis 71,3 % |
 | Composants front | **189 fichiers**, dont **77** primitives | 165 dont 74 |
 | Tokens CSS | **165 déclarations** | non chiffré |
 | Migrations Flyway | 68 | 71 |
@@ -258,11 +260,13 @@ Liste destinée au chat projet. Classée par rapport entre l'effort et le nombre
 
 **À trancher, car cela conditionne ce qui peut être affirmé**
 
-19. **Le seuil JaCoCo de 84 % ne s'exécute jamais.** L'exécution `jacoco-check` n'a pas de phase
-    déclarée, elle tombe donc en `verify`, alors que l'intégration continue lance `mvn clean test`.
-    Si on l'active, la construction échoue, puisque la couverture réelle est de 71,3 %. Deux options :
-    abaisser le seuil à une valeur vraie et rendre le contrôle bloquant, ou monter la couverture.
-    La première option est honnête et se raconte bien.
+19. ~~**Le seuil JaCoCo de 84 % ne s'exécute jamais.**~~ **Tranché et corrigé le 22/07/2026.**
+    L'exécution `jacoco-check` n'ayant pas de phase déclarée, elle tombait en `verify` alors que la
+    CI lance `mvn clean test` : la porte était donc inerte, et son seuil de 84 % décoratif. Il a été
+    **abaissé à 70 %**, valeur inférieure à la couverture réelle (73,71 %), et son déclenchement
+    effectif a été vérifié par un `mvn verify`. C'est l'option honnête, et elle se raconte bien :
+    un seuil qu'on ne franchit pas ne prouve rien, un seuil vrai et bloquant prouve quelque chose.
+    Reste à câbler `verify` dans le workflow pour que la porte s'exerce aussi en CI.
 20. **L'image Docker du back est construite avec `SKIP_TESTS=true`**, et le job de publication ne
     dépend d'aucun job de test. C26-3 parle d'une chaîne de build qui améliore « les performances
     **et la sécurité** ».
@@ -284,7 +288,11 @@ Liste destinée au chat projet. Classée par rapport entre l'effort et le nombre
 | « Les rôles projet contrôlent les accès » | Les rôles projet servent de liste d'appartenance pour les projets privés. Le contrôle d'accès réel s'appuie sur les rôles de workspace. |
 | « Les scans de sécurité tournent en intégration continue » | Trivy, Semgrep et OWASP ZAP sont lancés par un script manuel. Aucun des sept workflows n'est un workflow de sécurité. |
 | « L'application est auditée par Lighthouse » | Lighthouse ne tourne que sur la landing, sur les pull requests, et sans pouvoir bloquer. |
-| « Backend couvert à 78 % » | 71,3 % de lignes, mesuré le 21/07 à 07h37. |
+| « Backend couvert à 78 % » | **73,71 % de lignes**, mesuré le 22/07. Le chiffre de 78 % n'a jamais été retrouvé depuis. |
+| « Nos tests d'intégration utilisent Testcontainers » (2) | À ne dire nulle part : la bibliothèque n'est pas dans le `pom.xml`. Voir la ligne dédiée plus haut. |
+| « Les certificats TLS sont émis par Let's Encrypt » | **Rien n'est déployé** : aucun domaine, aucune zone DNS, aucun certificat. La configuration nginx est prête et validée, elle n'est pas en service. Le dossier l'affirmait au présent, corrigé le 23/07. |
+| « L'audit RGPD couvre le livrable E9 » | L'audit existant porte sur **TaskForce**. E9 demande un **cas professionnel externe**, qui n'est pas commencé. |
+| « La suite front est verte » | Elle l'est : **805 tests, 0 échec, et la mesure de couverture sort en code 0**, seuils par chemin compris. Ce n'était pas le cas le matin du 23/07, `lib/utils` étant sous son seuil faute de test sur l'export CSV ; corrigé le jour même. |
 
 Deux points ne sont **pas** des défauts et ne doivent pas être présentés comme tels, car ce sont des
 décisions produit assumées : l'absence de plafond de membres par plan, qui relève d'une tarification
