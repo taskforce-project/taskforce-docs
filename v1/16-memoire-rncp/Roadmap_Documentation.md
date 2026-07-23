@@ -210,8 +210,25 @@ Ce qui reste effectivement a produire, une fois les faux manques ecartes.
 
 - [ ] **B1 — E9, audit RGPD d'un cas professionnel externe.** Non commence. **Depend d'un sujet impose par
   l'ecole** : a reclamer sans attendre, c'est le seul livrable dont la matiere ne soit pas dans nos mains.
-- [ ] **B2 — E6, trame de compte-rendu d'activite + un exemple rempli.** Classee « optionnelle » dans ce
-  fichier (Phase 2), a tort : le critere `[R17]` exige que la trame **soit operationnelle**.
+
+  > **Verifie a la source le 23/07/2026** (`memoire/DFS_RNCP_Referentiel...pdf`, p. 8) : « Cas
+  > professionnel individuel ecrit inclus dans le Dossier de validation **(hors projet fil rouge)**.
+  > A partir d'**un site web marchand existant fourni**, non conforme et non optimise : E9, un audit
+  > de conformite reglementaire RGPD du site, **sur le plan technique exclusivement**. »
+  >
+  > **Consequence sous-estimee jusqu'ici : E9 ne pese pas un critere mais QUATRE.** Les criteres de
+  > C11 (outil de consentement aux cookies, vue de confidentialite, formulaire d'acces aux donnees,
+  > double opt-in) s'evaluent sur le site fourni, pas sur TaskForce. Ils avaient ete passes au vert
+  > dans la grille sur la foi de l'implementation TaskForce : erreur corrigee. L'implementation
+  > TaskForce reste une preuve de capacite, elle ne remplace pas le livrable.
+
+- [x] **B2 — E6, trame de compte-rendu d'activite + un exemple rempli.** **Fait le 23/07/2026.**
+  Classee « optionnelle » dans ce fichier (Phase 2), a tort : le critere `[R17]` exige que la trame
+  **soit operationnelle**. Livre : `01-projet/Trame_Compte_Rendu_Activite.md`, derivee point par
+  point des adaptations de la methode E5 (priorisation hebdomadaire Eisenhower, Definition of Done
+  en 6 points, validation de jalon en lieu et place de la revue de sprint, bilan de phase en lieu et
+  place de la retrospective), plus l'exemple rempli `01-projet/CR_2026-S30_Cloture_V1.md` portant sur
+  la semaine reelle du 20 au 23/07 avec references de commit verifiables et valeurs toutes mesurees.
 - [ ] **B3 — Presentation de synthese PDF.** Annexe **obligatoire** du dossier, distincte du support de
   soutenance. Non commencee.
 - [ ] **B4 — Infra : architecture, diagramme de deploiement, DNS/TLS.** Reste suspendu au choix
