@@ -97,9 +97,24 @@ Le statut initial ci-dessous est une <strong>estimation</strong> basée sur l'é
 ajuster au fil de la rédaction.
 </p>
 
-> **▶ État réel au 05/07/2026 (les statuts du tableau datent du 08/06 et sont périmés).** Depuis :
-> - **C18 tests front ✅** (Vitest v8, **92 % lignes**, 746 tests + **E2E Playwright** 4/4).
-> - **C25 tests back ✅** (JaCoCo, **78 %**, 670 tests : unit + `@WebMvcTest` + intégration Postgres réel).
+> **▶ RÉCONCILIATION DU 23/07/2026 — à lire avant le tableau.** Les chiffres ci-dessous remplacent
+> **tous** ceux qui circulaient dans le corpus. Trois jeux de valeurs différents coexistaient (92/78,
+> puis 92,33/71,3, puis les valeurs mesurées cette semaine), ce qui faisait que deux pages du dossier
+> se contredisaient. Une seule mesure fait désormais foi, avec sa date et son périmètre.
+>
+> | Indicateur | Valeur retenue | Mesuré le |
+> |---|---|---|
+> | Couverture front | **88,63 % de lignes** sur le périmètre logique (`lib`, `hooks`, `components/auth`) | 23/07/2026 |
+> | Suite front | **785 tests / 62 fichiers**, 0 échec | 23/07/2026 |
+> | Couverture back | **73,71 % de lignes** (JaCoCo) | 22/07/2026 |
+> | Suite back | **792 tests**, 0 échec | 23/07/2026 |
+>
+> Deux réserves à porter avec le chiffre front, plutôt qu'à taire : le périmètre **exclut** les 48
+> routes et les composants de présentation (couverts par Playwright), et la mesure est actuellement
+> **en échec sur un seuil par chemin** (`lib/utils` à 71,01 % pour 72 % attendus, faute de test sur
+> `export-issues-csv.ts`). La suite, elle, est verte.
+>
+> **▶ État au 05/07/2026 (les statuts du tableau datent du 08/06).**
 > - **C21/C24 sécurité 🟢** : en-têtes durcis **testés** (OWASP A05), IDOR fermés (`AuthorizationService`), chiffrement PII (AES-256-GCM). RGPD **de TaskForce** (audit + export/effacement) livré & validé — ⚠️ distinct de **C11/E9** (audit RGPD d'un **cas pro externe**, toujours ⬜).
 > - **C28/E28 détection de failles ✅** : pentest **OWASP ZAP** (0 HIGH, 4 MEDIUM CSP dev) + SAST Semgrep + SCA/images Trivy (`scripts/security-scan.ps1`).
 > - **C32/E25 journalisation ✅** : **audit backend** (`AuditLog`, 7 events) + **observabilité OTEL → SigNoz** + **logs front → serveur** (`ClientLogController` + `client-logger.ts`, 05/07) + **PS/PCA-PRA opérationnel testé** (`scripts/backup.ps1`). **E26 supervision ✅** : sondes actuator `health`/`prometheus` (corrigé : registry manquant) + OTEL→SigNoz + **9 règles d'alerte** (`observability/alerts/`, format Prometheus portable).
@@ -119,7 +134,7 @@ ajuster au fil de la rédaction.
 | C8 | Modélisation (entité-association, classes) | E8 | [MCD/MLD](../03-architecture/Modele_Donnees_MCD_MLD.md), [Diag. Classes](../03-architecture/Diagramme_Classes_UML.md), [Bloc1 §C8](./Bloc1_Conception_Modelisation.md) | ✅ |
 | C9 | Architecture des bases de données / persistance | E8 | [Architecture C4](../03-architecture/Architecture_C4.md), [PS/PCA/PRA](../11-pca-pra/PS_PCA_PRA.md), Flyway V1–V53, [Bloc1 §C9](./Bloc1_Conception_Modelisation.md) | ✅ |
 | C10 | Architecture logicielle | E8 | [Architecture C4](../03-architecture/Architecture_C4.md), [Modules](../03-architecture/Modules.md), [Bloc1 §C10](./Bloc1_Conception_Modelisation.md) | ✅ |
-| C11 | Conformité RGPD / CNIL | E9 | [Audit RGPD](../07-securite/Audit_RGPD_Conformite.md), [Registre Art.30](../07-securite/Registre_Traitements_RGPD.md), `GdprService.java` (+effacement Keycloak), bannière cookies, [Bloc1 §C11](./Bloc1_Conception_Modelisation.md) — reste : double opt-in + mentions légales | 🟡 |
+| C11 | Conformité RGPD / CNIL | **E9 ⬜** | [Audit RGPD de TaskForce](../07-securite/Audit_RGPD_Conformite.md), [Registre Art.30](../07-securite/Registre_Traitements_RGPD.md), `GdprService.java` (effacement Keycloak compris), `RetentionScheduler` (rétention appliquée, 23/07), double opt-in **implémenté** (vérifié 22/07), [Bloc1 §C11](./Bloc1_Conception_Modelisation.md). ⚠️ **Le livrable E9 n'est PAS couvert** : il exige l'audit d'un **cas professionnel externe**, l'audit existant portant sur TaskForce. Reste aussi : mentions légales | 🟡 |
 | C12 | Veille technologique | E10 | [Veille Technologique](../17-veille/Veille_Technologique.md) (VT-001→006 avec ADR + preuves code), [Bloc1 §C12](./Bloc1_Conception_Modelisation.md) | ✅ |
 
 ### Bloc 2 — Front-end
@@ -128,12 +143,12 @@ ajuster au fil de la rédaction.
 | :---: | -------------- | :------: | ----------------- | :----: |
 | C13 | Concevoir l'interface utilisateur | E11 | `frontend/app/`, Radix/shadcn ARIA natif, axe-core CI, [Bloc2 §C13](./Bloc2_Frontend.md) | ✅ |
 | C14 | Éléments graphiques / charte | E11 | [Design System](../14-design/Design_System.md), `globals.css`, logos `assets/images/`, [Bloc2 §C14](./Bloc2_Frontend.md) | ✅ |
-| C15 | Mettre en œuvre l'UX (parcours, accessibilité) | E11 | 12 UC couverts, App Router, WCAG 2.1 AA, [Bloc2 §C15](./Bloc2_Frontend.md) | ✅ |
+| C15 | Mettre en œuvre l'UX (parcours, accessibilité) | E11 | 12 UC couverts, App Router. **WCAG 2.1 AA vérifié le 22/07 : 0 violation axe-core sur 3 pages, tous impacts confondus.** Le test ne bloquait auparavant que sur `critical` alors que les manquements AA remontent en `serious` : 10 violations passaient inaperçues, corrigées depuis, [Bloc2 §C15](./Bloc2_Frontend.md) | ✅ |
 | C16 | Langage front (qualité, sécurité, écoconception) | E11 | ESLint, TypeScript strict, CSP/CORS/HSTS headers, React Compiler, [Bloc2 §C16](./Bloc2_Frontend.md) | ✅ |
 | C17 | Consommer une API de façon sécurisée | E12 | `client.ts` (Axios+JWT+refresh), Stripe redirect, STOMP+auth, [Bloc2 §C17](./Bloc2_Frontend.md) | ✅ |
-| C18 | Tester le front-end (couverture ≥ 50 %) | E13 | **92 % Vitest** (gate 70 %), 746 tests, 3 specs Playwright E2E, [Bloc2 §C18](./Bloc2_Frontend.md) | ✅ |
+| C18 | Tester le front-end (couverture ≥ 50 %) | E13 | **88,63 % Vitest** (périmètre logique), 785 tests, 3 fichiers Playwright, [Bloc2 §C18](./Bloc2_Frontend.md) | ✅ |
 | C19 | Industrialiser le front-end | E14 | `frontend-tests.yml`, `e2e-tests.yml`, Dependabot, [Bloc2 §C19](./Bloc2_Frontend.md) | ✅ |
-| C20 | Performances SEO (≥ 70 %) | — | Astro SSG (HTML statique), meta/OG tags — ⚠️ Lighthouse non mesuré (TF-SEO-001), [Bloc2 §C20](./Bloc2_Frontend.md) | 🟡 |
+| C20 | Performances SEO (≥ 70 %) | — | **Mesuré le 22/07 : SEO 92 % sur l'accueil, 100 % sur les 4 autres pages** (seuil 70 %). Le site n'a jamais eu de défaut de SEO, c'est le job Lighthouse qui ne mesurait rien ; corrigé, il audite les 5 pages, [Bloc2 §C20](./Bloc2_Frontend.md) | ✅ |
 
 ### Bloc 3 — Back-end
 
@@ -141,9 +156,9 @@ ajuster au fil de la rédaction.
 | :---: | -------------- | :------: | ----------------- | :----: |
 | C21 | Couche de persistance (sécurité en profondeur) | E15 | `WorkspaceAccessInterceptor`, `AuditableEntity`, `EncryptedStringConverter`, [Bloc3 §C21](./Bloc3_Backend.md) | ✅ |
 | C22 | Langage back (qualité, sécurité, écoconception) | E16 | Architecture `shared/core/modules`, Virtual Threads Java 21, Trivy/Semgrep, [Bloc3 §C22](./Bloc3_Backend.md) | ✅ |
-| C23 | Système de paiement + monétisation | E17 | Stripe Checkout + 5 webhooks + portail billing — ⚠️ PC-005 webhooks stubés, [Bloc3 §C23](./Bloc3_Backend.md) | 🟡 |
+| C23 | Système de paiement + monétisation | E17 | Stripe Checkout, **5 webhooks réellement implémentés** (signature `Webhook.constructEvent`, idempotence par `stripe_event_id UNIQUE`, rejeu en différé sur erreur), portail de facturation. La mention « stubés » (PC-005) était périmée, vérifié le 22/07. Reste : un passage avec de vrais événements Stripe, [Bloc3 §C23](./Bloc3_Backend.md) | ✅ |
 | C24 | Développer une API sécurisée | E18 | JWT+Keycloak, `@Valid` DTOs, AES-256-GCM, OpenAPI `/swagger-ui.html`, [Bloc3 §C24](./Bloc3_Backend.md) | ✅ |
-| C25 | Tester le back-end (couverture ≥ 50 %) | E19 | **78 % JaCoCo** (gate 60 %), 670 tests, Testcontainers no-mock, [Bloc3 §C25](./Bloc3_Backend.md) | ✅ |
+| C25 | Tester le back-end (couverture ≥ 50 %) | E19 | **73,71 % JaCoCo**, 792 tests, vrai Postgres sans simulacre (**pas** Testcontainers, cf. Bloc3), [Bloc3 §C25](./Bloc3_Backend.md) | ✅ |
 | C26 | Industrialiser le back-end | E20 | `backend-tests.yml`, `release.yml`, images GHCR, Trivy+Semgrep+ZAP, [Bloc3 §C26](./Bloc3_Backend.md) | ✅ |
 
 ### Bloc 4 — Déploiement & production
@@ -151,9 +166,9 @@ ajuster au fil de la rédaction.
 | Comp. | Intitulé court | Livrable | Où dans TaskForce | Statut |
 | :---: | -------------- | :------: | ----------------- | :----: |
 | C27 | Documentation technique + base de connaissances | E29 | Ce Brain OS, OpenAPI auto-généré, `version-management.yml`, [Release Notes](../15-utilisateur/Release_Notes.md), [Bloc4 §C27](./Bloc4_Deploiement_Production.md) | ✅ |
-| C28 | Administration (domaine, DNS, certificats, sécurité) | E23 | `nginx/nginx.conf`, Let's Encrypt, DNS SPF/DKIM, OAuth callbacks, [Bloc4 §C28](./Bloc4_Deploiement_Production.md) | ✅ |
+| C28 | Administration (domaine, DNS, certificats, sécurité) | E23 | ⚠️ **Décoché le 23/07 : rien n'est déployé.** Aucun domaine réservé, aucune zone DNS, aucun certificat émis. `nginx/nginx.conf.example` est **prêt et validé** (TLS 1.2/1.3, HSTS, OCSP, limitation de débit) mais non déployé, [Bloc4 §C28](./Bloc4_Deploiement_Production.md) | ⬜ |
 | C29 | Sélectionner une plateforme d'hébergement | E21 | [Stratégie Hébergement](../06-infra/Strategie_Hebergement.md) (Option A VM + Option B Render), `render.yaml`, [Bloc4 §C29](./Bloc4_Deploiement_Production.md) — ⚠️ déploiement prod stand-by | 🟡 |
-| C30 | Administrer des services d'hébergement (cloud/conteneur) | E22 | `docker-compose.prod.yml`, réseaux Docker isolés, bastion SSH, [Bloc4 §C30](./Bloc4_Deploiement_Production.md) | ✅ |
+| C30 | Administrer des services d'hébergement (cloud/conteneur) | E22 | `docker-compose.prod.yml` (9 services, réécrit le 22/07), réseaux Docker isolés, [Bloc4 §C30](./Bloc4_Deploiement_Production.md). ⚠️ Composition **prête mais jamais exécutée en production** : à présenter comme telle | 🟡 |
 | C31 | Déploiement automatisé (DevOps / CI-CD) | E24 | 7 workflows GitHub Actions, images GHCR versionnées, [Pipeline CI/CD](../08-operations/Pipeline_CICD.md), [Bloc4 §C31](./Bloc4_Deploiement_Production.md) | ✅ |
 | C32 | Supervision (sondes, alertes, journalisation) | E25–E28 | OTel→SigNoz, 9 alertes Prometheus, `AuditService`, `backup.ps1`, ZAP/Trivy/Semgrep, [Bloc4 §C32](./Bloc4_Deploiement_Production.md) | ✅ |
 
