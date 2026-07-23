@@ -74,27 +74,45 @@ C27 à C32, livrables E21 à E29. <strong>Également évalué via une mise en si
 ### C28 — Administration (domaine, DNS, certificats, sécurité)
 **Livrable :** E23 — réservation nom de domaine, configuration DNS, installation/vérification des certificats.  
 **Critères d'évaluation :**
-- [x] Nom de domaine et déclarations administratives effectuées.
-- [x] Serveurs de noms configurés et fonctionnels (bonnes pratiques de sécurité).
-- [x] Certificats de sécurité installés, configurés pour les différents services.
+- [ ] Nom de domaine et déclarations administratives effectuées.
+- [ ] Serveurs de noms configurés et fonctionnels (bonnes pratiques de sécurité).
+- [ ] Certificats de sécurité installés, configurés pour les différents services.
 
-**Preuves :** `nginx/nginx.conf` · `nginx/ssl/` · `docker-compose.prod.yml` · [Architecture §5](../03-architecture/Architecture.md)
+**Preuves :** `nginx/nginx.conf.example` (configuration validée, non déployée) · `docker-compose.prod.yml` · [Stratégie d'hébergement](../06-infra/Strategie_Hebergement.md)
 
-**Administration DNS, domaine et certificats TLS**
+> **Compétence non acquise à ce jour, et c'est assumé.** Cette section était rédigée au présent de
+> l'indicatif, comme si l'infrastructure était en service : certificats Let's Encrypt émis, crontab de
+> renouvellement, zone DNS avec SPF/DKIM/DMARC, callbacks OAuth enregistrés en production. **Rien de
+> cela n'existe.** Aucun domaine n'a été réservé, aucun serveur ne sert l'application, et les fichiers
+> cités en preuve (`nginx/nginx.conf`, `nginx/ssl/`) n'existent pas dans le dépôt. Corrigé le 23/07/2026.
+>
+> Le déploiement reste suspendu au choix d'hébergement (voir C29). Ce qui suit décrit donc ce qui est
+> **préparé et vérifiable dans le dépôt**, non ce qui est en service.
 
-L'infrastructure de production TaskForce expose trois sous-domaines distincts pour un domaine `taskforce.app` :
+**Ce qui est préparé : la terminaison TLS et le routage**
 
-- `app.taskforce.app` — application SaaS (frontend Next.js)
-- `api.taskforce.app` — API backend Spring Boot
-- `auth.taskforce.app` — Keycloak (SSO / OTP)
+Le fichier `nginx/nginx.conf.example` configure nginx en point d'entrée unique. Il termine le TLS,
+redirige HTTP vers HTTPS (301 permanent) et relaie vers les services Docker internes. Les bonnes
+pratiques y sont appliquées et vérifiables par lecture : TLS 1.2 et 1.3 seulement, suites ECDHE avec
+confidentialité persistante, HSTS (`max-age=31536000; includeSubDomains`), agrafage OCSP, limitation
+de débit (20 requêtes par seconde sur l'API, 5 sur Keycloak), fermeture de la console
+d'administration Keycloak et des points d'actuator hors sonde de santé, et `return 444` sur l'hôte
+par défaut. La configuration a été validée par un binaire nginx réel, pas seulement relue.
 
-**Nginx comme reverse proxy TLS** : le fichier `nginx/nginx.conf` configure nginx comme point d'entrée unique. Il termine le TLS, gère les redirections HTTP→HTTPS (301 permanent), et proxy les requêtes vers les services Docker internes sur le réseau `taskforce_prod`. La configuration nginx active les bonnes pratiques de sécurité TLS : protocoles TLS 1.2/1.3 uniquement (TLS 1.0 et 1.1 désactivés), ciphers ECDHE avec forward secrecy, HSTS (`Strict-Transport-Security: max-age=31536000; includeSubDomains`), et OCSP stapling.
+Un point de conception mérite d'être signalé, car il conditionne le démarrage : nginx résout les
+noms d'hôte amont **au démarrage**, si bien qu'un seul service indisponible empêche le proxy de
+démarrer. La configuration contourne ce comportement par le résolveur Docker interne
+(`resolver 127.0.0.11`) et des noms passés en variables dans `proxy_pass`.
 
-**Certificats TLS** : les certificats sont générés par **Let's Encrypt** via Certbot. Le renouvellement automatique est configuré dans la crontab du serveur (`certbot renew --quiet`). Les certificats sont montés dans le conteneur nginx via le volume `./nginx/ssl:/etc/nginx/ssl:ro`. Cette approche garantit des certificats valides et renouvelés sans intervention manuelle (durée de vie Let's Encrypt = 90 jours, renouvellement à 60 jours).
+**Ce qui reste à faire au déploiement**
 
-**DNS** : la zone DNS est configurée avec des enregistrements A (IPv4) pointant vers l'IP du serveur de production, des enregistrements AAAA (IPv6) si disponible, et des enregistrements MX pour les emails (utilisés par Keycloak pour l'envoi des OTP). SPF, DKIM et DMARC sont configurés pour l'émetteur email Keycloak afin d'éviter que les emails OTP n'arrivent en spam.
+Réserver le domaine et déclarer la zone DNS (enregistrements A, et MX pour les courriels OTP émis par
+Keycloak, avec SPF, DKIM et DMARC pour éviter le classement en indésirable). Émettre les certificats
+par Let's Encrypt et automatiser leur renouvellement. Enregistrer les URL de rappel OAuth GitHub et
+Slack de production dans les consoles développeur correspondantes, les variables
+`GITHUB_OAUTH_REDIRECT_URI` et `SLACK_OAUTH_REDIRECT_URI` étant déjà prévues à cet effet.
 
-**Callbacks OAuth2** : les URLs de callback pour GitHub OAuth (`/api/oauth2/callback/github`) et Slack OAuth (`/api/oauth2/callback/slack`) sont enregistrées dans les consoles développeur respectives avec les URLs de production. Ces URLs sont différentes selon l'environnement (dev/prod) et configurées via variables d'environnement (`GITHUB_OAUTH_REDIRECT_URI`, `SLACK_OAUTH_REDIRECT_URI`).
+Les trois sous-domaines visés sont `app`, `api` et `auth`, déjà routés dans la configuration.
 
 ---
 
@@ -104,9 +122,14 @@ L'infrastructure de production TaskForce expose trois sous-domaines distincts po
 - [x] Architecture technique d'hébergement adaptée à l'application.
 - [x] Principe d'élasticité pris en compte.
 - [x] Dimensionnement et coûts cohérents avec les besoins.
-- [x] Diagramme de déploiement formalisé ; choix du système de déploiement adapté.
+- [ ] Diagramme de déploiement formalisé ; choix du système de déploiement adapté.
 
-**Preuves :** `docker-compose.prod.yml` · `render.yaml` · [Architecture §5](../03-architecture/Architecture.md)
+**Preuves :** `docker-compose.prod.yml` · `render.yaml` · [Stratégie d'hébergement](../06-infra/Strategie_Hebergement.md)
+
+> **Dernier critère décoché le 23/07/2026 : le diagramme de déploiement n'existe pas.** Il est
+> recherché dans tout le corpus et n'y figure nulle part ; la seule mention est son inscription au
+> reste à faire dans la [roadmap documentaire](./Roadmap_Documentation.md) (Phase 7). Les trois
+> premiers critères restent acquis, la comparaison d'hébergement étant documentée et chiffrée.
 
 **Sélection de la plateforme d'hébergement**
 
@@ -168,7 +191,7 @@ Le cycle de livraison TaskForce est automatisé par **7 workflows GitHub Actions
 
 | Workflow | Déclencheur | Étapes |
 |---|---|---|
-| `backend-tests.yml` | PR sur `main` (changements `backend/**`) | Checkstyle → SpotBugs → Tests JUnit+Testcontainers → JaCoCo gate |
+| `backend-tests.yml` | PR sur `main` (changements `backend/**`) | `mvnw clean test jacoco:report`, publication de la couverture (Codecov) et archivage des rapports. **Ni Checkstyle, ni SpotBugs, ni porte JaCoCo bloquante** : corrigé le 23/07, le workflow ne les a jamais exécutés |
 | `frontend-tests.yml` | PR sur `main` (changements `frontend/**`) | ESLint → tsc → Vitest coverage gate → Next.js build |
 | `landing-tests.yml` | PR sur `main` (changements `landing-page/**`) | ESLint → Astro build |
 | `e2e-tests.yml` | PR sur `main` | Docker Compose up → Playwright 3 specs → teardown |
