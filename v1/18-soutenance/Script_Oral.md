@@ -217,9 +217,9 @@ charges. Voici le tableau de bord et le rapport technique.
 
 Mon **plan de test** a trois niveaux.
 
-Premier niveau, **709 tests unitaires** avec Vitest, sur la logique : services d'appel à l'API,
-magasins d'état, crochets React et composants d'authentification. La **couverture y est de 92 %**,
-pour un seuil demandé de 50 %. Je précise le périmètre : ces 92 % portent sur la logique, pas sur
+Premier niveau, **785 tests unitaires** avec Vitest, sur la logique : services d'appel à l'API,
+magasins d'état, crochets React et composants d'authentification. La **couverture y est de 88,63 %**,
+pour un seuil demandé de 50 %. Je précise le périmètre : ces 88 % portent sur la logique, pas sur
 chaque pixel.
 
 Deuxième niveau, les pages et les composants d'interface sont couverts par des **tests de bout en
@@ -381,7 +381,7 @@ une base simulée.
 Les tests de tranche web valident les contrôleurs avec la sécurité réelle : les refus sont testés,
 pas supposés.
 
-Au total, **759 cas de test s'exécutent sans échec**, pour une **couverture de 71 % des lignes**.
+Au total, **792 cas de test s'exécutent sans échec**, pour une **couverture de 73,71 % des lignes**.
 Le seuil demandé est de 50 %.
 
 Tout cela tourne en **intégration continue** à chaque envoi de code. Les **dépendances** sont gérées
@@ -432,9 +432,12 @@ c'est que vous avez accéléré : ralentissez sur le back, qui porte les chiffre
 la diapositive 22, quand vous nommez vos limites. Ce sont les deux endroits où le jury décide s'il
 vous croit.
 
-**Les phrases exactes au mot près**, à ne jamais improviser : « 92 % de couverture sur la logique »,
-« 759 cas de test sans échec », « 71 % des lignes », « huit catégories sur dix », « le seuil demandé
-est de 50 % ».
+**Les phrases exactes au mot près**, à ne jamais improviser : « 88,63 % de couverture sur la
+logique », « 792 cas de test sans échec », « 73,71 % des lignes côté back », « huit catégories sur
+dix », « le seuil demandé est de 50 % ».
+
+> Chiffres actualisés le 23/07/2026. Ils avaient déjà changé trois fois depuis la première
+> rédaction : les revérifier une dernière fois la veille de l'oral, et ne jamais citer de mémoire.
 
 **Si la démonstration échoue.** Basculer sur la vidéo de secours en annonçant simplement : « je
 passe sur l'enregistrement que j'ai préparé ». Ne pas déboguer devant le jury, cela coûte deux
