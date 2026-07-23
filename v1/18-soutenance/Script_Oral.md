@@ -217,8 +217,8 @@ charges. Voici le tableau de bord et le rapport technique.
 
 Mon **plan de test** a trois niveaux.
 
-Premier niveau, **785 tests unitaires** avec Vitest, sur la logique : services d'appel à l'API,
-magasins d'état, crochets React et composants d'authentification. La **couverture y est de 88,63 %**,
+Premier niveau, **805 tests unitaires** avec Vitest, sur la logique : services d'appel à l'API,
+magasins d'état, crochets React et composants d'authentification. La **couverture y est de 89,55 %**,
 pour un seuil demandé de 50 %. Je précise le périmètre : ces 88 % portent sur la logique, pas sur
 chaque pixel.
 
@@ -432,7 +432,7 @@ c'est que vous avez accéléré : ralentissez sur le back, qui porte les chiffre
 la diapositive 22, quand vous nommez vos limites. Ce sont les deux endroits où le jury décide s'il
 vous croit.
 
-**Les phrases exactes au mot près**, à ne jamais improviser : « 88,63 % de couverture sur la
+**Les phrases exactes au mot près**, à ne jamais improviser : « 89,55 % de couverture sur la
 logique », « 792 cas de test sans échec », « 73,71 % des lignes côté back », « huit catégories sur
 dix », « le seuil demandé est de 50 % ».
 
