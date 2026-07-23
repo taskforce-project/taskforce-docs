@@ -189,6 +189,43 @@ tags: [rgpd, registre, traitements, donnees-personnelles, art30, conformite, mem
 
 ---
 
+## Traitement n°9 — Mesure d'audience du site vitrine
+
+| Champ | Valeur |
+|---|---|
+| **Finalité** | Mesure d'audience du site vitrine : pages consultées, provenance, type d'appareil. Sert à évaluer le référencement et l'intérêt suscité par les pages produit |
+| **Base légale** | Intérêt légitime (Art. 6.1.f) — mesure d'audience strictement nécessaire au fonctionnement et à l'amélioration du site |
+| **Catégories de personnes** | Visiteurs du site vitrine, non authentifiés |
+| **Données collectées** | URL de la page, référent, type d'appareil, navigateur, pays. **Aucun identifiant persistant, aucun cookie, aucune adresse IP conservée** : l'outil dérive un identifiant de visite éphémère et le rejette |
+| **Source** | Navigation sur les pages publiques |
+| **Durée de conservation** | Statistiques agrégées. Aucune donnée individuelle réidentifiable n'est stockée |
+| **Destinataires** | **Aucun tiers.** L'outil (Umami) est **auto-hébergé** sur la même infrastructure, dans une base dédiée |
+| **Transferts hors UE** | **Aucun** |
+| **Mesures de sécurité** | Télémétrie sortante de l'outil désactivée (`DISABLE_TELEMETRY`) · console d'administration non exposée publiquement · script chargé en `defer`, sans effet sur le rendu · aucun script émis si les variables d'environnement sont vides |
+| **Preuve** | `docker-compose.dev.yml` et `docker-compose.prod.yml` (service `umami`) · `landing-page/src/components/AudienceTracking.astro` · `db/init/03-init-umami-db.sql` |
+
+> **Pourquoi cet outil et pas un autre, et pourquoi il n'y a pas de bandeau de consentement.**
+> Une solution du marché hébergée hors UE aurait introduit un destinataire étranger dans ce
+> registre et un transfert à encadrer, ce qui aurait contredit la logique suivie partout ailleurs
+> ici : retrait du fournisseur d'IA américain le 16/07 et auto-hébergement du modèle de langage.
+>
+> **Sur l'exemption de consentement, formulation vérifiée dans le script servi le 23/07/2026.**
+> Le script **n'écrit rien** dans le terminal du visiteur : aucun `Set-Cookie` sur la requête de
+> collecte (vérifié), aucun appel d'écriture en stockage local, et aucun identifiant persistant,
+> l'identifiant de visite étant dérivé puis rejeté.
+>
+> Une nuance doit toutefois être portée honnêtement plutôt que tue : le script effectue **une
+> lecture**, celle de la clé `umami.disabled`, et une seule. Elle sert uniquement à respecter une
+> opposition que le visiteur a lui-même exprimée. Il ne s'agit donc pas d'un accès à des fins de
+> suivi, mais le dire est plus solide que d'écrire « aucune lecture », affirmation qu'un examen du
+> script contredirait.
+>
+> Ces caractéristiques correspondent à l'exemption prévue par la CNIL pour la mesure d'audience.
+> Si l'outil venait à être configuré autrement, notamment avec un identifiant persistant,
+> l'exemption tomberait et le bandeau de consentement existant devrait être étendu.
+
+---
+
 ## Synthèse des sous-traitants (Art. 28)
 
 | Sous-traitant | Pays | Données transmises | Garantie |

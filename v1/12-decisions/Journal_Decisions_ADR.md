@@ -44,9 +44,10 @@ tags: [adr, decisions, architecture, backend, frontend, ia, securite, memoire, r
 ### Contexte
 
 TaskForce nécessite un backend REST robuste, capable de gérer la multi-tenancy, une authentification
-déléguée (Keycloak/OAuth2), des webhooks Stripe, la messagerie temps réel (STOMP/WebSocket) et 56
-migrations de base de données. Le choix de l'écosystème backend est structurant pour toute la durée
-du projet (9 mois, mono-développeur).
+déléguée (Keycloak/OAuth2), des webhooks Stripe, la messagerie temps réel (STOMP/WebSocket) et
+**72 migrations** de base de données (chiffre au 23/07/2026 ; l'ADR portait 56, valeur de sa
+rédaction). Le choix de l'écosystème backend est structurant pour toute la durée du projet
+(9 mois, mono-développeur).
 
 ### Décision
 
@@ -64,18 +65,40 @@ du projet (9 mois, mono-développeur).
 
 **Preuve** : `backend/tf-api/pom.xml` — Maven (pas Gradle, aucun `build.gradle` présent).
 
-### Alternatives écartées
+### Alternatives écartées, dans l'écosystème Java
 
 | Alternative | Raison de rejet |
 |---|---|
 | **Quarkus** | Moins mature pour OAuth2/Keycloak intégré ; courbe d'apprentissage en contexte solo |
-| **Micronaut** | Moins d'intégrations natives Spring Security + Testcontainers |
-| **Gradle** | Maven suffisant, projet mono-module ; cohérence avec les exemples Spring officiel |
-| **Java 17** | Java 21 = LTS + Virtual Threads (Project Loom) ; Spring Boot 4 en requiert min 21 |
+| **Micronaut** | Moins d'intégrations natives avec Spring Security |
+| **Gradle** | Maven suffisant, projet mono-module ; cohérence avec les exemples officiels Spring |
+| **Java 17** | Java 21 est LTS et apporte les threads virtuels ; Spring Boot 4 exige au minimum Java 21 |
+
+### Alternatives écartées, face au cahier des charges
+
+> **Section ajoutée le 23/07/2026.** Elle manquait, et c'est celle qui compte le plus : le cahier
+> des charges (§5, « Exigences Techniques ») propose **PHP avec Symfony, ou Node.js** côté back-end.
+> Ce sont donc ces deux options que le jury demandera d'écarter, pas Quarkus ni Micronaut.
+>
+> **Le cadre est clair et a été confirmé par l'école : le choix technique est libre, à condition de
+> pouvoir l'argumenter.** Le critère C22-1 demande d'ailleurs littéralement « un choix de
+> technologies et frameworks back-end **adaptés** », pas un choix conforme au cahier des charges.
+> La grille récompense la pertinence, pas l'obéissance. Encore faut-il que l'argument soit écrit.
+
+| Alternative du CDC | Raison du non-choix |
+|---|---|
+| **PHP avec Symfony** | Le cœur fonctionnel du produit est un moteur d'affectation qui combine similarité vectorielle, charge et historique, exécuté sur des lots d'issues. Java offre ici un typage fort sur un domaine riche (49 entités, 72 migrations), un écosystème mature pour la recherche vectorielle, et surtout les **threads virtuels** de Java 21, adaptés à un service dont le coût dominant est l'attente d'entrées-sorties : base de données, Keycloak, modèle de langage. Symfony aurait convenu pour la partie CRUD, moins pour ce cœur-là. |
+| **Node.js** | Écarté pour une raison de cohérence, pas de performance : le front est déjà en TypeScript sur Next.js. Prendre Node au back aurait donné un projet mono-langage, séduisant sur le papier, mais qui n'aurait **rien démontré de plus**. Le titre visé est « Développeur Full Stack » : soutenir deux écosystèmes distincts, avec leurs outillages de test, de build et de sécurité propres, est un exercice plus complet et plus proche de la réalité d'une équipe. |
+| **Argument transverse** | La contrainte réelle du projet n'était pas la performance brute mais **la sécurité et la traçabilité** : Spring Security en serveur de ressources OIDC, validation déclarative, Flyway avec `ddl-auto=validate`, JaCoCo. Cet outillage existe ailleurs, mais il est ici intégré et éprouvé, ce qui compte pour un développeur seul sur neuf mois. |
+
+> **Ce qu'il ne faut PAS dire à l'oral** : que le cahier des charges donnerait ces technologies « à
+> titre indicatif ». Il ne l'écrit nulle part. L'argument tient sur la pertinence technique et sur
+> la liberté de choix confirmée, pas sur une réinterprétation du document.
 
 ### Conséquences
 
-- **✅ Positif** : Spring Security + OAuth2 ResourceServer natif pour Keycloak ; Testcontainers Spring Boot official support ; JaCoCo intégré Maven.
+- **✅ Positif** : Spring Security et serveur de ressources OAuth2 natifs pour Keycloak ; JaCoCo intégré à Maven.
+  <br>⚠️ *Corrigé le 23/07/2026 : la version initiale citait le support officiel de Testcontainers parmi les bénéfices. **Testcontainers n'est pas utilisé** — son client Docker embarqué est incompatible avec le mandataire de Docker Desktop lorsque les tests s'exécutent eux-mêmes en conteneur. Les tests d'intégration tournent contre un PostgreSQL voisin démarré par `scripts/it.ps1`, avec les vraies migrations Flyway. Ne pas invoquer Testcontainers à l'oral : le greffon n'est pas dans le `pom.xml`.*
 - **✅ Positif** : Java 21 Virtual Threads activables si besoin de scalabilité I/O-bound.
 - **⚠️ Risque** : Spring Boot 4 était en RC lors du démarrage — risque de breaking changes (géré par veille active).
 - **📝 Note** : Le `ARCHITECTURE.md` original du projet listait par erreur Gradle ; corrigé dans [[CdCT_v2]].

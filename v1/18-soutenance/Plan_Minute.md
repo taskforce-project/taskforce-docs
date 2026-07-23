@@ -125,9 +125,22 @@ Ce point ne se présente pas comme un écart mais comme **un choix technique jus
 C22-1 demande littéralement « un choix de technologies et frameworks back-end **adaptés** », pas un
 choix conforme au cahier des charges. La grille récompense la pertinence, pas l'obéissance.
 
-Réserve importante : le CDC **n'écrit nulle part** que ces technologies sont indicatives ou données
-en exemple. Ne pas bâtir l'argumentaire sur cette affirmation, qui est orale. Bâtir sur la
-justification technique, et ne mentionner la consigne orale de l'école que si le jury insiste.
+**Point tranché le 23/07/2026.** Le cadre est confirmé : **le choix technique est libre, à condition
+de pouvoir l'argumenter.** Ce n'est donc pas un écart à défendre mais une décision à justifier, ce
+qui est un exercice différent et plus favorable.
+
+Une réserve subsiste néanmoins sur la **formulation** : le cahier des charges n'écrit nulle part que
+ces technologies seraient données à titre indicatif. Ne pas bâtir l'argumentaire sur cette
+affirmation, qui reste orale. Bâtir sur la pertinence technique.
+
+L'argumentaire écrit se trouve désormais dans [[Journal_Decisions_ADR]], ADR-001, section
+« Alternatives écartées, face au cahier des charges ». Elle manquait jusqu'au 23/07 : l'ADR
+comparait Java à Quarkus et Micronaut, jamais à **Symfony ni à Node.js**, c'est-à-dire aux deux
+options que le jury demandera d'écarter. Trois arguments à retenir : le cœur du produit est un
+moteur d'affectation où le typage fort et les threads virtuels de Java 21 servent réellement ; le
+front étant déjà en TypeScript, prendre Node aurait donné un projet mono-langage qui n'aurait rien
+démontré de plus pour un titre « Full Stack » ; la contrainte dominante était la sécurité et la
+traçabilité, où l'outillage Spring est intégré et éprouvé.
 
 ## 4. Chiffres vérifiés, à utiliser tels quels
 
