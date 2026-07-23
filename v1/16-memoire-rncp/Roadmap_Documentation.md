@@ -188,7 +188,7 @@ Un manque annonce se defend ; une preuve absente reclamee par le jury ne se defe
 Rediger par-dessus des statuts perimes revient a jeter le travail. Cette phase est bloquante.
 
 - [ ] **A1 — Un chiffre, une source.** Fixer les valeurs mesurees les 21-23/07 comme canoniques
-  (**front 88,83 % lignes / 785 tests** · **back 73,71 % lignes / 792 tests apres `RetentionSchedulerTest`**)
+  (**front 89,55 % lignes / 805 tests** · **back 73,71 % lignes / 792 tests apres `RetentionSchedulerTest`**)
   et les propager aux 16 emplacements : `Bloc2_Frontend.md` (173, 181), `Bloc3_Backend.md` (155, 169),
   `16-memoire-rncp/README.md` (101, 102, 134, 146), `Roadmap_Documentation.md` (82),
   `18-soutenance/Plan_Minute.md` (139, 142, 287), `18-soutenance/Plan_Soutenance.md` (74, 82, 96, 173, 206).
