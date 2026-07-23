@@ -152,21 +152,27 @@ La couche de persistance de TaskForce applique le principe de **sécurité en pr
 **Livrable :** E19 — plan de tests complet et cohérent.  
 **Critères d'évaluation :**
 - [x] Plan de test cohérent avec les exigences des spécifications.
-- [x] **Couverture du code source ≥ 50 %.** *(78 % — JaCoCo, gate 60 %)*
+- [x] **Couverture du code source ≥ 50 %.** *(73,71 % de lignes, JaCoCo, mesuré le 22/07/2026)*
 
-**Preuves :** `backend/tf-api/src/test/` · [Plan Tests Backend](../10-qualite/Plan_Tests_Backend.md) · rapport JaCoCo (CI artefact) · `backend/tf-api/pom.xml` (plugin JaCoCo)
+**Preuves :** `backend/tf-api/src/test/` · [Politique de tests](../08-operations/Politique_Tests.md) · rapport JaCoCo (artefact de CI) · `backend/tf-api/pom.xml` (greffon JaCoCo)
 
 **Plan de tests et couverture backend**
 
-La stratégie de tests backend suit une pyramide à trois niveaux, avec un principe fondamental : **aucun mock de base de données** (mémorisé dans les règles d'or du projet). Les tests d'intégration utilisent **Testcontainers** pour démarrer de vraies instances Docker (PostgreSQL + pgvector, Keycloak) lors de l'exécution des tests — ce qui garantit que les migrations Flyway, les contraintes SQL, les index, et les comportements pgvector sont testés dans des conditions identiques à la production.
+La stratégie de tests backend suit une pyramide à trois niveaux, avec un principe fondamental : **aucun simulacre de base de données**. Les tests d'intégration s'exécutent contre un vrai PostgreSQL avec pgvector, ce qui garantit que les migrations Flyway, les contraintes SQL, les index et les comportements vectoriels sont éprouvés dans des conditions identiques à la production.
+
+**Précision importante sur l'outillage, car elle est souvent mal rapportée : Testcontainers n'est pas utilisé.** La bibliothèque figurait dans les intentions initiales, mais son client docker-java embarqué est incompatible avec le mandataire de Docker Desktop lorsque les tests s'exécutent eux-mêmes depuis un conteneur. Le socle a donc été remplacé par un PostgreSQL voisin démarré sur un réseau Docker partagé, que le conteneur Maven rejoint par nom de service (`scripts/it.ps1`). Le résultat est fonctionnellement équivalent, vrai PostgreSQL et vrai Flyway avec `ddl-auto=validate`, et la décision est commentée dans `AbstractIntegrationTest`. Annoncer Testcontainers serait inexact : le greffon n'est pas dans le `pom.xml`.
 
 **Niveau 1 — Tests unitaires** : services et logiques métier isolés avec Mockito. Les tests paramétrés (`@ParameterizedTest` + `@MethodSource` / `@CsvSource`) couvrent les cas limites : le calcul des scores Smart Assign est testé pour les 5 signaux avec des valeurs aux bornes (score min/max, poids nuls, vecteurs orthogonaux pour cosine similarity = 0), la validation OTP est testée pour les 3 tentatives avec expiration de TTL.
 
 **Niveau 2 — Tests d'intégration Web (`@WebMvcTest`)** : chaque contrôleur est testé en isolation du service (MockMvc + Mockito) pour vérifier les codes HTTP, la validation Bean Validation, les réponses d'erreur (`400`, `403`, `404`, `429`), et la sérialisation JSON.
 
-**Niveau 3 — Tests d'intégration complets (`@SpringBootTest`)** : les parcours métier critiques sont testés de bout en bout avec base de données réelle (Testcontainers PostgreSQL + Keycloak). Ces tests couvrent les scénarios multi-étapes : inscription → OTP → connexion → création workspace → invitation membre → création projet → Smart Assign. Ce niveau de test garantit que l'application fonctionne en conditions réelles, y compris les cascades SQL, les transactions, et les appels réseau inter-services.
+**Niveau 3 — Tests d'intégration complets (`@SpringBootTest`)** : les parcours métier critiques sont testés de bout en bout contre une base réelle. Ces tests couvrent les scénarios en plusieurs étapes : inscription, OTP, connexion, création de workspace, invitation d'un membre, création de projet, affectation intelligente. Ce niveau garantit le fonctionnement en conditions réelles, cascades SQL et transactions comprises.
 
-**Couverture** : 72 fichiers de test, 670 tests, **78 % de couverture de lignes JaCoCo** (gate CI fixé à 60 %). Le rapport est généré à chaque CI run et archivé comme artefact. Les classes non couvertes sont principalement la couche de configuration Spring (non testable en unitaire) et les stubs de webhooks Stripe (PC-005).
+**Couverture** : **73,71 % de couverture de lignes JaCoCo**, mesurée le 22/07/2026, pour une suite de **792 tests** exécutés sans échec le 23/07/2026 après l'ajout de `RetentionSchedulerTest`. Le seuil de la grille est de 50 %. Le rapport est produit à chaque exécution de CI et archivé comme artefact.
+
+Deux précisions sur ce chiffre, car il a longtemps circulé sous une forme inexacte. D'une part la valeur de 78 % qui figurait ici provenait d'une mesure antérieure et n'a jamais été retrouvée depuis. D'autre part la porte de qualité JaCoCo est **liée à la phase `verify`** : elle reste donc inerte lorsque la construction s'arrête à `test`, ce qui est le cas de l'exécution courante. Son seuil a été aligné sur la réalité mesurée plutôt que laissé à une valeur décorative, et son déclenchement effectif a été vérifié.
+
+Les classes non couvertes sont principalement la couche de configuration Spring, non testable unitairement, et les services d'amorçage du graphe de connaissances, explicitement exclus du rapport.
 
 ---
 
@@ -187,7 +193,7 @@ Le workflow `backend-tests.yml` automatise la chaîne de qualité sur chaque PR 
 1. mvn dependency:resolve (vérification des dépendances)
 2. mvn checkstyle:check (Google Java Style Guide)
 3. mvn spotbugs:check (détection de bugs statique)
-4. mvn test (JUnit 5 + Testcontainers — démarre PostgreSQL + Keycloak Docker)
+4. mvn test (JUnit 5 ; un PostgreSQL avec pgvector est démarré en conteneur voisin par `scripts/it.ps1`)
 5. mvn jacoco:report (génération rapport de couverture)
 6. Vérification seuil JaCoCo 60 % (échec si insuffisant)
 ```
