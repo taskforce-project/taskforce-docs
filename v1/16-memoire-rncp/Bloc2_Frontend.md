@@ -170,19 +170,35 @@ Le **format d'échange** est JSON sur HTTPS. Les DTOs de réponse sont typés en
 - [x] Plan de tests exhaustif.
 - [x] Le code des tests correspond au plan.
 - [x] Plan cohérent avec les exigences des spécifications.
-- [x] **Couverture du code source ≥ 50 %.** *(92 % lignes — Vitest v8)*
+- [x] **Couverture du code source ≥ 50 %.** *(88,63 % de lignes, Vitest v8, mesuré le 23/07/2026)*
 
-**Preuves :** `frontend/__tests__/` · `frontend/**/*.test.tsx` · `tests/e2e/` · [Plan Tests Frontend](../10-qualite/Plan_Tests_Frontend.md)
+**Preuves :** `frontend/__tests__/` · `frontend/**/*.test.tsx` · `frontend/e2e/` · [Politique de tests](../08-operations/Politique_Tests.md) · [Cahier de recettes](../08-operations/Cahier_Test_Recettes.md)
 
 **Plan de tests et couverture**
 
 La stratégie de tests front-end couvre trois niveaux : tests unitaires/composants (Vitest + React Testing Library), tests d'intégration avec mock réseau (MSW — Mock Service Worker), et tests end-to-end (Playwright).
 
-**Tests Vitest (55 fichiers, 746 tests, 92 % couverture lignes)** : les tests couvrent les stores Zustand (comportement des actions et sélecteurs), les composants React (rendu, interactions utilisateur via `userEvent`, états loading/error), les fonctions utilitaires (formatters, validators, calculateurs de score), et les hooks personnalisés. Le coverage v8 est généré à chaque CI run et le seuil de qualité est fixé à 70 % de lignes (`vitest.config.ts` → `coverage.thresholds.lines: 70`) — 92 % dépasse largement ce seuil. MSW intercepte les appels Axios dans les tests de composants qui consomment l'API, garantissant que les tests ne font pas appel au réseau réel.
+**Tests Vitest (62 fichiers, 785 tests, 88,63 % de couverture de lignes)** : les tests couvrent les stores Zustand (comportement des actions et sélecteurs), les composants React (rendu, interactions utilisateur via `userEvent`, états de chargement et d'erreur), les fonctions utilitaires (formateurs, validateurs, calculateurs de score) et les hooks personnalisés. MSW intercepte les appels Axios dans les tests de composants qui consomment l'API, garantissant qu'aucun test n'atteint le réseau réel.
+
+Le périmètre de mesure est **volontairement restreint à la logique testable unitairement** : `vitest.config.ts` n'inclut que `lib`, `hooks` et `components/auth`. Les 48 routes et l'essentiel des composants de présentation en sont exclus, au motif qu'ils sont couverts par Playwright. Ce choix doit être annoncé quand le chiffre est cité, sans quoi il se lit comme une couverture globale du front, ce qu'il n'est pas.
+
+Les seuils sont **doubles** : un seuil global (70 % lignes, 80 % fonctions, 75 % branches) et des seuils par chemin, plus exigeants sur les modules critiques (90 % sur `auth-service.ts`). Un module qui régresse fait donc échouer la mesure même si la moyenne globale reste bonne.
+
+> **Écart connu au 23/07/2026.** La mesure de couverture est en échec sur un seuil par chemin :
+> `lib/utils` atteint 71,01 % contre 72 % attendus, parce que `lib/utils/export-issues-csv.ts`
+> (47 lignes, export CSV avec échappement) n'a **aucun test**. La suite elle-même est verte
+> (785 tests, 0 échec) ; c'est bien le seuil de couverture qui n'est pas tenu, pas un test qui casse.
+>
+> À noter également : sous instrumentation `--coverage`, trois tests d'authentification dépassent le
+> délai de 15 secondes et échouent en cascade (un rendu non démonté fait apparaître deux formulaires
+> dans le DOM). Ces trois tests passent en isolation comme en exécution normale. C'est un défaut de
+> l'outillage de mesure, pas de l'application, mais il fausse le chiffre à la baisse.
 
 **Tests paramétrés** : les cas limites sont systématiquement couverts via des `test.each` (équivalent Vitest de `@ParameterizedTest`) — par exemple, le composant OTP est testé pour 1, 2, 3, 4, 5 et 6 chiffres (seul le cas 6 déclenche la soumission), et les badges de priorité sont testés pour chacune des 5 valeurs (`URGENT`, `HIGH`, `MEDIUM`, `LOW`, `NO_PRIORITY`).
 
-**Tests Playwright E2E (3 specs)** : les specs couvrent les parcours critiques non testables en isolation. `auth.spec.ts` : cycle complet inscription → OTP → workspace creation → logout → login. `routes.spec.ts` : vérification que les routes protégées redirigent vers `/login` sans token, et que les routes workspace rejettent les utilisateurs non-membres (403). `a11y.spec.ts` : audit axe-core sur les pages principales (login, dashboard, kanban) avec assertion sur 0 violations WCAG 2.1 AA.
+**Tests Playwright de bout en bout (3 fichiers)** : ils couvrent les parcours non testables en isolation. `auth.spec.ts` : cycle complet inscription, OTP, création de workspace, déconnexion, reconnexion. `redistribution.spec.ts` : parcours de redistribution automatique des tâches, cœur fonctionnel du cahier des charges. `a11y.spec.ts` : audit axe-core sur les pages principales (connexion, tableau de bord, membres) avec assertion à zéro violation.
+
+Sur ce dernier point, une correction mérite d'être signalée car elle porte sur la validité même de la preuve. Le test s'intitulait « WCAG 2.1 AA » mais **n'échouait que sur les violations de niveau `critical`**, alors que les manquements AA remontent en `serious`. Il déclarait donc zéro violation tout en en laissant passer dix, quatre sur la page de connexion et six sur le tableau de bord. Le seuil inclut désormais `serious`, les violations ont été corrigées, et l'assertion à zéro est devenue vraie (23/07/2026).
 
 **Cohérence plan/specs** : chaque UC du CdCF est couvert par au moins un test de composant et un test E2E sur le parcours principal. Les cas d'erreur (OTP invalide, workspace inaccessible, API timeout) sont testés dans les tests unitaires des hooks et services.
 
