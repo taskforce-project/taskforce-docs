@@ -104,15 +104,18 @@ ajuster au fil de la rédaction.
 >
 > | Indicateur | Valeur retenue | Mesuré le |
 > |---|---|---|
-> | Couverture front | **88,63 % de lignes** sur le périmètre logique (`lib`, `hooks`, `components/auth`) | 23/07/2026 |
-> | Suite front | **785 tests / 62 fichiers**, 0 échec | 23/07/2026 |
+> | Couverture front | **89,55 % de lignes** sur le périmètre logique (`lib`, `hooks`, `components/auth`) | 23/07/2026 |
+> | Suite front | **805 tests / 63 fichiers**, 0 échec | 23/07/2026 |
 > | Couverture back | **73,71 % de lignes** (JaCoCo) | 22/07/2026 |
 > | Suite back | **792 tests**, 0 échec | 23/07/2026 |
 >
-> Deux réserves à porter avec le chiffre front, plutôt qu'à taire : le périmètre **exclut** les 48
-> routes et les composants de présentation (couverts par Playwright), et la mesure est actuellement
-> **en échec sur un seuil par chemin** (`lib/utils` à 71,01 % pour 72 % attendus, faute de test sur
-> `export-issues-csv.ts`). La suite, elle, est verte.
+> Une réserve à porter avec le chiffre front, plutôt qu'à taire : le périmètre **exclut** les 48
+> routes et les composants de présentation, couverts par Playwright. À annoncer avant qu'on le
+> demande, sans quoi le chiffre se lit comme une couverture globale du front, ce qu'il n'est pas.
+>
+> La mesure **sort désormais en code 0**, tous seuils par chemin compris. Elle échouait encore le
+> matin du 23/07 sur `lib/utils` (71,01 % pour 72 % attendus), faute de test sur l'export CSV :
+> 20 tests paramétrés ont été écrits, portant ce module à 93,23 % de lignes.
 >
 > **▶ État au 05/07/2026 (les statuts du tableau datent du 08/06).**
 > - **C21/C24 sécurité 🟢** : en-têtes durcis **testés** (OWASP A05), IDOR fermés (`AuthorizationService`), chiffrement PII (AES-256-GCM). RGPD **de TaskForce** (audit + export/effacement) livré & validé — ⚠️ distinct de **C11/E9** (audit RGPD d'un **cas pro externe**, toujours ⬜).
@@ -146,7 +149,7 @@ ajuster au fil de la rédaction.
 | C15 | Mettre en œuvre l'UX (parcours, accessibilité) | E11 | 12 UC couverts, App Router. **WCAG 2.1 AA vérifié le 22/07 : 0 violation axe-core sur 3 pages, tous impacts confondus.** Le test ne bloquait auparavant que sur `critical` alors que les manquements AA remontent en `serious` : 10 violations passaient inaperçues, corrigées depuis, [Bloc2 §C15](./Bloc2_Frontend.md) | ✅ |
 | C16 | Langage front (qualité, sécurité, écoconception) | E11 | ESLint, TypeScript strict, CSP/CORS/HSTS headers, React Compiler, [Bloc2 §C16](./Bloc2_Frontend.md) | ✅ |
 | C17 | Consommer une API de façon sécurisée | E12 | `client.ts` (Axios+JWT+refresh), Stripe redirect, STOMP+auth, [Bloc2 §C17](./Bloc2_Frontend.md) | ✅ |
-| C18 | Tester le front-end (couverture ≥ 50 %) | E13 | **88,63 % Vitest** (périmètre logique), 785 tests, 3 fichiers Playwright, [Bloc2 §C18](./Bloc2_Frontend.md) | ✅ |
+| C18 | Tester le front-end (couverture ≥ 50 %) | E13 | **89,55 % Vitest** (périmètre logique), 805 tests, 3 fichiers Playwright, [Bloc2 §C18](./Bloc2_Frontend.md) | ✅ |
 | C19 | Industrialiser le front-end | E14 | `frontend-tests.yml`, `e2e-tests.yml`, Dependabot, [Bloc2 §C19](./Bloc2_Frontend.md) | ✅ |
 | C20 | Performances SEO (≥ 70 %) | — | **Mesuré le 22/07 : SEO 92 % sur l'accueil, 100 % sur les 4 autres pages** (seuil 70 %). Le site n'a jamais eu de défaut de SEO, c'est le job Lighthouse qui ne mesurait rien ; corrigé, il audite les 5 pages, [Bloc2 §C20](./Bloc2_Frontend.md) | ✅ |
 
