@@ -79,7 +79,7 @@ tags: [roadmap, documentation, production, memoire, rncp, soutenance]
 - [x] ⭐ **Matrice de traçabilité** exigences ↔ tests — **fait (05/07)** : `08-operations/Matrice_Tracabilite_Tests.md` (54 exigences STB × 8 familles PERF/CAP/DISP/SEC/QUAL/CONF/INT/CT — 76 % couvertes automatiquement, 5 gaps prioritisés).
 - [ ] **FeatureFiles Gherkin (BDD)** + documentation vivante
 - [ ] **Rapport de recette / validation jury** (remplace le PV client — N/A projet solo)
-- ✅ Stratégie & plan de tests (`Tests.md`) · Rapport de couverture (78/92 %) · Dossier d'anomalies (`Problemes_Connus.md`)
+- ✅ Stratégie & plan de tests (`Tests.md`) · Rapport de couverture (**back 73,71 % au 22/07 · front 88,63 % au 23/07**, cf. réconciliation) · Dossier d'anomalies (`Problemes_Connus.md`)
 
 ## Phase 6 — Sécurité 🔐 ✅ **TERMINÉE (05/07)**
 - [x] ⭐ **PSSI** — **fait (05/07)** : `07-securite/PSSI.md` (DICP, 6 principes directeurs, IAM/RBAC, protection données + RGPD, couverture OWASP, journalisation/audit, rôles & responsabilités, gestion vulnérabilités — chaque règle ancrée dans le code réel).
@@ -158,3 +158,83 @@ et enfin **11** (assemblage + PDF). Le **déploiement (Phase 7)** attend les VM.
 > Verification realite (repo, 12/07) : tests front, CI de tests et branche `dev` **existent** (le camarade
 > a juge sur `main`, qui est ~2394 commits en retard). Priorite projet : fusionner vers `main` pour que la
 > vue publique reflete la realite (detail dans `18-soutenance/Plan_Soutenance.md` section 7.6).
+
+---
+
+# Roadmap de cloture — 23/07/2026
+
+> Etat des lieux fait le 23/07 en parcourant le corpus reel, pas son inventaire.
+
+## Le constat qui change le plan
+
+**La documentation n'est pas a ecrire, elle est ecrite.** Sur les ~97 documents du catalogue, la quasi
+totalite a ete produite le 05/07. Ce qui manque n'est pas de la redaction : c'est de la **reconciliation**
+(les chiffres cites ont vieilli) et de l'**assemblage** (97 fichiers separes, le jury attend un dossier).
+
+Trois ecarts precis, releves en vérifiant fichier par fichier :
+
+| Ecart | Nature | Gravite |
+| --- | --- | --- |
+| Les chiffres de couverture sont cites **a 16 endroits** dans 5 fichiers, avec **trois jeux de valeurs differents** en circulation (92/78, 92,33/71,3, et le reel 88,83/73,71) | incoherence interne | **haute** — un jure qui recoupe deux pages du dossier trouve deux reponses |
+| `Bloc4_Deploiement_Production.md` §93 affirme que les certificats sont generes par Let's Encrypt via Certbot, et la matrice cote C28 en ✅ | **sur-declaration** | **critique** — il n'y a aucun deploiement a ce jour. Une competence declaree acquise et non demontrable est le pire cas possible |
+| `Audit_RGPD_Conformite.md` est etiquete **E9** et coche comme fait, alors qu'il audite **TaskForce** (son propre en-tete le dit : « conformite RGPD de TaskForce »). E9 demande un **cas professionnel externe** | livrable manquant masque par une etiquette | **haute** — E9 apparait comme fait alors qu'il n'est pas commence |
+
+Le premier et le troisieme sont des sous-estimations ou des erreurs d'etiquette. **Le deuxieme est une
+sur-declaration, et c'est le seul des trois qui puisse se retourner contre le projet en soutenance.**
+Un manque annonce se defend ; une preuve absente reclamee par le jury ne se defend pas.
+
+## Phase A — Reconciliation (a faire avant toute redaction)
+
+Rediger par-dessus des statuts perimes revient a jeter le travail. Cette phase est bloquante.
+
+- [ ] **A1 — Un chiffre, une source.** Fixer les valeurs mesurees les 21-23/07 comme canoniques
+  (**front 88,83 % lignes / 785 tests** · **back 73,71 % lignes / 792 tests apres `RetentionSchedulerTest`**)
+  et les propager aux 16 emplacements : `Bloc2_Frontend.md` (173, 181), `Bloc3_Backend.md` (155, 169),
+  `16-memoire-rncp/README.md` (101, 102, 134, 146), `Roadmap_Documentation.md` (82),
+  `18-soutenance/Plan_Minute.md` (139, 142, 287), `18-soutenance/Plan_Soutenance.md` (74, 82, 96, 173, 206).
+- [ ] **A2 — Corriger la sur-declaration Bloc 4.** C28/E23 : passer de ✅ a ⬜ tant qu'aucun domaine
+  n'est en service, et reformuler §93 au conditionnel (`nginx.conf.example` est **pret**, les certificats
+  seront emis au deploiement). Verifier au passage C29/C30 dans la meme matrice.
+- [ ] **A3 — Deseti queter E9.** Renommer la mention E9 de `Audit_RGPD_Conformite.md` (il prouve **C11
+  applique a TaskForce**, ce qui est utile et reel), et rouvrir E9 comme non commence.
+- [ ] **A4 — Statuts sous-estimes a relever**, tous verifies dans le code cette semaine :
+  **C20 SEO** mesure 92-100 % (etait « non mesure ») · **C23 Stripe** webhooks implementes, signature +
+  idempotence + rejeu (etait « stubes », `PC-005`) · **C11 RGPD** double opt-in implemente et retention
+  desormais automatisee (`RetentionScheduler`) · **C13/C15 accessibilite** 0 violation axe-core sur 3 pages.
+- [ ] **A5 — Grille XLSX.** `memoire/Grille_evaluation_TaskForce_REMPLIE_DFS_25-26.xlsx` — premier document
+  lu par le jury, et le seul qui ne soit pas en Markdown donc le seul qu'aucun grep ne rattrape.
+
+## Phase B — Les manques reels
+
+Ce qui reste effectivement a produire, une fois les faux manques ecartes.
+
+- [ ] **B1 — E9, audit RGPD d'un cas professionnel externe.** Non commence. **Depend d'un sujet impose par
+  l'ecole** : a reclamer sans attendre, c'est le seul livrable dont la matiere ne soit pas dans nos mains.
+- [ ] **B2 — E6, trame de compte-rendu d'activite + un exemple rempli.** Classee « optionnelle » dans ce
+  fichier (Phase 2), a tort : le critere `[R17]` exige que la trame **soit operationnelle**.
+- [ ] **B3 — Presentation de synthese PDF.** Annexe **obligatoire** du dossier, distincte du support de
+  soutenance. Non commencee.
+- [ ] **B4 — Infra : architecture, diagramme de deploiement, DNS/TLS.** Reste suspendu au choix
+  d'hebergement. La VM de l'ecole est derriere le NAT, sans entree possible : si c'est l'option retenue,
+  l'application n'aura pas d'URL publique et C28 restera non demontrable.
+
+## Phase C — Assemblage
+
+- [ ] **C1 — Bundle PDF.** Regrouper les ⭐ dans l'ordre Cadrage → Gestion → Conception → Realisation →
+  Qualite → Prod → Conformite → Utilisateur. C'est l'ecart de forme le plus visible : le jury attend
+  **un** document, nous en avons 97.
+- [ ] **C2 — Purge des caracteres « IA »** sur tout le bundle avant export (tirets longs, fleches, emojis).
+  A faire **en dernier**, sinon la reecriture les reintroduit.
+- [ ] **C3 — Renforcer le cahier de recette** (`08-operations/Cahier_Test_Recettes.md`) : viser >= 50 % des
+  fonctionnalites avec **cas de reussite ET cas d'echec**, et y referencer les tests automatises reels.
+
+## Deja fait, contrairement a ce que `.ai/roadmap.md` declarait
+
+A ne pas refaire : **manuel utilisateur** (`15-utilisateur/Manuel_Utilisateur.md`, 399 lignes) ·
+**FAQ** · **release notes** · **veille technologique** (6 entrees tracees) · **note d'innovation et
+distance critique** · **plan de soutenance, script oral et plan minute** (`18-soutenance/`, 1 174 lignes).
+
+## Ordre conseille
+
+**A → B1 (a lancer en parallele, il depend de l'ecole) → B2/B3 → C.**
+La Phase A conditionne tout le reste : chaque paragraphe ecrit sur un chiffre perime devra etre reecrit.
