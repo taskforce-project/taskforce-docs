@@ -71,7 +71,7 @@ clairs, back sur fonds sombres**. **Contenu vérifié contre le code** (5 explor
 | 9 | T6 | Front, style : Tailwind, tokens, CSS minifié |
 | 10 | T5 | Front, maquette vs réel — *captures Figma vs écran* |
 | 11 | T6 | Front, accessibilité + Lighthouse (axe-core, WCAG) — *capture* |
-| 12 | T5 | Front, tests : Vitest 92 %, Playwright, cahier de recette, CI |
+| 12 | T5 | Front, tests : Vitest 89,55 %, Playwright, cahier de recette, CI |
 | 13 | **T7** | Section « Partie 2 : Back-end » |
 | 14 | T2 | Back, archi : Spring Boot 4, Java 21, modules |
 | 15 | T3 | Back, données : pgvector, Flyway, chiffrement — *visuel MCD* |
@@ -79,7 +79,7 @@ clairs, back sur fonds sombres**. **Contenu vérifié contre le code** (5 explor
 | 17 | T2 | Smart Assign, le moteur IA (différenciateur) |
 | 18 | T5 | Paiement Stripe |
 | 19 | T3 | Sécurité en profondeur + migration JWT vers OIDC |
-| 20 | T6 | Back, tests : JaCoCo 78 %, Testcontainers, CI |
+| 20 | T6 | Back, tests : JaCoCo 73,71 %, vrai Postgres (**pas** Testcontainers), CI |
 | 21 | T5 | Production / DevOps (slide tampon) |
 | 22 | T3 | Distance critique (assumé / corrigé, 2 colonnes) |
 | 23 | **T8** | Call to action : « L'IDE exécute. TaskForce orchestre. » (vision future) |
@@ -93,7 +93,11 @@ clairs, back sur fonds sombres**. **Contenu vérifié contre le code** (5 explor
 ### À compléter (placeholders déjà posés dans le pptx)
 - Diagramme **C4** (slide 5), **MCD** (slide 15).
 - **Captures** : composants (8), maquette Figma vs réel (10), rapport **Lighthouse** (11).
-- Revérifier les **chiffres** (92 % front / 78 % back / 746 / 658) s'ils ont évolué.
+- ~~Revérifier les **chiffres** (92 % front / 78 % back / 746 / 658) s'ils ont évolué.~~
+  **Fait le 23/07/2026.** Valeurs à porter au PPT : **front 89,55 % / 805 tests** · **back 73,71 % / 792 tests**.
+  Détail et réserves dans [la réconciliation du mémoire](../16-memoire-rncp/README.md).
+  Deux formulations à bannir du support : « Testcontainers » (jamais utilisé) et toute mention de
+  certificats TLS ou de DNS en service (rien n'est déployé).
 - **Cahier de recette** à ≥ 50 % (SOUT, roadmap).
 
 > 🔗 Voir aussi : mémoire `soutenance-avoid-ai-characters`, `taskforce-docs/v1/18-soutenance/README.md`.
@@ -170,10 +174,13 @@ Logos école + projet.
 > (paiement, iframe PCI-DSS), Dicebear (avatars). » → *C12 = API tierce consommée*.
 
 **Slide 8 — Tests & industrialisation front (0:55)** · *C16, C18, C19, C20*
-> « Front testé : **92 % de couverture Vitest** (746 tests) + **E2E Playwright** (auth, routes,
-> accessibilité). Qualité : TypeScript strict, ESLint bloquant, en-têtes de sécurité (CSP/HSTS). CI
-> GitHub Actions qui build et gate la couverture. » Montrer le badge/rapport. Une phrase SEO (Astro SSG,
-> landing) → *C20*.
+> « Front testé : **89,55 % de couverture Vitest** sur le périmètre logique (**805 tests**), plus des
+> parcours **Playwright** de bout en bout : authentification, redistribution, accessibilité. Qualité :
+> TypeScript strict, ESLint sans erreur sur tout le dépôt, en-têtes de sécurité (CSP, HSTS). » Montrer
+> le rapport. Une phrase SEO (Astro en génération statique, landing mesurée entre 92 et 100 %) pour *C20*.
+>
+> Si le jury demande pourquoi 88 % et non 100 % : le périmètre de mesure exclut volontairement les
+> routes et les composants de présentation, couverts par Playwright. Le dire avant qu'on le demande.
 
 ---
 
@@ -203,9 +210,14 @@ Logos école + projet.
 > I/O. Composants à jour, scannés (Trivy/Semgrep). »
 
 **Slide 13 — Tests & industrialisation back (1:00)** · *C25, C26*
-> « Back testé : **78 % JaCoCo** (658 tests), avec **Testcontainers** — vrai Postgres + pgvector + vraies
-> migrations, **pas de mock de base**. CI : Checkstyle, tests, gate de couverture, build image Docker →
-> GHCR, scans sécurité. » Montrer le rapport JaCoCo ou le workflow.
+> « Back testé : **73,71 % JaCoCo** pour **792 tests**, contre un vrai Postgres avec pgvector et les
+> vraies migrations Flyway, **sans aucun simulacre de base**. CI : tests, construction de l'image Docker
+> et publication sur GHCR. » Montrer le rapport JaCoCo ou le workflow.
+>
+> **Ne pas dire « Testcontainers ».** La bibliothèque n'est pas dans le `pom.xml` : son client Docker
+> embarqué est incompatible avec le mandataire de Docker Desktop quand les tests tournent eux-mêmes en
+> conteneur. Le socle utilise un Postgres voisin sur un réseau Docker partagé, ce qui est équivalent et
+> **mieux** à raconter, parce que c'est un arbitrage technique qu'on peut défendre.
 
 ---
 
@@ -278,7 +290,7 @@ explication) → accepter → (bonus) chat temps réel dans une 2ᵉ fenêtre.
 | C15 | UX / parcours / accessibilité | Slides 5–6 (démo) |
 | C16 | Langage front (qualité/sécu) | Slide 8 |
 | C17 | Consommer une API sécurisée | Slide 7 |
-| C18 | Tester le front (≥ 50 %) | Slide 8 (92 %) |
+| C18 | Tester le front (≥ 50 %) | Slide 8 (89,55 %) |
 | C19 | Industrialiser le front | Slide 8 (CI) |
 | C20 | SEO | Slide 8 (Astro) |
 
@@ -289,7 +301,7 @@ explication) → accepter → (bonus) chat temps réel dans une 2ᵉ fenêtre.
 | C22 | Langage back (qualité/écoconc.) | Slides 4, 12 |
 | C23 | Paiement + monétisation | Slide 11 |
 | C24 | API sécurisée | Slide 10 (Swagger + OIDC) |
-| C25 | Tester le back (≥ 50 %) | Slide 13 (78 %) |
+| C25 | Tester le back (≥ 50 %) | Slide 13 (73,71 %) |
 | C26 | Industrialiser le back | Slide 13 (CI/CD) |
 
 ### Bloc 4 — Déploiement (cadrage oral, cœur = mise en situation)
@@ -324,7 +336,7 @@ explication) → accepter → (bonus) chat temps réel dans une 2ᵉ fenêtre.
 **Back (bloc 3)**
 - *Authentification ?* → Keycloak émet des tokens **OIDC RS256** ; l'API est Resource Server (JWK + issuer). *Raconter la migration depuis HS512 : dette identifiée (veille ANSSI) → corrigée → 658 tests verts.*
 - *Injection / validation ?* → JPA paramétré + `@Valid` sur tous les DTOs + chiffrement AES-256-GCM.
-- *Tests d'intégration fiables ?* → Testcontainers (vrai Postgres+pgvector, vraies migrations), pas de mock DB. 78 %.
+- *Tests d'intégration fiables ?* → vrai Postgres avec pgvector et vraies migrations Flyway, sans aucun simulacre de base. **73,71 %**. Ne pas dire « Testcontainers » : la bibliothèque a été écartée (incompatibilité docker-java avec le mandataire Docker Desktop) et n'est pas dans le `pom.xml`.
 - *Sécurité du paiement ?* → délégation Stripe (iframe PCI-DSS), webhooks signés + idempotents.
 
 **Recul**
@@ -405,10 +417,10 @@ Le plan a bien 4 slides front (5 a 8) mais il faut du **concret montrable** :
 |---|---|---|
 | Front | Techno front dans les slides (composants, application CSS, minification) | JAUNE (documente, pas dans les slides) |
 | Front | Maquette vs reel (captures) | JAUNE (wireframes ok, captures a assembler) |
-| Front | Tests front montres | VERT (61 tests Vitest/Playwright) |
-| Front | Accessibilite Lighthouse (perf/a11y/SEO/best-practices) | ROUGE (a produire) |
-| Front | Workflow de validation front (linter) | VERT (eslint + workflow frontend-tests) |
-| Back | Tests back + couverture | VERT (69 fichiers, ~78 % JaCoCo, Testcontainers) |
+| Front | Tests front montres | VERT (805 tests Vitest, 0 echec, 23/07) |
+| Front | Accessibilite Lighthouse (perf/a11y/SEO/best-practices) | VERT (22/07 : SEO 92 a 100 %, axe-core 0 violation sur 3 pages) |
+| Front | Workflow de validation front (linter) | VERT (eslint 0 erreur sur tout le depot, 21/07) |
+| Back | Tests back + couverture | VERT (792 tests, 73,71 % JaCoCo, vrai Postgres sans simulacre) |
 | Back | Tests dans la CI | VERT (backend-tests + e2e-tests) |
 | Back | Securite | VERT (OIDC, RBAC, chiffrement, ZAP) |
 | Doc | Cahier de recette >= 50 % (reussite + echec) | JAUNE (existe, cas d'echec/front a etoffer) |
@@ -416,7 +428,7 @@ Le plan a bien 4 slides front (5 a 8) mais il faut du **concret montrable** :
 | Doc | Un seul gros document (bundle PDF) | ROUGE (a assembler, Phase 11) |
 | Doc | Caracteres IA purges | ROUGE (PPT + bundle) |
 | Projet | Branche dev | VERT (origin/dev) |
-| Projet | Couverture >= 50 % | VERT (back ~78 % / front ~92 %) |
+| Projet | Couverture >= 50 % | VERT (back 73,71 % au 22/07 / front 89,55 % au 23/07) |
 | Projet | main a jour (repo public vu par le jury) | ROUGE (~2394 commits de retard) |
 | Projet | CI verte confirmee | JAUNE (a verifier onglet Actions) |
 | Projet | Q&A anticipe (tests Model X, requete HTTP 5 couches) | JAUNE (a preparer) |
