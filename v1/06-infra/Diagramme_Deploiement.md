@@ -1,6 +1,6 @@
 ---
 id: diagramme-deploiement
-title: Diagramme de déploiement (E21)
+title: Diagramme de déploiement
 doc_type: reference
 statut: active
 version: 1.0
@@ -11,13 +11,34 @@ tags: [infra, deploiement, docker, topologie, e21, c29, memoire, rncp]
 
 # Diagramme de déploiement
 
-> **Livrable E21** (compétence C29). Ce document décrit la **topologie de déploiement** de
-> TaskForce : les nœuds, les artefacts qu'ils exécutent, les canaux de communication et la surface
-> d'exposition.
+> Ce document décrit la **topologie de déploiement** de TaskForce : les nœuds, les artefacts qu'ils
+> exécutent, les canaux de communication et la surface d'exposition.
 >
 > **Il n'existait pas** avant le 23/07/2026, alors que le critère « diagramme de déploiement
 > formalisé » était coché dans la grille d'évaluation. Le critère a été décoché, puis ce document
 > produit.
+
+> ⚠️ **Ce document n'est PAS le livrable E21 — étiquette corrigée le 24/07/2026.**
+>
+> Vérifié à la source (note pédagogique, pages 7 et 8) : **E21 à E29 sont produits pendant la mise en
+> situation professionnelle du 5 octobre 2026**, épreuve de 5 heures conduite **sur une application
+> web fournie par l'école**, pas sur le projet fil rouge. E21 y désigne précisément « le choix d'une
+> solution d'hébergement de type cloud adaptée à l'application, formalisée dans un livrable écrit et
+> argumenté ». Ce livrable sera donc rédigé le jour de l'épreuve, sur une autre application.
+>
+> S'ajoute une seconde raison, indépendante : « **le dossier de validation porte sur les 3 premiers
+> blocs de compétences** » (page 2). Le bloc 4 est hors du dossier.
+>
+> **Ce document garde deux usages réels**, et ce sont eux qu'il faut invoquer :
+> 1. **Pièce du dossier pour les blocs 1 à 3** — il démontre la compréhension de l'architecture
+>    déployée, ce qui relève de la conception et de la maîtrise technique, pas du bloc 4.
+> 2. **Répétition de l'épreuve du 5 octobre** — raisonner une topologie, une surface d'exposition et
+>    un choix d'hébergement argumenté est exactement ce qui sera demandé, en temps limité.
+>
+> Le corpus entier présentait ce document comme « livrable E21 » (`Roadmap_Backlog`,
+> `Strategie_Documentation`, `Catalogue_Documentation`, `Bloc4_Deploiement_Production`). Ces mentions
+> restent valables **comme repères de préparation** au bloc 4, à condition de ne pas les lire comme
+> des livrables du dossier.
 
 ## 1. Ce que ce diagramme dit, et ce qu'il ne dit pas
 
