@@ -1,798 +1,982 @@
 ---
 id: dictionnaire-donnees
-title: Dictionnaire de données — schéma PostgreSQL réel
+title: Dictionnaire de données
 doc_type: reference
-statut: valide
-version: 1.0
-date: "05/07/2026"
+statut: active
+version: 2.0
+date: "24/07/2026"
 auteur: Pierre MICHEL
-tags: [dictionnaire, donnees, schema, postgresql, sql, reference, merise, mpd, memoire, rncp]
+tags: [architecture, donnees, dictionnaire, postgresql, e8]
 ---
 
-# 📚 Dictionnaire de données — schéma PostgreSQL réel
+# Dictionnaire de données
 
-> **But** : référence exhaustive de **toutes** les tables, colonnes, types, contraintes et clés
-> étrangères du schéma **réellement déployé** (MPD MERISE — voir [[Modele_Donnees_MCD_MLD]]).
+> **Document GÉNÉRÉ**, il ne se modifie pas à la main. Régénération :
+> `node scripts/generate-schema-docs.mjs`.
 >
-> **Génération** : extrait **automatiquement** de `information_schema` sur la base
-> `taskforce-db` (Postgres 18 + pgvector), à la date du **05/07/2026**. Aucune colonne inventée :
-> ce document est un miroir du schéma produit par les migrations Flyway.
->
-> **Périmètre** : **50 tables**, **483 colonnes**, **94 clés étrangères** (hors `flyway_schema_history`).
-> Groupé par domaine fonctionnel (même découpage que le [[Modele_Donnees_MCD_MLD|MCD/MLD]]).
+> Périmètre : **55 tables** métier, **545 colonnes**, **104 clés étrangères**,
+> **72 migrations Flyway** appliquées. Introspection d'`information_schema` sur la base réelle.
 
-## Légende
+La colonne **ON DELETE** n'est renseignée que lorsqu'elle diffère du comportement par défaut.
+C'est une information de conception, pas un détail : elle dit si la suppression d'un parent
+emporte ses enfants, les détache, ou est refusée.
 
-| Symbole | Signification |
-|---|---|
-| **Null = —** | `NOT NULL` (obligatoire) |
-| **Null = ✓** | colonne nullable |
-| 🔑 **PK** | clé primaire |
-| **FK** | clé étrangère (cible + règle `ON DELETE` en dernière colonne) |
-| **U** | contrainte d'unicité |
-| `seq` | défaut = séquence auto-incrément (`nextval`) |
+## 4.1 IAM et Workspace
 
-> ℹ️ Les types `enum` correspondent à des types PostgreSQL `USER-DEFINED` (mappés depuis les enums Java
-> `@Enumerated(STRING)`, cf. [[Diagramme_Etats_UML]]). `vector` = colonne pgvector (embeddings IA).
+Le socle multi-tenant. Toute donnée métier est rattachée à un workspace, et l'appartenance à un workspace conditionne l'accès.
 
----
+### `users`
 
-## IAM & Workspace
+19 colonnes · 1 clé(s) étrangère(s).
 
-### `companies`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `name` | varchar(255) | — |  |  |  |
-| 3 | `email` | varchar(255) | ✓ |  |  |  |
-| 4 | `phone` | varchar(50) | ✓ |  |  |  |
-| 5 | `address` | text | ✓ |  |  |  |
-| 6 | `created_at` | timestamp | — | `CURRENT_TIMESTAMP` |  |  |
-| 7 | `updated_at` | timestamp | — | `CURRENT_TIMESTAMP` |  |  |
-| 8 | `created_by` | varchar(255) | ✓ |  |  |  |
-| 9 | `updated_by` | varchar(255) | ✓ |  |  |  |
-
-### `users` — Table des utilisateurs avec intégration Keycloak et Stripe
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `keycloak_id` | varchar(255) | — |  | U |  |
-| 3 | `email` | varchar(255) | — |  | U |  |
-| 4 | `company_id` | bigint | ✓ |  | FK | → `companies` (ON DELETE SET NULL) |
-| 5 | `is_active` | boolean | — | `true` |  |  |
-| 6 | `created_at` | timestamp | — | `CURRENT_TIMESTAMP` |  |  |
-| 7 | `updated_at` | timestamp | — | `CURRENT_TIMESTAMP` |  |  |
-| 8 | `created_by` | varchar(255) | ✓ |  |  |  |
-| 9 | `updated_by` | varchar(255) | ✓ |  |  |  |
-| 10 | `plan_type` | varchar(20) | — |  |  |  |
-| 11 | `plan_status` | enum | ✓ |  |  |  |
-| 12 | `stripe_customer_id` | varchar(255) | ✓ |  | U |  |
-| 13 | `stripe_subscription_id` | varchar(255) | ✓ |  | U |  |
-| 14 | `subscription_start_date` | timestamp | ✓ |  |  |  |
-| 15 | `subscription_end_date` | timestamp | ✓ |  |  |  |
-| 16 | `trial_end_date` | timestamp | ✓ |  |  |  |
-| 17 | `enterprise_interest` | boolean | ✓ | `false` |  |  |
-| 18 | `display_name` | varchar(150) | ✓ |  |  |  |
-| 19 | `avatar_url` | varchar(500) | ✓ |  |  |  |
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('users_id_seq'::regclass)` |  |
+| `keycloak_id` | varchar(255) | non | UK |  |  |
+| `email` | varchar(255) | non | UK |  |  |
+| `company_id` | int8 | oui | FK → `companies.id` |  | SET NULL |
+| `is_active` | bool | non |  | `true` |  |
+| `created_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `updated_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
+| `plan_type` | varchar(20) | non |  |  |  |
+| `plan_status` | vector | oui |  |  |  |
+| `stripe_customer_id` | varchar(255) | oui | UK |  |  |
+| `stripe_subscription_id` | varchar(255) | oui | UK |  |  |
+| `subscription_start_date` | timestamp | oui |  |  |  |
+| `subscription_end_date` | timestamp | oui |  |  |  |
+| `trial_end_date` | timestamp | oui |  |  |  |
+| `enterprise_interest` | bool | oui |  | `false` |  |
+| `display_name` | varchar(150) | oui |  |  |  |
+| `avatar_url` | varchar(500) | oui |  |  |  |
 
 ### `workspaces`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `name` | varchar(100) | — |  |  |  |
-| 3 | `slug` | varchar(100) | — |  | U |  |
-| 4 | `description` | varchar(500) | ✓ |  |  |  |
-| 5 | `logo_url` | varchar(1000) | ✓ |  |  |  |
-| 6 | `owner_id` | bigint | — |  | FK | → `users` (ON DELETE RESTRICT) |
-| 7 | `created_at` | timestamp | — | `now()` |  |  |
-| 8 | `updated_at` | timestamp | — | `now()` |  |  |
-| 9 | `uuid` | uuid | — | `uuid_generate_v4()` | U |  |
+9 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('workspaces_id_seq'::regclass)` |  |
+| `name` | varchar(100) | non |  |  |  |
+| `slug` | varchar(100) | non | UK |  |  |
+| `description` | varchar(500) | oui |  |  |  |
+| `logo_url` | varchar(1000) | oui |  |  |  |
+| `owner_id` | int8 | non | FK → `users.id` |  | RESTRICT |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `updated_at` | timestamp | non |  | `now()` |  |
+| `uuid` | uuid | non | UK | `uuid_generate_v4()` |  |
 
 ### `workspace_members`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `workspace_id` | bigint | — |  | FK U | → `workspaces` (ON DELETE CASCADE) |
-| 3 | `user_id` | bigint | — |  | FK U | → `users` (ON DELETE CASCADE) |
-| 4 | `role` | varchar(20) | — | `'MEMBER'` |  |  |
-| 5 | `invited_by` | bigint | ✓ |  | FK | → `users` (ON DELETE SET NULL) |
-| 6 | `joined_at` | timestamp | — | `now()` |  |  |
+6 colonnes · 3 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('workspace_members_id_seq'::regc` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id`, UK |  | CASCADE |
+| `user_id` | int8 | non | FK → `users.id`, UK |  | CASCADE |
+| `role` | varchar(20) | non |  | `'MEMBER'::character varying` |  |
+| `invited_by` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `joined_at` | timestamp | non |  | `now()` |  |
 
 ### `workspace_invitations`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `workspace_id` | bigint | — |  | FK | → `workspaces` (ON DELETE CASCADE) |
-| 3 | `invited_by` | bigint | ✓ |  | FK | → `users` (ON DELETE SET NULL) |
-| 4 | `email` | varchar(255) | — |  |  |  |
-| 5 | `role` | varchar(20) | — | `'MEMBER'` |  |  |
-| 6 | `token` | varchar(100) | — |  | U |  |
-| 7 | `status` | varchar(20) | — | `'PENDING'` |  |  |
-| 8 | `expires_at` | timestamp | — |  |  |  |
-| 9 | `accepted_at` | timestamp | ✓ |  |  |  |
-| 10 | `created_at` | timestamp | — | `now()` |  |  |
-| 11 | `updated_at` | timestamp | — | `now()` |  |  |
-| 12 | `created_by` | varchar(255) | ✓ |  |  |  |
-| 13 | `updated_by` | varchar(255) | ✓ |  |  |  |
+13 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('workspace_invitations_id_seq'::` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `invited_by` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `email` | varchar(255) | non |  |  |  |
+| `role` | varchar(20) | non |  | `'MEMBER'::character varying` |  |
+| `token` | varchar(100) | non | UK |  |  |
+| `status` | varchar(20) | non |  | `'PENDING'::character varying` |  |
+| `expires_at` | timestamp | non |  |  |  |
+| `accepted_at` | timestamp | oui |  |  |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `updated_at` | timestamp | non |  | `now()` |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
 
 ### `teams`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `workspace_id` | bigint | — |  | FK | → `workspaces` (ON DELETE CASCADE) |
-| 3 | `created_by` | bigint | ✓ |  | FK | → `users` (ON DELETE SET NULL) |
-| 4 | `name` | varchar(200) | — |  |  |  |
-| 5 | `description` | text | ✓ |  |  |  |
-| 6 | `emoji` | varchar(10) | — | `'👥'` |  |  |
-| 7 | `color` | varchar(50) | — | `'bg-primary'` |  |  |
-| 8 | `created_at` | timestamp | — | `now()` |  |  |
-| 9 | `updated_at` | timestamp | — | `now()` |  |  |
+9 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('teams_id_seq'::regclass)` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `created_by` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `name` | varchar(200) | non |  |  |  |
+| `description` | text | oui |  |  |  |
+| `emoji` | varchar(10) | non |  | `'👥'::character varying` |  |
+| `color` | varchar(50) | non |  | `'bg-primary'::character varying` |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `updated_at` | timestamp | non |  | `now()` |  |
 
 ### `team_members`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `team_id` | bigint | — |  | FK U | → `teams` (ON DELETE CASCADE) |
-| 3 | `user_id` | bigint | — |  | FK U | → `users` (ON DELETE CASCADE) |
-| 4 | `role` | varchar(20) | — | `'MEMBER'` |  |  |
-| 5 | `joined_at` | timestamp | — | `now()` |  |  |
+5 colonnes · 2 clé(s) étrangère(s).
 
-### `member_leaves`
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('team_members_id_seq'::regclass)` |  |
+| `team_id` | int8 | non | FK → `teams.id`, UK |  | CASCADE |
+| `user_id` | int8 | non | FK → `users.id`, UK |  | CASCADE |
+| `role` | varchar(20) | non |  | `'MEMBER'::character varying` |  |
+| `joined_at` | timestamp | non |  | `now()` |  |
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `workspace_id` | bigint | — |  | FK | → `workspaces` (ON DELETE CASCADE) |
-| 3 | `user_id` | bigint | — |  | FK | → `users` (ON DELETE CASCADE) |
-| 4 | `type` | varchar(20) | — |  |  |  |
-| 5 | `start_date` | date | — |  |  |  |
-| 6 | `end_date` | date | — |  |  |  |
-| 7 | `note` | text | ✓ |  |  |  |
-| 8 | `created_at` | timestamp | — | `now()` |  |  |
-| 9 | `updated_at` | timestamp | — | `now()` |  |  |
-| 10 | `created_by` | varchar(255) | ✓ |  |  |  |
-| 11 | `updated_by` | varchar(255) | ✓ |  |  |  |
+### `companies`
 
-## Projets & Issues
+9 colonnes · 0 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('companies_id_seq'::regclass)` |  |
+| `name` | varchar(255) | non |  |  |  |
+| `email` | varchar(255) | oui |  |  |  |
+| `phone` | varchar(50) | oui |  |  |  |
+| `address` | text | oui |  |  |  |
+| `created_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `updated_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
+
+## 4.2 Projets et Issues (coeur métier)
+
+Le domaine que le cahier des charges décrit : les tâches, leur affectation, la charge et les compétences qui la conditionnent.
 
 ### `projects`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `workspace_id` | bigint | — |  | FK U | → `workspaces` (ON DELETE CASCADE) |
-| 3 | `name` | varchar(150) | — |  |  |  |
-| 4 | `identifier` | varchar(10) | — |  | U |  |
-| 5 | `description` | varchar(1000) | ✓ |  |  |  |
-| 6 | `status` | enum | — | `'ACTIVE'` |  |  |
-| 7 | `is_public` | boolean | — | `false` |  |  |
-| 8 | `created_by` | bigint | — |  | FK | → `users` (ON DELETE RESTRICT) |
-| 9 | `created_at` | timestamp | — | `now()` |  |  |
-| 10 | `updated_at` | timestamp | — | `now()` |  |  |
-| 11 | `icon_url` | text | ✓ |  |  |  |
-| 12 | `color` | varchar(50) | — | `'bg-primary'` |  |  |
-| 13 | `growth_mode` | boolean | — | `false` |  |  |
+13 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('projects_id_seq'::regclass)` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id`, UK |  | CASCADE |
+| `name` | varchar(150) | non |  |  |  |
+| `identifier` | varchar(10) | non | UK |  |  |
+| `description` | varchar(1000) | oui |  |  |  |
+| `status` | vector | non |  | `'ACTIVE'::project_status` |  |
+| `is_public` | bool | non |  | `false` |  |
+| `created_by` | int8 | non | FK → `users.id` |  | RESTRICT |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `updated_at` | timestamp | non |  | `now()` |  |
+| `icon_url` | text | oui |  |  |  |
+| `color` | varchar(50) | non |  | `'bg-primary'::character varying` |  |
+| `growth_mode` | bool | non |  | `false` |  |
 
 ### `project_members`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `project_id` | bigint | — |  | FK U | → `projects` (ON DELETE CASCADE) |
-| 3 | `user_id` | bigint | — |  | FK U | → `users` (ON DELETE CASCADE) |
-| 4 | `role` | enum | — | `'MEMBER'` |  |  |
-| 5 | `added_by` | bigint | ✓ |  | FK | → `users` (ON DELETE SET NULL) |
-| 6 | `joined_at` | timestamp | — | `now()` |  |  |
+6 colonnes · 3 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('project_members_id_seq'::regcla` |  |
+| `project_id` | int8 | non | FK → `projects.id`, UK |  | CASCADE |
+| `user_id` | int8 | non | FK → `users.id`, UK |  | CASCADE |
+| `role` | vector | non |  | `'MEMBER'::project_role` |  |
+| `added_by` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `joined_at` | timestamp | non |  | `now()` |  |
 
 ### `project_teams`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `project_id` | bigint | — |  | FK U | → `projects` (ON DELETE CASCADE) |
-| 3 | `team_id` | bigint | — |  | FK U | → `teams` (ON DELETE CASCADE) |
-| 4 | `created_at` | timestamp | — | `now()` |  |  |
+4 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('project_teams_id_seq'::regclass` |  |
+| `project_id` | int8 | non | FK → `projects.id`, UK |  | CASCADE |
+| `team_id` | int8 | non | FK → `teams.id`, UK |  | CASCADE |
+| `created_at` | timestamp | non |  | `now()` |  |
 
 ### `project_labels`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `project_id` | bigint | — |  | FK U | → `projects` (ON DELETE CASCADE) |
-| 3 | `name` | varchar(50) | — |  | U |  |
-| 4 | `color` | varchar(30) | — | `'#6366f1'` |  |  |
-| 5 | `description` | varchar(200) | ✓ |  |  |  |
-| 6 | `created_at` | timestamp | — | `now()` |  |  |
+6 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('project_labels_id_seq'::regclas` |  |
+| `project_id` | int8 | non | FK → `projects.id`, UK |  | CASCADE |
+| `name` | varchar(50) | non | UK |  |  |
+| `color` | varchar(30) | non |  | `'#6366f1'::character varying` |  |
+| `description` | varchar(200) | oui |  |  |  |
+| `created_at` | timestamp | non |  | `now()` |  |
 
 ### `project_favorites`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `user_id` | bigint | — |  | FK U | → `users` (ON DELETE CASCADE) |
-| 3 | `project_id` | bigint | — |  | FK U | → `projects` (ON DELETE CASCADE) |
-| 4 | `created_at` | timestamp | — | `now()` |  |  |
+4 colonnes · 2 clé(s) étrangère(s).
 
-### `cycles`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `project_id` | bigint | — |  | FK U | → `projects` (ON DELETE CASCADE) |
-| 3 | `name` | varchar(255) | — |  | U |  |
-| 4 | `description` | text | ✓ |  |  |  |
-| 5 | `start_date` | date | ✓ |  |  |  |
-| 6 | `end_date` | date | ✓ |  |  |  |
-| 7 | `status` | enum | — | `'DRAFT'` |  |  |
-| 8 | `created_by` | bigint | — |  | FK | → `users` (ON DELETE RESTRICT) |
-| 9 | `created_at` | timestamp | — | `now()` |  |  |
-| 10 | `updated_at` | timestamp | — | `now()` |  |  |
-
-### `cycle_issues`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `cycle_id` | bigint | — |  | FK U | → `cycles` (ON DELETE CASCADE) |
-| 3 | `issue_id` | bigint | — |  | FK U | → `issues` (ON DELETE CASCADE) |
-| 4 | `added_by` | bigint | — |  | FK | → `users` (ON DELETE RESTRICT) |
-| 5 | `added_at` | timestamp | — | `now()` |  |  |
-
-### `pages`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `project_id` | bigint | — |  | FK | → `projects` (ON DELETE CASCADE) |
-| 3 | `created_by` | bigint | ✓ |  | FK | → `users` (ON DELETE SET NULL) |
-| 4 | `title` | varchar(500) | — |  |  |  |
-| 5 | `emoji` | varchar(10) | — | `'📄'` |  |  |
-| 6 | `content` | text | ✓ |  |  |  |
-| 7 | `created_at` | timestamp | — | `now()` |  |  |
-| 8 | `updated_at` | timestamp | — | `now()` |  |  |
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('project_favorites_id_seq'::regc` |  |
+| `user_id` | int8 | non | FK → `users.id`, UK |  | CASCADE |
+| `project_id` | int8 | non | FK → `projects.id`, UK |  | CASCADE |
+| `created_at` | timestamp | non |  | `now()` |  |
 
 ### `issues`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `project_id` | bigint | — |  | FK U | → `projects` (ON DELETE CASCADE) |
-| 3 | `sequence_number` | integer | — |  | U |  |
-| 4 | `title` | varchar(500) | — |  |  |  |
-| 5 | `description` | text | ✓ |  |  |  |
-| 6 | `priority` | enum | — | `'NONE'` |  |  |
-| 7 | `status_id` | bigint | — |  | FK | → `issue_statuses` (ON DELETE RESTRICT) |
-| 8 | `type_id` | bigint | ✓ |  | FK | → `issue_types` (ON DELETE SET NULL) |
-| 9 | `assignee_id` | bigint | ✓ |  | FK | → `users` (ON DELETE SET NULL) |
-| 10 | `reporter_id` | bigint | — |  | FK | → `users` (ON DELETE RESTRICT) |
-| 11 | `parent_id` | bigint | ✓ |  | FK | → `issues` (ON DELETE SET NULL) |
-| 12 | `start_date` | date | ✓ |  |  |  |
-| 13 | `due_date` | date | ✓ |  |  |  |
-| 14 | `completed_at` | timestamp | ✓ |  |  |  |
-| 15 | `created_at` | timestamp | — | `now()` |  |  |
-| 16 | `updated_at` | timestamp | — | `now()` |  |  |
-| 17 | `position` | integer | — | `0` |  |  |
-| 18 | `story_points` | integer | ✓ |  |  |  |
-| 19 | `archived_at` | timestamp | ✓ |  |  |  |
-| 20 | `pinned` | boolean | — | `false` |  |  |
+20 colonnes · 6 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('issues_id_seq'::regclass)` |  |
+| `project_id` | int8 | non | FK → `projects.id`, UK |  | CASCADE |
+| `sequence_number` | int4 | non | UK |  |  |
+| `title` | varchar(500) | non |  |  |  |
+| `description` | text | oui |  |  |  |
+| `priority` | vector | non |  | `'NONE'::issue_priority` |  |
+| `status_id` | int8 | non | FK → `issue_statuses.id` |  | RESTRICT |
+| `type_id` | int8 | oui | FK → `issue_types.id` |  | SET NULL |
+| `assignee_id` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `reporter_id` | int8 | non | FK → `users.id` |  | RESTRICT |
+| `parent_id` | int8 | oui | FK → `issues.id` |  | SET NULL |
+| `start_date` | date | oui |  |  |  |
+| `due_date` | date | oui |  |  |  |
+| `completed_at` | timestamp | oui |  |  |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `updated_at` | timestamp | non |  | `now()` |  |
+| `position` | int4 | non |  | `0` |  |
+| `story_points` | int4 | oui |  |  |  |
+| `archived_at` | timestamp | oui |  |  |  |
+| `pinned` | bool | non |  | `false` |  |
 
 ### `issue_statuses`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `project_id` | bigint | — |  | FK U | → `projects` (ON DELETE CASCADE) |
-| 3 | `name` | varchar(50) | — |  | U |  |
-| 4 | `color` | varchar(30) | — | `'#6366f1'` |  |  |
-| 5 | `category` | enum | — |  |  |  |
-| 6 | `position` | smallint | — | `0` |  |  |
-| 7 | `is_default` | boolean | — | `false` |  |  |
-| 8 | `created_at` | timestamp | — | `now()` |  |  |
+8 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('issue_statuses_id_seq'::regclas` |  |
+| `project_id` | int8 | non | FK → `projects.id`, UK |  | CASCADE |
+| `name` | varchar(50) | non | UK |  |  |
+| `color` | varchar(30) | non |  | `'#6366f1'::character varying` |  |
+| `category` | vector | non |  |  |  |
+| `position` | smallint | non |  | `0` |  |
+| `is_default` | bool | non |  | `false` |  |
+| `created_at` | timestamp | non |  | `now()` |  |
 
 ### `issue_types`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `project_id` | bigint | — |  | FK U | → `projects` (ON DELETE CASCADE) |
-| 3 | `name` | varchar(50) | — |  | U |  |
-| 4 | `color` | varchar(30) | — | `'#6366f1'` |  |  |
-| 5 | `icon` | varchar(50) | — | `'circle-dot'` |  |  |
-| 6 | `is_default` | boolean | — | `false` |  |  |
-| 7 | `created_at` | timestamp | — | `now()` |  |  |
+7 colonnes · 1 clé(s) étrangère(s).
 
-### `issue_label_assignments`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `issue_id` | bigint | — |  | 🔑 PK FK | → `issues` (ON DELETE CASCADE) |
-| 2 | `label_id` | bigint | — |  | 🔑 PK FK | → `project_labels` (ON DELETE CASCADE) |
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('issue_types_id_seq'::regclass)` |  |
+| `project_id` | int8 | non | FK → `projects.id`, UK |  | CASCADE |
+| `name` | varchar(50) | non | UK |  |  |
+| `color` | varchar(30) | non |  | `'#6366f1'::character varying` |  |
+| `icon` | varchar(50) | non |  | `'circle-dot'::character varying` |  |
+| `is_default` | bool | non |  | `false` |  |
+| `created_at` | timestamp | non |  | `now()` |  |
 
 ### `issue_comments`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `issue_id` | bigint | — |  | FK | → `issues` (ON DELETE CASCADE) |
-| 3 | `author_id` | bigint | — |  | FK | → `users` (ON DELETE RESTRICT) |
-| 4 | `content` | text | — |  |  |  |
-| 5 | `is_edited` | boolean | — | `false` |  |  |
-| 6 | `created_at` | timestamp | — | `now()` |  |  |
-| 7 | `updated_at` | timestamp | — | `now()` |  |  |
+7 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('issue_comments_id_seq'::regclas` |  |
+| `issue_id` | int8 | non | FK → `issues.id` |  | CASCADE |
+| `author_id` | int8 | non | FK → `users.id` |  | RESTRICT |
+| `content` | text | non |  |  |  |
+| `is_edited` | bool | non |  | `false` |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `updated_at` | timestamp | non |  | `now()` |  |
 
 ### `issue_activity`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `issue_id` | bigint | — |  | FK | → `issues` (ON DELETE CASCADE) |
-| 3 | `actor_id` | bigint | ✓ |  | FK | → `users` (ON DELETE SET NULL) |
-| 4 | `action` | enum | — |  |  |  |
-| 5 | `old_value` | varchar(500) | ✓ |  |  |  |
-| 6 | `new_value` | varchar(500) | ✓ |  |  |  |
-| 7 | `created_at` | timestamp | — | `now()` |  |  |
+7 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('issue_activity_id_seq'::regclas` |  |
+| `issue_id` | int8 | non | FK → `issues.id` |  | CASCADE |
+| `actor_id` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `action` | vector | non |  |  |  |
+| `old_value` | varchar(500) | oui |  |  |  |
+| `new_value` | varchar(500) | oui |  |  |  |
+| `created_at` | timestamp | non |  | `now()` |  |
 
 ### `issue_checklist_items`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `issue_id` | bigint | — |  | FK | → `issues` (ON DELETE CASCADE) |
-| 3 | `content` | varchar(500) | — |  |  |  |
-| 4 | `is_done` | boolean | — | `false` |  |  |
-| 5 | `position` | integer | — | `0` |  |  |
-| 6 | `created_at` | timestamp | — | `now()` |  |  |
-| 7 | `updated_at` | timestamp | — | `now()` |  |  |
+7 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('issue_checklist_items_id_seq'::` |  |
+| `issue_id` | int8 | non | FK → `issues.id` |  | CASCADE |
+| `content` | varchar(500) | non |  |  |  |
+| `is_done` | bool | non |  | `false` |  |
+| `position` | int4 | non |  | `0` |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `updated_at` | timestamp | non |  | `now()` |  |
 
 ### `issue_relations`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `source_id` | bigint | — |  | FK U | → `issues` (ON DELETE CASCADE) |
-| 3 | `target_id` | bigint | — |  | FK U | → `issues` (ON DELETE CASCADE) |
-| 4 | `relation_type` | enum | — |  | U |  |
-| 5 | `created_by` | bigint | — |  | FK | → `users` (ON DELETE RESTRICT) |
-| 6 | `created_at` | timestamp | — | `now()` |  |  |
+6 colonnes · 3 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('issue_relations_id_seq'::regcla` |  |
+| `source_id` | int8 | non | FK → `issues.id`, UK |  | CASCADE |
+| `target_id` | int8 | non | FK → `issues.id`, UK |  | CASCADE |
+| `relation_type` | vector | non | UK |  |  |
+| `created_by` | int8 | non | FK → `users.id` |  | RESTRICT |
+| `created_at` | timestamp | non |  | `now()` |  |
+
+### `issue_label_assignments`
+
+2 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `issue_id` | int8 | non | PK, FK → `issues.id` |  | CASCADE |
+| `label_id` | int8 | non | PK, FK → `project_labels.id` |  | CASCADE |
 
 ### `issue_worklogs`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `issue_id` | bigint | — |  | FK | → `issues` (ON DELETE CASCADE) |
-| 3 | `user_id` | bigint | — |  | FK | → `users` (ON DELETE CASCADE) |
-| 4 | `minutes` | integer | — |  |  |  |
-| 5 | `description` | varchar(500) | ✓ |  |  |  |
-| 6 | `logged_at` | date | — |  |  |  |
-| 7 | `created_at` | timestamp | — | `now()` |  |  |
+7 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('issue_worklogs_id_seq'::regclas` |  |
+| `issue_id` | int8 | non | FK → `issues.id` |  | CASCADE |
+| `user_id` | int8 | non | FK → `users.id` |  | CASCADE |
+| `minutes` | int4 | non |  |  |  |
+| `description` | varchar(500) | oui |  |  |  |
+| `logged_at` | date | non |  |  |  |
+| `created_at` | timestamp | non |  | `now()` |  |
 
 ### `issue_sequence_counters`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `project_id` | bigint | — |  | 🔑 PK FK | → `projects` (ON DELETE CASCADE) |
-| 2 | `last_number` | integer | — | `0` |  |  |
+2 colonnes · 1 clé(s) étrangère(s).
 
-### `issue_github_links`
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `project_id` | int8 | non | PK, FK → `projects.id` |  | CASCADE |
+| `last_number` | int4 | non |  | `0` |  |
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `issue_id` | bigint | — |  | FK | → `issues` (ON DELETE CASCADE) |
-| 3 | `link_type` | varchar(16) | — |  |  |  |
-| 4 | `repo_full_name` | varchar(255) | — |  |  |  |
-| 5 | `pr_number` | integer | ✓ |  |  |  |
-| 6 | `pr_url` | varchar(512) | ✓ |  |  |  |
-| 7 | `commit_sha` | varchar(40) | ✓ |  |  |  |
-| 8 | `commit_url` | varchar(512) | ✓ |  |  |  |
-| 9 | `title` | varchar(500) | ✓ |  |  |  |
-| 10 | `status` | varchar(16) | — | `'OPEN'` |  |  |
-| 11 | `linked_by` | bigint | ✓ |  | FK | → `users` (ON DELETE SET NULL) |
-| 12 | `linked_at` | timestamp | — | `now()` |  |  |
+### `cycles`
 
-## IA / Smart Assign / Brain OS
+10 colonnes · 2 clé(s) étrangère(s).
 
-### `member_skill_profiles`
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('cycles_id_seq'::regclass)` |  |
+| `project_id` | int8 | non | FK → `projects.id`, UK |  | CASCADE |
+| `name` | varchar(255) | non | UK |  |  |
+| `description` | text | oui |  |  |  |
+| `start_date` | date | oui |  |  |  |
+| `end_date` | date | oui |  |  |  |
+| `status` | vector | non |  | `'DRAFT'::cycle_status` |  |
+| `created_by` | int8 | non | FK → `users.id` |  | RESTRICT |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `updated_at` | timestamp | non |  | `now()` |  |
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `workspace_id` | bigint | — |  | FK U | → `workspaces` (ON DELETE CASCADE) |
-| 3 | `user_id` | bigint | — |  | FK U | → `users` (ON DELETE CASCADE) |
-| 4 | `profile_text` | text | ✓ |  |  |  |
-| 5 | `skills_json` | jsonb | — | `'{}'` |  |  |
-| 6 | `stats_json` | jsonb | — | `'{}'` |  |  |
-| 7 | `embedding` | enum | ✓ |  |  |  |
-| 8 | `updated_at` | timestamp | — | `now()` |  |  |
-| 9 | `capacity_hours_per_week` | integer | ✓ |  |  |  |
-| 10 | `seniority` | varchar(20) | ✓ |  |  |  |
-| 11 | `growth_enabled` | boolean | — | `false` |  |  |
-| 12 | `growth_target_skills` | jsonb | — | `'[]'` |  |  |
+### `cycle_issues`
 
-### `assignment_events`
+5 colonnes · 3 clé(s) étrangère(s).
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `workspace_id` | bigint | — |  | FK | → `workspaces` (ON DELETE CASCADE) |
-| 3 | `issue_id` | bigint | ✓ |  | FK | → `issues` (ON DELETE SET NULL) |
-| 4 | `assignee_user_id` | bigint | — |  | FK | → `users` (ON DELETE RESTRICT) |
-| 5 | `assigned_by_user_id` | bigint | ✓ |  | FK | → `users` (ON DELETE SET NULL) |
-| 6 | `decision_source` | varchar(32) | — |  |  |  |
-| 7 | `accepted` | boolean | ✓ |  |  |  |
-| 8 | `resolved_successfully` | boolean | ✓ |  |  |  |
-| 9 | `features_json` | jsonb | — | `'{}'` |  |  |
-| 10 | `created_at` | timestamp | — | `now()` |  |  |
-
-### `ai_runs`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `workspace_id` | bigint | — |  | FK | → `workspaces` (ON DELETE CASCADE) |
-| 3 | `feature_name` | varchar(64) | — |  |  |  |
-| 4 | `provider` | varchar(32) | — |  |  |  |
-| 5 | `model_name` | varchar(128) | — |  |  |  |
-| 6 | `latency_ms` | integer | ✓ |  |  |  |
-| 7 | `input_tokens` | integer | ✓ |  |  |  |
-| 8 | `output_tokens` | integer | ✓ |  |  |  |
-| 9 | `status` | varchar(32) | — |  |  |  |
-| 10 | `fallback_used` | boolean | — | `false` |  |  |
-| 11 | `request_hash` | varchar(128) | ✓ |  |  |  |
-| 12 | `meta_json` | jsonb | — | `'{}'` |  |  |
-| 13 | `created_at` | timestamp | — | `now()` |  |  |
-| 14 | `expires_at` | timestamp | — | `(now() + '90 days')` |  |  |
-
-### `ai_documents`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `workspace_id` | bigint | — |  | FK U | → `workspaces` (ON DELETE CASCADE) |
-| 3 | `source_type` | varchar(32) | — |  | U |  |
-| 4 | `source_id` | bigint | — |  | U |  |
-| 5 | `chunk_index` | integer | — | `0` | U |  |
-| 6 | `title` | varchar(500) | ✓ |  |  |  |
-| 7 | `content` | text | — |  |  |  |
-| 8 | `metadata_json` | jsonb | — | `'{}'` |  |  |
-| 9 | `embedding` | enum | ✓ |  |  |  |
-| 10 | `created_at` | timestamp | — | `now()` |  |  |
-| 11 | `updated_at` | timestamp | — | `now()` |  |  |
-
-### `ai_insight_snapshots`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `workspace_id` | bigint | — |  | FK U | → `workspaces` (ON DELETE CASCADE) |
-| 3 | `snapshot_date` | date | — |  | U |  |
-| 4 | `summary_text` | text | ✓ |  |  |  |
-| 5 | `exceptions_json` | jsonb | — | `'[]'` |  |  |
-| 6 | `agents_json` | jsonb | — | `'[]'` |  |  |
-| 7 | `source_metrics_json` | jsonb | — | `'{}'` |  |  |
-| 8 | `created_at` | timestamp | — | `now()` |  |  |
-| 9 | `expires_at` | timestamp | — | `(now() + '180 days')` |  |  |
-
-### `brain_workspaces`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `workspace_id` | bigint | — |  | FK U | → `workspaces` (ON DELETE CASCADE) |
-| 3 | `template_type` | varchar(40) | — | `'BLANK'` |  |  |
-| 4 | `version_label` | varchar(20) | — | `'v1'` |  |  |
-| 5 | `created_at` | timestamp | — | `now()` |  |  |
-| 6 | `updated_at` | timestamp | — | `now()` |  |  |
-| 7 | `created_by` | varchar(255) | ✓ |  |  |  |
-| 8 | `updated_by` | varchar(255) | ✓ |  |  |  |
-
-### `knowledge_nodes`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `uuid` | uuid | — | `gen_random_uuid()` | U |  |
-| 3 | `workspace_id` | bigint | — |  | FK | → `workspaces` (ON DELETE CASCADE) |
-| 4 | `brain_id` | bigint | ✓ |  | FK | → `brain_workspaces` (ON DELETE CASCADE) |
-| 5 | `type` | varchar(40) | — |  |  |  |
-| 6 | `domain` | varchar(40) | — |  |  |  |
-| 7 | `title` | varchar(300) | — |  |  |  |
-| 8 | `content` | text | ✓ |  |  |  |
-| 9 | `content_url` | varchar(1000) | ✓ |  |  |  |
-| 10 | `status` | varchar(20) | — | `'ACTIVE'` |  |  |
-| 11 | `version_label` | varchar(20) | — | `'v1'` |  |  |
-| 12 | `ref_type` | varchar(20) | ✓ |  |  |  |
-| 13 | `ref_id` | bigint | ✓ |  |  |  |
-| 14 | `metadata` | jsonb | — | `'{}'` |  |  |
-| 15 | `created_at` | timestamp | — | `now()` |  |  |
-| 16 | `updated_at` | timestamp | — | `now()` |  |  |
-| 17 | `created_by` | varchar(255) | ✓ |  |  |  |
-| 18 | `updated_by` | varchar(255) | ✓ |  |  |  |
-| 19 | `embedding` | enum | ✓ |  |  |  |
-| 20 | `parent_node_id` | bigint | ✓ |  | FK | → `knowledge_nodes` (ON DELETE SET NULL) |
-
-### `knowledge_edges`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `workspace_id` | bigint | — |  | FK | → `workspaces` (ON DELETE CASCADE) |
-| 3 | `from_node_id` | bigint | — |  | FK U | → `knowledge_nodes` (ON DELETE CASCADE) |
-| 4 | `to_node_id` | bigint | — |  | FK U | → `knowledge_nodes` (ON DELETE CASCADE) |
-| 5 | `relation_type` | varchar(40) | — |  | U |  |
-| 6 | `weight` | double | — | `1.0` |  |  |
-| 7 | `created_at` | timestamp | — | `now()` |  |  |
-| 8 | `created_by` | varchar(255) | ✓ |  |  |  |
-| 9 | `auto` | boolean | — | `false` |  |  |
-
-## Auth & Securite
-
-### `refresh_tokens` — Tokens de rafraîchissement JWT pour renouveler l'accès sans reconnexion
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | uuid | — | `uuid_generate_v4()` | 🔑 PK |  |
-| 2 | `user_id` | bigint | — |  | FK | → `users` (ON DELETE CASCADE) |
-| 3 | `token` | varchar(500) | — |  | U |  |
-| 4 | `expires_at` | timestamp | — |  |  |  |
-| 5 | `revoked` | boolean | — | `false` |  |  |
-| 6 | `revoked_at` | timestamp | ✓ |  |  |  |
-| 7 | `ip_address` | varchar(45) | ✓ |  |  |  |
-| 8 | `user_agent` | varchar(500) | ✓ |  |  |  |
-| 9 | `last_used_at` | timestamp | ✓ |  |  |  |
-| 10 | `created_at` | timestamp | — | `CURRENT_TIMESTAMP` |  |  |
-
-### `otp_verification` — Codes OTP pour vérification email et réinitialisation mot de passe
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | uuid | — | `uuid_generate_v4()` | 🔑 PK |  |
-| 2 | `user_id` | bigint | ✓ |  | FK | → `users` (ON DELETE CASCADE) |
-| 3 | `otp_code` | varchar(10) | — |  |  |  |
-| 4 | `otp_type` | varchar(30) | — |  |  |  |
-| 5 | `otp_status` | varchar(20) | — | `'PENDING'` |  |  |
-| 6 | `email` | varchar(255) | — |  |  |  |
-| 7 | `attempts` | integer | — | `0` |  |  |
-| 8 | `max_attempts` | integer | — | `5` |  |  |
-| 9 | `expires_at` | timestamp | — |  |  |  |
-| 10 | `verified_at` | timestamp | ✓ |  |  |  |
-| 11 | `created_at` | timestamp | — | `CURRENT_TIMESTAMP` |  |  |
-| 12 | `updated_at` | timestamp | — | `CURRENT_TIMESTAMP` |  |  |
-| 13 | `keycloak_id` | varchar(100) | ✓ |  |  |  |
-| 14 | `plan_type` | varchar(20) | ✓ |  |  |  |
-| 15 | `company_name` | varchar(255) | ✓ |  |  |  |
-| 16 | `phone_number` | varchar(20) | ✓ |  |  |  |
-| 17 | `enterprise_message` | text | ✓ |  |  |  |
-
-### `audit_logs`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `workspace_id` | bigint | ✓ |  | FK | → `workspaces` (ON DELETE SET NULL) |
-| 3 | `actor_user_id` | bigint | ✓ |  | FK | → `users` (ON DELETE SET NULL) |
-| 4 | `action` | varchar(64) | — |  |  |  |
-| 5 | `entity_type` | varchar(64) | ✓ |  |  |  |
-| 6 | `entity_id` | varchar(64) | ✓ |  |  |  |
-| 7 | `details` | text | ✓ |  |  |  |
-| 8 | `ip_address` | varchar(45) | ✓ |  |  |  |
-| 9 | `created_at` | timestamp | — | `now()` |  |  |
-
-## Facturation
-
-### `subscriptions` — Abonnements actifs des utilisateurs avec détails Stripe
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `user_id` | bigint | — |  | FK U | → `users` (ON DELETE CASCADE) |
-| 3 | `plan_type` | varchar(20) | — |  |  |  |
-| 4 | `status` | enum | — | `'ACTIVE'` |  |  |
-| 5 | `stripe_subscription_id` | varchar(100) | ✓ |  | U |  |
-| 6 | `stripe_customer_id` | varchar(100) | ✓ |  |  |  |
-| 7 | `stripe_price_id` | varchar(100) | ✓ |  |  |  |
-| 8 | `amount` | numeric(10,2) | ✓ |  |  |  |
-| 9 | `currency` | varchar(3) | ✓ | `'EUR'` |  |  |
-| 10 | `billing_interval` | varchar(20) | ✓ |  |  |  |
-| 11 | `current_period_start` | timestamp | ✓ |  |  |  |
-| 12 | `current_period_end` | timestamp | ✓ |  |  |  |
-| 13 | `trial_end` | timestamp | ✓ |  |  |  |
-| 14 | `cancel_at_period_end` | boolean | — | `false` |  |  |
-| 15 | `canceled_at` | timestamp | ✓ |  |  |  |
-| 16 | `started_at` | timestamp | ✓ |  |  |  |
-| 17 | `ended_at` | timestamp | ✓ |  |  |  |
-| 18 | `created_at` | timestamp | — | `CURRENT_TIMESTAMP` |  |  |
-| 19 | `updated_at` | timestamp | — | `CURRENT_TIMESTAMP` |  |  |
-
-### `subscription_history` — Historique de tous les événements liés aux abonnements
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | uuid | — | `uuid_generate_v4()` | 🔑 PK |  |
-| 2 | `user_id` | bigint | — |  | FK | → `users` (ON DELETE CASCADE) |
-| 3 | `plan_type` | varchar(20) | — |  |  |  |
-| 4 | `plan_status` | enum | — |  |  |  |
-| 5 | `stripe_subscription_id` | varchar(255) | ✓ |  |  |  |
-| 6 | `stripe_invoice_id` | varchar(255) | ✓ |  |  |  |
-| 7 | `amount_paid` | numeric(10,2) | ✓ |  |  |  |
-| 8 | `currency` | varchar(3) | ✓ | `'EUR'` |  |  |
-| 9 | `period_start` | timestamp | ✓ |  |  |  |
-| 10 | `period_end` | timestamp | ✓ |  |  |  |
-| 11 | `event_type` | varchar(100) | — |  |  |  |
-| 12 | `event_data` | jsonb | ✓ |  |  |  |
-| 13 | `created_at` | timestamp | — | `CURRENT_TIMESTAMP` |  |  |
-| 14 | `stripe_event_id` | varchar(100) | ✓ |  |  |  |
-
-## Integrations & Comms
-
-### `integrations`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `workspace_id` | bigint | — |  | FK U | → `workspaces` (ON DELETE CASCADE) |
-| 3 | `provider` | varchar(32) | — |  | U |  |
-| 4 | `access_token` | text | — |  |  |  |
-| 5 | `meta` | jsonb | — | `'{}'` |  |  |
-| 6 | `installed_by` | bigint | ✓ |  | FK | → `users` (ON DELETE SET NULL) |
-| 7 | `connected_at` | timestamp | — | `now()` |  |  |
-
-### `webhooks`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `workspace_id` | bigint | — |  | FK | → `workspaces` (ON DELETE CASCADE) |
-| 3 | `url` | varchar(512) | — |  |  |  |
-| 4 | `secret` | varchar(128) | ✓ |  |  |  |
-| 5 | `event_types` | array | — | `'{}'[]` |  |  |
-| 6 | `active` | boolean | — | `true` |  |  |
-| 7 | `last_fired_at` | timestamp | ✓ |  |  |  |
-| 8 | `last_status` | integer | ✓ |  |  |  |
-| 9 | `created_by` | bigint | ✓ |  | FK | → `users` (ON DELETE SET NULL) |
-| 10 | `created_at` | timestamp | — | `now()` |  |  |
-
-### `slack_channels`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `workspace_id` | bigint | — |  | FK | → `workspaces` (ON DELETE CASCADE) |
-| 3 | `channel_id` | varchar(64) | — |  |  |  |
-| 4 | `channel_name` | varchar(128) | — |  |  |  |
-| 5 | `event_types` | array | — | `'{}'[]` |  |  |
-| 6 | `active` | boolean | — | `true` |  |  |
-| 7 | `created_at` | timestamp | — | `now()` |  |  |
-
-### `channels`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `workspace_id` | bigint | — |  | FK | → `workspaces` (ON DELETE CASCADE) |
-| 3 | `project_id` | bigint | ✓ |  | FK | → `projects` (ON DELETE SET NULL) |
-| 4 | `kind` | varchar(20) | — | `'CHANNEL'` |  |  |
-| 5 | `name` | varchar(100) | ✓ |  |  |  |
-| 6 | `description` | varchar(500) | ✓ |  |  |  |
-| 7 | `is_private` | boolean | — | `false` |  |  |
-| 8 | `is_archived` | boolean | — | `false` |  |  |
-| 9 | `created_by` | bigint | ✓ |  | FK | → `users` (ON DELETE SET NULL) |
-| 10 | `created_at` | timestamp | — | `now()` |  |  |
-| 11 | `updated_at` | timestamp | — | `now()` |  |  |
-
-### `channel_members`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `channel_id` | bigint | — |  | 🔑 PK FK | → `channels` (ON DELETE CASCADE) |
-| 2 | `user_id` | bigint | — |  | 🔑 PK FK | → `users` (ON DELETE CASCADE) |
-| 3 | `joined_at` | timestamp | — | `now()` |  |  |
-
-### `chat_messages`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `channel_id` | bigint | — |  | FK | → `channels` (ON DELETE CASCADE) |
-| 3 | `author_id` | bigint | ✓ |  | FK | → `users` (ON DELETE SET NULL) |
-| 4 | `content` | text | — |  |  |  |
-| 5 | `is_edited` | boolean | — | `false` |  |  |
-| 6 | `is_deleted` | boolean | — | `false` |  |  |
-| 7 | `created_at` | timestamp | — | `now()` |  |  |
-| 8 | `updated_at` | timestamp | — | `now()` |  |  |
-
-### `discussions`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `workspace_id` | bigint | — |  | FK | → `workspaces` (ON DELETE CASCADE) |
-| 3 | `author_id` | bigint | ✓ |  | FK | → `users` (ON DELETE SET NULL) |
-| 4 | `title` | varchar(500) | — |  |  |  |
-| 5 | `body` | text | ✓ |  |  |  |
-| 6 | `category` | varchar(20) | — | `'GENERAL'` |  |  |
-| 7 | `state` | varchar(20) | — | `'OPEN'` |  |  |
-| 8 | `is_pinned` | boolean | — | `false` |  |  |
-| 9 | `is_locked` | boolean | — | `false` |  |  |
-| 10 | `reply_count` | integer | — | `0` |  |  |
-| 11 | `reaction_count` | integer | — | `0` |  |  |
-| 12 | `tags` | varchar(500) | ✓ |  |  |  |
-| 13 | `created_at` | timestamp | — | `now()` |  |  |
-| 14 | `updated_at` | timestamp | — | `now()` |  |  |
-
-### `notifications`
-
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `recipient_id` | bigint | — |  | FK | → `users` (ON DELETE CASCADE) |
-| 3 | `workspace_id` | bigint | — |  | FK | → `workspaces` (ON DELETE CASCADE) |
-| 4 | `actor_id` | bigint | ✓ |  | FK | → `users` (ON DELETE SET NULL) |
-| 5 | `type` | varchar(50) | — |  |  |  |
-| 6 | `urgency` | varchar(20) | — | `'info'` |  |  |
-| 7 | `read` | boolean | — | `false` |  |  |
-| 8 | `acknowledged` | boolean | — | `false` |  |  |
-| 9 | `title` | varchar(512) | — |  |  |  |
-| 10 | `body` | text | ✓ |  |  |  |
-| 11 | `issue_identifier` | varchar(50) | ✓ |  |  |  |
-| 12 | `issue_url` | varchar(512) | ✓ |  |  |  |
-| 13 | `project_name` | varchar(255) | ✓ |  |  |  |
-| 14 | `project_url` | varchar(512) | ✓ |  |  |  |
-| 15 | `created_at` | timestamp | — | `now()` |  |  |
-
-## GED & Sales
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('cycle_issues_id_seq'::regclass)` |  |
+| `cycle_id` | int8 | non | FK → `cycles.id`, UK |  | CASCADE |
+| `issue_id` | int8 | non | FK → `issues.id`, UK |  | CASCADE |
+| `added_by` | int8 | non | FK → `users.id` |  | RESTRICT |
+| `added_at` | timestamp | non |  | `now()` |  |
 
 ### `attachments`
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | bigint | — | `seq` | 🔑 PK |  |
-| 2 | `issue_id` | bigint | — |  | FK | → `issues` (ON DELETE CASCADE) |
-| 3 | `uploaded_by` | bigint | ✓ |  | FK | → `users` (ON DELETE SET NULL) |
-| 4 | `original_name` | varchar(255) | — |  |  |  |
-| 5 | `stored_key` | varchar(512) | — |  | U |  |
-| 6 | `content_type` | varchar(128) | — |  |  |  |
-| 7 | `file_size` | bigint | — |  |  |  |
-| 8 | `created_at` | timestamp | — | `now()` |  |  |
+8 colonnes · 2 clé(s) étrangère(s).
 
-### `enterprise_inquiries` — Demandes de contact pour les plans ENTERPRISE
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('attachments_id_seq'::regclass)` |  |
+| `issue_id` | int8 | non | FK → `issues.id` |  | CASCADE |
+| `uploaded_by` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `original_name` | varchar(255) | non |  |  |  |
+| `stored_key` | varchar(512) | non | UK |  |  |
+| `content_type` | varchar(128) | non |  |  |  |
+| `file_size` | int8 | non |  |  |  |
+| `created_at` | timestamp | non |  | `now()` |  |
 
-| # | Colonne | Type | Null | Défaut | Clé | Référence / ON DELETE |
-|--:|---|---|:--:|---|---|---|
-| 1 | `id` | uuid | — | `uuid_generate_v4()` | 🔑 PK |  |
-| 2 | `full_name` | varchar(255) | — |  |  |  |
-| 3 | `email` | varchar(255) | — |  |  |  |
-| 4 | `team_size` | varchar(50) | — |  |  |  |
-| 5 | `message` | text | ✓ |  |  |  |
-| 6 | `status` | varchar(50) | — | `'NEW'` |  |  |
-| 7 | `created_account` | boolean | ✓ | `false` |  |  |
-| 8 | `user_id` | bigint | ✓ |  |  |  |
-| 9 | `assigned_to` | varchar(100) | ✓ |  |  |  |
-| 10 | `notes` | text | ✓ |  |  |  |
-| 11 | `created_at` | timestamp | — | `CURRENT_TIMESTAMP` |  |  |
-| 12 | `updated_at` | timestamp | — | `CURRENT_TIMESTAMP` |  |  |
-| 13 | `contacted_at` | timestamp | ✓ |  |  |  |
-| 14 | `converted_at` | timestamp | ✓ |  |  |  |
-| 15 | `created_by` | varchar(255) | ✓ |  |  |  |
-| 16 | `updated_by` | varchar(255) | ✓ |  |  |  |
+### `member_leaves`
 
----
+11 colonnes · 2 clé(s) étrangère(s).
 
-## Notes de traçabilité
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('member_leaves_id_seq'::regclass` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `user_id` | int8 | non | FK → `users.id` |  | CASCADE |
+| `type` | varchar(20) | non |  |  |  |
+| `start_date` | date | non |  |  |  |
+| `end_date` | date | non |  |  |  |
+| `note` | text | oui |  |  |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `updated_at` | timestamp | non |  | `now()` |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
 
-- **Source** : `information_schema.columns` / `.table_constraints` / `.referential_constraints`
-  (requêtes du 05/07/2026 sur `taskforce-db`).
-- **Cohérence** : 94 FK ↔ [[Modele_Donnees_MCD_MLD]] (94 FK) ↔ 60 associations JPA
-  [[Diagramme_Classes_UML]] (l'écart = FK par `Long` id non mappées en association, cf. modèle hybride).
-- **Évolution** : toute modification passe par une **migration Flyway** (`V*.sql`) ; régénérer ce
-  dictionnaire après migration. Ne **jamais** éditer une colonne à la main ici sans migration correspondante.
+### `member_skill_profiles`
 
-> 🔗 Voir aussi : [[Modele_Donnees_MCD_MLD]] · [[Diagramme_Classes_UML]] · [[Diagramme_Etats_UML]].
+12 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('member_skill_profiles_id_seq'::` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id`, UK |  | CASCADE |
+| `user_id` | int8 | non | FK → `users.id`, UK |  | CASCADE |
+| `profile_text` | text | oui |  |  |  |
+| `skills_json` | jsonb | non |  | `'{}'::jsonb` |  |
+| `stats_json` | jsonb | non |  | `'{}'::jsonb` |  |
+| `embedding` | vector | oui |  |  |  |
+| `updated_at` | timestamp | non |  | `now()` |  |
+| `capacity_hours_per_week` | int4 | oui |  |  |  |
+| `seniority` | varchar(20) | oui |  |  |  |
+| `growth_enabled` | bool | non |  | `false` |  |
+| `growth_target_skills` | jsonb | non |  | `'[]'::jsonb` |  |
+
+### `assignment_events`
+
+10 colonnes · 4 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('assignment_events_id_seq'::regc` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `issue_id` | int8 | oui | FK → `issues.id` |  | SET NULL |
+| `assignee_user_id` | int8 | non | FK → `users.id` |  | RESTRICT |
+| `assigned_by_user_id` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `decision_source` | varchar(32) | non |  |  |  |
+| `accepted` | bool | oui |  |  |  |
+| `resolved_successfully` | bool | oui |  |  |  |
+| `features_json` | jsonb | non |  | `'{}'::jsonb` |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+
+## 4.3 IA, affectation intelligente et graphe de connaissances
+
+Le moteur d'affectation et sa mémoire. `knowledge_nodes` porte les vecteurs d'embedding utilisés par la recherche sémantique.
+
+### `ai_conversation`
+
+10 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('ai_conversation_id_seq'::regcla` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `user_id` | int8 | non | FK → `users.id` |  | CASCADE |
+| `title` | varchar(200) | non |  | `'Nouvelle conversation'::character varyi` |  |
+| `created_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `updated_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
+| `summary` | text | oui |  |  |  |
+| `summary_upto_id` | int8 | oui |  |  |  |
+
+### `ai_message`
+
+7 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('ai_message_id_seq'::regclass)` |  |
+| `conversation_id` | int8 | non | FK → `ai_conversation.id` |  | CASCADE |
+| `role` | varchar(16) | non |  |  |  |
+| `content` | text | non |  |  |  |
+| `mode` | varchar(16) | oui |  |  |  |
+| `total_tokens` | int8 | non |  | `0` |  |
+| `created_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+
+### `ai_documents`
+
+11 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('ai_documents_id_seq'::regclass)` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id`, UK |  | CASCADE |
+| `source_type` | varchar(32) | non | UK |  |  |
+| `source_id` | int8 | non | UK |  |  |
+| `chunk_index` | int4 | non | UK | `0` |  |
+| `title` | varchar(500) | oui |  |  |  |
+| `content` | text | non |  |  |  |
+| `metadata_json` | jsonb | non |  | `'{}'::jsonb` |  |
+| `embedding` | vector | oui |  |  |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `updated_at` | timestamp | non |  | `now()` |  |
+
+### `ai_runs`
+
+14 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('ai_runs_id_seq'::regclass)` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `feature_name` | varchar(64) | non |  |  |  |
+| `provider` | varchar(32) | non |  |  |  |
+| `model_name` | varchar(128) | non |  |  |  |
+| `latency_ms` | int4 | oui |  |  |  |
+| `input_tokens` | int4 | oui |  |  |  |
+| `output_tokens` | int4 | oui |  |  |  |
+| `status` | varchar(32) | non |  |  |  |
+| `fallback_used` | bool | non |  | `false` |  |
+| `request_hash` | varchar(128) | oui |  |  |  |
+| `meta_json` | jsonb | non |  | `'{}'::jsonb` |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `expires_at` | timestamp | non |  | `(now() + '90 days'::interval)` |  |
+
+### `ai_token_usage`
+
+11 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('ai_token_usage_id_seq'::regclas` |  |
+| `period` | varchar(7) | non |  |  |  |
+| `prompt_tokens` | int8 | non |  | `0` |  |
+| `completion_tokens` | int8 | non |  | `0` |  |
+| `total_tokens` | int8 | non |  | `0` |  |
+| `request_count` | int4 | non |  | `0` |  |
+| `created_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `updated_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
+| `account_id` | int8 | non | FK → `users.id` |  | CASCADE |
+
+### `ai_insight_snapshots`
+
+9 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('ai_insight_snapshots_id_seq'::r` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id`, UK |  | CASCADE |
+| `snapshot_date` | date | non | UK |  |  |
+| `summary_text` | text | oui |  |  |  |
+| `exceptions_json` | jsonb | non |  | `'[]'::jsonb` |  |
+| `agents_json` | jsonb | non |  | `'[]'::jsonb` |  |
+| `source_metrics_json` | jsonb | non |  | `'{}'::jsonb` |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `expires_at` | timestamp | non |  | `(now() + '180 days'::interval)` |  |
+
+### `brain_workspaces`
+
+8 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('brain_workspaces_id_seq'::regcl` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id`, UK |  | CASCADE |
+| `template_type` | varchar(40) | non |  | `'BLANK'::character varying` |  |
+| `version_label` | varchar(20) | non |  | `'v1'::character varying` |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `updated_at` | timestamp | non |  | `now()` |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
+
+### `knowledge_nodes`
+
+20 colonnes · 3 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('knowledge_nodes_id_seq'::regcla` |  |
+| `uuid` | uuid | non | UK | `gen_random_uuid()` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `brain_id` | int8 | oui | FK → `brain_workspaces.id` |  | CASCADE |
+| `type` | varchar(40) | non |  |  |  |
+| `domain` | varchar(40) | non |  |  |  |
+| `title` | varchar(300) | non |  |  |  |
+| `content` | text | oui |  |  |  |
+| `content_url` | varchar(1000) | oui |  |  |  |
+| `status` | varchar(20) | non |  | `'ACTIVE'::character varying` |  |
+| `version_label` | varchar(20) | non |  | `'v1'::character varying` |  |
+| `ref_type` | varchar(20) | oui |  |  |  |
+| `ref_id` | int8 | oui |  |  |  |
+| `metadata` | jsonb | non |  | `'{}'::jsonb` |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `updated_at` | timestamp | non |  | `now()` |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
+| `embedding` | vector | oui |  |  |  |
+| `parent_node_id` | int8 | oui | FK → `knowledge_nodes.id` |  | SET NULL |
+
+### `knowledge_edges`
+
+9 colonnes · 3 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('knowledge_edges_id_seq'::regcla` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `from_node_id` | int8 | non | FK → `knowledge_nodes.id`, UK |  | CASCADE |
+| `to_node_id` | int8 | non | FK → `knowledge_nodes.id`, UK |  | CASCADE |
+| `relation_type` | varchar(40) | non | UK |  |  |
+| `weight` | float8 | non |  | `1.0` |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `auto` | bool | non |  | `false` |  |
+
+### `analysis_job`
+
+16 colonnes · 4 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('analysis_job_id_seq'::regclass)` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `project_id` | int8 | non | FK → `projects.id` |  | CASCADE |
+| `user_id` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `depth` | varchar(8) | non |  | `'QUICK'::character varying` |  |
+| `status` | varchar(24) | non |  | `'QUEUED'::character varying` |  |
+| `plan_json` | text | non |  | `'[]'::text` |  |
+| `question` | text | oui |  |  |  |
+| `answer` | text | oui |  |  |  |
+| `error` | text | oui |  |  |  |
+| `brief_id` | int8 | oui | FK → `decision_brief.id` |  | SET NULL |
+| `dismissed` | bool | non |  | `false` |  |
+| `created_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `updated_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
+
+### `decision_brief`
+
+16 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('decision_brief_id_seq'::regclas` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `project_id` | int8 | non | FK → `projects.id` |  | CASCADE |
+| `situation` | text | non |  | `''::text` |  |
+| `risks_json` | text | non |  | `'[]'::text` |  |
+| `snapshot_total` | int8 | non |  | `0` |  |
+| `snapshot_open` | int8 | non |  | `0` |  |
+| `snapshot_in_progress` | int8 | non |  | `0` |  |
+| `snapshot_completed` | int8 | non |  | `0` |  |
+| `snapshot_overdue` | int8 | non |  | `0` |  |
+| `snapshot_due_soon` | int8 | non |  | `0` |  |
+| `mode` | varchar(16) | non |  | `'generated'::character varying` |  |
+| `created_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `updated_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
+
+### `decision_priority`
+
+12 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('decision_priority_id_seq'::regc` |  |
+| `brief_id` | int8 | non | FK → `decision_brief.id` |  | CASCADE |
+| `level` | varchar(8) | non |  | `'MEDIUM'::character varying` |  |
+| `title` | varchar(500) | non |  |  |  |
+| `rationale` | text | non |  | `''::text` |  |
+| `status` | varchar(16) | non |  | `'NEW'::character varying` |  |
+| `issue_id` | int8 | oui | FK → `issues.id` |  | SET NULL |
+| `position` | int4 | non |  | `0` |  |
+| `created_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `updated_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
+
+### `saved_chart`
+
+9 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('saved_chart_id_seq'::regclass)` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `title` | varchar(200) | non |  |  |  |
+| `spec_json` | text | non |  |  |  |
+| `created_by_id` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `created_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `updated_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
+
+## 4.4 Authentification et sécurité
+
+L'identité est déléguée à Keycloak. Ne subsistent ici que les données propres à l'application : codes à usage unique, jetons anti-CSRF, journal d'audit.
+
+### `otp_verification`
+
+17 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | uuid | non | PK | `uuid_generate_v4()` |  |
+| `user_id` | int8 | oui | FK → `users.id` |  | CASCADE |
+| `otp_code` | varchar(10) | non |  |  |  |
+| `otp_type` | varchar(30) | non |  |  |  |
+| `otp_status` | varchar(20) | non |  | `'PENDING'::otp_status` |  |
+| `email` | varchar(255) | non |  |  |  |
+| `attempts` | int4 | non |  | `0` |  |
+| `max_attempts` | int4 | non |  | `5` |  |
+| `expires_at` | timestamp | non |  |  |  |
+| `verified_at` | timestamp | oui |  |  |  |
+| `created_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `updated_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `keycloak_id` | varchar(100) | oui |  |  |  |
+| `plan_type` | varchar(20) | oui |  |  |  |
+| `company_name` | varchar(255) | oui |  |  |  |
+| `phone_number` | varchar(20) | oui |  |  |  |
+| `enterprise_message` | text | oui |  |  |  |
+
+### `oauth_states`
+
+6 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `state` | varchar(64) | non | PK |  |  |
+| `provider` | varchar(32) | non |  |  |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `user_id` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `expires_at` | timestamp | non |  |  |  |
+
+### `audit_logs`
+
+9 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('audit_logs_id_seq'::regclass)` |  |
+| `workspace_id` | int8 | oui | FK → `workspaces.id` |  | SET NULL |
+| `actor_user_id` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `action` | varchar(64) | non |  |  |  |
+| `entity_type` | varchar(64) | oui |  |  |  |
+| `entity_id` | varchar(64) | oui |  |  |  |
+| `details` | text | oui |  |  |  |
+| `ip_address` | varchar(45) | oui |  |  |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+
+## 4.5 Facturation
+
+Abonnements et historique. Aucune donnée de carte n'est stockée : la facturation est déléguée au prestataire de paiement.
+
+### `subscriptions`
+
+19 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('subscriptions_id_seq'::regclass` |  |
+| `user_id` | int8 | non | FK → `users.id`, UK |  | CASCADE |
+| `plan_type` | varchar(20) | non |  |  |  |
+| `status` | vector | non |  | `'ACTIVE'::plan_status` |  |
+| `stripe_subscription_id` | varchar(100) | oui | UK |  |  |
+| `stripe_customer_id` | varchar(100) | oui |  |  |  |
+| `stripe_price_id` | varchar(100) | oui |  |  |  |
+| `amount` | numeric | oui |  |  |  |
+| `currency` | varchar(3) | oui |  | `'EUR'::character varying` |  |
+| `billing_interval` | varchar(20) | oui |  |  |  |
+| `current_period_start` | timestamp | oui |  |  |  |
+| `current_period_end` | timestamp | oui |  |  |  |
+| `trial_end` | timestamp | oui |  |  |  |
+| `cancel_at_period_end` | bool | non |  | `false` |  |
+| `canceled_at` | timestamp | oui |  |  |  |
+| `started_at` | timestamp | oui |  |  |  |
+| `ended_at` | timestamp | oui |  |  |  |
+| `created_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `updated_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+
+### `subscription_history`
+
+14 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | uuid | non | PK | `uuid_generate_v4()` |  |
+| `user_id` | int8 | non | FK → `users.id` |  | CASCADE |
+| `plan_type` | varchar(20) | non |  |  |  |
+| `plan_status` | vector | non |  |  |  |
+| `stripe_subscription_id` | varchar(255) | oui |  |  |  |
+| `stripe_invoice_id` | varchar(255) | oui |  |  |  |
+| `amount_paid` | numeric | oui |  |  |  |
+| `currency` | varchar(3) | oui |  | `'EUR'::character varying` |  |
+| `period_start` | timestamp | oui |  |  |  |
+| `period_end` | timestamp | oui |  |  |  |
+| `event_type` | varchar(100) | non |  |  |  |
+| `event_data` | jsonb | oui |  |  |  |
+| `created_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `stripe_event_id` | varchar(100) | oui |  |  |  |
+
+## 4.6 Intégrations et communications
+
+Connecteurs externes et notifications. Les identifiants de connecteurs sont chiffrés en base (AES-256-GCM).
+
+### `integrations`
+
+7 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('integrations_id_seq'::regclass)` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id`, UK |  | CASCADE |
+| `provider` | varchar(32) | non | UK |  |  |
+| `access_token` | text | non |  |  |  |
+| `meta` | jsonb | non |  | `'{}'::jsonb` |  |
+| `installed_by` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `connected_at` | timestamp | non |  | `now()` |  |
+
+### `connector_connection`
+
+9 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('connector_connection_id_seq'::r` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `connector_key` | varchar(64) | non |  |  |  |
+| `config` | text | non |  | `'{}'::text` |  |
+| `connected_by` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `created_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `updated_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
+
+### `webhooks`
+
+10 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('webhooks_id_seq'::regclass)` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `url` | varchar(512) | non |  |  |  |
+| `secret` | varchar(128) | oui |  |  |  |
+| `event_types` | ARRAY | non |  | `'{}'::text[]` |  |
+| `active` | bool | non |  | `true` |  |
+| `last_fired_at` | timestamp | oui |  |  |  |
+| `last_status` | int4 | oui |  |  |  |
+| `created_by` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `created_at` | timestamp | non |  | `now()` |  |
+
+### `slack_channels`
+
+7 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('slack_channels_id_seq'::regclas` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `channel_id` | varchar(64) | non |  |  |  |
+| `channel_name` | varchar(128) | non |  |  |  |
+| `event_types` | ARRAY | non |  | `'{}'::text[]` |  |
+| `active` | bool | non |  | `true` |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+
+### `issue_github_links`
+
+12 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('issue_github_links_id_seq'::reg` |  |
+| `issue_id` | int8 | non | FK → `issues.id` |  | CASCADE |
+| `link_type` | varchar(16) | non |  |  |  |
+| `repo_full_name` | varchar(255) | non |  |  |  |
+| `pr_number` | int4 | oui |  |  |  |
+| `pr_url` | varchar(512) | oui |  |  |  |
+| `commit_sha` | varchar(40) | oui |  |  |  |
+| `commit_url` | varchar(512) | oui |  |  |  |
+| `title` | varchar(500) | oui |  |  |  |
+| `status` | varchar(16) | non |  | `'OPEN'::character varying` |  |
+| `linked_by` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `linked_at` | timestamp | non |  | `now()` |  |
+
+### `notifications`
+
+15 colonnes · 3 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('notifications_id_seq'::regclass` |  |
+| `recipient_id` | int8 | non | FK → `users.id` |  | CASCADE |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `actor_id` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `type` | varchar(50) | non |  |  |  |
+| `urgency` | varchar(20) | non |  | `'info'::character varying` |  |
+| `read` | bool | non |  | `false` |  |
+| `acknowledged` | bool | non |  | `false` |  |
+| `title` | varchar(512) | non |  |  |  |
+| `body` | text | oui |  |  |  |
+| `issue_identifier` | varchar(50) | oui |  |  |  |
+| `issue_url` | varchar(512) | oui |  |  |  |
+| `project_name` | varchar(255) | oui |  |  |  |
+| `project_url` | varchar(512) | oui |  |  |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+
+## 4.7 Documentation, tableaux de bord et prospects
+
+Pages de documentation collaborative, composition du tableau de bord par utilisateur, et demandes commerciales.
+
+### `pages`
+
+8 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('pages_id_seq'::regclass)` |  |
+| `project_id` | int8 | non | FK → `projects.id` |  | CASCADE |
+| `created_by` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `title` | varchar(500) | non |  |  |  |
+| `emoji` | varchar(10) | non |  | `'📄'::character varying` |  |
+| `content` | text | oui |  |  |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `updated_at` | timestamp | non |  | `now()` |  |
+
+### `dashboard_cards`
+
+12 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('dashboard_cards_id_seq'::regcla` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `user_id` | int8 | non | FK → `users.id` |  | CASCADE |
+| `card_type` | varchar(40) | non |  |  |  |
+| `title` | varchar(200) | oui |  |  |  |
+| `config` | jsonb | non |  | `'{}'::jsonb` |  |
+| `time_range` | varchar(10) | oui |  |  |  |
+| `position` | int4 | non |  | `0` |  |
+| `created_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `updated_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
+
+### `enterprise_inquiries`
+
+16 colonnes · 0 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | uuid | non | PK | `uuid_generate_v4()` |  |
+| `full_name` | varchar(255) | non |  |  |  |
+| `email` | varchar(255) | non |  |  |  |
+| `team_size` | varchar(50) | non |  |  |  |
+| `message` | text | oui |  |  |  |
+| `status` | varchar(50) | non |  | `'NEW'::character varying` |  |
+| `created_account` | bool | oui |  | `false` |  |
+| `user_id` | int8 | oui |  |  |  |
+| `assigned_to` | varchar(100) | oui |  |  |  |
+| `notes` | text | oui |  |  |  |
+| `created_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `updated_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
+| `contacted_at` | timestamp | oui |  |  |  |
+| `converted_at` | timestamp | oui |  |  |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
+
+> Voir aussi : [[Modele_Donnees_MCD_MLD]] · [[Table_Reconciliation]].
