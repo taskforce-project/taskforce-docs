@@ -37,7 +37,7 @@ flowchart TB
 
     KC["🔐 Keycloak<br/><i>identité / OIDC / JWT</i>"]
     STRIPE["💳 Stripe<br/><i>facturation / abonnements</i>"]
-    GROQ["🤖 Groq API<br/><i>LLM smart-assign & assistant</i>"]
+    OLLAMA["🤖 Ollama Qwen3<br/><i>modèle auto-hébergé, hors de tout tiers</i>"]
     OAUTH["🔗 GitHub / Slack<br/><i>OAuth intégrations</i>"]
     SMTP["✉️ SMTP / Mailtrap<br/><i>e-mails OTP & notifications</i>"]
 
@@ -45,7 +45,7 @@ flowchart TB
     MANAGER -->|HTTPS / WebSocket| TF
     TF -->|OIDC, émission JWT| KC
     TF -->|paiement, webhooks| STRIPE
-    TF -->|inférence LLM| GROQ
+    TF -->|inférence locale, via ai-service| OLLAMA
     TF -->|OAuth, webhooks| OAUTH
     TF -->|envoi e-mail| SMTP
 ```
@@ -74,7 +74,7 @@ flowchart TB
     NGINX["🌐 Nginx<br/><i>prod uniquement</i>"]
 
     STRIPE["💳 Stripe"]:::ext
-    GROQ["🤖 Groq"]:::ext
+    OLLAMA["🤖 Ollama Qwen3 (local)"]:::ext
     OAUTH["🔗 GitHub/Slack"]:::ext
     SMTP["✉️ SMTP"]:::ext
 
@@ -88,7 +88,7 @@ flowchart TB
     FRONT -->|OIDC login| KC
     BACK -->|objets S3| MINIO
     BACK <-->|STOMP| RMQ
-    BACK -->|LLM| GROQ
+    BACK -->|via ai-service| OLLAMA
     BACK -->|paiement/webhooks| STRIPE
     BACK -->|OAuth| OAUTH
     BACK -->|e-mail| SMTP
@@ -96,9 +96,21 @@ flowchart TB
     classDef ext fill:#eee,stroke:#999,stroke-dasharray:3 3;
 ```
 
-> ⚠️ **`ai-service` (Python) est vestigial** : stub à embeddings SHA256 déterministes, **non utilisé en
-> prod**. L'IA tourne **en Java** (`GroqService`) appelant directement Groq. Preuve : [[Architecture]] §5,
-> `09-audits/Dette_Technique.md` (DT-010). Il figure ici pour l'exactitude, marqué comme tel.
+> ⚠️ **Cette note affirmait l'inverse de la réalité. Corrigée le 23/07/2026.**
+>
+> Elle décrivait `ai-service` comme « vestigial, non utilisé en production », l'IA tournant « en Java
+> via `GroqService` appelant directement Groq ». **Les deux propositions sont fausses aujourd'hui**,
+> et la seconde l'est doublement : `GroqService` **n'existe plus dans le code**.
+>
+> Le chemin réel est l'inverse : `SmartAssignService` appelle l'interface `LlmClient`, dont l'unique
+> implémentation `AiGatewayClient` s'adresse à la **passerelle Python `ai-service`**, elle-même
+> devant un modèle **Qwen3 exécuté localement par Ollama**. `ai-service` est un service déclaré de
+> la composition, dont le backend dépend explicitement (`AI_SERVICE_URL`).
+>
+> Groq a été retiré le 16/07 (`TF-AI-GROQ-CLEANUP`) : il était bloqué par le réseau de l'école (403),
+> et son implémentation n'enregistrait pas la consommation de jetons, ce qui désarmait silencieusement
+> la facturation de l'IA. Conséquence pour la conformité, et c'est l'argument le plus fort du
+> registre des traitements : **aucun contenu de travail ne quitte l'infrastructure**.
 
 ---
 
@@ -125,7 +137,7 @@ flowchart TB
 
     subgraph SHARED["🧰 shared/ (transverse, sans métier)"]
         SEC["security/<br/>SecurityConfig, JwtDecoder"]
-        CFG["config/<br/>Cors, Keycloak, Stripe, Groq,<br/>WebSocket, Otp, Minio…"]
+        CFG["config/<br/>Cors, Keycloak, Stripe, LlmConfig,<br/>WebSocket, Otp, Minio…"]
         DTO["dto/<br/>ApiResponse&lt;T&gt;"]
         EXC["exception/<br/>GlobalExceptionHandler"]
         AUD["audit/<br/>AuditableEntity"]
