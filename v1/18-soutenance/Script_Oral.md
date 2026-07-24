@@ -116,7 +116,7 @@ Je les ai traduites en système de design. Épuré, cela veut dire une palette t
 CSS** définissent toutes les couleurs, rayons, espacements et ombres, en thème clair et sombre.
 Aucune couleur ne se décide dans un composant.
 
-Réduction des clics, cela se joue dans les composants : **189 composants**, dont **77 primitives**
+Réduction des clics, cela se joue dans les composants : **176 composants**, dont **76 primitives**
 construites sur Radix, qui donnent des raccourcis clavier et des dialogues cohérents partout. Le
 responsive, je vous le montre dans un instant.
 
@@ -246,7 +246,7 @@ d'assignation, l'API, la monétisation et les tests.
 Le back-end est en **Java 21 et Spring Boot**.
 
 Le cahier des charges suggérait PHP ou Node. J'ai retenu Java, et je l'assume comme un **choix
-technique adapté**. Trois raisons. Le typage fort : sur 49 entités liées, une erreur de contrat est
+technique adapté**. Trois raisons. Le typage fort : sur 48 entités liées, une erreur de contrat est
 détectée avant l'exécution. L'écosystème Spring, qui me donne sécurité, persistance, validation et
 supervision dans un cadre éprouvé en entreprise. Et mon expérience professionnelle en environnement
 réglementé, sur cette même pile.
@@ -280,7 +280,7 @@ orientées sécurité. Et un **cache Redis** porte la limitation de débit, dist
 
 ### Diapositive 17, le modèle de données du smart-assign. 0:45
 
-Le modèle complet compte 49 entités et 68 migrations versionnées. Je ne vais pas le dérouler, je
+Le modèle complet compte 48 entités et 72 migrations versionnées. Je ne vais pas le dérouler, je
 vous montre les sept tables qui rendent la fonctionnalité principale possible.
 
 Au centre, la tâche, avec son estimation et ses libellés. À gauche, le membre et son profil de
@@ -332,7 +332,7 @@ Je valide, et la décision est enregistrée pour affiner les suivantes.
 
 ### Diapositive 19, l'API sécurisée au filtre de l'OWASP. 0:55
 
-L'API compte 35 contrôleurs et plus de 200 points d'entrée, documentés en OpenAPI.
+L'API compte 36 contrôleurs et 219 points d'entrée, documentés en OpenAPI.
 
 Je l'ai relue au filtre du **Top 10 de l'OWASP**. Sur les dix catégories, huit ont une parade que je
 peux vous montrer dans le code.

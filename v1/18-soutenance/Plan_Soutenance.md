@@ -36,8 +36,8 @@ Construit sur le template Figma (fonds réutilisés). Distinction visuelle : **f
 clairs, back sur fonds sombres**. **Contenu vérifié contre le code** (5 explorations du dépôt).
 
 **Chiffres démontrables (à privilégier ; les anciens du mémoire sont périmés) :**
-- Front : Next.js **16.1**, React **19**, TS strict, Tailwind **4**, Turbopack. shadcn sur Radix, **165 composants** (74 primitives). **18 stores Zustand**. **706 tests Vitest**, couverture **92 % sur le périmètre logique** (lib/hooks/auth ; reste en E2E ; gate 70 % non bloquante). **axe-core WCAG 2.1 AA** en E2E. Lighthouse : sur la **landing** seulement, app à mesurer.
-- Back : Spring Boot **4.0**, Java **21**, Maven. **49 entités, 68 migrations Flyway**. **35 contrôleurs, 200+ endpoints**, OpenAPI. Keycloak **OIDC RS256** (aucun mot de passe stocké). **692 tests**, **~72 % de lignes JaCoCo** (intégration vrai Postgres+pgvector, pas de mock). Rate limiting Bucket4j **+ Redis**.
+- Front : Next.js **16.1**, React **19**, TS strict, Tailwind **4**, Turbopack. shadcn sur Radix, **176 composants** (76 primitives). **18 stores Zustand**. **805 tests Vitest**, couverture **89,55 % sur le périmètre logique** (lib/hooks/auth ; reste en E2E ; gate 70 % non bloquante). **axe-core WCAG 2.1 AA** en E2E. Lighthouse : sur la **landing** seulement, app à mesurer.
+- Back : Spring Boot **4.0**, Java **21**, Maven. **48 entités, 72 migrations Flyway**. **36 contrôleurs, 219 endpoints**, OpenAPI. Keycloak **OIDC RS256** (aucun mot de passe stocké). **792 tests**, **73,71 % de lignes JaCoCo** (intégration vrai Postgres+pgvector, pas de mock). Rate limiting Bucket4j **+ Redis**.
 - IA : smart-assign = règles Java + **score sémantique LLM** (pas pgvector) ; **Ollama Qwen local gratuit** ; Brain OS + Spec IA + decision board + Cortex + MCP **codés**.
 - Cahier de recette : **97 %** (79 scénarios, 77 automatisés). Pricing : **FREE / BASIC 10 / BUSINESS 16 / ENTERPRISE** par siège.
 

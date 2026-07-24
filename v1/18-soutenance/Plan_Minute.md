@@ -155,11 +155,11 @@ traçabilité, où l'outillage Spring est intégré et éprouvé.
 | Couverture front | **89,55 % de lignes sur le périmètre logique**, le 23/07 | « 92 % », puis 92,33 % |
 | Tests back | **792 cas exécutés**, 0 échec, le 23/07 | 658, puis 670, puis 692, puis 759 |
 | Couverture back | **73,71 % de lignes**, le 22/07 | 78 %, 86,1 % dans une fiche, puis 71,3 % |
-| Composants front | **189 fichiers**, dont **77** primitives | 165 dont 74 |
+| Composants front | **176 fichiers**, dont **76** primitives | 165 dont 74, puis 189 dont 77 |
 | Tokens CSS | **165 déclarations** | non chiffré |
-| Migrations Flyway | 68 | 71 |
-| Entités JPA | 49 | 49 |
-| Contrôleurs | 35 | 35 |
+| Migrations Flyway | **72** | 68, puis 71 |
+| Entités JPA | **48** | 49 (le comptage naïf inclut `AuditableEntity`, qui est un `@MappedSuperclass`) |
+| Contrôleurs | **36**, pour **219** points d entree | 35, « 200+ » |
 
 Périmètre de couverture front, à préciser systématiquement : `vitest.config.ts` n'inclut que `lib`,
 `hooks` et `components/auth`. Les 47 routes et environ 180 fichiers de composants sont hors mesure,
