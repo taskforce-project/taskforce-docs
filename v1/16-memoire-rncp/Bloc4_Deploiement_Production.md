@@ -122,14 +122,24 @@ Les trois sous-domaines visés sont `app`, `api` et `auth`, déjà routés dans 
 - [x] Architecture technique d'hébergement adaptée à l'application.
 - [x] Principe d'élasticité pris en compte.
 - [x] Dimensionnement et coûts cohérents avec les besoins.
-- [ ] Diagramme de déploiement formalisé ; choix du système de déploiement adapté.
+- [x] Diagramme de déploiement formalisé ; choix du système de déploiement adapté.
 
-**Preuves :** `docker-compose.prod.yml` · `render.yaml` · [Stratégie d'hébergement](../06-infra/Strategie_Hebergement.md)
+**Preuves :** [Diagramme de déploiement](../06-infra/Diagramme_Deploiement.md) · `docker-compose.prod.yml` · `render.yaml` · [Stratégie d'hébergement](../06-infra/Strategie_Hebergement.md)
 
-> **Dernier critère décoché le 23/07/2026 : le diagramme de déploiement n'existe pas.** Il est
-> recherché dans tout le corpus et n'y figure nulle part ; la seule mention est son inscription au
-> reste à faire dans la [roadmap documentaire](./Roadmap_Documentation.md) (Phase 7). Les trois
-> premiers critères restent acquis, la comparaison d'hébergement étant documentée et chiffrée.
+> **Décoché puis recoché le 23/07/2026.** Le critère était coché alors que le diagramme n'existait
+> nulle part dans le corpus. Il a été décoché le matin, puis le document produit :
+> `06-infra/Diagramme_Deploiement.md` formalise la topologie réelle, dérivée de
+> `docker-compose.prod.yml` — machine hôte, réseau Docker interne, 10 services, 3 volumes
+> persistants, flux sortants nommés.
+>
+> Le point de conception à mettre en avant : **nginx est le seul service publiant des ports sur
+> l'hôte** (80 et 443). Aucun autre n'est joignable de l'extérieur, ni la base, ni Keycloak, ni le
+> stockage objet. Ce n'est pas une configuration par défaut, c'est une décision d'exposition.
+>
+> Une distinction utile a permis de produire ce document sans attendre : **la topologie ne dépend
+> pas de l'hébergeur**. Le fournisseur change la machine hôte, pas le nombre de conteneurs, ni les
+> flux, ni la surface d'exposition. Seul le **choix** d'hébergement reste ouvert (voir la réserve
+> ci-dessous, qui conditionne C28).
 
 **Sélection de la plateforme d'hébergement**
 
