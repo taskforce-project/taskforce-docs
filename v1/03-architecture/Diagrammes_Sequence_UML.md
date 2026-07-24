@@ -96,8 +96,18 @@ sequenceDiagram
 ## 3. Affectation intelligente (smart-assign) — ⭐ cœur CDC
 
 > Scoring d'un candidat = **compétences** (`member_skill_profiles`, SQL brut) × **charge réelle
-> cross-projets** (`IssueWorklog`) × **disponibilité** (`MemberLeave`), affiné par un **LLM Groq**
-> (`groq.scores()` / `groq.reasons()`). Preuve : `SmartAssignService.recommend` / `rankForRedistribution`.
+> cross-projets** (`IssueWorklog`) × **disponibilité** (`MemberLeave`), affiné par un **modèle de
+> langage auto-hébergé**. Preuve : `SmartAssignService.recommend` / `rankForRedistribution`.
+>
+> **Corrigé le 23/07/2026.** Cette séquence faisait appeler un « LLM Groq » directement depuis
+> `SmartAssignService`. Ce n'est plus le chemin réel, et `GroqService` **n'existe plus dans le
+> code** : Groq était bloqué sur le réseau de l'école (403) et a été retiré
+> (`TF-AI-GROQ-CLEANUP`). Le service parle désormais à l'interface `LlmClient`, dont l'unique
+> implémentation `AiGatewayClient` appelle la passerelle Python `ai-service`, elle-même devant un
+> modèle Qwen3 exécuté en local par Ollama.
+>
+> L'inversion est importante pour la conformité : **aucun contenu de travail ne sort de
+> l'infrastructure**, ce qui est l'argument le plus fort du registre des traitements.
 
 ```mermaid
 sequenceDiagram
@@ -106,18 +116,31 @@ sequenceDiagram
     participant IC as IssueController
     participant SA as SmartAssignService
     participant DB as (member_skill_profiles / worklog / leave)
-    participant GROQ as Groq LLM
+    participant LC as LlmClient / AiGatewayClient
+    participant GW as ai-service (passerelle Python)
+    participant LLM as Ollama Qwen3 (local)
 
     M->>IC: GET /issues/{id}/smart-assign
     IC->>SA: recommend(workspace, project, issue)
     SA->>DB: fetchProfileSkills (skills_json)
     SA->>DB: charge cross-projets (IssueWorklog)
     SA->>DB: disponibilité (MemberLeave)
-    SA->>GROQ: scores(candidats, contexte issue)
-    GROQ-->>SA: scores + justifications
+    SA->>LC: scores(candidats, contexte issue)
+    LC->>GW: requête de complétion (JSON forcé)
+    GW->>LLM: inférence locale
+    LLM-->>GW: scores + justifications
+    GW-->>LC: réponse
+    LC-->>SA: scores + justifications
+    alt modèle injoignable
+        SA->>SA: repli déterministe Java (fallbackUsed = true)
+    end
     SA->>SA: rankCandidates (métriques + LLM)
     SA-->>M: SmartAssignResponse (candidats classés + raisons)
 ```
+
+Le bloc `alt` n'est pas décoratif : c'est le comportement qui garantit qu'une indisponibilité du
+modèle **ne suspend pas l'affectation**, seulement sa part sémantique. Le repli est signalé dans la
+réponse (`fallbackUsed`), afin que l'utilisateur sache sur quoi la recommandation repose.
 
 ---
 
@@ -229,7 +252,7 @@ sequenceDiagram
 |---|---|
 | Inscription + OTP | `AuthService.register` / `verifyOtpAndCompleteRegistration` |
 | Login Keycloak | `AuthService.login` (`keycloakAuthService.authenticate`) |
-| Smart-assign | `SmartAssignService.recommend` / `rankForRedistribution` (Groq + SQL) |
+| Smart-assign | `SmartAssignService.recommend` / `rankForRedistribution` (SQL + modèle local via `LlmClient`) |
 | Redistribution | `RedistributionService.preview` / `apply` (`requireManager`, audit) |
 | Stripe | `StripeController.verifySession` + `StripeWebhookController` (5 événements) |
 | Export RGPD | `GdprService.exportMyData` (`@Transactional`) |
