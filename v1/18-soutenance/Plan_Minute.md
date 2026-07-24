@@ -112,6 +112,28 @@ Le professeur limite à trois les diapositives hors grille. Retenues, dans cet o
 2. Le tableau OWASP complet, avec les deux catégories non couvertes.
 3. Le RGPD et l'observabilité.
 
+> **▶ 24/07/2026 — une réponse à préparer, sans diapositive.** Si le jury demande « comment savez-vous
+> que votre intégration de paiement fonctionne ? », la réponse est meilleure que « les tests passent ».
+>
+> *« Je l'ai crue fonctionnelle jusqu'au 24 juillet. Les tests étaient verts, la signature vérifiée,
+> l'idempotence en place. En l'exerçant avec de vrais événements Stripe pour la première fois, j'ai
+> trouvé deux défauts bloquants. Le premier : la version d'API de mon compte avait dépassé celle de ma
+> bibliothèque, la désérialisation échouait, et mon serveur répondait 200 sans rien faire — Stripe
+> considérait chaque événement comme livré et ne rejouait jamais. Le second, que le premier masquait :
+> trois colonnes sont des types énumérés PostgreSQL, et deux entités ne les déclaraient pas comme
+> telles, donc aucun abonnement n'avait jamais pu être créé par le code. Les lignes en base venaient du
+> jeu de données de développement. Les deux sont corrigés et la chaîne est vérifiée de bout en bout,
+> idempotence comprise. »*
+>
+> **Pourquoi cette réponse vaut mieux qu'un succès annoncé** : elle démontre exactement ce que la note
+> pédagogique appelle l'esprit critique (page 6), et elle porte une leçon transférable — *un test vert
+> prouve que le code fait ce qu'on lui demande, jamais qu'on lui demande la bonne chose*. Le même angle
+> mort avait été trouvé le matin même sur le chiffrement au repos.
+>
+> Cette réponse **ne coûte rien au chronomètre** tant qu'elle n'est pas posée. Si le candidat préfère
+> l'intégrer au fil principal, la place naturelle est la diapositive 22 — mais il faudra alors retirer
+> l'un des trois arbitrages, la marge n'étant que de 25 secondes.
+
 **Argument à opposer si le nombre de diapositives hors grille est contesté** : la Note pédagogique
 impose elle-même, page 5 et 6, la présentation du candidat, le parcours professionnel, le contexte,
 le bilan et les améliorations possibles. Les diapositives 1, 2, 22 et 23 ne sont pas des diapositives
