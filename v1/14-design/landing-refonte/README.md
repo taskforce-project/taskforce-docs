@@ -19,6 +19,14 @@ tags: [landing, refonte, design, astro, tailwind, seo, inspiration, corpus]
 > [Design_Corpus_Guide.md](./Design_Corpus_Guide.md). Les captures se déposent dans
 > [`inspiration/`](./inspiration/) (un dossier par section).
 
+## Documents
+
+| Doc | Contenu |
+|---|---|
+| [[Spec_Master]] | **Ancre** — positionnement, badges d'honnêteté, message-map, règles transverses |
+| [[Plan_Refonte_Site]] | **Plan de refonte 24/07/2026** — architecture complète du site (~49 pages), design system, kit de composants, **conformité UE** (RGPD, WCAG 2.2 AA, ePrivacy, LCEN, AI Act), plan de production L0→L9. Référence mesurée : `relevanceai.com`. |
+| [[Design_Corpus_Guide]] | Corpus d'inspiration — sources et méthode |
+
 ---
 
 ## 1. Point de départ (existant, à réutiliser)
