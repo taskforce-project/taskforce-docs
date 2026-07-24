@@ -205,37 +205,138 @@ public enum WorkspaceRole { OWNER, ADMIN, MEMBER }  // OWNER ⊃ ADMIN ⊃ MEMBE
 
 ### 5.2 Implémentation — AuthorizationService
 
+**Signatures réelles** (`core/service/AuthorizationService.java`) — chaque méthode prend
+l'**identifiant de l'appelant en second paramètre** : le service ne lit jamais le contexte de sécurité
+lui-même, il reçoit l'identité de l'appelant. C'est ce qui rend ces gardes testables unitairement.
+
 ```java
-// core/service/AuthorizationService.java
-public WorkspaceMember getMemberOrThrow(Long workspaceId) { /* membre actif ? sinon 403 */ }
-public void requireManager(Long workspaceId)  { /* ADMIN ou OWNER, sinon 403 */ }
-public void assertIsOwner(Long workspaceId)   { /* OWNER uniquement, sinon 403 */ }
+public WorkspaceMember requireMember(Long workspaceId, Long userId);                   // sinon 403
+public WorkspaceMember requireRole(Long workspaceId, Long userId, WorkspaceRole... r); // sinon 403
+public WorkspaceMember requireManager(Long workspaceId, Long userId);                  // = requireRole(OWNER, ADMIN)
+public boolean         isMember(Long workspaceId, Long userId);                        // prédicat, ne jette pas
 ```
+
+⚠️ **`assertIsOwner` n'appartient pas à ce service.** C'est une méthode **privée** de
+`WorkspaceService`, appelée à exactement **deux** endroits (`WorkspaceService:362` et `:394`).
+Recensement vérifié le 24/07/2026 : il n'existe aucun autre appel dans le dépôt.
 
 ### 5.3 Matrice rôles × actions
 
-| Action | MEMBER | ADMIN | OWNER |
-|---|:---:|:---:|:---:|
-| Lire issues / projets / pages | ✅ | ✅ | ✅ |
-| Créer / modifier des issues | ✅ | ✅ | ✅ |
-| Créer un projet | ❌ | ✅ | ✅ |
-| Gérer les membres (inviter, rôles) | ❌ | ✅ | ✅ |
-| Configurer les intégrations | ❌ | ✅ | ✅ |
-| Modifier les paramètres workspace | ❌ | ❌ | ✅ |
-| Accéder au portail billing Stripe | ❌ | ❌ | ✅ |
-| Supprimer le workspace | ❌ | ❌ | ✅ |
-| Exporter ses données RGPD | ✅ | ✅ | ✅ |
+> **▶ Corrigée le 24/07/2026.** La version précédente comportait **quatre erreurs**, toutes dans le sens
+> restrictif : elle annonçait des verrous qui n'existent pas. Une matrice d'habilitations trop sévère est
+> aussi trompeuse qu'une matrice trop permissive — elle donne l'illusion d'un contrôle qui n'est pas là.
+
+| Action | MEMBER | ADMIN | OWNER | Garde réelle |
+|---|:---:|:---:|:---:|---|
+| Lire issues / projets / **pages / cycles** | ⚠️ | ✅ | ✅ | `ProjectVisibilityGuard.assertCanView` — **pas le rôle workspace** (cf. §5.5) |
+| Créer / modifier des issues | ⚠️ | ✅ | ✅ | `assertCanWrite` — **refusé au `VIEWER` du projet** (cf. §5.5) |
+| **Créer un projet** | **✅** | ✅ | ✅ | `resolveWorkspaceAndAssertMember` — **simple appartenance** |
+| Inviter des membres | ❌ | ✅ | ✅ | `requireManager` |
+| **Changer le rôle d'un membre** | ❌ | **❌** | ✅ | `assertIsOwner` (`WorkspaceService:362`) |
+| Configurer les intégrations | ❌ | ✅ | ✅ | `IntegrationController.requireManager` |
+| **Modifier les paramètres workspace** | ❌ | **✅** | ✅ | `assertCanManage` = « **tout sauf MEMBER** » (`WorkspaceService:490`) |
+| Consulter le journal d'audit | ❌ | ✅ | ✅ | `WorkspaceService:253` |
+| Supprimer le workspace | ❌ | ❌ | ✅ | `assertIsOwner` (`WorkspaceService:394`) |
+| Exporter ses données RGPD | ✅ | ✅ | ✅ | portée **self** |
+| **Gérer son abonnement Stripe** | — | — | — | **hors axe workspace** (cf. §5.6) |
+
+**Les quatre corrections, et ce qu'elles changent :**
+
+1. **Créer un projet n'est pas réservé aux gestionnaires.** `ProjectService.createProject` n'exige que
+   l'appartenance au workspace. C'est cohérent avec le modèle « dépôt » retenu (§5.5), mais il fallait
+   le dire : la matrice affirmait l'inverse.
+2. **Modifier les paramètres du workspace n'est pas réservé à l'OWNER.** `assertCanManage` rejette le
+   rôle `MEMBER` et laisse donc passer `ADMIN`.
+3. **« Gérer les membres » confondait deux droits distincts.** Inviter relève de `requireManager` ;
+   **changer un rôle** est l'une des deux seules actions strictement OWNER. Un ADMIN ne peut pas se
+   promouvoir, ce qui est précisément l'intérêt de la distinction.
+4. **Le portail de facturation n'est pas gardé par un rôle** — voir §5.6, la raison est structurelle.
 
 ### 5.4 Rôle projet (`ProjectRole`)
 
-En plus du rôle workspace, chaque `ProjectMember` peut être `MANAGER` (gère paramètres/cycles du
-projet) ou `MEMBER` (participation). Un workspace `ADMIN` a un accès gestionnaire sur tous les projets.
+> **▶ Corrigé le 24/07/2026.** La version précédente décrivait deux rôles, `MANAGER` et `MEMBER`.
+> **`MANAGER` n'existe pas** dans l'enum, et le troisième rôle — `VIEWER` — était absent alors qu'il
+> porte la seule restriction d'écriture du modèle.
+
+```java
+public enum ProjectRole { LEAD, MEMBER, VIEWER }   // core/enums/ProjectRole.java
+```
+
+| Rôle | Droits | Effet |
+|---|---|---|
+| `LEAD` | Contribue **et** administre le projet | Peut archiver le projet (`assertCanManageProject`) |
+| `MEMBER` | Contribue | Lecture et écriture |
+| `VIEWER` | **Lecture seule** | `canWrite` renvoie faux, **même sur un projet public** |
+
+Un OWNER/ADMIN du workspace a un accès complet à tous les projets, y compris privés.
+
+### 5.5 Second axe — visibilité du projet (`ProjectVisibilityGuard`)
+
+**C'est cette garde, et non le rôle workspace, qui décide de l'accès aux issues.** Elle croise la
+visibilité du projet (public/privé) avec le rôle projet, selon le modèle « dépôt » de GitHub et Linear.
+
+```java
+// core/service/ProjectVisibilityGuard.java — source unique du contrôle d'accès au contenu projet
+canView(project, userId)   // public OU membre du projet OU OWNER/ADMIN du workspace
+canWrite(project, userId)  // OWNER/ADMIN partout ; sinon membre non-VIEWER ; sinon projet public
+```
+
+Cette garde n'est pas réservée aux issues : elle est consommée par `ProjectService`, `IssueService`,
+`PageService` et `CycleService`. **Tout ce qui appartient à un projet passe par elle** — c'est le point
+qui rend le modèle cohérent, et c'est aussi pourquoi la matrice du §5.3 ne peut pas répondre « ✅ » à
+« lire une page » sans préciser de quel projet il s'agit.
+
+**Trois propriétés de sécurité à retenir :**
+
+1. **Un projet privé invisible renvoie `404`, jamais `403`.** Répondre « interdit » confirmerait
+   l'existence du projet et de son nom. `assertCanWrite` appelle d'ailleurs `assertCanView` **en
+   premier** : on ne discute jamais des droits d'écriture sur un objet dont l'appelant n'a pas le droit
+   de connaître l'existence.
+2. **`VIEWER` reste en lecture seule même sur un projet public.** Un rôle explicite l'emporte sur
+   l'ouverture du projet.
+3. **Un non-membre peut contribuer à un projet public.** L'absence de rôle n'est pas un refus : dans ce
+   modèle, l'ouverture est le défaut et la restriction un acte délibéré.
+
+Les vues agrégées (analytique, workflows) ne sont **pas masquées** aux non-gestionnaires : elles sont
+restreintes par `viewableProjectIds`. Deux collaborateurs ouvrent donc la même page et y lisent des
+chiffres différents, chacun réduit à son propre périmètre.
+
+### 5.6 Facturation — hors de l'axe des rôles
+
+Le portail Stripe n'a **aucune garde de rôle**, et ce n'est pas un oubli : **l'abonnement est porté par
+le compte utilisateur, pas par le workspace** (`BillingController` → `subscriptionRepository.findByUserId`,
+`user.getPlanType()`). Un utilisateur authentifié ne peut donc atteindre que **son propre** abonnement,
+ce qui rend la question du rôle sans objet.
+
+La tarification reste **par siège** : la quantité facturée est le nombre de membres distincts sur les
+workspaces du compte. C'est un abonnement par compte, dont le volume est dérivé de l'usage des
+workspaces — pas un abonnement de workspace.
+
+> ⚠️ **Conséquence à assumer devant un jury** : la question « qui peut résilier l'abonnement ? » a pour
+> réponse « le titulaire du compte », et non « le propriétaire du workspace ». Les deux coïncident dans
+> l'usage nominal, puisque c'est le créateur du workspace qui souscrit.
 
 ---
 
-## 6. Flux OTP — inscription
+## 6. Flux OTP — inscription et réinitialisation
 
-L'OTP est utilisé **uniquement à l'inscription** (pas au login).
+**L'OTP n'intervient jamais au login.** Il sert à deux flux, pas un seul — l'enum `OtpType` en déclare
+trois, dont un inutilisé :
+
+| `OtpType` | Utilisé ? | Où |
+|---|:--:|---|
+| `EMAIL_VERIFICATION` | ✅ | Inscription et renvoi de code (`AuthService:135`, `:384`) |
+| `PASSWORD_RESET` | ✅ | Mot de passe oublié (`AuthService:419`, vérifié en `:438`) |
+| `TWO_FACTOR_AUTH` | ❌ | **Déclaré mais jamais généré** — aucune double authentification n'est implémentée |
+
+> **▶ Corrigé le 24/07/2026.** Ce paragraphe affirmait « uniquement à l'inscription ». La
+> réinitialisation de mot de passe manquait. Le point importe pour l'analyse de risque : c'est un second
+> chemin par lequel un code à usage unique circule par courriel.
+>
+> ⚠️ **`TWO_FACTOR_AUTH` ne doit pas être présenté comme une fonctionnalité.** La valeur existe dans
+> l'enum, rien ne la produit. Annoncer une double authentification serait une surpromesse démentie par
+> une recherche de trois secondes dans le code. Le cycle de vie complet du code OTP est décrit dans
+> [[Diagramme_Etats_UML]] §7.
 
 ```
 1. POST /api/auth/register
@@ -243,7 +344,7 @@ L'OTP est utilisé **uniquement à l'inscription** (pas au login).
    └─▶ OtpVerification { code, expiresAt: now+15min } + email OTP
 
 2. POST /api/auth/verify-otp { email, code }
-   └─▶ Vérifie code + TTL (15 min, 3 essais) ; sinon exception
+   └─▶ Vérifie code + TTL (15 min, 5 essais) ; sinon exception
    └─▶ KeycloakService.verifyEmail() + User.save() (DB) + workspace initial
 
 3. Compte prêt — PAS de tokens émis ici
