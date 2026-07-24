@@ -125,7 +125,7 @@ Chaque cas est **gardé par du code réel** (`AuthorizationService`, `assertIsOw
 |---|---|
 | **Inscription + OTP** | OTP à l'inscription, PAS au login (Keycloak gère le login) |
 | **Login Keycloak** | Délégation OIDC complète — aucun token généré par le backend |
-| **Smart-assign** | Scoring SQL (workload + skills + dispo) → Groq JSON mode → top-3 |
+| **Smart-assign** | Scoring SQL (charge, compétences, disponibilité) puis modèle **auto-hébergé** en sortie JSON forcée, top-3 |
 | **Redistribution auto** | Preview (dry-run) → validation ADMIN → apply ; ordonnanceur `@Scheduled` |
 | **Stripe checkout + webhooks** | `checkout.session.completed` → `customer.subscription.updated` |
 | **Export RGPD** | Agrégation multi-tables → JSON → download sécurisé |
@@ -164,7 +164,7 @@ Chaque cas est **gardé par du code réel** (`AuthorizationService`, `assertIsOw
 | **Brain OS** | BrainWorkspace, KnowledgeNode, KnowledgeLink | 3 |
 | Transverse | Notification, Attachment, Integration, IssueGitHubLink, Discussion, DiscussionPost | 6 |
 
-**Total : 50 tables / 483 colonnes / 94 FK**
+**Total : 55 tables / 483 colonnes / 104 clés étrangères**
 
 > 🔗 [[Modele_Donnees_MCD_MLD]] — MCD par domaine + MLD + règles de gestion
 
@@ -189,11 +189,11 @@ un `Long userId`. Raison documentée dans le Javadoc de `AuditLog.java` :
 
 Ce choix est une **décision de conception explicite** (ADR-008) — pas un oubli.
 
-> 🔗 [[Dictionnaire_Donnees]] — 50 tables × types/nullable/défauts/clés complets
+> 🔗 [[Dictionnaire_Donnees]] — 55 tables × types/nullable/défauts/clés complets
 
 ### 4.4 Flyway — évolution du schéma
 
-56 migrations V1 → V56 tracent l'évolution complète du schéma :
+72 migrations V1 → V56 tracent l'évolution complète du schéma :
 
 ```
 V1  — users + workspaces (init)
@@ -215,7 +215,7 @@ Aucune migration ne peut être modifiée après application (`ddl-auto=validate`
 
 ### 5.1 Vue C4 — trois niveaux
 
-**Niveau 1 — Contexte** : TaskForce (système) ↔ Utilisateur / Stripe / Groq / GitHub / Slack
+**Niveau 1 — Contexte** : TaskForce (système) ↔ Utilisateur / Stripe / GitHub / Slack. Le modèle de langage est **auto-hébergé**, donc interne au système et non acteur externe
 
 **Niveau 2 — Conteneurs** :
 
@@ -348,13 +348,13 @@ Les 10 décisions d'architecture qui ont le plus impacté la conception :
 
 | ADR | Décision | Impact conception |
 |---|---|---|
-| ADR-001 | Spring Boot 4 + Maven + Java 21 | Tout le backend, 56 migrations Flyway |
+| ADR-001 | Spring Boot 4 + Maven + Java 21 | Tout le backend, 72 migrations Flyway |
 | ADR-002 | Multi-tenant logique + OWNER/ADMIN/MEMBER | `workspace_id` sur 40+ tables ; `AuthorizationService` |
 | ADR-003 / ADR-011 | Keycloak IdP ; tokens **OIDC RS256** émis par Keycloak (ex-JWT HS512, migré) | Inscription 3 étapes ; `SecurityConfig` OAuth2 RS |
-| ADR-004 | Groq Java direct | `GroqService` dans `core/service/` ; ai-service vestigial |
+| ADR-004 | ⚠️ **Périmé (23/07)**. Groq retiré le 16/07 (`TF-AI-GROQ-CLEANUP`), `GroqService` n'existe plus. Chemin réel : `LlmClient` puis `AiGatewayClient` puis `ai-service` puis Ollama Qwen3 local |
 | ADR-005 | pgvector natif | `V51` + `KnowledgeNode.embedding vector(1536)` |
 | ADR-006 | RabbitMQ + STOMP | Architecture temps réel WebSocket + relay |
-| ADR-007 | No-mock Testcontainers | 72 fichiers de test ; schéma réel dans les tests |
+| ADR-007 | No-mock. ⚠️ **Testcontainers n'est PAS utilisé** : incompatibilité du client docker-java avec le mandataire de Docker Desktop. Un PostgreSQL voisin est démarré par `scripts/it.ps1`, avec les vraies migrations Flyway |
 | ADR-008 | Hybride FK `Long id` | AuditLog / Facturation survivent à la suppression |
 | ADR-009 | Brain OS 1:1 workspace | `BrainWorkspace @OneToOne unique` ; knowledge graph isolé |
 | ADR-010 | OTEL → SigNoz | Observabilité 3-piliers sans Grafana/Prometheus seul |
@@ -370,14 +370,14 @@ Extrait de la table de réconciliation complète :
 | Exigence (CdCF / STB) | Artefact de conception | Implémentation |
 |---|---|---|
 | UC-01 Inscription OTP | Séquence 1 + `OtpVerification` (MLD) | `AuthService.verifyOtpAndCompleteRegistration` |
-| UC-07 Smart-assign | Séquence 3 + `MemberSkillProfile`/`WorkLog` (MLD) | `SmartAssignService` → `GroqService` |
+| UC-07 Smart-assign | Séquence 3 + `MemberSkillProfile`/`WorkLog` (MLD) | `SmartAssignService` puis `LlmClient` puis `ai-service` |
 | SEC-01 Auth OIDC | C4 Keycloak + `SecurityConfig` | `JwtDecoderConfig`, `KeycloakConfig` |
 | PERF-01 p95 < 200 ms | STB + Prometheus histogram | `otel-collector-config.yaml` |
 | CAP-03 pgvector | ADR-005 + V51 | `knowledge_nodes.embedding vector(1536)` |
 | INT-01 Stripe webhooks | Séquence 5 + `Subscription` (MLD) | `StripeWebhookController` |
 | RGPD export | Séquence 6 + domaine Auth (MLD) | `GdprService.exportUserData` |
 
-> 🔗 Table complète (~30 UC × 56 migrations × 72 tests) → [[Table_Reconciliation]]
+> 🔗 Table complète (~30 UC × 72 migrations × 72 tests) → [[Table_Reconciliation]]
 
 ---
 
@@ -387,8 +387,8 @@ Extrait de la table de réconciliation complète :
 
 | Artefact | Statut | Preuve |
 |---|---|---|
-| MCD / MLD (7 domaines) | ✅ | `Modele_Donnees_MCD_MLD.md` — 50 tables/94 FK |
-| Diagramme de classes UML (5 domaines) | ✅ | `Diagramme_Classes_UML.md` — 38 entités JPA |
+| MCD / MLD (7 domaines) | ✅ | `Modele_Donnees_MCD_MLD.md` — 55 tables/104 clés étrangères |
+| Diagramme de classes UML (5 domaines) | ✅ | `Diagramme_Classes_UML.md` — 48 entités JPA |
 | Diagramme de cas d'usage | ✅ | `Diagramme_Cas_Usage_UML.md` — 12 UC + 5 acteurs |
 | Diagrammes de séquence (6) | ✅ | `Diagrammes_Sequence_UML.md` |
 | Machines à états (5) | ✅ | `Diagramme_Etats_UML.md` |
@@ -401,7 +401,7 @@ Extrait de la table de réconciliation complète :
 
 | Gap | Impact | Statut |
 |---|---|---|
-| ai-service Python (DT-010) | Non utilisé en prod — Groq Java direct à la place | ⬜ Roadmap : supprimer le stub |
+| ai-service Python | ⚠️ **Constat inversé le 23/07** : c'est la passerelle IA **active** (`AiGatewayClient` vers `ai-service` vers Ollama), pas un vestige. La dette DT-010 est à refermer, pas à traiter |
 | Wireframes statiques | Aucun fichier `assets/maquettes/` — UI = code source | ⬜ Roadmap : captures annotées |
 | Contraintes de transition issues | Board libre (pas de workflow imposé) — feature roadmap | ⬜ Roadmap V2 |
 | Workspace sans champ statut | `Workspace` n'a pas de `status` — suppression = seule sortie | ⬜ Roadmap : soft-delete |
