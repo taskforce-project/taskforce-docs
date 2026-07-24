@@ -94,7 +94,15 @@ cible, et voici comment les plans débloquent les fonctionnalités.
 | 23 | T8 | Les améliorations possibles | 0:20 | Note pédagogique p. 6 |
 | 24 | T1 | Merci, questions | 0:15 | |
 
-**Total : 19 minutes 20.** Marge de 40 secondes. Front 8:00 contre back 7:35.
+**Total : 19 minutes 35.** Marge de 25 secondes. Front 8:00 contre back 7:50.
+
+> **▶ 24/07/2026 — la diapositive 19 passe de 0:55 à 1:10.** Le script y affirmait « les données
+> sensibles sont chiffrées au repos », formulation qui appelle un « lesquelles ? » auquel elle ne
+> survit pas : quatre colonnes le sont, l'adresse de courriel non. Le périmètre est désormais précisé
+> à l'oral, dans la même logique d'anticipation que les deux catégories OWASP non couvertes annoncées
+> juste après. **La marge tombe à 25 secondes** : c'est le point à surveiller au chronomètre. Si elle
+> ne tient pas, la variable d'ajustement est la diapositive 23 (améliorations possibles), dont le
+> contenu figure déjà au dossier.
 
 ### Les trois diapositives tampon
 

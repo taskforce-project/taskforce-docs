@@ -339,7 +339,11 @@ peux vous montrer dans le code.
 
 Le **contrôle d'accès** est traité par le point de contrôle unique. Les **injections** sont écartées
 par des requêtes paramétrées, sans concaténation de SQL. Les **entrées sont toutes validées et
-filtrées**. Et les **données sensibles sont chiffrées au repos**, en AES-256-GCM.
+filtrées**. Et le **chiffrement au repos** est en AES-256-GCM.
+
+J'en précise le périmètre avant qu'on me le demande : ce sont les **secrets** qui sont chiffrés, les
+jetons OAuth et les identifiants de connecteurs. Les adresses de courriel, elles, servent de clés de
+recherche, et les chiffrer casserait les requêtes. Elles sont protégées par le contrôle d'accès.
 
 Deux catégories ne sont pas couvertes, et je préfère vous les donner que d'attendre la question. La
 falsification de requête côté serveur : mes webhooks sortants appellent une adresse saisie par
