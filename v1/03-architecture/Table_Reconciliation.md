@@ -16,7 +16,7 @@ tags: [tracabilite, matrice, reconciliation, uc, entite, migration, test, memoir
 > en bout : *besoin → conception → réalisation → vérification*.
 >
 > **Sources vérifiées** : [[Diagramme_Cas_Usage_UML]] (UC), [[Diagramme_Classes_UML]] (entités),
-> `db/migration/V*.sql` (56 migrations), `src/test/**/*Test.java` (72 fichiers de tests).
+> `db/migration/V*.sql` (72 migrations), `src/test/**/*Test.java` (72 fichiers de tests).
 > **Aucune ligne inventée** : chaque migration et chaque test cités **existent** dans le dépôt.
 
 ---
@@ -43,15 +43,15 @@ tags: [tracabilite, matrice, reconciliation, uc, entite, migration, test, memoir
 | **Profils de compétences** | `member_skill_profiles` *(SQL brut)* | `V33`, `V44`, `V46` | `MemberSkillProfileServiceIntegrationTest` |
 | **Congés** | `MemberLeave` | `V49` | `MemberLeaveServiceIntegrationTest` |
 | **Paiement / abonnement** | `Subscription`, `SubscriptionHistory`, `User` | `V2`, `V3`, `V36` | `StripeServiceTest`, `StripeWebhookServiceTest` |
-| **Chat temps réel** | `Channel`, `ChannelMember`, `ChatMessage` | `V28` | `ChatServiceIntegrationTest`, `ChatWebSocketControllerTest`, `StompAuthInterceptorTest` |
-| **Discussions** | `Discussion` | `V27` | `DiscussionServiceIntegrationTest` |
+| **Chat temps réel** | `Channel`, `ChannelMember`, `ChatMessage` | `V28` | `StompAuthInterceptorTest` (sécurité du transport) — ⚠️ **aucun test de service ni de contrôleur** : `ChatServiceIntegrationTest` et `ChatWebSocketControllerTest` étaient cités mais **n'existent pas** (vérifié le 23/07/2026) |
+| **Discussions** | `Discussion` | `V27` | ⚠️ **aucun test** : `DiscussionServiceIntegrationTest` était cité mais **n'existe pas** (vérifié le 23/07/2026) |
 | **Notifications** | `Notification` | `V24` | `NotificationServiceTest` |
 | **Intégration GitHub** | `Integration`, `IssueGitHubLink` | `V30` | `GitHubIntegrationServiceIntegrationTest`, `GitHubIntegrationContractTest` |
 | **Intégration Slack** | `Integration`, `SlackChannel` | `V30` | `SlackIntegrationServiceIntegrationTest`, `SlackIntegrationContractTest` |
 | **Webhooks** | `Webhook` | `V30` | `WebhookServiceIntegrationTest` |
 | **GED / pièces jointes** | `Attachment` | `V29` | `AttachmentServiceIntegrationTest`, `AttachmentControllerWebMvcTest` |
 | **Leads entreprise (sales)** | `enterprise_inquiries` | `V8`, `V9`, `V11` | `SalesServiceIntegrationTest`, `SalesControllerWebMvcTest` |
-| **Assistant IA** | `ai_runs`, `ai_documents`, `ai_insight_snapshots` | `V32`, `V35` | `AssistantServiceTest`, `AssistantControllerWebMvcTest`, `GroqServiceTest` |
+| **Assistant IA** | `ai_runs`, `ai_documents`, `ai_insight_snapshots` | `V32`, `V35` | `AssistantControllerWebMvcTest`, `AiConversationServiceTest`, `AiUsageServiceTest`, `BrainIngestionServiceTest` — `AssistantServiceTest` et `GroqServiceTest` étaient cités et **n'existent pas**, ce dernier n'ayant plus d'objet depuis le retrait de Groq |
 | **Brain OS (knowledge graph)** | `BrainWorkspace`, `KnowledgeNode`, `KnowledgeEdge` | `V51`–`V56` | `CreateNoteToolTest`, `SearchBrainToolTest`, `AgentServiceTest`, `EmbeddingClientTest` |
 | **Analytics** | *(issues / worklog agrégés)* | — *(lecture)* | `AnalyticsServiceIntegrationTest` |
 | **Journal d'audit** | `AuditLog` | `V48` | *(couvert via services : `RedistributionServiceTest`, etc.)* |
@@ -75,12 +75,39 @@ tags: [tracabilite, matrice, reconciliation, uc, entite, migration, test, memoir
 
 ## Notes de traçabilité
 
-- **56 migrations** Flyway (`V1`→`V56`), dont des migrations de **seed dev/QA** (`V17`, `V18`, `V31`,
+- **72 migrations** Flyway (`V1` à `V72`), dont des migrations de **seed dev/QA** (`V17`, `V18`, `V31`,
   `V40`) — schéma **et** données de démo (jamais de mock frontend, cf. politique projet).
-- **72 fichiers de tests** : `*WebMvcTest` (slices contrôleurs), `*IntegrationTest` (Testcontainers),
+- **72 fichiers de tests** : `*WebMvcTest` (slices contrôleurs), `*IntegrationTest` (vrai Postgres voisin, pas Testcontainers),
   `*ServiceTest` (unitaires Mockito), `*ContractTest` (intégrations externes).
 - **Écarts / manques éventuels** entre UC et couverture → tracés dans [[Problemes_Connus]] /
   [[Roadmap_Backlog]], **jamais comblés par une ligne fictive** ici.
 
 > 🔗 Voir aussi : [[Diagramme_Cas_Usage_UML]] · [[Diagramme_Classes_UML]] · [[Dictionnaire_Donnees]] ·
 > `08-operations/Tests.md` (stratégie de tests) · [[Roadmap_Documentation]].
+
+---
+
+## Contrôle d'intégrité des preuves
+
+**Vérifié le 23/07/2026.** Les **53 classes de test citées** dans ce document ont été confrontées une
+à une aux fichiers réellement présents dans le dépôt. **Cinq n'existaient pas.**
+
+Une table de traçabilité dont les preuves sont introuvables est pire qu'une absence de table : elle
+donne une assurance fausse, et un jury qui vérifie une seule ligne au hasard perd confiance dans
+toutes les autres. Les cinq références ont été traitées selon leur cause :
+
+| Référence citée | Cause | Traitement |
+|---|---|---|
+| `GroqServiceTest` | La classe testée a été supprimée avec Groq | Retirée |
+| `AssistantServiceTest` | N'a jamais existé sous ce nom | Remplacée par les tests IA réels |
+| `ChatServiceIntegrationTest` | N'existe pas | **Trou de couverture déclaré** |
+| `ChatWebSocketControllerTest` | N'existe pas | **Trou de couverture déclaré** |
+| `DiscussionServiceIntegrationTest` | N'existe pas | **Trou de couverture déclaré** |
+
+Les trois derniers ne sont pas des erreurs de nommage : **le chat et les discussions n'ont aucun
+test de service ni de contrôleur**. Seule la sécurité du transport temps réel est couverte
+(`StompAuthInterceptorTest`). Ces domaines sont hors du périmètre du cahier des charges, ce qui
+explique la priorité qui leur a été donnée, mais le fait doit être énoncé plutôt que masqué.
+
+Ce contrôle est reproductible : extraire les identifiants entre accents graves se terminant par
+`Test`, puis vérifier l'existence du fichier correspondant sous `src/test` et `frontend`.
