@@ -24,6 +24,67 @@ related:
 
 ---
 
+## 2026-07-31 (quater) — A8 (trajectoires / Pareto) poussée à fond · frontière solo
+
+**Fait** — A8 → fiche dédiée [`theorie/A8-trajectoires.md`](./theorie/A8-trajectoires.md). Entrée A8 de
+[`Axiomes.md`](./theorie/Axiomes.md) réduite. Nouvelle expérience **E6** (informativité du front de Pareto passé).
+
+**Trouvé**
+- `[DÉDUIT]` **Sur le passé, on compare des résultats réalisés, pas des futurs alternatifs** (générer des
+  futurs = A4 bloqué ; contrefactuel = C2). → A8 groundé est **descriptif (F2)**, pas prescriptif. Ground
+  la **math** de Pareto, pas l'**usage** (choisir un futur).
+- `[ÉTABLI]` **Malédiction dimensionnelle** : à $m \gtrsim \log_2 n$ (ici $n{\approx}20$, seuil ~4,3) le
+  **front ≈ tout** → le rêve **6 axes** est **inutile**. Inversion : seuls **2–3 objectifs sont
+  mesurables**, ce qui garde $m$ petit et **sauve** A8 (mais tue l'ambition « riche arbitrage »).
+- `[ÉTABLI]` Une **somme pondérée linéaire** ne touche que le **bord convexe** → prouvablement incomplète.
+- `[HYPOTHÈSE]` **La forme utile n'est pas le front pur mais l'ε-contrainte** (« maximiser X s.c. runway
+  > 6 mois ») : **contraintes, pas poids**, atteint le non convexe, et **produit une décision** (le front pur botte en touche).
+- `[HYPOTHÈSE]` **Le noyau durable de A8 = refuser de scalariser l'incommensurable** — la partie la plus
+  solide de tout le système, survit même quand le calcul est bloqué. Étoile polaire : **jamais de score global unique.**
+- `[DÉDUIT]` Fragilité à $n{=}20$ + seed synthétique → **bootstrapper le front**.
+
+**Décidé** — A8 reformulé : principe (durable) + calcul **rétrospectif** (2–3 axes, E6) + ε-contrainte
+comme forme pratique. Le prescriptif reste bloqué (A4 + C2).
+
+**Méta (3 axiomes de frontière poussés : A5, A4, A8)** — ils **convergent** : tout ce qui est groundable
+est **F2/mémoire** (table d'épisodes, front rétrospectif) ; tout le **prescriptif** (simuler des futurs)
+est bloqué par **A4 + C2**. Les deux seules briques buildables qui reviennent partout : **(a) la table
+d'épisodes/écarts, (b) « quelque chose bat-il le taux de base ? » (E3).** A8 ajoute le **seul livrable
+montrable sans rien débloquer** : le front rétrospectif (E6).
+
+**Prochain coup** — frontière solo restante : **A6 (Φ)** et **A7 (causalité)** — les deux probablement
+« hors modèle / bloqués », mais à documenter proprement pour fermer la frontière. Point dev inchangé (worklogs peuplés ?).
+
+---
+
+## 2026-07-31 (ter) — A4 (dynamique f) poussée à fond · frontière solo
+
+**Fait** — A4 → fiche dédiée [`theorie/A4-dynamique.md`](./theorie/A4-dynamique.md). Entrée A4 de
+[`Axiomes.md`](./theorie/Axiomes.md) réduite. Nouvelle expérience **E5** (stabilité du LLM-comme-$f$).
+
+**Trouvé**
+- `[ÉTABLI]` La forme **$M \cdot S_t$ est morte** : le graphe grandit (dimension variable), une matrice
+  n'ajoute pas de nœud. $f$ = **graph rewriting**, pas algèbre linéaire.
+- `[HYPOTHÈSE]` **Scinder $f = f_{\text{drift}}$** (= A3, gratuit, groundable) **+ $f_{\text{action}}$** (le problème).
+- `[DÉDUIT]` **$f_{\text{action}}$ non identifiable** : l'action n'est pas aléatoire (confondue par le
+  *motif* de la décision) + contrefactuel jamais observé (C2). **Plus profond que « pas assez de
+  données »** — c'est **A7** (causalité) qui revient.
+- `[HYPOTHÈSE]` **Le $f$ honnête n'est pas une formule** mais une **récupération non paramétrique**
+  d'épisodes $(G,a,G')$. → **A4 dépend de la table des écarts de A5** : A5 ne *juge* pas $f$, **elle le
+  nourrit**. Dépendance plus forte qu'on croyait.
+- `[ÉTABLI]` **Un opérateur local existe déjà et est idempotent** (ingestion Phase 4bis, verrou V69).
+  A4 = **généraliser**, pas inventer un monolithe.
+- `[HYPOTHÈSE]` **Markov douteux** → $f(G_t,a)$ partiel (A2). **Horizon $\leq 2$–$3$** (erreur composée, pas de fonction de valeur).
+- `[HYPOTHÈSE]` **Un LLM n'est pas une fonction** ($\operatorname{Var}_\omega$) → **E5**.
+
+**Décidé** — A4 **reformulé** : drift + action, récupération non paramétrique, **bloqué derrière A5**. La
+séquence réelle est **A5 (émettre l'incertitude + table d'épisodes) → A4 (récupération dessus)**.
+
+**Prochain coup** — frontière solo suivante : **A8** (Pareto, grounding **gratuit** sur trajectoires
+passées) ou **A7** (causalité, déjà à moitié traité en A4 §3) ou **A6** (Φ). Point dev inchangé (worklogs peuplés ?).
+
+---
+
 ## 2026-07-31 (bis) — A5 (calibration) poussée à fond · frontière solo
 
 **Fait** — Première frontière poussée en solo : **A5 → fiche dédiée** [`theorie/A5-calibration.md`](./theorie/A5-calibration.md)
