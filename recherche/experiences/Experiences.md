@@ -43,6 +43,8 @@ related:
 | [E2](#e2--la-dérivée-ẋ-apporte-t-elle-de-linformation-) | La dérivée $\dot x$ | ~1 j | non | proposée |
 | [E3](#e3--la-classe-de-référence-bat-elle-le-llm-) | Classe de référence vs LLM | ~1 j | oui (comparaison) | proposée |
 | [E4](#e4--un-llm-peut-il-produire-une-dynamique-non-triviale-) | Un LLM sait-il faire de la dynamique ? | ~1 j | oui | proposée |
+| [E5](#e5--un-llm-est-il-une-fonction-stable-) | Un LLM est-il une fonction stable ? | ~0,5 j | oui | proposée |
+| [E6](#e6--le-front-de-pareto-des-cycles-passés-est-il-informatif-) | Le front de Pareto passé informe-t-il ? | ~0,5 j | non | proposée |
 
 > **L'ordre compte.** E1 avant tout le reste : sans mesure de calibration, **aucune** des autres n'est
 > interprétable. C'est l'inversion proposée dans [`World_Model_Notes.md`](../revues/World-Model.md) §10 —
@@ -212,6 +214,64 @@ mi-cycle », « remplacer le lead 3 semaines avant la livraison »). C'est **la*
 protocole, et elle décide de la validité de l'expérience.
 
 **Coût** — ~1 j. Métré `AiMeter` (**C4**).
+
+---
+
+## E5 — Un LLM est-il une fonction (stable) ?
+
+`[statut:: proposée]` · Ouverte le 31/07/2026 · issue de [A4-dynamique](../theorie/A4-dynamique.md) §6
+
+**Hypothèse** `[HYPOTHÈSE]` — Interrogé comme $f$ (« état + action → état suivant »), un LLM **n'est pas
+un opérateur stable** : ses sorties varient avec le prompt/seed, donc $\operatorname{Var}_\omega[f_\omega(G,a)]$
+est grande. Un objet qui répond différemment à la même question **n'est pas une fonction**.
+
+**Falsification** — Si, sur $K$ reformulations **sémantiquement équivalentes** du même $(G,a)$, les
+prédictions clés (le **signe** et l'**ordre de grandeur** des $\Delta$ sur 3–4 métriques) restent
+**stables** (taux d'inversion de signe ≈ 0), alors un LLM peut servir d'opérateur approché et l'option
+(b) de A4 est plus solide que je ne le crois.
+
+**Protocole** — 1 couple $(état, action)$ réaliste (réutiliser le cas Brooks d'E4). Générer $K=10$
+variantes de prompt (paraphrases, **ordre des faits permuté**, même consigne de sortie structurée).
+Mesurer la dispersion des $\Delta$ prédits par métrique. **Deux régimes** : $T=0$ (déterminisme nominal —
+isole la **sensibilité au prompt**) et $T>0$ (ajoute la variance d'échantillonnage). Métré `AiMeter` (**C4**).
+
+**Métrique** — taux d'**inversion de signe** des $\Delta$ entre runs ; écart-type relatif des magnitudes ;
+accord de rang (Kendall) entre les runs.
+
+**Limite** — $T>0$ gonfle mécaniquement la variance ; c'est le run $T=0$ qui teste vraiment « fonction ou
+pas ». Un accord élevé ne prouve pas que $f$ est *juste* (E3/E4 s'en chargent), seulement qu'il est *stable*.
+
+**Coût** — ~0,5 j.
+
+---
+
+## E6 — Le front de Pareto des cycles passés est-il informatif ?
+
+`[statut:: proposée]` · Ouverte le 31/07/2026 · issue de [A8-trajectoires](../theorie/A8-trajectoires.md) · **lançable sans A4/A5**
+
+**Hypothèse** `[HYPOTHÈSE]` — Sur les cycles clôturés, avec **2–3 objectifs** mesurables, une **minorité
+nette** domine → le front de Pareto est une **lentille rétrospective utile**. (À 6 objectifs il
+dégénérerait — front ≈ tout — mais on n'en mesure que 2–3, ce qui **sauve** l'affaire.)
+
+**Falsification** — Si la **fraction non dominée** (bootstrappée) est **proche de 1**, Pareto n'informe
+pas à notre $(m,n)$ ; si une **minorité stable** domine, A8 tient comme lentille descriptive.
+
+**Schéma réel** `[ÉTABLI]` — objectifs calculables : **complétion** (E2), **respect délai**
+(`MAX(issues.completed_at)` du cycle vs `cycles.end_date` — ⚠️ pas de `completed_at` sur `cycles`, proxy),
+**débit** (`SUM(story_points)` des issues finies). Risque/dette/stress **non mesurés** → exclus (et c'est
+tant mieux : ça garde $m$ petit).
+
+**Protocole** — filtre de **dominance** $O(n^2)$ sur les cycles clôturés (trivial à $n{\approx}20$) ;
+**bootstrap** : rééchantillonner les cycles, mesurer la **fréquence de non-domination** par cycle. Aucun
+LLM, aucune migration.
+
+**Métrique** — fraction non dominée ; **stabilité au bootstrap** (un cycle « vraiment » non dominé l'est
+sur ≥ X % des rééchantillons).
+
+**Limite** — $n \approx 4$ (scénario) / peu de cycles au seed → mesure la **plomberie + la forme**, pas une
+vérité (C3). Seed **synthétique**.
+
+**Coût** — ~0,5 j (dépend d'E2 pour les objectifs). **Le seul test de frontière lançable sans rien débloquer.**
 
 ---
 
