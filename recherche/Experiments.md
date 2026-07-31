@@ -84,24 +84,72 @@ et jamais construite**. C'est le chaînon manquant entre les deux documents.
 
 ## E2 — La dérivée $\dot x$ apporte-t-elle de l'information ?
 
-`[statut:: proposée]` · Ouverte le 17/07/2026
+`[statut:: proposée]` · Ouverte le 17/07/2026 · **protocole précisé le 31/07/2026 (schéma vérifié)**
 
 **Hypothèse** `[HYPOTHÈSE]` — La **tendance** ($\dot x$) prédit mieux qu'un état absolu ($x$). Deux
 projets à 70 % d'avancement, l'un qui accélère et l'autre qui décélère, ne finissent pas pareil.
 C'est **la meilleure idée** de [`World Model.md`](../World%20Model.md) ([`World_Model_Notes.md`](./World_Model_Notes.md) T3).
+Formalisée en **[Axiome A3](./Axioms.md#a3--le-rythme--ẋ)**.
 
-**Falsification** — Si, sur les cycles clôturés, la vélocité des 2 premières semaines **ne corrèle pas**
-avec le taux de complétion final mieux que ne le fait l'avancement absolu à mi-parcours, alors $\dot x$
+**Falsification** — Si, sur les cycles clôturés, l'avancement au **premier tiers** de la fenêtre **ne
+classe pas** les cycles selon leur complétion finale (corrélation de rang $\rho \leq 0$), alors $\dot x$
 n'apporte rien **ici** et sort du modèle.
 
-**Protocole** — SQL pur, **aucun LLM**, aucune migration. Depuis `cycles` + `issues.completedAt` :
-calculer par cycle la vélocité glissante, la comparer au résultat final. `[ÉTABLI]` Le scénario
-`scripts/scenario/play.mjs` produit 4 cycles clôturés à complétion connue (86 / 75 / 86 / 83 %) —
-**dérisoire statistiquement** (n=4), mais suffisant pour vérifier que **la mesure se calcule** et pour
-regarder la forme.
+**Schéma réel (vérifié 31/07)** `[ÉTABLI]` — migrations V16 / V23 / V38 :
 
-**Coût** — ~1 j. **Le meilleur rapport valeur/risque du dossier** : zéro invention possible, la donnée
-existe, et ça sert le produit (afficher une tendance de cycle) même si l'hypothèse théorique tombe.
+| Donnée | Où | Piège |
+| --- | --- | --- |
+| Fenêtre du cycle | `cycles.start_date`, `cycles.end_date` (DATE) | **Pas de `completed_at` sur `cycles`** → la clôture réelle n'est pas datée ; fenêtre = dates planifiées |
+| Lien cycle→issue | table de jonction **`cycle_issues`** `(cycle_id, issue_id)` | **pas** de `issues.cycle_id` |
+| Issue terminée | `issues.completed_at IS NOT NULL` + `issue_statuses.category = 'COMPLETED'` | exclure `category = 'CANCELLED'` |
+| Effort | `issues.story_points` (INTEGER) | **nullable** → repli sur le comptage |
+
+**Protocole** — SQL pur, **aucun LLM**, aucune migration. Extraction par cycle clôturé : complétion
+finale (en points *et* en comptage) + complétion atteinte à la **mi-fenêtre** :
+
+```sql
+WITH w AS (
+  SELECT id, name, start_date, end_date,
+         (start_date + (((end_date - start_date) * 0.5)::int)) AS mid_date
+  FROM cycles WHERE status = 'COMPLETED'
+),
+s AS (
+  SELECT ci.cycle_id,
+         COUNT(*)                                                       AS n_tot,
+         COUNT(*) FILTER (WHERE st.category = 'COMPLETED')              AS n_done,
+         COALESCE(SUM(i.story_points), 0)                              AS p_tot,
+         COALESCE(SUM(i.story_points) FILTER (WHERE st.category='COMPLETED'), 0) AS p_done,
+         COALESCE(SUM(i.story_points) FILTER (
+             WHERE st.category='COMPLETED' AND i.completed_at::date <= w.mid_date), 0) AS p_done_mid
+  FROM cycle_issues ci
+  JOIN issues         i  ON i.id = ci.issue_id
+  JOIN issue_statuses st ON st.id = i.status_id
+  JOIN w                 ON w.id = ci.cycle_id
+  WHERE st.category <> 'CANCELLED'
+  GROUP BY ci.cycle_id
+)
+SELECT w.name,
+       s.n_done || '/' || s.n_tot                                       AS count_final,
+       ROUND(100.0*s.p_done     / NULLIF(s.p_tot,0), 1)                 AS pct_final_points,
+       ROUND(100.0*s.p_done_mid / NULLIF(s.p_tot,0), 1)                 AS pct_at_mid   -- proxy de ẋ
+FROM w JOIN s ON s.cycle_id = w.id
+ORDER BY w.name;
+```
+
+**Métrique** — corrélation de rang **Spearman** $\rho$ entre `pct_at_mid` (précurseur) et
+`pct_final_points` (résultat), sur l'ensemble des cycles clôturés. Le `completed_at` par issue permet,
+si besoin, une **courbe de burn-up** par cycle (pente = $\dot x$ vrai) plutôt qu'un seul point à mi-fenêtre.
+
+⚠️ **Limite dominante, à annoncer avant de lancer** — `[ÉTABLI]` le seed met **~8 issues sur 267 dans
+des cycles** (« 259 hors cycle », roadmap Phase 4bis) et le scénario produit **~4 cycles clôturés**.
+Donc $n \approx 4$, ~2 points de burn-up par cycle : **statistiquement dérisoire**. Ce run **valide que
+la mesure se calcule sur le vrai schéma** (plomberie), il ne **tranche pas** l'hypothèse. Le vrai test
+exige des **cycles réels** → **C3** (~20/an). Et le seed est **synthétique** : ses story points ne
+viennent pas d'un vrai effort (cf. E1).
+
+**Coût** — ~1 j. **Le meilleur rapport valeur/risque du dossier** : zéro invention possible (la requête
+ne touche que des colonnes vérifiées), et ça sert le produit (afficher une tendance de cycle) même si
+l'hypothèse théorique tombe.
 
 ---
 
