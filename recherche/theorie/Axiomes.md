@@ -123,14 +123,15 @@ Cela lie mécaniquement cette spec au registre [`Experiments.md`](../experiences
 
 ## A5 — Croyances calibrées
 
+> **Poussé à fond le 31/07 → fiche dédiée [`A5-calibration.md`](./A5-calibration.md).** Résultat : A5 **se scinde**, et le goulot est en amont.
+
 - **Énoncé** : chaque estimation porte une confiance qui *veut dire ce qu'elle dit*.
-- **Formalisation** : $B_t : \text{proposition} \rightarrow [0,1]$, avec calibration : parmi les « 0.7 », ~70 % sont vraies.
-- **Couche** : **FRONTIÈRE** (prérequis de A4 et de toute proba affichée).
-- **Pour** : sans calibration, tout « 94 % » est un mensonge de présentation ([`World_Model_Notes.md`](../revues/World-Model.md) §4).
-- **Contre** : calibrer exige des **paires (prédit, réel)** ; on n'en stocke **aucune** aujourd'hui.
-- **Axe d'amélioration** : construire la **table des écarts** (road_to_v2 §4, jamais bâtie) ; commencer par les prédictions **déjà émises** (story points IA).
-- **Test (repro)** : **[E1 — calibration](../experiences/Experiences.md#e1--nos-prédictions-sont-elles-calibrées-)** (score de Brier, courbe de calibration sur story points prédits vs réel). **Prérequis de tout le reste.**
-- **Calculable ?** : 🟡 (la donnée brute existe — story points + `completed_at` — la table de traçage non).
+- **Formalisation** : $\mathbb{E}[\,Y \mid \hat p = p\,] = p$ (calibration binaire) ; pour un point, il faut un **intervalle** et sa **couverture** ($\mathbb{P}(s\in[\ell,u])=1-\alpha$).
+- **Couche** : **FRONTIÈRE**, **scindée** — **A5a** (croyances *scoreables* : effort d'issue, complétion de cycle) = **groundable** · **A5b** (croyances *contrefactuelles* : « si on embauche… ») = **infalsifiable par C2** → **jamais de proba, un scénario**.
+- **Pour / Contre** : sans calibration, tout « 94 % » ment. Mais `[ÉTABLI]` le système **n'émet aujourd'hui aucune proba** (story points = point ; « déjà-vu 41 % » = cosinus déguisé). Et « calibré » seul est **trivial** (prédire le taux de base) → viser **calibré ET tranchant** (Murphy/Gneiting).
+- **Axe d'amélioration** : d'abord **faire émettre une incertitude** (intervalle/proba) par le produit ; baseline obligatoire = **taux de base** (calibré gratis) ; score **propre** (log-loss).
+- **Test (repro)** : **[E1 raffiné](../experiences/Experiences.md#e1--nos-prédictions-sont-elles-calibrées-)** — grain **issue** (volume), réel = `SUM(issue_worklogs.minutes)` (V47) sinon proxy latence ; **doit battre le taux de base** ; grain cycle **indécidable** (IC de Wilson, C3) ; grain décision = **zone interdite** (C2).
+- **Calculable ?** : **A5a** 🟡 (biais mesurable ; calibration vraie bloquée sur « produit émet un intervalle » + worklogs peuplés) · **A5b** ❌ par principe.
 
 ## A6 — Le potentiel $\Phi$ est mesurable
 
