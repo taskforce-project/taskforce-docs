@@ -33,6 +33,8 @@ related:
 | [Q5](#q5--quel-grain-pour-létat-) | Quel grain pour l'état ? | P2 | ouverte |
 | [Q6](#q6--le-brain-os-est-invisible--que-montre-t-on-alors-) | Brain OS invisible : que montre-t-on ? | P1 | ouverte |
 | [Q7](#q7--causalité-sans-contrefactuel--que-signifie-caused_by-) | Que signifie `CAUSED_BY` sans contrefactuel ? | P1 | ouverte |
+| [Q8](#q8--construire-vers-lintérieur-ou-vers-lextérieur-) | Écosystème : vers l'intérieur ou l'extérieur ? | **P0** | ouverte |
+| [Q9](#q9--quel-flywheel-vend-on-) | Quel flywheel vend-on (F1/F2/F3) ? | P1 | ouverte |
 
 ---
 
@@ -165,6 +167,49 @@ prochain lecteur — humain ou agent.
 **Options** — (1) renommer en `SUSPECTED_CAUSE` / porter une confiance explicite ; (2) ne l'écrire que
 depuis une **intervention réelle observée** (« on a réduit la dette, la vélocité est montée ») — rare,
 mais honnête ; (3) laisser mort. **Ne pas** le remplir par LLM sans (1).
+
+---
+
+## Q8 — Construire vers l'intérieur ou vers l'extérieur ?
+
+`[statut:: ouverte]` · `[prio:: P0]` · Ouverte le 31/07/2026
+
+**La question** — La vision écosystème ([`Ecosystem_Notes.md`](./Ecosystem_Notes.md)) se **déploie vers
+l'extérieur** : Core → Mind → Memory → Connectors → Simulation → Execution → Marketplace / Domain Packs.
+`[HYPOTHÈSE]` L'ordre de **construction** honnête est l'inverse de l'ordre d'**excitation**.
+
+**Pourquoi ça compte** — Construire vers l'extérieur (connecteurs, agents, marketplace) **avant** d'avoir
+prouvé que le cœur pauvre (mémoire F2 + signaux $\dot x$ / taux de base) porte de la valeur, c'est
+empiler des couches sur une fondation non testée — l'interdit de [`CLAUDE.md`](./CLAUDE.md) §5, à
+l'échelle de l'archi.
+
+**Position actuelle** `[HYPOTHÈSE]` — séquence proposée : (1) élargir la mémoire (Phase 4bis) →
+(2) benchmarks E1–E3 → (3) ADR exposition (Q6) → (4) *alors* la question d'un $f$ écrit à la main →
+(∞) Mind/Marketplace. Détail : [`Ecosystem_Notes.md`](./Ecosystem_Notes.md) §6.
+
+**Bloque** : rien techniquement, mais **oriente tout l'usage du temps R&D**. C'est la question de
+priorisation, pas de faisabilité.
+
+---
+
+## Q9 — Quel flywheel vend-on ?
+
+`[statut:: ouverte]` · `[prio:: P1]` · Ouverte le 31/07/2026
+
+**La question** — Le pitch « more usage → better models → better decisions » `[ÉTABLI]` **fusionne trois
+boucles** qui n'ont ni le même volume, ni le même grain, ni la même valeur
+([`Ecosystem_Notes.md`](./Ecosystem_Notes.md) §3) :
+
+| | Améliore | Volume | Réalité |
+| - | --- | --- | --- |
+| **F1** préférence/style (LoRA-DPO) | la rédaction | élevé (issue) | ✅ speccé — [Data_Flywheel](../v1/road_to_v2/Data_Flywheel_et_Apprentissage.md) |
+| **F2** mémoire organisationnelle | la difficulté à te remplacer | moyen (cycle) | ✅✅ **le moat**, déjà à moitié bâti |
+| **F3** modèle du monde (prédire les conséquences) | le simulateur | dérisoire (~20/an, isolé) | 🟡 étranglé par C1/C3 |
+
+**Ce qu'il faut trancher** — Le discours commercial et la roadmap doivent viser **F2** (« la mémoire de
+ton entreprise, instrumentée »), **pas F3** (« un modèle qui prédit mieux »). `[DÉDUIT]` Accélérer F3
+exige d'apprendre **entre** workspaces → casse l'isolation décidée (road_to_v2 §1) **et** le garde-fou
+RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une slide ne promette F3.
 
 ---
 

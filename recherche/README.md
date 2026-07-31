@@ -56,6 +56,7 @@ altitudes d'analyse.
 | [🤖 `CLAUDE.md`](./CLAUDE.md) | **Contrat d'agent** du mode recherche : rôle, méthode, garde-fous | « Comment on réfléchit ici ? » |
 | [📐 `Mathematical_Model.md`](./Mathematical_Model.md) | Le formalisme candidat : objets, opérateurs, trajectoires | « Quels objets manipule le moteur ? » |
 | [📖 `World_Model_Notes.md`](./World_Model_Notes.md) | Notes de lecture critiques sur le corpus source | « Qu'est-ce qui tient, qu'est-ce qui casse ? » |
+| [📖 `Ecosystem_Notes.md`](./Ecosystem_Notes.md) | Triage critique de la vision « écosystème en couches » | « Le moat, c'est quelle boîte ? » |
 | [❓ `Open_Questions.md`](./Open_Questions.md) | Registre des questions non tranchées | « Sur quoi on bloque ? » |
 | [🧪 `Experiments.md`](./Experiments.md) | Registre des hypothèses **falsifiables** + protocole | « Comment on saurait qu'on a tort ? » |
 | [📚 `References.md`](./References.md) | Bibliothèque mentale — cadres réels, vérifiés | « Qui a déjà résolu ça ? » |
