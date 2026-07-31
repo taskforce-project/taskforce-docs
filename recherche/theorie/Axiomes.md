@@ -112,14 +112,15 @@ Cela lie mécaniquement cette spec au registre [`Experiments.md`](../experiences
 
 ## A4 — Il existe une dynamique $f$
 
+> **Poussé à fond le 31/07 → fiche dédiée [`A4-dynamique.md`](./A4-dynamique.md).** Résultat : le $f$ « formule » est mort ; le $f$ honnête est **non paramétrique** et **dépend de A5**.
+
 - **Énoncé** : une action transforme le monde de façon modélisable.
-- **Formalisation** : $S_{t+1} = f(S_t, a_t, \epsilon)$, ou en probabiliste $P(G_{t+1} \mid G_t, a)$.
-- **Couche** : **FRONTIÈRE** — *l'axiome central, et le moins grounded* ([`Mathematical_Model.md`](../theorie/Modele-mathematique.md) §1).
-- **Pour** : sans lui, pas de simulation ni de planification.
-- **Contre** : **C1** interdit de l'apprendre ($N\approx1$) ; **C2** interdit de le valider (monde non rejouable). Écrit à la main = simulation de nos croyances ; par LLM = texte chiffré.
-- **Axe d'amélioration** : n'accepter que la version **(a) assumée** — un modèle **System Dynamics** petit, à la main, *présenté comme outil de pensée* ([`References.md`](../references/Bibliotheque.md) §4), jamais oracle.
-- **Test (repro)** : **[E4 — test de Brooks](../experiences/Experiences.md#e4--un-llm-peut-il-produire-une-dynamique-non-triviale-)** (le LLM sait-il faire de la dynamique ?) **et [E3](../experiences/Experiences.md#e3--la-classe-de-référence-bat-elle-le-llm-)** (un taux de base SQL le bat-il ?). Si E3 gagne → A4 est **inutile**.
-- **Calculable ?** : ❌ (n'existe pas).
+- **Formalisation** : $f : \mathcal{G} \to \Delta(\mathcal{G})$, $G_{t+1} \sim f(\cdot \mid G_t, a_t)$ — **graph rewriting**, **pas** $M S_t$ (une matrice ne peut pas ajouter un nœud).
+- **Couche** : **FRONTIÈRE** — l'axiome central. **Reformulé** : $f = f_{\text{drift}}$ (= A3, ✅ gratuit) **+** $f_{\text{action}}$ (le problème).
+- **Pour / Contre** : sans lui, pas de simulation. Mais `[DÉDUIT]` $f_{\text{action}}$ est **non identifiable** (action non aléatoire → confondue ; contrefactuel jamais observé, C2) — plus profond que « pas assez de données ». Et l'hypothèse de **Markov** derrière $f(G_t,a)$ est douteuse (variables cachées → A2).
+- **Axe d'amélioration** : $f$ **n'est pas une formule** → **récupération non paramétrique** d'épisodes $(G,a,G')$ (case-based, lignée road_to_v2 §4). **Donc A4 dépend de la table d'épisodes de A5.** Un opérateur local **existe déjà** et est **idempotent** (ingestion Phase 4bis, verrou V69).
+- **Test (repro)** : **[E4](../experiences/Experiences.md#e4--un-llm-peut-il-produire-une-dynamique-non-triviale-)** (Brooks) · **[E3](../experiences/Experiences.md#e3--la-classe-de-référence-bat-elle-le-llm-)** (le taux de base le bat-il ? si oui → $f$-modèle **inutile**) · **[E5](../experiences/Experiences.md#e5--un-llm-est-il-une-fonction-stable-)** (un LLM est-il seulement une **fonction** ?).
+- **Calculable ?** : $f_{\text{drift}}$ ✅ · $f_{\text{action}}$ ❌ (table d'épisodes absente + non-identifiabilité). Seul substitut : la classe de référence (E3).
 
 ## A5 — Croyances calibrées
 
@@ -157,15 +158,15 @@ Cela lie mécaniquement cette spec au registre [`Experiments.md`](../experiences
 
 ## A8 — On juge des trajectoires, pas des états
 
+> **Poussé à fond le 31/07 → fiche dédiée [`A8-trajectoires.md`](./A8-trajectoires.md).** Le **seul** axiome de frontière groundable **maintenant** (sur le passé, sans $f$).
+
 - **Énoncé** : la valeur est celle d'un **chemin**, comparée sans tout réduire à un scalaire.
-- **Formalisation** : trajectoire $\pi = (G_0, A_1, G_1, \dots)$ ; comparaison par **dominance de Pareto**, pas par $\arg\max$ d'une somme pondérée :
-  $$\pi_a \succ \pi_b \iff \forall k,\, J_k(\pi_a) \geq J_k(\pi_b) \ \land\ \exists k,\, J_k(\pi_a) > J_k(\pi_b)$$
-- **Couche** : **FRONTIÈRE** (dépend de A4 pour générer les $\pi$).
-- **Pour** : évite **Goodhart** et respecte « l'humain garde le choix » — cohérent, contrairement à l'utilité scalarisée qui se contredit ([`World_Model_Notes.md`](../revues/World-Model.md) §5).
-- **Contre** : sans A4, il n'y a **pas de trajectoire** à comparer. Sans A5, les $J_k$ ne sont pas fiables.
-- **Axe d'amélioration** : appliquer Pareto **d'abord** aux données réelles (comparer des cycles passés sur plusieurs axes), avant tout futur simulé.
-- **Test (repro)** : calculer le **front de Pareto de cycles clôturés** sur (complétion, respect délai, points livrés) — faisable dès que E2 tourne, sans A4.
-- **Calculable ?** : 🟡 (sur trajectoires **passées** : oui ; sur trajectoires **simulées** : ❌, bloqué par A4).
+- **Formalisation** : ordre **partiel** (dominance de Pareto) sur $J(\pi)\in\mathbb{R}^m$ : $\pi_a \succ \pi_b \iff \forall k,\ J_k(\pi_a) \geq J_k(\pi_b)\ \land\ \exists k,\ J_k(\pi_a) > J_k(\pi_b)$. Une somme pondérée linéaire ne touche que le **bord convexe** → incomplète.
+- **Couche** : **FRONTIÈRE**. **Principe** durable · **calcul** rétrospectif seulement.
+- **Pour / Contre** : évite Goodhart, respecte « l'humain garde le choix ». Mais `[DÉDUIT]` **sur le passé, on compare des résultats réalisés, pas des futurs alternatifs** (A4 + C2) → A8 groundé est **descriptif (F2)**, pas prescriptif. Et à $m \gtrsim \log_2 n$ (ici $n{\approx}20$), **le front ≈ tout** → le rêve 6 axes est **inutile** ; seuls **2–3 axes** sont mesurables, ce qui le sauve.
+- **Axe d'amélioration** : **ε-contrainte / lexicographique** (contraintes « runway > 6 mois », pas poids ; atteint le non convexe) ; **bootstrapper** le front ($n{=}20$ fragile) ; garder le **principe « jamais de score global unique »** comme étoile polaire même quand le calcul est bloqué.
+- **Test (repro)** : **[E6](../experiences/Experiences.md#e6--le-front-de-pareto-des-cycles-passés-est-il-informatif-)** — front de Pareto bootstrappé des cycles passés sur (complétion, délai, débit). Si fraction non dominée ≈ 1 → n'informe pas ; si minorité nette → lentille rétrospective. **Lançable sans débloquer A4/A5.**
+- **Calculable ?** : 🟢 **descriptif** (E6, sans $f$) · ❌ **prescriptif** (comparer des futurs).
 
 ---
 
