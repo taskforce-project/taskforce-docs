@@ -136,14 +136,14 @@ Cela lie mécaniquement cette spec au registre [`Experiments.md`](../experiences
 
 ## A6 — Le potentiel $\Phi$ est mesurable
 
-- **Énoncé** : un nœud ouvre ou ferme des options futures, quantifiables.
-- **Formalisation** : $\Phi_i$ = valeur d'option (cadre **options réelles**, Dixit & Pindyck — [`References.md`](../references/Bibliotheque.md) §6).
-- **Couche** : **FRONTIÈRE** (la plus fragile).
-- **Pour** : intuition juste — deux états identiques peuvent avoir des futurs différents.
-- **Contre** : en finance $\Phi$ se valorise via un **prix** et une **volatilité** observables ; ici ni l'un ni l'autre. L'exemple du dump (« partenaire OpenAI ») **n'est pas une donnée du système**.
-- **Axe d'amélioration** : chercher un **proxy calculable** (ex. nombre de dépendances *sortantes* libres d'un nœud) — ou déclasser $\Phi$ en variable non modélisée.
-- **Test (repro)** : **[Q3](../Questions-ouvertes.md#q3--le-potentiel-φ-est-il-mesurable-)** — trouver **une** définition de $\Phi$ calculable en SQL sur le graphe. Aucune trouvée ⇒ $\Phi$ reste hors modèle.
-- **Calculable ?** : ❌ (aucun proxy identifié).
+> **Poussé le 31/07 → fiche commune [`A6-A7-frontiere.md`](./A6-A7-frontiere.md).** Verdict : **hors modèle.**
+
+- **Énoncé / Formalisation** : $\Phi_i$ = valeur d'option (options réelles). Mais $V = V(S,\sigma,\dots)$ — **la valeur vient de la volatilité $\sigma$** ; ici **ni prix $S$, ni $\sigma$**.
+- **Couche** : **FRONTIÈRE**, la plus en aval → **doublement bloquée** (présuppose A4 *et* A5).
+- **Pour / Contre** : intuition juste, mais tout proxy candidat est **soit** une métrique de graphe qui ne mesure pas l'optionalité, **soit** le **runway relabellisé**. `[DÉDUIT]` **structurellement impossible**, pas juste difficile.
+- **Axe d'amélioration** : **déclasser $\Phi$** ; **garder** un signal d'**irréversibilité** structurel $\text{irr}(v)=\deg^-_{\texttt{DEPENDS\_ON}}(v)$ — calculable, ≠ $\Phi$.
+- **Test (repro)** : **[Q3](../Questions-ouvertes.md#q3--le-potentiel-φ-est-il-mesurable-)** (décision, pas expérience — cf. fiche §4).
+- **Calculable ?** : ❌ $\Phi$ · 🟢 fragment `irr(v)`.
 
 ## A7 — Les arêtes peuvent être causales
 
