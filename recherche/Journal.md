@@ -24,6 +24,36 @@ related:
 
 ---
 
+## 2026-07-31 (quinquies) — A6 (Φ) + A7 (causalité) : clôture de la frontière
+
+**Fait** — A6 et A7 traités **ensemble** → fiche commune [`theorie/A6-A7-frontiere.md`](./theorie/A6-A7-frontiere.md).
+Entrées A6 et A7 de [`Axiomes.md`](./theorie/Axiomes.md) réduites. **Frontière A4–A8 entièrement poussée.**
+
+**Trouvé**
+- `[DÉDUIT]` A6 et A7 = **le même geste** : décorer le graphe d'une grandeur **absente des données**
+  (potentiel / cause). Les deux **s'échouent sur C2**.
+- `[DÉDUIT]` **A6 (Φ) hors modèle** : la valeur d'option vient de la **volatilité $\sigma$**, or ni prix ni
+  $\sigma$ ici ; tout proxy = métrique de graphe qui ne mesure pas l'optionalité, ou **runway relabellisé**.
+  Doublement bloqué (présuppose A4 + A5). **Sauvetage** : `irr(v)=\deg^-_{DEPENDS\_ON}(v)` (irréversibilité), calculable, ≠ Φ.
+- `[DÉDUIT]` **A7 = l'ombre statique de A4** : `CAUSED_BY` est $P(G'|G,do(a))$ au grain de l'arête → même
+  non-identifiabilité, **tombent ensemble**. `[ÉTABLI]` `count=0` (personne ne l'écrit). **Sauvetage** :
+  couche **précédence barreau 1** = générateur d'hypothèses, `SUSPECTED_CAUSE` + confiance + provenance.
+- `[DÉDUIT]` **Point de méthode** : A6/A7 **n'ont pas d'expérience** — leur verdict est « hors modèle »,
+  fabriquer un test pour les faire paraître actifs serait malhonnête. **Un axiome a le droit à un « non ».**
+
+**Décidé** — Frontière close. **Le rocher commun = C2** : A4, A6, A7, A5b s'y échouent, et tous ont le
+**même repli** : structure observée + mémoire (**F2**), jamais futur/cause **inférés (F3)**.
+
+**Méta (frontière complète A4–A8)** — Le système d'axiomes, poussé à fond, **redit ce que les revues
+disaient** : le moat n'est pas la prédiction, c'est la **mémoire instrumentée**. Ce qui reste
+constructible : **table d'épisodes/écarts**, **taux de base (E3)**, **front rétrospectif (E6, A8)**,
++ deux fragments structurels (`irr(v)`, précédence). Tout le reste est bloqué par C2.
+
+**Prochain coup** — **Synthèse** : « ce à quoi le système d'axiomes s'est réduit » — candidate à
+**promotion** (ADR, ou note dans `v1/road_to_v2/`). Point dev en attente inchangé (worklogs peuplés ?).
+
+---
+
 ## 2026-07-31 (quater) — A8 (trajectoires / Pareto) poussée à fond · frontière solo
 
 **Fait** — A8 → fiche dédiée [`theorie/A8-trajectoires.md`](./theorie/A8-trajectoires.md). Entrée A8 de
