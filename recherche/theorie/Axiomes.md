@@ -147,14 +147,14 @@ Cela lie mécaniquement cette spec au registre [`Experiments.md`](../experiences
 
 ## A7 — Les arêtes peuvent être causales
 
-- **Énoncé** : le graphe encode des causes, pas seulement des associations.
-- **Formalisation** : $e_{ij}$ de type `CAUSED_BY`, au sens SCM de Pearl ([`References.md`](../references/Bibliotheque.md) §3).
-- **Couche** : **FRONTIÈRE**.
-- **Pour** : `[ÉTABLI]` l'enum `CAUSED_BY` existe déjà (V51).
-- **Contre** : **C2** — le contrefactuel n'est pas observable sur un projet unique. Une arête `CAUSED_BY` posée par LLM est une **corrélation avec un nom qui ment**. `[ÉTABLI]` aucun code ne l'écrit aujourd'hui.
-- **Axe d'amélioration** : ne l'écrire que depuis une **intervention réelle observée**, ou la renommer `SUSPECTED_CAUSE` + confiance.
-- **Test (repro)** : **[Q7](../Questions-ouvertes.md#q7--causalité-sans-contrefactuel--que-signifie-caused_by-)** — `SELECT count(*) FROM knowledge_edges WHERE relation_type='CAUSED_BY';` (= 0 attendu) + décider la règle d'écriture avant de le remplir.
-- **Calculable ?** : ❌ (aucun écrivain ; et la sémantique causale n'est pas défendable sous C2).
+> **Poussé le 31/07 → fiche commune [`A6-A7-frontiere.md`](./A6-A7-frontiere.md).** Verdict : **non identifiable — c'est l'ombre de A4.**
+
+- **Énoncé / Formalisation** : $e_{ij}$ de type `CAUSED_BY` (barreau 2/3 de Pearl). On n'a que le **barreau 1** (corrélation).
+- **Couche** : **FRONTIÈRE**. `[DÉDUIT]` **A7 = A4 au grain de l'arête** (même confusion, même mur C2) → **les deux tombent ensemble**.
+- **Pour / Contre** : `[ÉTABLI]` l'enum existe (V51) mais **personne ne l'écrit** (`count = 0`). Grimper d'assoc → cause exige une hypothèse (aucun confondeur caché) **invérifiable** à $n{=}1$. Le **nom `CAUSED_BY` ment** s'il est posé par LLM.
+- **Axe d'amélioration** : n'écrire que depuis une **intervention loggée** (avant/après, anecdote $n{=}1$) ; sinon **couche précédence** `SUSPECTED_CAUSE` (barreau 1) = **générateur d'hypothèses**, confiance + **provenance** obligatoires.
+- **Test (repro)** : **[Q7](../Questions-ouvertes.md#q7--causalité-sans-contrefactuel--que-signifie-caused_by-)** (décision, pas expérience).
+- **Calculable ?** : ❌ cause · 🟢 fragment précédence barreau 1.
 
 ## A8 — On juge des trajectoires, pas des états
 
