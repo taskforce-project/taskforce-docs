@@ -80,6 +80,19 @@ et jamais construite**. C'est le chaînon manquant entre les deux documents.
 
 **Coût** — ~2 j. Pendant ce temps : pas de clôture V1. → **post-V1**.
 
+**Raffinement (31/07, issu de [A5-calibration](../theorie/A5-calibration.md))** — E1 n'est pas « une »
+calibration mais **trois régimes** :
+- **Grain issue** (volume) : mesurer d'abord le **biais** $\mathbb{E}[\hat s - s]$ et la dispersion des
+  story points (c'est de la **régression**, pas encore de la calibration). Réel = `SUM(issue_worklogs.minutes)`
+  (V47) **si peuplé** ; sinon **latence** `completed_at − created_at`, en **déclarant le biais** (latence ≠ effort).
+- **Exiger de battre le taux de base** (décomposition de Murphy : fiabilité **et** résolution — un
+  prédicteur « toujours la moyenne » est calibré *et* nul). Sinon le « modèle » ne sert à rien → rejoint [E3](#e3--la-classe-de-référence-bat-elle-le-llm-).
+- **Grain cycle** : mesuré **pour mémoire** seulement — ~4 points/bin, **IC de Wilson ≈ [0,30 ; 0,95]** →
+  **statistiquement indécidable** (C3).
+- **Grain décision** (contrefactuel) : **zone interdite**, on ne score pas (mur C2).
+- **Bloqué en amont** : la calibration vraie (couverture d'intervalle) exige que **le produit émette une
+  incertitude** (intervalle/proba), pas un point → **E1b**, non lançable en l'état.
+
 ---
 
 ## E2 — La dérivée $\dot x$ apporte-t-elle de l'information ?
