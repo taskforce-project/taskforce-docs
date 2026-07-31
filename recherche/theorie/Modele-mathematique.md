@@ -18,11 +18,14 @@ related:
 # 📐 Modèle mathématique candidat — Brain OS
 
 > **Statut : `[HYPOTHÈSE]` — v0.1, rien n'est implémenté.** Ce document met au propre le formalisme issu
-> du brainstorm [`World Model.md`](../World%20Model.md) (LaTeX réparé, doublons fusionnés, marqueurs
+> du brainstorm [`World Model.md`](../../World%20Model.md) (LaTeX réparé, doublons fusionnés, marqueurs
 > épistémiques ajoutés). **Le mettre au propre ne le valide pas.**
 >
-> Il **contredit** l'architecture décidée le 07/07 ([Moteur_IA_World_Model_OODA](../v1/road_to_v2/Moteur_IA_World_Model_OODA.md) §4 :
+> Il **contredit** l'architecture décidée le 07/07 ([Moteur_IA_World_Model_OODA](../../v1/road_to_v2/Moteur_IA_World_Model_OODA.md) §4 :
 > mémoire/retrieval, sans gradient). Tant qu'aucun **ADR** ne tranche, ceci est une **piste**, pas une cible.
+>
+> **➡️ La distillation disciplinée de ce brouillon vit dans [`Axioms.md`](../theorie/Axiomes.md)** (axiomes en deux
+> couches, un test de réfutation par axiome). Ce fichier-ci reste l'exploration ; `Axioms.md` est la spec.
 
 ## Table des matières
 
@@ -49,11 +52,11 @@ $$S_{t+1} = f(S_t, a_t, \epsilon)$$
 trou central : chaque raffinement ultérieur (composantes de $v_i$, arbre de futurs, paysage
 d'énergie) **s'appuie dessus sans l'interroger**.
 
-Sous les contraintes C1–C4 ([`CLAUDE.md`](./CLAUDE.md) §3), il n'y a que **deux** origines possibles :
+Sous les contraintes C1–C4 ([`CLAUDE.md`](../CLAUDE.md) §3), il n'y a que **deux** origines possibles :
 
 | Origine | Ce que c'est réellement | Conséquence |
 | --- | --- | --- |
-| **(a) $f$ écrite à la main** | Une simulation de **nos propres croyances** | Elle confirmera ce qu'on y a mis. Utile comme *outil de pensée* (cf. System Dynamics, [`References.md`](./References.md) §4), **jamais** comme oracle. |
+| **(a) $f$ écrite à la main** | Une simulation de **nos propres croyances** | Elle confirmera ce qu'on y a mis. Utile comme *outil de pensée* (cf. System Dynamics, [`References.md`](../references/Bibliotheque.md) §4), **jamais** comme oracle. |
 | **(b) $f$ produite par un LLM** | De la **génération de texte** avec des chiffres dessus | C'est exactement ce que le document dit vouloir dépasser. Le formalisme sert alors de **décor**. |
 | ~~(c) $f$ apprise des données~~ | — | ❌ **C1** : $N \approx 1$. Impossible à notre échelle. |
 
@@ -95,7 +98,7 @@ $$S_t = (G_t,\; M_t,\; B_t)$$
 | $M_t$ | **Mémoire** | Documents, historique, artefacts | 🟡 partiel — ingestion limitée aux cycles clôturés |
 | $B_t$ | **Croyances** | « le projet est probablement en retard : 0.63 » | ❌ n'existe pas |
 
-**Distinction non négociable** (POMDP, cf. [`References.md`](./References.md) §2) — le système ne
+**Distinction non négociable** (POMDP, cf. [`References.md`](../references/Bibliotheque.md) §2) — le système ne
 connaît **jamais** $S$, seulement une estimation :
 
 $$\hat S_t \neq S_t$$
@@ -114,19 +117,19 @@ $$v_i = (x_i,\; \dot x_i,\; \sigma_i,\; \Phi_i,\; C_i,\; K_i)$$
 | $x$ | **État** | `progress = 0.7`, `budget = 50000` | ✅ oui — colonnes + `metadata` |
 | $\dot x$ | **Vitesse / tendance** | `dette +7 %/semaine` | ✅ **oui, par SQL pur** — `cycles`, `completedAt`, `assignment_events` |
 | $\sigma$ | **Incertitude** | `deadline : confiance 0.4` | ❌ non — aucune source. Inventée = fausse. |
-| $\Phi$ | **Potentiel** (options ouvertes) | « peut s'étendre : Europe, API » | ❌ non — et probablement **non mesurable** (cf. [`Open_Questions.md`](./Open_Questions.md) Q3) |
+| $\Phi$ | **Potentiel** (options ouvertes) | « peut s'étendre : Europe, API » | ❌ non — et probablement **non mesurable** (cf. [`Open_Questions.md`](../Questions-ouvertes.md) Q3) |
 | $C$ | **Contraintes** | `budget < 100k`, `deadline < 3 mois` | 🟡 partiel — dates de cycle, rien de formalisé |
 | $K$ | **Causalité connue** | `dette ↑ ⟹ vélocité ↓` | ❌ non — enum `CAUSED_BY` existe, **aucun écrivain** |
 
 > **Le point le plus rentable du document source**, et de loin : **$\dot x$**. La dérivée. Deux projets
 > avec le même $x$ mais des $\dot x$ opposés ne sont **pas dans le même état** — l'un accélère, l'autre
 > meurt. `[ÉTABLI]` C'est la **seule** des six composantes calculable dès maintenant, sans LLM, sans
-> modèle, sans invention : les données sont déjà en base. → [`Experiments.md`](./Experiments.md) §E2.
+> modèle, sans invention : les données sont déjà en base. → [`Experiments.md`](../experiences/Experiences.md) §E2.
 >
 > **Le piège symétrique** : quatre des six composantes ne sont **pas mesurables ici**. Les inscrire dans
 > le formalisme ne les fait pas exister — ça donne juste à leur invention future une **apparence de
 > rigueur**. Un modèle à 6 composantes dont 4 sont fabriquées est **moins fiable** qu'un modèle à 2
-> composantes vraies (règle : [`CLAUDE.md`](./CLAUDE.md) §5).
+> composantes vraies (règle : [`CLAUDE.md`](../CLAUDE.md) §5).
 
 ## 5. Les relations
 
@@ -135,7 +138,7 @@ $$v_i = (x_i,\; \dot x_i,\; \sigma_i,\; \Phi_i,\; C_i,\; K_i)$$
 $$e_{ij} = (\text{type},\; w,\; \text{confiance})$$
 
 `[HYPOTHÈSE]` L'ambition du document source est que $E$ devienne **causal** (au sens de Pearl,
-[`References.md`](./References.md) §3), pas seulement associatif :
+[`References.md`](../references/Bibliotheque.md) §3), pas seulement associatif :
 
 $$\text{Dette} \uparrow \;\Rightarrow\; \text{Vélocité} \downarrow \;\Rightarrow\; \text{Retard} \uparrow$$
 
@@ -155,8 +158,8 @@ $$A_i(G_t) \;\longmapsto\; P(G_{t+1} \mid G_t, a)$$
 
 > ⚠️ **Voir §1.** Cette distribution est le cœur du modèle — et personne ne sait la calculer ici.
 > Le brainstorm illustre avec `Hire(Developer) → Vélocité +30 %`. **C'est empiriquement faux** :
-> loi de Brooks, 1975 ([`References.md`](./References.md) §4). L'exemple choisi pour démontrer le
-> modèle est le contre-exemple canonique du domaine. Analyse → [`World_Model_Notes.md`](./World_Model_Notes.md) §3.
+> loi de Brooks, 1975 ([`References.md`](../references/Bibliotheque.md) §4). L'exemple choisi pour démontrer le
+> modèle est le contre-exemple canonique du domaine. Analyse → [`World_Model_Notes.md`](../revues/World-Model.md) §3.
 
 ## 7. Les trajectoires
 
@@ -185,7 +188,7 @@ $$U = \alpha F + \beta K + \gamma P - \delta R - \epsilon C$$
 
 **Trois objections, dont une rédhibitoire :**
 
-1. **Goodhart** ([`References.md`](./References.md) §5) — dès qu'on optimise une somme pondérée de
+1. **Goodhart** ([`References.md`](../references/Bibliotheque.md) §5) — dès qu'on optimise une somme pondérée de
    proxys, on optimise les **proxys**, pas l'objectif.
 2. **Unités incommensurables** — on ne peut pas additionner des euros et de la « charge mentale » sans
    inventer un taux de change. Les poids $\alpha \dots \epsilon$ ne sont **ni mesurables, ni stables**,
@@ -205,7 +208,7 @@ $$\pi_a \text{ domine } \pi_b \iff \forall k,\; J_k(\pi_a) \geq J_k(\pi_b) \;\la
 ## 9. Le pipeline plutôt qu'une formule
 
 `[HYPOTHÈSE]` Le document a raison sur ce point : **pas une équation, une chaîne de modules** (c'est
-aussi l'architecture de LeCun 2022 — modules séparés, cf. [`References.md`](./References.md) §1).
+aussi l'architecture de LeCun 2022 — modules séparés, cf. [`References.md`](../references/Bibliotheque.md) §1).
 
 ```text
 Observations
@@ -249,14 +252,14 @@ Honnêteté du périmètre — ce formalisme est **muet** sur :
 
 - **D'où vient $f$** (§1). C'est le seul point qui compte, et il n'est pas traité.
 - **Comment on saurait qu'il a tort.** Aucun critère de falsification n'est proposé nulle part.
-  → [`Experiments.md`](./Experiments.md)
+  → [`Experiments.md`](../experiences/Experiences.md)
 - **Ce qu'il coûte.** Aucune estimation, ni en heures, ni en tokens (`AiMeter`), ni en latence.
 - **Pourquoi ne pas prendre System Dynamics** (Forrester 1961 ; Abdel-Hamid & Madnick 1991), qui
-  modélise *exactement* ce domaine, à la main, depuis 35 ans. → [`Open_Questions.md`](./Open_Questions.md) Q1.
+  modélise *exactement* ce domaine, à la main, depuis 35 ans. → [`Open_Questions.md`](../Questions-ouvertes.md) Q1.
 - **Le rythme d'usage réel** : $\gamma^t$ suppose un horizon. Sur quelle durée ? (C3 : ~20 points/an.)
 
 ---
 
-**Points d'entrée :** [🔬 R&D](./README.md) · [🤖 Mode recherche](./CLAUDE.md) · [📖 Notes critiques](./World_Model_Notes.md) · [❓ Questions](./Open_Questions.md) · [🧪 Expériences](./Experiments.md)
+**Points d'entrée :** [🔬 R&D](../README.md) · [🤖 Mode recherche](../CLAUDE.md) · [📖 Notes critiques](../revues/World-Model.md) · [❓ Questions](../Questions-ouvertes.md) · [🧪 Expériences](../experiences/Experiences.md)
 
 **Dernière mise à jour :** 17/07/2026 · **v0.1** · Projet Taskforce — Metz Numeric School 2025-2026

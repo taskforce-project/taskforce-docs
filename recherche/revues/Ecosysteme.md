@@ -20,7 +20,7 @@ related:
 
 > **Objet** — triage du dump « écosystème en couches » (World Model central → Mind / Memory / Reality
 > Connectors / Simulation / Execution → Marketplace / Domain Packs) + 4 croquis manuscrits, session du
-> 31/07/2026. Même fonction que [`World_Model_Notes.md`](./World_Model_Notes.md), sur un autre artefact.
+> 31/07/2026. Même fonction que [`World_Model_Notes.md`](../revues/World-Model.md), sur un autre artefact.
 >
 > **Rappel de fraîcheur** — les `[ÉTABLI]` code s'appuient sur `.ai/brain-os-roadmap.md` (snapshot
 > 16/07). Re-vérifier avant d'affirmer en soutenance.
@@ -41,7 +41,7 @@ related:
 
 ## 2. ⚠️ Le trou, encore : le simulateur dessiné en grand
 
-`[ÉTABLI]` C'est **exactement** le trou du tour précédent ([`World_Model_Notes.md`](./World_Model_Notes.md) §2),
+`[ÉTABLI]` C'est **exactement** le trou du tour précédent ([`World_Model_Notes.md`](../revues/World-Model.md) §2),
 redessiné en plus gros. Le schéma contient deux boîtes centrales — `MATHEMATICAL ENGINE / transition
 models` et `WORLD SIMULATOR / Monte Carlo / MCTS` — qui **présupposent $f$ résolu**.
 
@@ -54,7 +54,7 @@ models` et `WORLD SIMULATOR / Monte Carlo / MCTS` — qui **présupposent $f$ r�
 
 > **Ce qui survit** — un simulateur **existe** comme piste, mais **seulement** en version **écrite à la
 > main, petite, interprétable** (System Dynamics — Forrester ; Abdel-Hamid & Madnick, cf.
-> [`References.md`](./References.md) §4), **assumée comme outil de pensée**, jamais comme oracle. Ce qui
+> [`References.md`](../references/Bibliotheque.md) §4), **assumée comme outil de pensée**, jamais comme oracle. Ce qui
 > est mort, c'est la version **MCTS / transition apprise** du schéma. La distinction n'est pas un détail :
 > elle sépare « faisable et honnête » de « infaisable et déguisé ».
 
@@ -62,7 +62,7 @@ models` et `WORLD SIMULATOR / Monte Carlo / MCTS` — qui **présupposent $f$ r�
 
 Le dump promet : *« more usage → more state → better models → better decisions → more usage »*.
 Cette chaîne **fusionne trois boucles distinctes** qui n'ont ni le même volume, ni le même grain, ni la
-même valeur. `[ÉTABLI]` La distinction est ancrée : [Data_Flywheel_et_Apprentissage](../v1/road_to_v2/Data_Flywheel_et_Apprentissage.md)
+même valeur. `[ÉTABLI]` La distinction est ancrée : [Data_Flywheel_et_Apprentissage](../../v1/road_to_v2/Data_Flywheel_et_Apprentissage.md)
 existe déjà et ne parle que de **la première**.
 
 | # | « Flywheel » | Ce qu'il améliore | Volume / grain | Réalité |
@@ -87,7 +87,7 @@ qu'une qui simule des futurs fictifs. **Vends la mémoire, pas la prédiction.**
 
 `[ÉTABLI]` La marketplace est **déjà la Phase 5** de la roadmap, **déjà rangée en backlog post-V1**.
 
-Lens **Entrepreneur SaaS** ([`CLAUDE.md`](./CLAUDE.md) §7) : une marketplace est un **effet de réseau
+Lens **Entrepreneur SaaS** ([`CLAUDE.md`](../CLAUDE.md) §7) : une marketplace est un **effet de réseau
 biface** — elle a besoin d'une **liquidité offre** (des tiers qui publient agents / packs / connecteurs)
 **et** d'une **liquidité demande** (assez de clients pour que publier vaille le coup). Tu as **N ≈ 1
 workspace** et **un développeur**. `[DÉDUIT]` Le moat marketplace est **réel à 3 ans, sans valeur à y
@@ -98,7 +98,7 @@ consacrer une heure maintenant**. Ce n'est pas faux — c'est **hors séquence**
 `[ÉTABLI]` road_to_v2 §7 a **décidé** : *« le Brain OS est le moteur ; l'utilisateur voit la route,
 jamais le moteur. »* Le schéma, lui, **montre** à l'utilisateur `Decision Engine → Compare trajectories`,
 `Decision Support`, des scénarios chiffrés. **C'est le moteur, affiché.** C'est la même contradiction
-qu'au tour précédent ([`Open_Questions.md`](./Open_Questions.md) Q6). **Elle se tranche par un ADR, pas
+qu'au tour précédent ([`Open_Questions.md`](../Questions-ouvertes.md) Q6). **Elle se tranche par un ADR, pas
 par un nouveau diagramme.** Après deux tours, re-diagrammer n'est plus de la recherche.
 
 ## 6. Séquencement — construire vers l'intérieur, pas vers l'extérieur
@@ -109,9 +109,9 @@ Marketplace. `[HYPOTHÈSE]` L'**ordre de construction honnête est l'inverse de 
 | Ordre | Étape | Pourquoi avant | Réf. |
 | :-: | --- | --- | --- |
 | **1** | **F2 — la mémoire** (déjà en cours) : élargir l'ingestion au-delà des cycles clôturés | C'est le moat, et c'est réel | Phase 4bis |
-| **2** | **Les signaux pauvres** : $\dot x$, taux de base, calibration | Si le SQL suffit, le simulateur devient **inutile** | [`Experiments.md`](./Experiments.md) E1–E3 |
+| **2** | **Les signaux pauvres** : $\dot x$, taux de base, calibration | Si le SQL suffit, le simulateur devient **inutile** | [`Experiments.md`](../experiences/Experiences.md) E1–E3 |
 | **3** | **Décider l'exposition** (moteur visible ou non) | Bloque ce qu'on démontre | Q6 · ADR |
-| **4** | *Alors seulement* : se demander si un $f$ **écrit à la main** (SD) vaut son coût | La question devient répondable | [`Open_Questions.md`](./Open_Questions.md) Q1 |
+| **4** | *Alors seulement* : se demander si un $f$ **écrit à la main** (SD) vaut son coût | La question devient répondable | [`Open_Questions.md`](../Questions-ouvertes.md) Q1 |
 | **∞** | Mind Layer / Marketplace / Domain Packs | Effet de réseau → a besoin de clients d'abord | Phase 5 |
 
 ## 7. Benchmarks — pour **réfuter**, jamais pour valider
@@ -121,7 +121,7 @@ Réponse au « *faut faire des benchmarks, jsp trop en vrai* » : **oui, mais pa
 - ❌ **Ne pas** « benchmarker le World Simulator » : il n'existe pas, et **C2** interdit toute vérité
   terrain (pas de contrefactuel). On ne benchmarke pas une fiction.
 - ✅ **Le bon benchmark est celui qui peut TUER le chemin cher, pour pas cher.** Concrètement, l'échelle
-  [`Experiments.md`](./Experiments.md) E1–E4, où **chaque barreau peut arrêter l'ascension** :
+  [`Experiments.md`](../experiences/Experiences.md) E1–E4, où **chaque barreau peut arrêter l'ascension** :
 
 | Barreau | Question | Un résultat négatif signifie… |
 | :-: | --- | --- |
@@ -142,6 +142,6 @@ Réponse au « *faut faire des benchmarks, jsp trop en vrai* » : **oui, mais pa
 
 ---
 
-**Points d'entrée :** [🔬 R&D](./README.md) · [🤖 Mode recherche](./CLAUDE.md) · [📖 Notes World Model](./World_Model_Notes.md) · [❓ Questions](./Open_Questions.md) · [🧪 Expériences](./Experiments.md)
+**Points d'entrée :** [🔬 R&D](../README.md) · [🤖 Mode recherche](../CLAUDE.md) · [📖 Notes World Model](../revues/World-Model.md) · [❓ Questions](../Questions-ouvertes.md) · [🧪 Expériences](../experiences/Experiences.md)
 
 **Dernière mise à jour :** 31/07/2026 · **v1.0** · Projet Taskforce — Metz Numeric School 2025-2026

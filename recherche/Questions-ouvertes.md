@@ -18,7 +18,7 @@ related:
 
 > **Registre vivant.** Une question entre ici quand elle est **non tranchée** et qu'elle **bloque** ou
 > **oriente** une décision. Elle en sort par un **ADR** ([`v1/12-decisions/`](../v1/12-decisions/Journal_Decisions_ADR.md)),
-> une **expérience** ([`Experiments.md`](./Experiments.md)), ou un **abandon assumé** (avec la raison).
+> une **expérience** ([`Experiments.md`](./experiences/Experiences.md)), ou un **abandon assumé** (avec la raison).
 >
 > Format : `[statut:: ouverte|en-cours|tranchée|abandonnée]` · `[prio:: P0..P3]`
 
@@ -68,7 +68,7 @@ $f$ sort. Trois origines, deux possibles : **(a)** écrite à la main (= simulat
 **(b)** produite par un LLM (= texte avec des chiffres), **(c)** apprise (❌ **C1**, $N \approx 1$).
 
 **Pourquoi ça compte** — Sans réponse, tout le reste (arbre de futurs, $J(\pi)$, paysage d'énergie) est
-**décoratif**. Cf. [`World_Model_Notes.md`](./World_Model_Notes.md) §2.
+**décoratif**. Cf. [`World_Model_Notes.md`](./revues/World-Model.md) §2.
 
 **Position actuelle** `[HYPOTHÈSE]` — la seule réponse défendable est **(a) assumée** : un modèle à la
 main, petit, **présenté comme un outil de pensée** et jamais comme un oracle. Ce qui ramène à
@@ -115,7 +115,7 @@ recherche sans autorité** (ce que fait ce dossier, par défaut, en attendant).
 
 **Position actuelle** `[HYPOTHÈSE]` — la décision du 07/07 **tient** : elle est la seule compatible avec
 C1–C4. Le brainstorm du 17/07 apporte **une** chose que le 07/07 n'a pas : la **dérivée $\dot x$**
-(→ [`Experiments.md`](./Experiments.md) §E2). C'est peut-être tout ce qu'il faut en garder.
+(→ [`Experiments.md`](./experiences/Experiences.md) §E2). C'est peut-être tout ce qu'il faut en garder.
 
 ---
 
@@ -174,7 +174,7 @@ mais honnête ; (3) laisser mort. **Ne pas** le remplir par LLM sans (1).
 
 `[statut:: ouverte]` · `[prio:: P0]` · Ouverte le 31/07/2026
 
-**La question** — La vision écosystème ([`Ecosystem_Notes.md`](./Ecosystem_Notes.md)) se **déploie vers
+**La question** — La vision écosystème ([`Ecosystem_Notes.md`](./revues/Ecosysteme.md)) se **déploie vers
 l'extérieur** : Core → Mind → Memory → Connectors → Simulation → Execution → Marketplace / Domain Packs.
 `[HYPOTHÈSE]` L'ordre de **construction** honnête est l'inverse de l'ordre d'**excitation**.
 
@@ -185,7 +185,7 @@ l'échelle de l'archi.
 
 **Position actuelle** `[HYPOTHÈSE]` — séquence proposée : (1) élargir la mémoire (Phase 4bis) →
 (2) benchmarks E1–E3 → (3) ADR exposition (Q6) → (4) *alors* la question d'un $f$ écrit à la main →
-(∞) Mind/Marketplace. Détail : [`Ecosystem_Notes.md`](./Ecosystem_Notes.md) §6.
+(∞) Mind/Marketplace. Détail : [`Ecosystem_Notes.md`](./revues/Ecosysteme.md) §6.
 
 **Bloque** : rien techniquement, mais **oriente tout l'usage du temps R&D**. C'est la question de
 priorisation, pas de faisabilité.
@@ -198,7 +198,7 @@ priorisation, pas de faisabilité.
 
 **La question** — Le pitch « more usage → better models → better decisions » `[ÉTABLI]` **fusionne trois
 boucles** qui n'ont ni le même volume, ni le même grain, ni la même valeur
-([`Ecosystem_Notes.md`](./Ecosystem_Notes.md) §3) :
+([`Ecosystem_Notes.md`](./revues/Ecosysteme.md) §3) :
 
 | | Améliore | Volume | Réalité |
 | - | --- | --- | --- |
@@ -213,6 +213,6 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 
 ---
 
-**Points d'entrée :** [🔬 R&D](./README.md) · [🤖 Mode recherche](./CLAUDE.md) · [🧪 Expériences](./Experiments.md) · [📖 Notes critiques](./World_Model_Notes.md)
+**Points d'entrée :** [🔬 R&D](./README.md) · [🤖 Mode recherche](./CLAUDE.md) · [🧪 Expériences](./experiences/Experiences.md) · [📖 Notes critiques](./revues/World-Model.md)
 
 **Dernière mise à jour :** 17/07/2026 · **v1.0** · Projet Taskforce — Metz Numeric School 2025-2026

@@ -17,8 +17,8 @@ related:
 
 # 📖 Notes critiques — `World Model.md`
 
-> **Objet** — revue critique du brainstorm [`World Model.md`](../World%20Model.md) (30 Ko, commit
-> `d139202`). Appliquer [`CLAUDE.md`](./CLAUDE.md) §5 : chercher où ça casse, pas approuver.
+> **Objet** — revue critique du brainstorm [`World Model.md`](../../World%20Model.md) (30 Ko, commit
+> `d139202`). Appliquer [`CLAUDE.md`](../CLAUDE.md) §5 : chercher où ça casse, pas approuver.
 >
 > **Verdict court** : le **cadrage produit** est juste et vaut d'être gardé. Le **projet de simulateur
 > mathématique n'est pas réalisable ici**, et le document ne le sait pas — parce qu'il ne pose jamais
@@ -29,8 +29,8 @@ related:
 | # | Idée | Pourquoi ça tient |
 | - | --- | --- |
 | **T1** | **$S_t = G_t$** — l'état *est* le graphe | `[ÉTABLI]` Le graphe **existe déjà** (V51/V52 + HNSW). Le formalisme décrirait du réel, pas un vœu. C'est le meilleur argument du document. |
-| **T2** | **$\hat S \neq S$** + croyances $B$ | Correct et nécessaire. C'est exactement le cadre POMDP ([`References.md`](./References.md) §2) — autant le nommer. |
-| **T3** | **$\dot x$ — la dérivée** | **La meilleure idée du document.** Même $x$, $\dot x$ opposés ⟹ états différents. `[ÉTABLI]` **Calculable aujourd'hui en SQL pur.** → [`Experiments.md`](./Experiments.md) §E2 |
+| **T2** | **$\hat S \neq S$** + croyances $B$ | Correct et nécessaire. C'est exactement le cadre POMDP ([`References.md`](../references/Bibliotheque.md) §2) — autant le nommer. |
+| **T3** | **$\dot x$ — la dérivée** | **La meilleure idée du document.** Même $x$, $\dot x$ opposés ⟹ états différents. `[ÉTABLI]` **Calculable aujourd'hui en SQL pur.** → [`Experiments.md`](../experiences/Experiences.md) §E2 |
 | **T4** | **Trajectoires plutôt que résultats** | Juger un chemin, pas un point. Conceptuellement solide. |
 | **T5** | **Pipeline, pas une grosse formule** | Juste — et c'est l'architecture de LeCun 2022 (modules séparés). |
 | **T6** | **Optionalité $\Phi$** | Vraie intuition. ⚠ Pas une invention : c'est la **théorie des options réelles** (Dixit & Pindyck, 1994). Le champ existe. |
@@ -42,7 +42,7 @@ related:
 **Le document construit 30 Ko sur $S_{t+1} = f(S_t, a_t)$ sans jamais demander d'où vient $f$.**
 
 Chaque raffinement ultérieur — les six composantes de $v_i$, l'arbre de mondes, le paysage d'énergie —
-**suppose $f$ résolu**. Or, sous C1–C4 ([`CLAUDE.md`](./CLAUDE.md) §3), il n'y a que deux réponses :
+**suppose $f$ résolu**. Or, sous C1–C4 ([`CLAUDE.md`](../CLAUDE.md) §3), il n'y a que deux réponses :
 
 - **(a)** $f$ **écrite à la main** → c'est une simulation de **nos croyances**. Elle sortira ce qu'on y
   a mis. Légitime comme outil de pensée, **jamais** comme oracle.
@@ -57,7 +57,7 @@ Chaque raffinement ultérieur — les six composantes de $v_i$, l'arbre de monde
 >
 > **Et ajouter des composantes empire le problème** : chaque dimension de plus dans $v_i$ est une
 > dynamique de plus à fournir. Le document §« il manque des composantes » **enrichit un modèle dont la
-> base n'est pas testée** — l'interdit de [`CLAUDE.md`](./CLAUDE.md) §5.
+> base n'est pas testée** — l'interdit de [`CLAUDE.md`](../CLAUDE.md) §5.
 
 ## 3. ⚠️ L'exemple qui réfute le document
 
@@ -90,12 +90,12 @@ Confidence: 94 % — Reason: Strong historical evidence
 confiance et transfère la responsabilité de la décision à un chiffre inventé. Deux décimales de
 précision sur une opinion, c'est un mensonge de présentation.
 
-> **Le comble** : le mécanisme correct **est déjà spécifié** — [Moteur_IA_World_Model_OODA](../v1/road_to_v2/Moteur_IA_World_Model_OODA.md) §4
+> **Le comble** : le mécanisme correct **est déjà spécifié** — [Moteur_IA_World_Model_OODA](../../v1/road_to_v2/Moteur_IA_World_Model_OODA.md) §4
 > décrit « prédire → observer le réel → **stocker l'écart** dans le Brain OS ». Il n'est pas construit,
 > et `World Model.md` **ne le mentionne nulle part**. Le document réinvente en amont ce qui manque en aval.
 >
 > **Règle proposée** : *tant qu'on ne sait pas scorer ses prédictions, on n'affiche pas de probabilité.*
-> Score de Brier / courbe de calibration d'abord ([`References.md`](./References.md) §5).
+> Score de Brier / courbe de calibration d'abord ([`References.md`](../references/Bibliotheque.md) §5).
 
 ## 5. ⚠️ La fonction d'utilité se contredit elle-même
 
@@ -108,7 +108,7 @@ $$U = 0.4\,\text{Revenue} + 0.2\,\text{Knowledge} + 0.2\,\text{Velocity} - 0.3\,
    Toute la substance de l'arbitrage est dans $0.4$ et $0.3$.
 
 → La sortie cohérente est un **front de Pareto** (trajectoires non dominées), pas un $\arg\max$.
-Cf. [`Mathematical_Model.md`](./Mathematical_Model.md) §8.
+Cf. [`Mathematical_Model.md`](../theorie/Modele-mathematique.md) §8.
 
 ## 6. ⚠️ Le paysage d'énergie est une métaphore, pas un modèle
 
@@ -145,11 +145,11 @@ domaine exact, modélisé il y a 35 ans**, y compris l'effet Brooks du §3.
 `[DÉDUIT]` **Pourquoi c'est le meilleur candidat ici** : les modèles SD sont **écrits à la main**
 (assumé : mode (a), pas déguisé en oracle), **petits**, **interprétables**, et se valident en
 **ajustant des courbes historiques** — ce qui est faisable avec un seul workspace. **SD survit à C1.**
-Le monde-modèle appris, non. → [`Open_Questions.md`](./Open_Questions.md) Q1.
+Le monde-modèle appris, non. → [`Open_Questions.md`](../Questions-ouvertes.md) Q1.
 
 ## 8. ⚠️ Dérive documentaire — deux moteurs concurrents dans le même vault
 
-| | [Moteur_IA_World_Model_OODA](../v1/road_to_v2/Moteur_IA_World_Model_OODA.md) (07/07) | [`World Model.md`](../World%20Model.md) (17/07) |
+| | [Moteur_IA_World_Model_OODA](../../v1/road_to_v2/Moteur_IA_World_Model_OODA.md) (07/07) | [`World Model.md`](../../World%20Model.md) (17/07) |
 | --- | --- | --- |
 | **Nature du world model** | **Mémoire / retrieval, sans gradient** | Simulateur mathématique + recherche arborescente |
 | **Filiation** | Reflexion / Voyager / Generative Agents | LeCun / MuZero |
@@ -158,7 +158,7 @@ Le monde-modèle appris, non. → [`Open_Questions.md`](./Open_Questions.md) Q1.
 
 `[ÉTABLI]` **Il y a maintenant deux réponses concurrentes à « quel est le moteur de décision du Brain
 OS ? » dans le même vault**, et la plus récente **ne cite pas** la plus ancienne. Les
-[Conventions](../v1/04-engineering/Conventions_Documentation.md) §6 sont explicites : *« Major
+[Conventions](../../v1/04-engineering/Conventions_Documentation.md) §6 sont explicites : *« Major
 (restructure/contredit l'existant) : créer un ADR-xxxx, puis appliquer. »* → **ADR requis**, ou
 `World Model.md` reste une note de recherche sans autorité.
 
@@ -169,7 +169,7 @@ OS ? » dans le même vault**, et la plus récente **ne cite pas** la plus ancie
 - **LaTeX cassé partout** — `[  \n S_t \n ]` au lieu de `$$S_t$$`. Obsidian ne rend rien.
 - **Des formules mangées par les titres markdown** — les `-` de début de ligne deviennent des `##` :
   `## 0.3Debt`, `# [ M_{hire}`, `## [ U= 0.4Revenue`. **La fonction d'utilité est illisible.**
-- **Aucun front-matter** → viole [Conventions](../v1/04-engineering/Conventions_Documentation.md) §1
+- **Aucun front-matter** → viole [Conventions](../../v1/04-engineering/Conventions_Documentation.md) §1
   et la règle d'or n°4. Invisible aux Propriétés / au volet Tags / au RAG.
 - **Fuite de contexte** : `O1 = Projet Plania` — vestige d'un autre projet.
 - **C'est un transcript de chat brut**, à la racine du vault, à côté de `Brain_OS.md` et `AGENTS.md`.
@@ -177,7 +177,7 @@ OS ? » dans le même vault**, et la plus récente **ne cite pas** la plus ancie
 
 → **Recommandation** : déplacer `World Model.md` dans `recherche/` comme **archive de brainstorm**
 (front-matter `statut: draft`, `doc_type: reference`), le formalisme propre vivant dans
-[`Mathematical_Model.md`](./Mathematical_Model.md). **Ne pas le supprimer** — c'est la trace de la
+[`Mathematical_Model.md`](../theorie/Modele-mathematique.md). **Ne pas le supprimer** — c'est la trace de la
 réflexion, et elle a de la valeur.
 
 ## 10. Ce que je ferais à la place — mesurer avant de simuler
@@ -202,6 +202,6 @@ Le document **commence à « simuler »**. L'ordre honnête est l'inverse, et ch
 
 ---
 
-**Points d'entrée :** [🔬 R&D](./README.md) · [🤖 Mode recherche](./CLAUDE.md) · [📐 Formalisme](./Mathematical_Model.md) · [❓ Questions](./Open_Questions.md) · [🧪 Expériences](./Experiments.md)
+**Points d'entrée :** [🔬 R&D](../README.md) · [🤖 Mode recherche](../CLAUDE.md) · [📐 Formalisme](../theorie/Modele-mathematique.md) · [❓ Questions](../Questions-ouvertes.md) · [🧪 Expériences](../experiences/Experiences.md)
 
 **Dernière mise à jour :** 17/07/2026 · **v1.0** · Projet Taskforce — Metz Numeric School 2025-2026

@@ -18,11 +18,11 @@ related:
 
 > **Règle d'entrée** — une hypothèse n'entre ici que si elle vient avec **l'observation qui la tuerait**.
 > Pas de critère de falsification → ce n'est pas une expérience, c'est une croyance
-> ([`CLAUDE.md`](./CLAUDE.md) §4.6).
+> ([`CLAUDE.md`](../CLAUDE.md) §4.6).
 >
 > **Ce registre ne déclenche rien tout seul.** Le mode recherche **n'autorise pas à coder**
-> ([`CLAUDE.md`](./CLAUDE.md) §9). Une expérience s'exécute en mode développement, sous
-> [`AGENTS.md`](../AGENTS.md), après arbitrage de priorité — et la priorité au 17/07/2026 est la
+> ([`CLAUDE.md`](../CLAUDE.md) §9). Une expérience s'exécute en mode développement, sous
+> [`AGENTS.md`](../../AGENTS.md), après arbitrage de priorité — et la priorité au 17/07/2026 est la
 > **clôture V1 + soutenance**. Tout ce qui suit est donc **post-V1**.
 
 ## Format
@@ -45,7 +45,7 @@ related:
 | [E4](#e4--un-llm-peut-il-produire-une-dynamique-non-triviale-) | Un LLM sait-il faire de la dynamique ? | ~1 j | oui | proposée |
 
 > **L'ordre compte.** E1 avant tout le reste : sans mesure de calibration, **aucune** des autres n'est
-> interprétable. C'est l'inversion proposée dans [`World_Model_Notes.md`](./World_Model_Notes.md) §10 —
+> interprétable. C'est l'inversion proposée dans [`World_Model_Notes.md`](../revues/World-Model.md) §10 —
 > **mesurer avant de simuler**.
 
 ---
@@ -75,7 +75,7 @@ vrai travail. La mesure est donc valable comme **plomberie** (« le pipeline de 
 **pas** comme vérité sur la qualité prédictive. La vraie mesure demande des cycles réels → **C3**.
 
 **Ce que ça débloque** — La table des écarts prédit/réel de
-[Moteur_IA_World_Model_OODA](../v1/road_to_v2/Moteur_IA_World_Model_OODA.md) §4, `[ÉTABLI]` **spécifiée
+[Moteur_IA_World_Model_OODA](../../v1/road_to_v2/Moteur_IA_World_Model_OODA.md) §4, `[ÉTABLI]` **spécifiée
 et jamais construite**. C'est le chaînon manquant entre les deux documents.
 
 **Coût** — ~2 j. Pendant ce temps : pas de clôture V1. → **post-V1**.
@@ -88,8 +88,8 @@ et jamais construite**. C'est le chaînon manquant entre les deux documents.
 
 **Hypothèse** `[HYPOTHÈSE]` — La **tendance** ($\dot x$) prédit mieux qu'un état absolu ($x$). Deux
 projets à 70 % d'avancement, l'un qui accélère et l'autre qui décélère, ne finissent pas pareil.
-C'est **la meilleure idée** de [`World Model.md`](../World%20Model.md) ([`World_Model_Notes.md`](./World_Model_Notes.md) T3).
-Formalisée en **[Axiome A3](./Axioms.md#a3--le-rythme--ẋ)**.
+C'est **la meilleure idée** de [`World Model.md`](../../World%20Model.md) ([`World_Model_Notes.md`](../revues/World-Model.md) T3).
+Formalisée en **[Axiome A3](../theorie/Axiomes.md#a3--le-rythme--ẋ)**.
 
 **Falsification** — Si, sur les cycles clôturés, l'avancement au **premier tiers** de la fenêtre **ne
 classe pas** les cycles selon leur complétion finale (corrélation de rang $\rho \leq 0$), alors $\dot x$
@@ -159,7 +159,7 @@ l'hypothèse théorique tombe.
 
 **Hypothèse** `[HYPOTHÈSE]` — Un **taux de base** trivial (« les sprints comme celui-ci ont fini à 80 % »)
 prédit **au moins aussi bien** qu'un LLM qui raisonne sur le contexte. C'est le résultat classique du
-*reference class forecasting* (Kahneman & Tversky, Flyvbjerg — [`References.md`](./References.md) §5).
+*reference class forecasting* (Kahneman & Tversky, Flyvbjerg — [`References.md`](../references/Bibliotheque.md) §5).
 
 **Falsification** — Si le LLM bat significativement le taux de base sur les cycles clôturés, alors le
 raisonnement contextuel **apporte** quelque chose et la piste « moteur » se défend. Sinon, `[DÉDUIT]`
@@ -185,7 +185,7 @@ naïve**, pas de la dynamique. Il répondra que recruter augmente la vélocité.
 **Falsification** — **Le test de Brooks.** Demander à Qwen l'effet de « embaucher 2 développeurs sur un
 projet en retard ». S'il répond spontanément que la vélocité **baisse d'abord** (formation +
 communication en $O(n^2)$), qu'il **chiffre le délai**, et qu'il tient ce raisonnement de façon
-**stable** sur des variantes du prompt, alors l'option **(b)** de [Q2](./Open_Questions.md#q2--doù-vient-f-)
+**stable** sur des variantes du prompt, alors l'option **(b)** de [Q2](../Questions-ouvertes.md#q2--doù-vient-f-)
 est plus solide que je ne le crois, et il faut le reconnaître.
 
 **Pourquoi ce test précis** — `[ÉTABLI]` `World Model.md` utilise **exactement cet exemple**
@@ -202,6 +202,6 @@ protocole, et elle décide de la validité de l'expérience.
 
 ---
 
-**Points d'entrée :** [🔬 R&D](./README.md) · [🤖 Mode recherche](./CLAUDE.md) · [❓ Questions](./Open_Questions.md) · [📖 Notes critiques](./World_Model_Notes.md)
+**Points d'entrée :** [🔬 R&D](../README.md) · [🤖 Mode recherche](../CLAUDE.md) · [❓ Questions](../Questions-ouvertes.md) · [📖 Notes critiques](../revues/World-Model.md)
 
 **Dernière mise à jour :** 17/07/2026 · **v1.0** · Projet Taskforce — Metz Numeric School 2025-2026

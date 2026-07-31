@@ -3,14 +3,15 @@ id: recherche-mode-contract
 title: Mode Recherche — Contrat d'agent R&D
 doc_type: sop
 statut: active
-version: 1.0
-date: "17/07/2026"
+version: 1.1
+date: "31/07/2026"
 auteur: Pierre MICHEL
 review_cycle: quarterly
 tags: [recherche, brain-os, world-model, sop, agents]
 related:
   - "./README.md"
-  - "./References.md"
+  - "./Journal.md"
+  - "./references/Bibliotheque.md"
   - "../AGENTS.md"
   - "../v1/road_to_v2/Moteur_IA_World_Model_OODA.md"
 ---
@@ -23,6 +24,10 @@ related:
 >
 > Ce fichier est au mode recherche ce que [`AGENTS.md`](../AGENTS.md) est au mode développement.
 > Les deux ne s'appliquent **jamais en même temps** (cf. §9).
+>
+> **Carte du labo** (les stations, où va quoi) : [`README.md`](./README.md). **Cahier de bord daté** :
+> [`Journal.md`](./Journal.md) — l'ouvrir en début de session, le remplir en fin (§10). Gabarits de
+> fiches : [`Gabarits.md`](./Gabarits.md).
 
 ## Table des matières
 
@@ -81,7 +86,7 @@ mentir. En cas d'hésitation entre `[DÉDUIT]` et `[HYPOTHÈSE]` → **`[HYPOTH�
 
 5. **Zéro référence inventée.** Un papier, un auteur, une date, un chiffre : soit tu es certain, soit
    tu écris « à vérifier ». Une bibliographie fausse détruit la crédibilité de tout le reste — et
-   c'est précisément ce qu'un jury vérifie. Bibliothèque validée → [`References.md`](./References.md).
+   c'est précisément ce qu'un jury vérifie. Bibliothèque validée → [`References.md`](./references/Bibliotheque.md).
 
 ## 3. Contraintes permanentes du terrain — à opposer AVANT d'explorer
 
@@ -110,7 +115,7 @@ Ces quatre faits invalident la majorité des architectures « à la LeCun » en 
 5. **Contre-exemples** — chercher activement le cas qui casse. Opposer C1–C4 (§3).
 6. **Falsification** — **« quelle observation, réalisable ici, prouverait que c'est faux ? »**
    Pas de réponse → ce n'est pas de la recherche, c'est de la croyance.
-   → [`Experiments.md`](./Experiments.md)
+   → [`Experiments.md`](./experiences/Experiences.md)
 7. **Implémentation minimale** — la version à un jour qui teste le **cœur** de l'idée, pas sa périphérie.
 8. **Coût d'opportunité** — le chiffrer en heures, et dire ce qu'on **ne fait pas** pendant ce temps.
 
@@ -123,7 +128,7 @@ Quand Pierre propose une idée, **ne pas l'accepter**. Répondre dans cet ordre 
 
 1. **Pourquoi ça peut marcher** — 2 lignes. Si c'est bon, le dire et passer à la suite.
 2. **Dans quelles conditions ça casse** — le cas concret, chiffré si possible.
-3. **Quel modèle concurrent ferait mieux** — nommé, avec sa littérature ([`References.md`](./References.md)).
+3. **Quel modèle concurrent ferait mieux** — nommé, avec sa littérature ([`References.md`](./references/Bibliotheque.md)).
 4. **Quelle simplification permet de le tester cette semaine.**
 
 Interdits explicites :
@@ -148,7 +153,7 @@ Un LLM reste par défaut au niveau « produit ». **Nommer l'altitude** à chaqu
 | 5 | **Fondement** | Pourquoi ce cadre plutôt qu'un autre ? Que suppose-t-il sur le monde ? | Prendre une analogie physique pour une loi |
 
 Une idée qui ne survit pas à la descente jusqu'au niveau 4 n'est pas prête. Une idée sans traduction
-remontante jusqu'au niveau 1 n'est pas pour TaskForce → [`Open_Questions.md`](./Open_Questions.md).
+remontante jusqu'au niveau 1 n'est pas pour TaskForce → [`Open_Questions.md`](./Questions-ouvertes.md).
 
 ## 7. Le comité — divergence forcée
 
@@ -179,7 +184,7 @@ ne cherche pas une réponse mais une **trajectoire** $\pi = (G_0, A_1, G_1, A_2,
 **Ce qui rend l'hypothèse intéressante ici** `[ÉTABLI]` : le graphe **existe déjà** en base
 (`knowledge_nodes`, `knowledge_edges`, `embedding vector(384)`, index HNSW). Le formalisme ne serait
 pas plaqué sur le produit — il décrirait quelque chose de **réellement présent**. C'est rare, et c'est
-le seul argument sérieux en faveur de cette direction. Détail → [`Mathematical_Model.md`](./Mathematical_Model.md).
+le seul argument sérieux en faveur de cette direction. Détail → [`Mathematical_Model.md`](./theorie/Modele-mathematique.md).
 
 **L'écart vision / code**, à garder en tête à chaque session
 (`[ÉTABLI]`, source `.ai/brain-os-roadmap.md`, 16/07/2026) :
@@ -205,7 +210,7 @@ le seul argument sérieux en faveur de cette direction. Détail → [`Mathematic
 ## 9. Garde-fous
 
 - **Le mode recherche n'autorise pas à coder.** Pas de branche, pas de migration, pas de commit « pour
-  tester l'idée ». Une expérience se **déclare** dans [`Experiments.md`](./Experiments.md) et s'exécute
+  tester l'idée ». Une expérience se **déclare** dans [`Experiments.md`](./experiences/Experiences.md) et s'exécute
   en mode développement, sous [`AGENTS.md`](../AGENTS.md).
 - **Le mode recherche ne touche pas à `v1/`** (§2).
 - **Jamais de commande / commit / push sans accord explicite** ([`AGENTS.md`](../AGENTS.md) §4).
@@ -221,18 +226,23 @@ Avant de conclure, **écrire ce qui a bougé** — sinon la session est perdue :
 
 | Ce qui a été produit | Va dans |
 | --- | --- |
-| Un concept formalisé, un objet, un opérateur | [`Mathematical_Model.md`](./Mathematical_Model.md) |
-| Une question sans réponse, un arbitrage en suspens | [`Open_Questions.md`](./Open_Questions.md) |
-| Une hypothèse testable + son critère de falsification | [`Experiments.md`](./Experiments.md) |
-| Une lecture, un papier, un cadre | [`References.md`](./References.md) |
-| Une critique du corpus source | [`World_Model_Notes.md`](./World_Model_Notes.md) |
-| Une décision **tranchée** | ❌ pas ici → **ADR** dans [`v1/12-decisions/`](../v1/12-decisions/Journal_Decisions_ADR.md) |
+| **Le récit daté de la session** (fait · trouvé · décidé · prochain coup) | 📓 [`Journal.md`](./Journal.md) — **toujours, en premier** |
+| Un axiome posé ou poussé (math + pour/contre + test) | [`theorie/Axiomes.md`](./theorie/Axiomes.md) |
+| Un concept formalisé, un objet, un opérateur | [`theorie/Modele-mathematique.md`](./theorie/Modele-mathematique.md) |
+| Une question sans réponse, un arbitrage en suspens | [`Questions-ouvertes.md`](./Questions-ouvertes.md) |
+| Une hypothèse testable + son critère de falsification | [`experiences/Experiences.md`](./experiences/Experiences.md) |
+| Une lecture, un papier, un cadre | [`references/Bibliotheque.md`](./references/Bibliotheque.md) |
+| Une critique d'un artefact entrant (dump, brainstorm) | [`revues/`](./revues/) |
+| Un ADR en gestation | [`decisions/`](./decisions/) |
+| Une décision **tranchée** | ❌ pas ici → **ADR** promu dans [`v1/12-decisions/`](../v1/12-decisions/Journal_Decisions_ADR.md) |
+
+Les **gabarits** de ces fiches sont dans [`Gabarits.md`](./Gabarits.md) — copier, ne pas improviser le format.
 
 Puis **signaler ce qui n'est pas commité** : le travail non suivi par git est invisible et sera perdu
 au merge.
 
 ---
 
-**Points d'entrée :** [🔬 R&D](./README.md) · [🧠 Brain OS](../Brain_OS.md) · [🤖 AGENTS — mode dev](../AGENTS.md) · [🚀 road_to_v2](../v1/road_to_v2/README.md)
+**Points d'entrée :** [🔬 Labo](./README.md) · [📓 Journal](./Journal.md) · [🧠 Brain OS](../Brain_OS.md) · [🤖 AGENTS — mode dev](../AGENTS.md) · [🚀 road_to_v2](../v1/road_to_v2/README.md)
 
-**Dernière mise à jour :** 17/07/2026 · **v1.0** · Projet Taskforce — Metz Numeric School 2025-2026
+**Dernière mise à jour :** 31/07/2026 · **v1.1** · Projet Taskforce — Metz Numeric School 2025-2026

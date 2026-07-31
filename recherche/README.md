@@ -54,7 +54,9 @@ altitudes d'analyse.
 | Fichier | Rôle | Question à laquelle il répond |
 | --- | --- | --- |
 | [🤖 `CLAUDE.md`](./CLAUDE.md) | **Contrat d'agent** du mode recherche : rôle, méthode, garde-fous | « Comment on réfléchit ici ? » |
-| [📐 `Mathematical_Model.md`](./Mathematical_Model.md) | Le formalisme candidat : objets, opérateurs, trajectoires | « Quels objets manipule le moteur ? » |
+| [📐 `Mathematical_Model.md`](./Mathematical_Model.md) | Le formalisme candidat (brouillon exploratoire) : objets, opérateurs, trajectoires | « Quels objets manipule le moteur ? » |
+| [📏 `Axioms.md`](./Axioms.md) | **La spécification** : axiomes en 2 couches (noyau grounded / frontière), test par axiome | « Qu'est-ce qui est prouvé vs supposé ? » |
+| [⚖️ `ADR-012-DRAFT-…`](./ADR-012-DRAFT-brain-os-exposition.md) | Brouillon d'ADR (Q6) : ce que l'utilisateur voit du Brain OS | « Moteur exposé ou non ? » |
 | [📖 `World_Model_Notes.md`](./World_Model_Notes.md) | Notes de lecture critiques sur le corpus source | « Qu'est-ce qui tient, qu'est-ce qui casse ? » |
 | [📖 `Ecosystem_Notes.md`](./Ecosystem_Notes.md) | Triage critique de la vision « écosystème en couches » | « Le moat, c'est quelle boîte ? » |
 | [❓ `Open_Questions.md`](./Open_Questions.md) | Registre des questions non tranchées | « Sur quoi on bloque ? » |

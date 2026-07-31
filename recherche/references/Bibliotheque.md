@@ -27,7 +27,7 @@ related:
 Quand une idée émerge en session, chercher ici **si le champ existe déjà**. Le plus souvent, oui — et
 la question devient « pourquoi ne pas prendre le cadre existant ? ». Les colonnes **« Ce que ça donne »**
 et **« Applicable ici ? »** sont là pour trancher vite, en tenant compte des contraintes C1–C4
-([`CLAUDE.md`](./CLAUDE.md) §3).
+([`CLAUDE.md`](../CLAUDE.md) §3).
 
 ---
 
@@ -68,7 +68,7 @@ et **« Applicable ici ? »** sont là pour trancher vite, en tenant compte des 
 | --- | --- | --- |
 | **Forrester, *Industrial Dynamics* (1961)** — System Dynamics | **Stocks & flux**, boucles de rétroaction, **délais**. Modèles **écrits à la main**, petits, interprétables, validés en **ajustant des courbes historiques**. | ✅✅ **Le meilleur candidat.** Fait exactement ce que le brainstorm réinvente en moins bien — et **survit à C1** (pas d'apprentissage). |
 | **Abdel-Hamid & Madnick, *Software Project Dynamics* (1991)** | System Dynamics appliqué **aux projets logiciels** : recrutement, formation, pression, qualité, retard | ✅✅ **Notre domaine exact, modélisé il y a 35 ans.** À lire avant d'écrire une ligne de simulateur. |
-| **Brooks, *The Mythical Man-Month* (1975)** | **Loi de Brooks** : ajouter des développeurs à un projet en retard le retarde davantage (formation + communication en $O(n^2)$) | ✅ **Contre-exemple direct** à l'exemple `Hire → Velocity +30` du brainstorm. Cf. [`World_Model_Notes.md`](./World_Model_Notes.md). |
+| **Brooks, *The Mythical Man-Month* (1975)** | **Loi de Brooks** : ajouter des développeurs à un projet en retard le retarde davantage (formation + communication en $O(n^2)$) | ✅ **Contre-exemple direct** à l'exemple `Hire → Velocity +30` du brainstorm. Cf. [`World_Model_Notes.md`](../revues/World-Model.md). |
 | **Théorie des jeux** — Nash | Plusieurs agents, utilités différentes | ❌ Exige d'observer l'état **et** l'utilité des concurrents. Ni l'un ni l'autre n'est accessible. |
 
 ## 5. Incertitude, calibration, prévision
@@ -91,7 +91,7 @@ et **« Applicable ici ? »** sont là pour trancher vite, en tenant compte des 
 
 ## 7. Agents LLM à mémoire (la lignée réellement retenue)
 
-> `[ÉTABLI]` C'est la lignée qu'a choisie [Moteur_IA_World_Model_OODA](../v1/road_to_v2/Moteur_IA_World_Model_OODA.md) §4
+> `[ÉTABLI]` C'est la lignée qu'a choisie [Moteur_IA_World_Model_OODA](../../v1/road_to_v2/Moteur_IA_World_Model_OODA.md) §4
 > (07/07/2026) : world model **mémoire / retrieval, sans gradient**.
 
 | Travail | Idée centrale | Applicable ici ? |
@@ -110,10 +110,10 @@ et **« Applicable ici ? »** sont là pour trancher vite, en tenant compte des 
 - [ ] Vérifier les références **Boyd** avant citation publique (⚠ ci-dessus).
 - [ ] Chercher la littérature sur la **calibration des prédictions d'estimation logicielle**
       (story points vs réel) — probablement abondante, non explorée. Lien direct avec
-      [`Experiments.md`](./Experiments.md) §E1.
+      [`Experiments.md`](../experiences/Experiences.md) §E1.
 
 ---
 
-**Points d'entrée :** [🔬 R&D](./README.md) · [🤖 Mode recherche](./CLAUDE.md) · [📖 Notes critiques](./World_Model_Notes.md)
+**Points d'entrée :** [🔬 R&D](../README.md) · [🤖 Mode recherche](../CLAUDE.md) · [📖 Notes critiques](../revues/World-Model.md)
 
 **Dernière mise à jour :** 17/07/2026 · **v1.0** · Projet Taskforce — Metz Numeric School 2025-2026

@@ -18,8 +18,8 @@ related:
 # ADR-012 (BROUILLON) — Brain OS : moteur interne, produit-connaissance exposé
 
 > ⚠️ **BROUILLON de recherche, en quarantaine.** Ce n'est **pas** encore une décision. Il répond à
-> [Q6](./Open_Questions.md#q6--le-brain-os-est-invisible--que-montre-t-on-alors-). Une fois **ratifié
-> par Pierre**, il est **promu** dans [`v1/12-decisions/Journal_Decisions_ADR.md`](../v1/12-decisions/Journal_Decisions_ADR.md)
+> [Q6](../Questions-ouvertes.md#q6--le-brain-os-est-invisible--que-montre-t-on-alors-). Une fois **ratifié
+> par Pierre**, il est **promu** dans [`v1/12-decisions/Journal_Decisions_ADR.md`](../../v1/12-decisions/Journal_Decisions_ADR.md)
 > sous le n° **ADR-012** (l'index s'arrête à 010 mais **ADR-011 existe déjà** dans le corps → 012 est
 > le prochain libre). Tant qu'il vit ici, il n'a **aucune autorité**.
 
@@ -30,7 +30,7 @@ related:
 
 `[ÉTABLI]` **Trois sources se contredisent** sur ce que l'utilisateur doit voir du Brain OS :
 
-1. **[Moteur_IA_World_Model_OODA](../v1/road_to_v2/Moteur_IA_World_Model_OODA.md) §7 (07/07/2026)** a
+1. **[Moteur_IA_World_Model_OODA](../../v1/road_to_v2/Moteur_IA_World_Model_OODA.md) §7 (07/07/2026)** a
    **décidé** : *« le Brain OS est le moteur ; l'utilisateur voit la route, jamais le moteur. »* Rien
    d'exposé : ni embeddings, ni délibérations d'agents, ni écarts de prédiction.
 2. **Le code livré (Phases 3 / 4ter)** expose au contraire une **UI Brain OS riche** : explorateur
@@ -39,7 +39,7 @@ related:
    `Decision Engine → Compare trajectories → Decision Support`, des scénarios chiffrés avec probabilités.
 
 `[DÉDUIT]` Trois réponses incompatibles à « qu'expose-t-on ? » coexistent dans le vault. C'est
-exactement le cas que les [Conventions](../v1/04-engineering/Conventions_Documentation.md) §6 imposent
+exactement le cas que les [Conventions](../../v1/04-engineering/Conventions_Documentation.md) §6 imposent
 de trancher par un ADR. Sans décision, on ne sait pas quoi démontrer en soutenance ni quoi construire.
 
 ## Décision (proposée)
@@ -48,7 +48,7 @@ de trancher par un ADR. Sans décision, on ne sait pas quoi démontrer en souten
 
 - **Exposé** — la **connaissance** comme objet produit : le graphe de notes (ADR, SOP, rétros, specs),
   l'explorateur, l'éditeur, la recherche sémantique, les régions par projet. C'est **F2** (la mémoire
-  organisationnelle, [`Ecosystem_Notes.md`](./Ecosystem_Notes.md) §3), et c'est **déjà livré**.
+  organisationnelle, [`Ecosystem_Notes.md`](../revues/Ecosysteme.md) §3), et c'est **déjà livré**.
 - **Interne, jamais exposé brut** — le **moteur** : embeddings, croyances $B_t$ et leurs confidences,
   trajectoires simulées, écarts prédit/réel, délibérations multi-agents, scores de routing.
 - **L'explicabilité passe par des objets produit dérivés**, pas par le moteur : au point
@@ -78,7 +78,7 @@ de trancher par un ADR. Sans décision, on ne sait pas quoi démontrer en souten
 **Négatives / risques**
 - Le « comparateur de trajectoires » du dump écosystème est **hors produit** tant que le moteur n'est
   pas calibré (E1). `[DÉDUIT]` Ce n'est pas une perte réelle : montrer des futurs non calibrés serait
-  activement trompeur (cf. [`World_Model_Notes.md`](./World_Model_Notes.md) §4).
+  activement trompeur (cf. [`World_Model_Notes.md`](../revues/World-Model.md) §4).
 - Frontière à tenir dans le code : un endpoint qui renverrait une confidence brute ou une trajectoire
   viole l'ADR. → garde-fou de revue.
 
@@ -90,8 +90,8 @@ de trancher par un ADR. Sans décision, on ne sait pas quoi démontrer en souten
 3. Ligne de revue : aucun endpoint n'expose `B_t`, trajectoires, écarts, scores de routing.
 
 ## Liens
-- [❓ Q6](./Open_Questions.md#q6--le-brain-os-est-invisible--que-montre-t-on-alors-) · [📖 Ecosystem_Notes §5](./Ecosystem_Notes.md)
-- [🧠 Brain OS](../Brain_OS.md) · [Journal ADR](../v1/12-decisions/Journal_Decisions_ADR.md) · [Moteur_IA_World_Model_OODA §7](../v1/road_to_v2/Moteur_IA_World_Model_OODA.md)
+- [❓ Q6](../Questions-ouvertes.md#q6--le-brain-os-est-invisible--que-montre-t-on-alors-) · [📖 Ecosystem_Notes §5](../revues/Ecosysteme.md)
+- [🧠 Brain OS](../../Brain_OS.md) · [Journal ADR](../../v1/12-decisions/Journal_Decisions_ADR.md) · [Moteur_IA_World_Model_OODA §7](../../v1/road_to_v2/Moteur_IA_World_Model_OODA.md)
 
 ---
 
