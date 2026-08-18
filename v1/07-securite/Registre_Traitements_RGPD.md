@@ -66,7 +66,7 @@ tags: [rgpd, registre, traitements, donnees-personnelles, art30, conformite, mem
 | **Source** | Création directe par les utilisateurs |
 | **Durée de conservation** | Durée de vie du workspace · Suppression en cascade à la fermeture du workspace (ON DELETE CASCADE) |
 | **Destinataires** | Membres du même workspace (isolation multi-tenant garantie par `WorkspaceAccessInterceptor`) |
-| **Transferts hors UE** | Aucun (données sur la VM/Render EU Frankfurt) |
+| **Transferts hors UE** | Stockage : aucun (VM/Render EU Frankfurt). Traitement IA : aucun par défaut (modèle local Ollama) ; si le provider Groq est activé, le contexte de tâche soumis à l'IA est transféré aux USA (Groq, Inc.) sous CCT/DPF — cf. traitement n°8 |
 | **Mesures de sécurité** | Isolation `workspace_id` · RBAC · TLS · Pas d'accès inter-workspace |
 | **Preuve** | `V15__projects.sql` · `V16__issues.sql` · `V25__pages.sql` · `V27__discussions.sql` · `V28__chat.sql` · `V29__attachments.sql` · `V47__issue_worklogs.sql` |
 
@@ -82,8 +82,8 @@ tags: [rgpd, registre, traitements, donnees-personnelles, art30, conformite, mem
 | **Données collectées** | `skills_json` (compétences déclarées) · `seniority` · `capacity_hours_per_week` · `profile_text` · `growth_enabled` · `growth_target_skills` · `embedding` (vecteur pgvector 384d — représentation mathématique) |
 | **Source** | Saisie directe + calcul automatique (`SmartAssignService`, `MemberSkillProfileService`) |
 | **Durée de conservation** | Durée de vie du workspace ou du membership |
-| **Destinataires** | Backend (calcul Smart Assign) · Groq API (LLM — données contextualisées, pas de PII directes) |
-| **Transferts hors UE** | Groq Inc. (USA) — contexte de la tâche uniquement, pas de PII directes |
+| **Destinataires** | Backend (calcul Smart Assign). **Par défaut : modèle local Ollama/Qwen auto-hébergé — aucun tiers.** Groq, Inc. (USA) **seulement si le provider Groq est activé** (`GROQ_API_KEY`, cf. `ai-service/app/config.py` `use_groq`) : reçoit alors le contexte de la tâche pour l'inférence (libellés/métriques des candidats), pas de PII directes. Les embeddings (pgvector) restent calculés en local dans tous les cas |
+| **Transferts hors UE** | **Aucun par défaut** (inférence locale Ollama). Si le provider Groq est activé → **Groq, Inc. (USA)** reçoit le contexte de la tâche (pas de PII directes) sous **clauses contractuelles types (CCT)** ou **EU-US Data Privacy Framework** |
 | **Mesures de sécurité** | Accès restreint aux membres du workspace · `embedding` non exposé en API |
 | **Preuve** | `V33__member_skill_profiles.sql` · `V44__member_skill_capacity_seniority.sql` · `V46__member_growth_objectives.sql` |
 
@@ -177,15 +177,20 @@ tags: [rgpd, registre, traitements, donnees-personnelles, art30, conformite, mem
 | **Données transmises** | Titre et description d'issue, libellés, noms d'affichage des candidats, métriques de charge. **Pas de mot de passe, ni jeton, ni donnée de paiement** |
 | **Source** | Contenu saisi par les utilisateurs dans l'application |
 | **Durée de conservation** | **Aucune conservation par le modèle** : l'inférence est sans état, rien n'est réutilisé pour un entraînement |
-| **Destinataires** | **Aucun tiers.** Le modèle (Qwen3 via Ollama) est **auto-hébergé** ; l'application ne parle qu'à `ai-service`, qui parle au modèle local |
-| **Transferts hors UE** | **Aucun** |
+| **Destinataires** | **Par défaut : aucun tiers.** Le modèle (Qwen3 via Ollama) est **auto-hébergé** ; l'application ne parle qu'à `ai-service`, qui parle au modèle local. **Provider optionnel : Groq, Inc. (USA)** — activé seulement si `GROQ_API_KEY` est configuré (cf. `ai-service/app/config.py` `use_groq`) ; reçoit alors le contexte de la tâche pour l'inférence (pas de mot de passe, jeton ni donnée de paiement) |
+| **Transferts hors UE** | **Aucun par défaut** (modèle local). Si le provider Groq est activé → **Groq, Inc. (USA)** sous **CCT** ou **EU-US Data Privacy Framework** |
 | **Mesures de sécurité** | Passerelle interne unique (`AiGatewayClient` → `ai-service`), jamais d'appel direct depuis les services métier · quotas par compte (`AiMeter`) · dégradation en repli déterministe si le modèle est injoignable |
 | **Preuve** | `LlmConfig` · `AiGatewayClient` · `ai-service/app/services/ollama_gateway.py` · `SmartAssignService` (repli `java-fallback`) |
 
-> **Point notable pour la conformité.** Le choix d'un modèle auto-hébergé plutôt qu'une API tierce
-> (OpenAI, Anthropic, Groq…) supprime tout transfert de contenu de travail hors de l'infrastructure.
-> C'est l'argument le plus fort du registre : aucune donnée client ne quitte le périmètre maîtrisé
-> pour alimenter un service d'IA externe.
+> **Point notable pour la conformité.** Par défaut, le modèle de langage est **auto-hébergé** (Qwen
+> via Ollama) : aucune donnée de travail ne quitte le périmètre maîtrisé pour alimenter un service
+> d'IA externe — c'est le mode par défaut et l'argument le plus fort du registre.
+>
+> **Provider tiers optionnel (décision du 16/08/2026).** Un provider hébergé, **Groq, Inc. (USA)**,
+> peut être activé (bascule automatique sur présence de `GROQ_API_KEY` — cf. `ai-service/app/config.py`
+> `use_groq`) pour faire tourner le chat sur une petite VM sans GPU local. **Il reste désactivé par
+> défaut.** Lorsqu'il est activé, le contexte de tâche est transféré aux USA sous CCT/DPF ; les
+> embeddings (pgvector) restent en local dans tous les cas. **Anthropic et OpenAI ne sont pas utilisés.**
 
 ---
 
@@ -207,7 +212,8 @@ tags: [rgpd, registre, traitements, donnees-personnelles, art30, conformite, mem
 > **Pourquoi cet outil et pas un autre, et pourquoi il n'y a pas de bandeau de consentement.**
 > Une solution du marché hébergée hors UE aurait introduit un destinataire étranger dans ce
 > registre et un transfert à encadrer, ce qui aurait contredit la logique suivie partout ailleurs
-> ici : retrait du fournisseur d'IA américain le 16/07 et auto-hébergement du modèle de langage.
+> ici : une IA **locale par défaut** (modèle de langage auto-hébergé), le provider IA tiers (Groq)
+> restant **optionnel et inactif par défaut**.
 >
 > **Sur l'exemption de consentement, formulation vérifiée dans le script servi le 23/07/2026.**
 > Le script **n'écrit rien** dans le terminal du visiteur : aucun `Set-Cookie` sur la requête de
@@ -232,17 +238,21 @@ tags: [rgpd, registre, traitements, donnees-personnelles, art30, conformite, mem
 |---|---|---|---|
 | **Keycloak** (auto-hébergé) | EU (VM école / Render Frankfurt) | Credentials, keycloakId | Auto-hébergé — pas de tiers |
 | **Stripe Inc.** | USA | stripe_customer_id, montants | DPA Stripe (SCCs) |
-| ~~**Groq Inc.**~~ | ~~USA~~ | **Aucune — retiré le 16/07/2026** | Sans objet |
+| **Groq, Inc.** *(optionnel)* | USA | Contexte de tâche pour l'inférence (pas de PII directes) — **seulement si `GROQ_API_KEY` est configuré** | **Sous-traitant OPTIONNEL** ; par défaut IA locale → aucun transfert. Si activé : **DPA** + **CCT** ou EU-US DPF |
 | **GitHub Inc.** | USA | OAuth token, meta workspace | DPA GitHub (SCCs) |
 | **Slack Technologies** | USA | OAuth token, channel meta | DPA Slack (SCCs) |
+| **Cloudflare (Turnstile)** *(optionnel)* | USA / mondial | **Adresse IP** + signaux navigateur du visiteur (anti-robot à l'inscription) — **seulement si `security.turnstile.secret-key` est configuré** | **Sous-traitant OPTIONNEL** (processeur de sécurité) ; inactif tant que la clé n'est pas fournie (repli sur le défi signé maison, sans tiers). Si activé : **DPA Cloudflare** + **CCT/DPF** |
 | **MinIO** (auto-hébergé) | EU (VM école / Render Frankfurt) | Fichiers uploadés | Auto-hébergé |
 | **Ollama / Qwen3** (auto-hébergé) | EU / poste de développement | Contenu d'issue soumis à l'inférence | Auto-hébergé — **aucun tiers, aucun transfert** |
 
-> **Mise à jour du 22/07/2026.** Groq Inc. figurait dans ce tableau comme destinataire du « contexte
-> de tâche ». C'était **inexact depuis le 16/07** : `GroqService`, `GroqConfig` et la branche
-> `ai.provider=groq` ont été supprimés (`TF-AI-GROQ-CLEANUP`). Vérifié le 22/07 — il ne subsiste que
-> des commentaires retraçant la décision, aucun appel. Un registre qui déclare un transfert hors UE
-> inexistant est aussi fautif qu'un registre qui en omet un.
+> **Mise à jour du 16/08/2026.** Groq est **réintroduit comme provider IA OPTIONNEL** (et non plus
+> « retiré »). L'`ai-service` bascule le chat (smart-assign, Cortex, orchestration) sur **Groq, Inc.
+> (USA)** uniquement lorsque `GROQ_API_KEY` est configuré, sinon il reste sur le modèle local Ollama
+> — bascule automatique par détection de la clé (`ai-service/app/config.py`, propriété `use_groq`).
+> Groq figure donc de nouveau au registre, mais **comme sous-traitant conditionnel** : aucun transfert
+> tant que la clé n'est pas fournie. **Anthropic et OpenAI ne sont pas utilisés.** Un registre doit
+> déclarer le transfert **possible** sans le présenter comme systématique — d'où la mention
+> « optionnel » portée partout ci-dessus.
 
 ### Application des durées de conservation
 
