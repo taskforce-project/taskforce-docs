@@ -112,13 +112,15 @@ Les **4 gardes** ①②③④ constituent la défense en profondeur côté backe
 |---|---|---|---|---|:---:|
 | D1 | Flood d'authentification | Requêtes massives sur `/login` | Rate limiting AUTH_STRICT (10/min/IP) | `RateLimitFilter` | 🟢 Faible |
 | D2 | Épuisement quota LLM (Groq) | Spam smart-assign | Rate limiting AI (20/min/IP) + mode dégradé scoring local | `RateLimitFilter`, `SmartAssignService` | 🟢 Faible |
-| D3 | Flood API générique | Requêtes massives | Rate limiting DEFAULT (200/min/IP) | `RateLimitFilter` | 🟠 Moyen (in-memory, mono-instance — pas distribué) |
+| D3 | Flood API générique | Requêtes massives | Rate limiting DEFAULT (200/min/IP) — **mode distribué Redis supporté** (`ProxyManager` Bucket4j/Lettuce), repli local automatique | `RateLimitFilter`, `RedisRateLimitConfig` | 🟢 Faible (✅ TF-SEC-011 résolu 05/07/2026) |
 | D4 | Indisponibilité broker (RabbitMQ) | Panne broker | Repli automatique `SimpleBroker` in-memory | `WebSocketConfig` (DISP-04) | 🟢 Faible |
 | D5 | DoS applicatif (payload volumineux) | Gros body/stack | Bornage taille (`@Size` 8000 sur stack log) | `ClientLogRequest` | 🟠 Moyen (bornage non systématique partout) |
 
-> **Point d'attention D3** : `RateLimitFilter` stocke les buckets en `ConcurrentHashMap`
-> (mémoire locale). En déploiement multi-instances, il faudra un backend distribué
-> (Redis/Bucket4j distributed) pour un rate limiting cohérent. → gap TF-SEC-011.
+> **✅ D3 / TF-SEC-011 résolu (05/07/2026)** : `RateLimitFilter` accepte désormais un `ProxyManager`
+> Bucket4j/Lettuce (Redis) qui partage les buckets entre instances ; à défaut de Redis configuré, il
+> retombe automatiquement sur ses buckets locaux `ConcurrentHashMap` (dev/mono-instance). Redis ajouté
+> au compose prod + `render.yaml`. Preuve : `RedisRateLimitConfig`, `RateLimitConfig`,
+> `RateLimitFilter(ProxyManager)`, `RateLimitFilterTest`.
 
 ### 3.6 ⬆️ Elevation of Privilege — Élévation de privilège
 
@@ -137,7 +139,7 @@ Les **4 gardes** ①②③④ constituent la défense en profondeur côté backe
 | Risque résiduel | Catégorie | Niveau | Action / backlog |
 |---|---|:---:|---|
 | Secret HS512 symétrique, pas de révocation immédiate | Spoofing S2 | 🟠 Moyen | Migration Keycloak RS256/OIDC — **TF-SEC-009** |
-| Rate limiting non distribué (mono-instance) | DoS D3 | 🟠 Moyen | Backend distribué (Redis) — **TF-SEC-011** |
+| Rate limiting distribué | DoS D3 | 🟢 Résolu | ✅ **TF-SEC-011** — `ProxyManager` Redis supporté (repli local en dev), résolu 05/07/2026 |
 | Email/nom non chiffrés en colonne | Info Disclosure I3 | 🟠 Moyen | Chiffrement volume prod (transparent) — infra |
 | Immuabilité/rétention des logs SigNoz | Repudiation R3 | 🟠 Moyen | Durcir rétention prod — **TF-INFRA-005** |
 | `PUBLIC_MATCHERS` à auditer à chaque ajout | Elevation E5 | 🟠 Moyen | Checklist revue de code sécu |
