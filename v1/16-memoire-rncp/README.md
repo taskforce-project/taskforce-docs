@@ -97,6 +97,18 @@ Le statut initial ci-dessous est une <strong>estimation</strong> basée sur l'é
 ajuster au fil de la rédaction.
 </p>
 
+> **▶ MAJ 16/08/2026 — nouvelle mesure (session paiement/CI/IA).** La **CI backend a été réparée**
+> (service Postgres `pgvector/pgvector:pg16` + `SPRING_DATASOURCE_*` répliquant `scripts/it.ps1`, cf.
+> [PC-028](../09-audits/Problemes_Connus.md)) → les tests d'intégration **tournent désormais en CI**.
+> Mesure du jour via `it.ps1 -Full` (rapport sans exclusions) : **back ~75-78 % de lignes (≈ 670 tests)**,
+> **front ~92 % (≈ 781 tests)** — bien au-dessus du seuil de la grille (50 %). Valeurs approchées et datées,
+> issues d'un run local du 16/08 (non re-mesurées ici) ; elles actualisent le snapshot du 23/07 ci-dessous.
+> **Nuance C26** (à porter) : le **gate JaCoCo (0,70) lié à `verify`** et les scans sécu (Trivy/Semgrep/ZAP)
+> restent **hors CI**. Autres deltas du jour : **C16/C22** validation front Zod réellement câblée (login +
+> register) ; **C23** webhook Stripe durci (anti-rétrogradation Business→Basic) ; **C29/C30** bascule IA
+> vers Groq hébergé rendant l'app IA déployable sur une petite VM (mais **rien n'est déployé** →
+> **C28 inchangé**).
+>
 > **▶ RÉCONCILIATION DU 23/07/2026 — à lire avant le tableau.** Les chiffres ci-dessous remplacent
 > **tous** ceux qui circulaient dans le corpus. Trois jeux de valeurs différents coexistaient (92/78,
 > puis 92,33/71,3, puis les valeurs mesurées cette semaine), ce qui faisait que deux pages du dossier
@@ -147,9 +159,9 @@ ajuster au fil de la rédaction.
 | C13 | Concevoir l'interface utilisateur | E11 | `frontend/app/`, Radix/shadcn ARIA natif, axe-core CI, [Bloc2 §C13](./Bloc2_Frontend.md) | ✅ |
 | C14 | Éléments graphiques / charte | E11 | [Design System](../14-design/Design_System.md), `globals.css`, logos `assets/images/`, [Bloc2 §C14](./Bloc2_Frontend.md) | ✅ |
 | C15 | Mettre en œuvre l'UX (parcours, accessibilité) | E11 | 12 UC couverts, App Router. **WCAG 2.1 AA vérifié le 22/07 : 0 violation axe-core sur 3 pages, tous impacts confondus.** Le test ne bloquait auparavant que sur `critical` alors que les manquements AA remontent en `serious` : 10 violations passaient inaperçues, corrigées depuis, [Bloc2 §C15](./Bloc2_Frontend.md) | ✅ |
-| C16 | Langage front (qualité, sécurité, écoconception) | E11 | ESLint, TypeScript strict, CSP/CORS/HSTS headers, React Compiler, [Bloc2 §C16](./Bloc2_Frontend.md) | ✅ |
+| C16 | Langage front (qualité, sécurité, écoconception) | E11 | ESLint, TypeScript strict, CSP/CORS/HSTS headers, React Compiler. **MAJ 16/08 : validation Zod réellement câblée** (login + register, `frontend/lib/validation/auth-schemas.ts`, `safeParse`) — l'écart « Zod déclaré mais inutilisé » (règle d'or #8) est fermé ; la barrière serveur `@Valid` reste la source d'autorité. [Bloc2 §C16](./Bloc2_Frontend.md) | ✅ |
 | C17 | Consommer une API de façon sécurisée | E12 | `client.ts` (Axios+JWT+refresh), Stripe redirect, STOMP+auth, [Bloc2 §C17](./Bloc2_Frontend.md) | ✅ |
-| C18 | Tester le front-end (couverture ≥ 50 %) | E13 | **89,55 % Vitest** (périmètre logique), 805 tests, 3 fichiers Playwright, [Bloc2 §C18](./Bloc2_Frontend.md) | ✅ |
+| C18 | Tester le front-end (couverture ≥ 50 %) | E13 | **89,55 % Vitest** (périmètre logique), 805 tests, 3 fichiers Playwright. **MAJ 16/08 (`it.ps1 -Full`) : ~92 % (≈ 781 tests)**. [Bloc2 §C18](./Bloc2_Frontend.md) | ✅ |
 | C19 | Industrialiser le front-end | E14 | `frontend-tests.yml`, `e2e-tests.yml`, Dependabot, [Bloc2 §C19](./Bloc2_Frontend.md) | ✅ |
 | C20 | Performances SEO (≥ 70 %) | — | **Mesuré le 22/07 : SEO 92 % sur l'accueil, 100 % sur les 4 autres pages** (seuil 70 %). Le site n'a jamais eu de défaut de SEO, c'est le job Lighthouse qui ne mesurait rien ; corrigé, il audite les 5 pages, [Bloc2 §C20](./Bloc2_Frontend.md) | ✅ |
 
@@ -158,11 +170,11 @@ ajuster au fil de la rédaction.
 | Comp. | Intitulé court | Livrable | Où dans TaskForce | Statut |
 | :---: | -------------- | :------: | ----------------- | :----: |
 | C21 | Couche de persistance (sécurité en profondeur) | E15 | `WorkspaceAccessInterceptor`, `AuditableEntity`, `EncryptedStringConverter`, [Bloc3 §C21](./Bloc3_Backend.md) | ✅ |
-| C22 | Langage back (qualité, sécurité, écoconception) | E16 | Architecture `shared/core/modules`, Virtual Threads Java 21, Trivy/Semgrep, [Bloc3 §C22](./Bloc3_Backend.md) | ✅ |
-| C23 | Système de paiement + monétisation | E17 | Stripe Checkout, **5 webhooks réellement implémentés** (signature `Webhook.constructEvent`, idempotence par `stripe_event_id UNIQUE`, rejeu en différé sur erreur), portail de facturation. La mention « stubés » (PC-005) était périmée, vérifié le 22/07. Reste : un passage avec de vrais événements Stripe, [Bloc3 §C23](./Bloc3_Backend.md) | ✅ |
+| C22 | Langage back (qualité, sécurité, écoconception) | E16 | Architecture `shared/core/modules`, Virtual Threads Java 21, Trivy/Semgrep. **MAJ 16/08 : CI backend réparée** (service Postgres `pgvector`) → tests d'intégration en CI (cf. C25/C26). [Bloc3 §C22](./Bloc3_Backend.md) | ✅ |
+| C23 | Système de paiement + monétisation | E17 | Stripe Checkout, **5 webhooks réellement implémentés** (signature `Webhook.constructEvent`, idempotence par `stripe_event_id UNIQUE`, rejeu en différé sur erreur), portail de facturation. La mention « stubés » (PC-005) était périmée, vérifié le 22/07. Reste : un passage avec de vrais événements Stripe. **MAJ 16/08 : robustesse webhook renforcée** — anti-rétrogradation Business→Basic (`getPlanForPriceId` renvoie `null` sur un price-id ambigu ; le plan reste celui de `checkout.session.completed`), cf. [PC-035](../09-audits/Problemes_Connus.md). [Bloc3 §C23](./Bloc3_Backend.md) | ✅ |
 | C24 | Développer une API sécurisée | E18 | JWT+Keycloak, `@Valid` DTOs, AES-256-GCM, OpenAPI `/swagger-ui.html`, [Bloc3 §C24](./Bloc3_Backend.md) | ✅ |
-| C25 | Tester le back-end (couverture ≥ 50 %) | E19 | **73,71 % JaCoCo**, 792 tests, vrai Postgres sans simulacre (**pas** Testcontainers, cf. Bloc3), [Bloc3 §C25](./Bloc3_Backend.md) | ✅ |
-| C26 | Industrialiser le back-end | E20 | `backend-tests.yml`, `release.yml`, images GHCR, Trivy+Semgrep+ZAP, [Bloc3 §C26](./Bloc3_Backend.md) | ✅ |
+| C25 | Tester le back-end (couverture ≥ 50 %) | E19 | **73,71 % JaCoCo**, 792 tests, vrai Postgres sans simulacre (**pas** Testcontainers, cf. Bloc3). **MAJ 16/08 : CI d'intégration réparée** (service Postgres `pgvector`) ; run `it.ps1 -Full` du 16/08 → **~75-78 % lignes (≈ 670 tests)**. [Bloc3 §C25](./Bloc3_Backend.md) | ✅ |
+| C26 | Industrialiser le back-end | E20 | `backend-tests.yml` (**MAJ 16/08 : service Postgres `pgvector` → tests d'intégration en CI**), `release.yml`, images GHCR, Trivy+Semgrep+ZAP. **Nuance** : le gate JaCoCo (0,70, lié à `verify`) et les scans sécu restent **hors CI**. [Bloc3 §C26](./Bloc3_Backend.md) | ✅ |
 
 ### Bloc 4 — Déploiement & production
 
@@ -170,8 +182,8 @@ ajuster au fil de la rédaction.
 | :---: | -------------- | :------: | ----------------- | :----: |
 | C27 | Documentation technique + base de connaissances | E29 | Ce Brain OS, OpenAPI auto-généré, `version-management.yml`, [Release Notes](../15-utilisateur/Release_Notes.md), [Bloc4 §C27](./Bloc4_Deploiement_Production.md) | ✅ |
 | C28 | Administration (domaine, DNS, certificats, sécurité) | E23 | ⚠️ **Décoché le 23/07 : rien n'est déployé.** Aucun domaine réservé, aucune zone DNS, aucun certificat émis. `nginx/nginx.conf.example` est **prêt et validé** (TLS 1.2/1.3, HSTS, OCSP, limitation de débit) mais non déployé, [Bloc4 §C28](./Bloc4_Deploiement_Production.md) | ⬜ |
-| C29 | Sélectionner une plateforme d'hébergement | E21 | [Diagramme de déploiement](../06-infra/Diagramme_Deploiement.md) **(produit le 23/07)** + [Stratégie Hébergement](../06-infra/Strategie_Hebergement.md), `render.yaml`, [Bloc4 §C29](./Bloc4_Deploiement_Production.md) — ⚠️ déploiement prod stand-by | 🟡 |
-| C30 | Administrer des services d'hébergement (cloud/conteneur) | E22 | `docker-compose.prod.yml` (9 services, réécrit le 22/07), réseaux Docker isolés, [Bloc4 §C30](./Bloc4_Deploiement_Production.md). ⚠️ Composition **prête mais jamais exécutée en production** : à présenter comme telle | 🟡 |
+| C29 | Sélectionner une plateforme d'hébergement | E21 | [Diagramme de déploiement](../06-infra/Diagramme_Deploiement.md) **(produit le 23/07)** + [Stratégie Hébergement](../06-infra/Strategie_Hebergement.md), `render.yaml`, [Bloc4 §C29](./Bloc4_Deploiement_Production.md). **MAJ 16/08 : contrainte « LLM local » levée** — bascule IA vers **Groq hébergé** si `GROQ_API_KEY` présente (chat/orchestration ; embeddings restant Ollama) → l'app IA devient déployable sur une petite VM sans compute local. ⚠️ déploiement prod toujours stand-by | 🟡 |
+| C30 | Administrer des services d'hébergement (cloud/conteneur) | E22 | `docker-compose.prod.yml` (9 services, réécrit le 22/07), réseaux Docker isolés, [Bloc4 §C30](./Bloc4_Deploiement_Production.md). **MAJ 16/08 : IA déployable sans GPU** (Groq hébergé, cf. C29). ⚠️ Composition **prête mais jamais exécutée en production** : à présenter comme telle | 🟡 |
 | C31 | Déploiement automatisé (DevOps / CI-CD) | E24 | 7 workflows GitHub Actions, images GHCR versionnées, [Pipeline CI/CD](../08-operations/Pipeline_CICD.md), [Bloc4 §C31](./Bloc4_Deploiement_Production.md) | ✅ |
 | C32 | Supervision (sondes, alertes, journalisation) | E25–E28 | OTel→SigNoz, 9 alertes Prometheus, `AuditService`, `backup.ps1`, ZAP/Trivy/Semgrep, [Bloc4 §C32](./Bloc4_Deploiement_Production.md) | ✅ |
 
@@ -193,6 +205,6 @@ Règles : rédaction **narrative** (paragraphes, pas de listes sèches) conform�
 > [Brain OS](../../Brain_OS.md). Les écarts connus (tests, RGPD, SEO, déploiement) sont des **chantiers de
 > rédaction**, tracés dans [Problèmes connus](../09-audits/Problemes_Connus.md).
 
-**Dernière mise à jour :** 05/07/2026  
+**Dernière mise à jour :** 16/08/2026  
 **Version :** 1.0  
 **Projet :** Taskforce — Metz Numeric School 2025-2026
