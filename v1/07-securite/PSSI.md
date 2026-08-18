@@ -62,6 +62,7 @@ La politique poursuit les quatre critères classiques de sécurité de l'informa
 | Les JWT sont signés (intégrité du token) | **RS256 émis par Keycloak**, validés via son JWK Set + issuer par `NimbusJwtDecoder` | `SecurityConfig.jwtDecoder()` |
 | Vérification d'identité à l'inscription | OTP à usage unique, TTL 15 min | `OtpService`, migration `V6` |
 | Protection anti-brute-force | Rate limiting par IP (10 req/min sur login) | `RateLimitFilter` (Bucket4j) |
+| Protection anti-robots à l'inscription (anti-spoofing / anti-abus de volume) | Double barrière : **Cloudflare Turnstile** (juge le visiteur, `siteverify` côté serveur) + **défi signé maison sans tiers** (jeton HMAC : délai humain minimal + péremption) ; repli conservateur si Cloudflare est injoignable, le défi signé restant actif | `TurnstileService`, `HumanChallengeService` (tests `TurnstileServiceTest`, `HumanChallengeServiceTest`) |
 | Référentiel d'identités centralisé | Keycloak (Admin REST API) | `KeycloakService` |
 
 > ✅ **PC-019 / TF-SEC-009 résolus (05/07/2026, [[Journal_Decisions_ADR|ADR-011]])** : les tokens sont
