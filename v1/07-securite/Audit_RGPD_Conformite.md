@@ -135,7 +135,7 @@ Le chiffrement AES-256-GCM est appliqué sur les colonnes à risque (code `Encry
 | Sous-traitant | Pays | Risque RGPD | Mitigation |
 |---|---|---|---|
 | Stripe | USA | Moyen (données paiement) | DPA Stripe (SCCs) |
-| Groq | USA | Faible (contexte tâche, pas PII directes) | CGU Groq — DPA à formaliser → TF-RGPD-004 |
+| Groq *(optionnel)* | USA | Faible — **uniquement si le provider Groq est activé** (`GROQ_API_KEY`) ; contexte tâche, pas PII directes ; **aucun par défaut (IA locale Ollama)** | Si activé : DPA + CCT/DPF → TF-RGPD-008 |
 | GitHub | USA | Faible (OAuth token workspace) | DPA GitHub (SCCs) |
 | Slack | USA | Faible (OAuth token) | DPA Slack (SCCs) |
 | Keycloak (auto-hébergé) | EU | Nul | Auto-hébergé |
@@ -147,8 +147,8 @@ Le chiffrement AES-256-GCM est appliqué sur les colonnes à risque (code `Encry
 
 | Obligation | Statut | Preuve |
 |---|---|---|
-| Politique de confidentialité | ✅ Page dédiée | `landing-page/src/pages/privacy-policy.astro` + `PrivacyPolicyPageNew.tsx` |
-| CGU/CGV | ✅ Page dédiée | `landing-page/src/pages/terms.astro` + `TermsPageNew.tsx` |
+| Politique de confidentialité | ✅ Page dédiée | `landing-page/src/pages/legal/privacy.astro` |
+| CGU/CGV | ✅ Page dédiée | `landing-page/src/pages/legal/terms.astro` |
 | Mentions légales | ⬜ Pas de page dédiée | Gap — mentions légales à ajouter dans la landing (nom, adresse, SIRET) |
 | Politique cookies | ✅ Notice d'information présente | `cookie-banner.tsx` (05/07) — cookies strictement nécessaires uniquement, donc consentement non requis CNIL ; pas de traceurs → TF-RGPD-001 clos |
 | Accès à l'export et à la suppression | ✅ | `GdprController` (`/api/gdpr/export`, `/api/gdpr/delete-account`) |
@@ -174,7 +174,7 @@ Le chiffrement AES-256-GCM est appliqué sur les colonnes à risque (code `Encry
 | Droits des personnes | 5/6 | — | Art. 18 (limitation) |
 | Minimisation | ✅ | — | — |
 | Sécurité technique | ✅ | — | `integrations.access_token` non chiffré |
-| Sous-traitants | 4/6 | Groq DPA | — |
+| Sous-traitants | 4/6 | Groq DPA (si provider activé) | — |
 | Transparence | 2/4 | Cookies | Mentions légales, bannière |
 | Documentation Art. 30 | ✅ | — | — |
 
@@ -188,7 +188,7 @@ Le chiffrement AES-256-GCM est appliqué sur les colonnes à risque (code `Encry
 | TF-RGPD-004 | P3 | Double opt-in sur les traitements collectant des données personnelles |
 | TF-RGPD-005 | P2 | Mentions légales dédiées (LEN Art. 6) + corriger sous-traitants `constants_en.ts` |
 | TF-RGPD-007 | P2 | Suppression automatique compte Keycloak à l'effacement |
-| TF-RGPD-008 | P2 | DPA formel avec Groq |
+| TF-RGPD-008 | P2 | DPA formel + CCT/DPF avec Groq, Inc. — **applicable seulement si le provider Groq est activé** (`GROQ_API_KEY`) ; sans objet tant que l'IA tourne en local (Ollama, défaut) |
 | TF-RGPD-009 | P2 | Procédure notification violations (Art. 33) — 72h CNIL |
 
 ---
