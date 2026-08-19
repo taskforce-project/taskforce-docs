@@ -47,7 +47,7 @@ service → store → routes côté frontend. L'état « Santé » est réconcil
 
 | Domaine | Backend (contrôleur · service) | Frontend (service · store) | Santé |
 | ------- | ------------------------------ | -------------------------- | :---: |
-| Auth & Inscription | `AuthController` · `AuthService`,`KeycloakService`,`OtpService`,`EmailService`,`JwtService` | `auth-service` · `auth-context` | ✅ (refresh/logout stubés) |
+| Auth & Inscription | `AuthController` · `AuthService`,`KeycloakService`,`KeycloakAuthService`,`OtpService`,`EmailService` | `auth-service` · `auth-context` | ✅ (OIDC RS256 Keycloak ; refresh/logout natifs) |
 | Facturation | `Stripe*Controller` · `StripeService` | `stripe-service` | ⚠️ webhooks stubés |
 | Profil utilisateur | `User`/`ProfileController` · `UserService`,`ProfileService` | `user`/`profile-service` · `user`/`profile-store` | ⚠️ import profile-service |
 | Workspace (tenant) | `WorkspaceController` · `WorkspaceService` | `workspace-service` · `workspace-store` | ✅ |
@@ -57,13 +57,13 @@ service → store → routes côté frontend. L'état « Santé » est réconcil
 | Roadmap | `RoadmapController` · `IssueService` | `issue-service.getScheduledIssues` | ❌ route front absente |
 | Teams | `TeamController` · `TeamService` | `team-service` · `team-store` | ❌ 404 + store incomplet |
 | Pages (wiki) | `PageController` · `PageService` | `page-service` · `page-store` | ❌ 404 (`/api`) |
-| Discussions | `DiscussionController` · `DiscussionService` | `discussion-service` · `discussion-store` | ❌ 404 (`/api`) |
-| Chat (temps réel) | `ChannelController`,`ChatWebSocketController` · `ChannelService`,`ChatMessageService` | `message-service` · `message-store` (+ mock `messages/data.ts`) | ❌ 404 + route absente + mock |
+| ~~Discussions~~ | — | — | ⛔️ Supprimé (11/07/2026, migration V64 — hors CdC) |
+| ~~Chat (temps réel)~~ | — | — | ⛔️ Supprimé (11/07/2026, migration V64 — hors CdC ; STOMP conservé pour notifs/issues/workflows) |
 | Notifications/Inbox | `NotificationController` · `NotificationService` | `notification-service` · `notification-store` | ✅ |
 | Analytics | `AnalyticsController` · `AnalyticsService` | `analytics-service` | ✅ |
-| Assistant IA | `AssistantController` · `AssistantService`,`GroqService` | FAB / command palette | ⚠️ streaming simulé |
-| AI Insights | `AnalyticsController /insights` · `AnalyticsService`,`GroqService` | `analytics-service.getAiInsights` | ⚠️ pas de cache |
-| Smart Assign | `IssueController /smart-assign` · `SmartAssignService`,`GroqService` | `issue-service.smartAssignIssue` · `smart-assign-panel` | ✅ (repli Groq) |
+| Assistant IA | `AssistantController` · `AssistantService`,`AiGatewayClient` | FAB / command palette | ⚠️ streaming simulé |
+| AI Insights | `AnalyticsController /insights` · `AnalyticsService`,`AiGatewayClient` | `analytics-service.getAiInsights` | ⚠️ pas de cache |
+| Smart Assign | `IssueController /smart-assign` · `SmartAssignService`,`LlmClient` | `issue-service.smartAssignIssue` · `smart-assign-panel` | ✅ (repli Groq) |
 | Pièces jointes (GED) | `AttachmentController`,`FileController` · `AttachmentService`,`MinioService` | `attachment-service` | ❌ route front absente |
 | Intégrations | `IntegrationController`,`WebhookController` · `GitHub`/`Slack`/`WebhookService` | `integration-service` · `integration-store` | ❌ route front absente |
 | Sales (leads) | `SalesController` · `SalesService` | dialog contact entreprise | ⚠️ notification stub |
@@ -86,7 +86,7 @@ Les dépendances pointent vers le bas uniquement. <code>shared</code> ignore <co
 Couplages transverses notables dans `core` : `AnalyticsService`, `AssistantService`, `SmartAssignService`
 lisent les données Issue/Cycle/membres ; `AuthService` orchestre `KeycloakService` + `StripeService` +
 `OtpService`/`EmailService` ; tous les services scopés workspace dépendent de `WorkspaceService` pour
-l'autorisation ; `GroqService` est le client Groq partagé (Assistant, SmartAssign, Insights). Côté infra :
+l'autorisation ; `AiGatewayClient` est le client du modèle auto-hébergé, partagé (Assistant, SmartAssign, Insights). Côté infra :
 `chat` → RabbitMQ/STOMP, `ged` → MinIO, `sales` → autonome.
 
 ## 3. Stores frontend

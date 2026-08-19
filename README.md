@@ -31,6 +31,7 @@ dans un document (cf. [Conventions](./v1/04-engineering/Conventions_Documentatio
 - 🏛️ [Architecture](./v1/03-architecture/Architecture.md) · 🔌 [API](./v1/05-api/API.md) · 🧩 [Modules](./v1/03-architecture/Modules.md)
 - 🚧 [État Produit](./v1/02-produit/README.md) · 📋 [Backlog](./v1/13-roadmap/Roadmap_Backlog.md) · 🔥 [Problèmes connus](./v1/09-audits/Problemes_Connus.md)
 - 🎓 [Mémoire RNCP](./v1/16-memoire-rncp/README.md) · 👥 [Doc utilisateur](./v1/15-utilisateur/Manuel_Utilisateur.md)
+- 📚 **[Catalogue EXHAUSTIF de la documentation](./v1/Catalogue_Documentation.md)** (~97 docs · 12 domaines · ⭐ = bundle PDF soutenance) · 🗺️ **[Roadmap Documentation](./v1/16-memoire-rncp/Roadmap_Documentation.md)** (production 1 par 1)
 - 🗺️ Schémas (PFR) : [flux complet](./assets/brain-os-flow.html) · [architecture technique](./assets/architecture-technique.html) · [boîte à outils infra/sécurité](./assets/infra-toolchain.html) · [système Brain OS](./assets/brain-os-systeme.html)
 - 🧰 [Catalogue d'outils infra & sécurité (gratuit/OSS)](./v1/06-infra/Outils_Infra_Securite.md)
 

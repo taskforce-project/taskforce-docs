@@ -14,13 +14,8 @@ related:
 
 # 🔮 TaskForce — v2 (cible future)
 
-[![Version: v2](https://img.shields.io/badge/Version-v2%20(cible)-8b5cf6?style=for-the-badge)]() [![Statut: Draft](https://img.shields.io/badge/Statut-Draft-yellow?style=for-the-badge)]()
-
-> Miroir de la structure [`v1/`](../v1/README.md), à remplir quand une **v2** sera planifiée
-> (refonte, nouveaux paradigmes). **Règle :** ne jamais mélanger v1 et v2 dans un même document — la
-> transition se documente dans `v1/road_to_v2/` (à créer le moment venu).
-
-Vide pour l'instant. On est en **v1**.
+> Miroir de la structure [`v1/`](../v1/README.md), à remplir quand une **v2** (refonte from-scratch) sera planifiée.
+> **La direction produit « AI Delivery OS » + la roadmap d'exécution vivent dans [`v1/road_to_v2/`](../v1/road_to_v2/README.md)** — c'est de l'**évolution de la v1**, pas une réécriture. On est **en v1**.
 
 ---
 

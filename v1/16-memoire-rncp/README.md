@@ -26,6 +26,7 @@ Logo projet        : assets/images/logo_taskforce.png
 - [Bloc 2 — Front-end](./Bloc2_Frontend.md)
 - [Bloc 3 — Back-end](./Bloc3_Backend.md)
 - [Bloc 4 — Déploiement & production](./Bloc4_Deploiement_Production.md)
+- 📚 **[Catalogue exhaustif de la documentation](../Catalogue_Documentation.md)** · 🗺️ **[Roadmap Documentation](./Roadmap_Documentation.md)** · 📝 [Stratégie de documentation](./Strategie_Documentation.md)
 - [CDC initial](../01-projet/Dossier_Projet.md) · [Architecture technique](../03-architecture/Architecture.md)
 
 **Tags :** `#memoire` `#rncp` `#dossier-validation` `#dfs`
@@ -96,57 +97,95 @@ Le statut initial ci-dessous est une <strong>estimation</strong> basée sur l'é
 ajuster au fil de la rédaction.
 </p>
 
+> **▶ MAJ 16/08/2026 — nouvelle mesure (session paiement/CI/IA).** La **CI backend a été réparée**
+> (service Postgres `pgvector/pgvector:pg16` + `SPRING_DATASOURCE_*` répliquant `scripts/it.ps1`, cf.
+> [PC-028](../09-audits/Problemes_Connus.md)) → les tests d'intégration **tournent désormais en CI**.
+> Mesure du jour via `it.ps1 -Full` (rapport sans exclusions) : **back ~75-78 % de lignes (≈ 670 tests)**,
+> **front ~92 % (≈ 781 tests)** — bien au-dessus du seuil de la grille (50 %). Valeurs approchées et datées,
+> issues d'un run local du 16/08 (non re-mesurées ici) ; elles actualisent le snapshot du 23/07 ci-dessous.
+> **Nuance C26** (à porter) : le **gate JaCoCo (0,70) lié à `verify`** et les scans sécu (Trivy/Semgrep/ZAP)
+> restent **hors CI**. Autres deltas du jour : **C16/C22** validation front Zod réellement câblée (login +
+> register) ; **C23** webhook Stripe durci (anti-rétrogradation Business→Basic) ; **C29/C30** bascule IA
+> vers Groq hébergé rendant l'app IA déployable sur une petite VM (mais **rien n'est déployé** →
+> **C28 inchangé**).
+>
+> **▶ RÉCONCILIATION DU 23/07/2026 — à lire avant le tableau.** Les chiffres ci-dessous remplacent
+> **tous** ceux qui circulaient dans le corpus. Trois jeux de valeurs différents coexistaient (92/78,
+> puis 92,33/71,3, puis les valeurs mesurées cette semaine), ce qui faisait que deux pages du dossier
+> se contredisaient. Une seule mesure fait désormais foi, avec sa date et son périmètre.
+>
+> | Indicateur | Valeur retenue | Mesuré le |
+> |---|---|---|
+> | Couverture front | **89,55 % de lignes** sur le périmètre logique (`lib`, `hooks`, `components/auth`) | 23/07/2026 |
+> | Suite front | **805 tests / 63 fichiers**, 0 échec | 23/07/2026 |
+> | Couverture back | **73,71 % de lignes** (JaCoCo) | 22/07/2026 |
+> | Suite back | **792 tests**, 0 échec | 23/07/2026 |
+>
+> Une réserve à porter avec le chiffre front, plutôt qu'à taire : le périmètre **exclut** les 48
+> routes et les composants de présentation, couverts par Playwright. À annoncer avant qu'on le
+> demande, sans quoi le chiffre se lit comme une couverture globale du front, ce qu'il n'est pas.
+>
+> La mesure **sort désormais en code 0**, tous seuils par chemin compris. Elle échouait encore le
+> matin du 23/07 sur `lib/utils` (71,01 % pour 72 % attendus), faute de test sur l'export CSV :
+> 20 tests paramétrés ont été écrits, portant ce module à 93,23 % de lignes.
+>
+> **▶ État au 05/07/2026 (les statuts du tableau datent du 08/06).**
+> - **C21/C24 sécurité 🟢** : en-têtes durcis **testés** (OWASP A05), IDOR fermés (`AuthorizationService`), chiffrement PII (AES-256-GCM). RGPD **de TaskForce** (audit + export/effacement) livré & validé — ⚠️ distinct de **C11/E9** (audit RGPD d'un **cas pro externe**, toujours ⬜).
+> - **C28/E28 détection de failles ✅** : pentest **OWASP ZAP** (0 HIGH, 4 MEDIUM CSP dev) + SAST Semgrep + SCA/images Trivy (`scripts/security-scan.ps1`).
+> - **C32/E25 journalisation ✅** : **audit backend** (`AuditLog`, 7 events) + **observabilité OTEL → SigNoz** + **logs front → serveur** (`ClientLogController` + `client-logger.ts`, 05/07) + **PS/PCA-PRA opérationnel testé** (`scripts/backup.ps1`). **E26 supervision ✅** : sondes actuator `health`/`prometheus` (corrigé : registry manquant) + OTEL→SigNoz + **9 règles d'alerte** (`observability/alerts/`, format Prometheus portable).
+> - **Reste prioritaire** : conception formalisée (C6 wireframes, C7/C8 UML/MCD/MLD, cas d'usage), **C11/E9 RGPD cas pro**, **C12/E10 veille**, **C20 SEO landing**, **Bloc 4** (C28–C31 déploiement : hébergement, DNS/TLS, prod sécurisée), gestion projet (E1–E6). CI (C19/C26 gates bloquants) reportée.
+
 ### Bloc 1 — Concevoir et modéliser
 
 | Comp. | Intitulé court | Livrable | Où dans TaskForce | Statut |
 | :---: | -------------- | :------: | ----------------- | :----: |
-| C1 | Analyser la demande initiale | E1 | [CDC](../01-projet/01_CdCF.md), [Dossier Projet](../01-projet/Dossier_Projet.md) | 🟡 |
-| C2 | Conseil / expertise sur le CdCF | E1, E3 | [CdCF](../01-projet/01_CdCF.md) | 🟡 |
-| C3 | Caractéristiques projet (public, SEO, sécu, délais, budget) | E2 | [Dossier Projet](../01-projet/Dossier_Projet.md), [Étude business](../01-projet/Etude_business.md) | 🟡 |
-| C4 | Travailler en agile | E5, E6 | [Git Workflow](../04-engineering/git-workflow/README.md), app TaskForce (Issues/Cycles) | 🟡 |
-| C5 | Environnement de dev collaboratif | E4 | [Quickstart](../06-infra/quickstart/README.md), [GHCR](../06-infra/docker/GHCR_USAGE.md) | ✅ |
-| C6 | Maquettes wireframe | E7 | `assets/maquettes/` | 🟡 |
-| C7 | STB → dossier de conception | E8 | [Architecture §4](../03-architecture/Architecture.md), [CdCT](../01-projet/02_CdCT.md) | 🟡 |
-| C8 | Modélisation (entité-association, classes) | E8 | [Architecture §6](../03-architecture/Architecture.md), [Modules §4](../03-architecture/Modules.md) | 🟡 |
-| C9 | Architecture des bases de données / persistance | E8 | [Architecture §6](../03-architecture/Architecture.md) (Flyway V1–V35) | ✅ |
-| C10 | Architecture logicielle | E8 | [Architecture §4](../03-architecture/Architecture.md) | ✅ |
-| C11 | Conformité RGPD / CNIL | E9 | ⚠️ cas pro hors fil rouge — à produire | ⬜ |
-| C12 | Veille technologique | E10 | à rédiger (Groq, Next 16, Spring Boot 4…) | ⬜ |
+| C1 | Analyser la demande initiale | E1 | [CdCF v1.1](../01-projet/01_CdCF.md), [Dossier Projet](../01-projet/Dossier_Projet.md), [Bloc1 §C1](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C2 | Conseil / expertise sur le CdCF | E1, E3 | [Note Innovation](../17-veille/Note_Innovation_Distance_Critique.md), [ADR](../08-decisions/Journal_Decisions_ADR.md), [Bloc1 §C2](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C3 | Caractéristiques projet (public, SEO, sécu, délais, budget) | E2 | [Budget](../01-projet/Budget_Previsionnel.md), [Gantt](../01-projet/Gantt_Planning.md), [Registre Risques](../01-projet/Registre_Risques.md), [Bloc1 §C3](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C4 | Travailler en agile | E5, E6 | [Note Agile](../01-projet/Note_Methode_Agile.md), [Git Workflow](../04-engineering/git-workflow/README.md), app TaskForce (Cycles), [Bloc1 §C4](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C5 | Environnement de dev collaboratif | E4 | [Quickstart](../06-infra/quickstart/README.md), [GHCR](../06-infra/docker/GHCR_USAGE.md), `docker-compose.dev.yml`, [Bloc1 §C5](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C6 | Maquettes wireframe | E7 | `assets/maquettes/`, [Wireframes annotés](../14-design/Wireframes_Annotes.md), [Bloc1 §C6](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C7 | STB → dossier de conception | E8 | [Dossier Conception](../03-architecture/Dossier_Conception.md), [CdCT v2](../01-projet/CdCT_v2.md), [Diag. UC](../03-architecture/Diagramme_Cas_Usage_UML.md), [Bloc1 §C7](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C8 | Modélisation (entité-association, classes) | E8 | [MCD/MLD](../03-architecture/Modele_Donnees_MCD_MLD.md), [Diag. Classes](../03-architecture/Diagramme_Classes_UML.md), [Bloc1 §C8](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C9 | Architecture des bases de données / persistance | E8 | [Architecture C4](../03-architecture/Architecture_C4.md), [PS/PCA/PRA](../11-pca-pra/PS_PCA_PRA.md), Flyway V1–V53, [Bloc1 §C9](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C10 | Architecture logicielle | E8 | [Architecture C4](../03-architecture/Architecture_C4.md), [Modules](../03-architecture/Modules.md), [Bloc1 §C10](./Bloc1_Conception_Modelisation.md) | ✅ |
+| C11 | Conformité RGPD / CNIL | **E9 ⬜** | ⚠️ **Compétence NON acquise, et l'erreur inverse a été commise le 23/07.** Le référentiel (p. 8) rattache C11 à un « cas professionnel individuel écrit **hors projet fil rouge** », à partir d'« un site web marchand existant **fourni** ». Les 4 critères (consentement cookies, vue de confidentialité, formulaire d'accès, double opt-in) s'évaluent donc sur **ce site**, pas sur TaskForce. Ils avaient été cochés au vert sur la foi de l'implémentation TaskForce : corrigé. Le RGPD de TaskForce reste une preuve de **capacité** réelle ([Audit](../07-securite/Audit_RGPD_Conformite.md), [Registre Art.30](../07-securite/Registre_Traitements_RGPD.md), `GdprService`, `RetentionScheduler`, double opt-in) mais **ne se substitue pas au livrable**. Sujet à réclamer à l'école | ⬜ |
+| C12 | Veille technologique | E10 | [Veille Technologique](../17-veille/Veille_Technologique.md) (VT-001→006 avec ADR + preuves code), [Bloc1 §C12](./Bloc1_Conception_Modelisation.md) | ✅ |
 
 ### Bloc 2 — Front-end
 
 | Comp. | Intitulé court | Livrable | Où dans TaskForce | Statut |
 | :---: | -------------- | :------: | ----------------- | :----: |
-| C13 | Concevoir l'interface utilisateur | E11 | `frontend/` (Next.js), `assets/maquettes/` | 🟡 |
-| C14 | Éléments graphiques / charte | E11 | `frontend/components/ui`, logos `assets/images/` | 🟡 |
-| C15 | Mettre en œuvre l'UX (parcours, accessibilité) | E11 | `frontend/app`, [Architecture §3](../03-architecture/Architecture.md) | 🟡 |
-| C16 | Langage front (qualité, sécurité, écoconception) | E11 | headers/CORS/CSP — [Architecture §7](../03-architecture/Architecture.md) | 🟡 |
-| C17 | Consommer une API de façon sécurisée | E12 | [API](../05-api/API.md), `frontend/lib/api/client.ts` | 🟡 |
-| C18 | Tester le front-end (couverture ≥ 50 %) | E13 | `frontend/__tests__` (Vitest) — ⚠️ couverture à vérifier | 🟡 |
-| C19 | Industrialiser le front-end | E14 | `.github/workflows/frontend-tests.yml` | ✅ |
-| C20 | Performances SEO (≥ 70 %) | — | `landing-page/` (Astro) — ⚠️ à mesurer | ⬜ |
+| C13 | Concevoir l'interface utilisateur | E11 | `frontend/app/`, Radix/shadcn ARIA natif, axe-core CI, [Bloc2 §C13](./Bloc2_Frontend.md) | ✅ |
+| C14 | Éléments graphiques / charte | E11 | [Design System](../14-design/Design_System.md), `globals.css`, logos `assets/images/`, [Bloc2 §C14](./Bloc2_Frontend.md) | ✅ |
+| C15 | Mettre en œuvre l'UX (parcours, accessibilité) | E11 | 12 UC couverts, App Router. **WCAG 2.1 AA vérifié le 22/07 : 0 violation axe-core sur 3 pages, tous impacts confondus.** Le test ne bloquait auparavant que sur `critical` alors que les manquements AA remontent en `serious` : 10 violations passaient inaperçues, corrigées depuis, [Bloc2 §C15](./Bloc2_Frontend.md) | ✅ |
+| C16 | Langage front (qualité, sécurité, écoconception) | E11 | ESLint, TypeScript strict, CSP/CORS/HSTS headers, React Compiler. **MAJ 16/08 : validation Zod réellement câblée** (login + register, `frontend/lib/validation/auth-schemas.ts`, `safeParse`) — l'écart « Zod déclaré mais inutilisé » (règle d'or #8) est fermé ; la barrière serveur `@Valid` reste la source d'autorité. [Bloc2 §C16](./Bloc2_Frontend.md) | ✅ |
+| C17 | Consommer une API de façon sécurisée | E12 | `client.ts` (Axios+JWT+refresh), Stripe redirect, STOMP+auth, [Bloc2 §C17](./Bloc2_Frontend.md) | ✅ |
+| C18 | Tester le front-end (couverture ≥ 50 %) | E13 | **89,55 % Vitest** (périmètre logique), 805 tests, 3 fichiers Playwright. **MAJ 16/08 (`it.ps1 -Full`) : ~92 % (≈ 781 tests)**. [Bloc2 §C18](./Bloc2_Frontend.md) | ✅ |
+| C19 | Industrialiser le front-end | E14 | `frontend-tests.yml`, `e2e-tests.yml`, Dependabot, [Bloc2 §C19](./Bloc2_Frontend.md) | ✅ |
+| C20 | Performances SEO (≥ 70 %) | — | **Mesuré le 22/07 : SEO 92 % sur l'accueil, 100 % sur les 4 autres pages** (seuil 70 %). Le site n'a jamais eu de défaut de SEO, c'est le job Lighthouse qui ne mesurait rien ; corrigé, il audite les 5 pages, [Bloc2 §C20](./Bloc2_Frontend.md) | ✅ |
 
 ### Bloc 3 — Back-end
 
 | Comp. | Intitulé court | Livrable | Où dans TaskForce | Statut |
 | :---: | -------------- | :------: | ----------------- | :----: |
-| C21 | Couche de persistance (sécurité en profondeur) | E15 | [Architecture §6](../03-architecture/Architecture.md), JPA/Flyway | ✅ |
-| C22 | Langage back (qualité, sécurité, écoconception) | E16 | [Architecture §4](../03-architecture/Architecture.md) (Spring Boot 4) | ✅ |
-| C23 | Système de paiement + monétisation | E17 | Stripe — ⚠️ webhooks stubés ([PC-005](../09-audits/Problemes_Connus.md)) | 🟡 |
-| C24 | Développer une API sécurisée | E18 | [API](../05-api/API.md), `SecurityConfig`, Swagger/OpenAPI | 🟡 |
-| C25 | Tester le back-end (couverture ≥ 50 %) | E19 | `backend/tf-api/src/test` — ⚠️ couverture à compléter | 🟡 |
-| C26 | Industrialiser le back-end | E20 | `.github/workflows/backend-tests.yml`, `release.yml` | ✅ |
+| C21 | Couche de persistance (sécurité en profondeur) | E15 | `WorkspaceAccessInterceptor`, `AuditableEntity`, `EncryptedStringConverter`, [Bloc3 §C21](./Bloc3_Backend.md) | ✅ |
+| C22 | Langage back (qualité, sécurité, écoconception) | E16 | Architecture `shared/core/modules`, Virtual Threads Java 21, Trivy/Semgrep. **MAJ 16/08 : CI backend réparée** (service Postgres `pgvector`) → tests d'intégration en CI (cf. C25/C26). [Bloc3 §C22](./Bloc3_Backend.md) | ✅ |
+| C23 | Système de paiement + monétisation | E17 | Stripe Checkout, **5 webhooks réellement implémentés** (signature `Webhook.constructEvent`, idempotence par `stripe_event_id UNIQUE`, rejeu en différé sur erreur), portail de facturation. La mention « stubés » (PC-005) était périmée, vérifié le 22/07. Reste : un passage avec de vrais événements Stripe. **MAJ 16/08 : robustesse webhook renforcée** — anti-rétrogradation Business→Basic (`getPlanForPriceId` renvoie `null` sur un price-id ambigu ; le plan reste celui de `checkout.session.completed`), cf. [PC-035](../09-audits/Problemes_Connus.md). [Bloc3 §C23](./Bloc3_Backend.md) | ✅ |
+| C24 | Développer une API sécurisée | E18 | JWT+Keycloak, `@Valid` DTOs, AES-256-GCM, OpenAPI `/swagger-ui.html`, [Bloc3 §C24](./Bloc3_Backend.md) | ✅ |
+| C25 | Tester le back-end (couverture ≥ 50 %) | E19 | **73,71 % JaCoCo**, 792 tests, vrai Postgres sans simulacre (**pas** Testcontainers, cf. Bloc3). **MAJ 16/08 : CI d'intégration réparée** (service Postgres `pgvector`) ; run `it.ps1 -Full` du 16/08 → **~75-78 % lignes (≈ 670 tests)**. [Bloc3 §C25](./Bloc3_Backend.md) | ✅ |
+| C26 | Industrialiser le back-end | E20 | `backend-tests.yml` (**MAJ 16/08 : service Postgres `pgvector` → tests d'intégration en CI**), `release.yml`, images GHCR, Trivy+Semgrep+ZAP. **Nuance** : le gate JaCoCo (0,70, lié à `verify`) et les scans sécu restent **hors CI**. [Bloc3 §C26](./Bloc3_Backend.md) | ✅ |
 
 ### Bloc 4 — Déploiement & production
 
 | Comp. | Intitulé court | Livrable | Où dans TaskForce | Statut |
 | :---: | -------------- | :------: | ----------------- | :----: |
-| C27 | Documentation technique + base de connaissances | E29 | **Ce Brain OS**, [technique/](../03-architecture/Architecture.md), Swagger | 🟡 |
-| C28 | Administration (domaine, DNS, certificats, sécurité) | E23 | `nginx/`, prod compose — ⚠️ à documenter | ⬜ |
-| C29 | Sélectionner une plateforme d'hébergement | E21 | diagramme de déploiement — à produire | ⬜ |
-| C30 | Administrer des services d'hébergement (cloud/conteneur) | E22 | `docker-compose.prod.yml`, Keycloak, bastion — ⚠️ à formaliser | 🟡 |
-| C31 | Déploiement automatisé (DevOps / CI-CD) | E24 | `.github/workflows/release.yml`, `version-management.yml`, [GHCR](../06-infra/docker/GHCR_USAGE.md) | 🟡 |
-| C32 | Supervision (sondes, alertes, journalisation) | E25–E28 | SigNoz (`docker-compose.tools.yml`), actuator/prometheus | 🟡 |
+| C27 | Documentation technique + base de connaissances | E29 | Ce Brain OS, OpenAPI auto-généré, `version-management.yml`, [Release Notes](../15-utilisateur/Release_Notes.md), [Bloc4 §C27](./Bloc4_Deploiement_Production.md) | ✅ |
+| C28 | Administration (domaine, DNS, certificats, sécurité) | E23 | ⚠️ **Décoché le 23/07 : rien n'est déployé.** Aucun domaine réservé, aucune zone DNS, aucun certificat émis. `nginx/nginx.conf.example` est **prêt et validé** (TLS 1.2/1.3, HSTS, OCSP, limitation de débit) mais non déployé, [Bloc4 §C28](./Bloc4_Deploiement_Production.md) | ⬜ |
+| C29 | Sélectionner une plateforme d'hébergement | E21 | [Diagramme de déploiement](../06-infra/Diagramme_Deploiement.md) **(produit le 23/07)** + [Stratégie Hébergement](../06-infra/Strategie_Hebergement.md), `render.yaml`, [Bloc4 §C29](./Bloc4_Deploiement_Production.md). **MAJ 16/08 : contrainte « LLM local » levée** — bascule IA vers **Groq hébergé** si `GROQ_API_KEY` présente (chat/orchestration ; embeddings restant Ollama) → l'app IA devient déployable sur une petite VM sans compute local. ⚠️ déploiement prod toujours stand-by | 🟡 |
+| C30 | Administrer des services d'hébergement (cloud/conteneur) | E22 | `docker-compose.prod.yml` (9 services, réécrit le 22/07), réseaux Docker isolés, [Bloc4 §C30](./Bloc4_Deploiement_Production.md). **MAJ 16/08 : IA déployable sans GPU** (Groq hébergé, cf. C29). ⚠️ Composition **prête mais jamais exécutée en production** : à présenter comme telle | 🟡 |
+| C31 | Déploiement automatisé (DevOps / CI-CD) | E24 | 7 workflows GitHub Actions, images GHCR versionnées, [Pipeline CI/CD](../08-operations/Pipeline_CICD.md), [Bloc4 §C31](./Bloc4_Deploiement_Production.md) | ✅ |
+| C32 | Supervision (sondes, alertes, journalisation) | E25–E28 | OTel→SigNoz, 9 alertes Prometheus, `AuditService`, `backup.ps1`, ZAP/Trivy/Semgrep, [Bloc4 §C32](./Bloc4_Deploiement_Production.md) | ✅ |
 
 ## 4. Conventions de rédaction
 
@@ -166,6 +205,6 @@ Règles : rédaction **narrative** (paragraphes, pas de listes sèches) conform�
 > [Brain OS](../../Brain_OS.md). Les écarts connus (tests, RGPD, SEO, déploiement) sont des **chantiers de
 > rédaction**, tracés dans [Problèmes connus](../09-audits/Problemes_Connus.md).
 
-**Dernière mise à jour :** 08/06/2026  
-**Version :** 0.1  
+**Dernière mise à jour :** 16/08/2026  
+**Version :** 1.0  
 **Projet :** Taskforce — Metz Numeric School 2025-2026

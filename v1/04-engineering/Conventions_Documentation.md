@@ -40,6 +40,21 @@ RNCP). L'objectif : un vault navigable par un humain comme par une IA, où chaqu
 reliée et traçable.
 </p>
 
+> ## ⛔ Règles d'or de rédaction — À RESPECTER EN PERMANENCE
+>
+> 1. **NE RIEN INVENTER.** On n'écrit **que ce qui a été réellement fait** et qui est **démontrable**
+>    (code, migration, test, capture, log, config à l'appui). Pas de fonctionnalité, chiffre, process ou
+>    résultat supposé/aspirationnel présenté comme réel. En cas d'**hésitation → poser la question**, ne
+>    jamais combler par une supposition. Distinguer explicitement l'**existant** de la **cible** (`v1/` vs `v2/`).
+> 2. **Un manque n'est jamais patché par de l'invention.** Si en rédigeant on découvre un trou (backend,
+>    frontend, DB, sécu, infra…), on le **note dans la roadmap produit** (`../13-roadmap/Roadmap_Backlog.md`
+>    ou `../09-audits/Problemes_Connus.md`) — on ne fabrique pas de fausse preuve pour le masquer.
+> 3. **Code-as-docs.** Cette doc atterrit dans l'app / sur GitHub, lue par d'autres devs : elle doit être
+>    **détaillée, claire, justifiée** (le *pourquoi*, pas seulement le *quoi*), avec **schémas** (Mermaid/PlantUML)
+>    quand ils appuient la compréhension. Chaque affirmation technique **pointe vers sa preuve** (lien de code/commit).
+> 4. **Format Obsidian systématique** : front-matter complet (§1), `doc_type` (§2), `tags` (§3), `version`,
+>    `date`, liens `[[wikilink]]`/relatifs, même gabarit que les templates. Une note = un sujet, typée et reliée.
+
 ## Table des matières
 
 1. [Front-matter standard](#1-front-matter-standard)
