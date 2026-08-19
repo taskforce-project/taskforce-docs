@@ -82,7 +82,7 @@ déployables et leur infrastructure de support.
                        │   └──┬───┬───┬───┬───┬─────────┘
         STOMP 61613 ───┘      │   │   │   │   └──▶ SMTP / Mailtrap (OTP, mails)
         ┌──────────────┐      │   │   │   └──────▶ MinIO :9000 (avatars, pièces jointes)
-        │ RabbitMQ     │◀─────┘   │   └──────────▶ Groq API (LLM : smart-assign, assistant, insights)
+        │ RabbitMQ     │◀─────┘   │   └──────────▶ ai-service → Ollama Qwen3 local (smart-assign, assistant,insights)
         │ relais STOMP │          └──────────────▶ Stripe · GitHub/Slack OAuth
         └──────────────┘
 ```
@@ -138,7 +138,7 @@ com.taskforce.tf_api
 │   └── sales/       capture de leads entreprise
 └── shared/        # transverse (AUCUNE logique métier)
     ├── config/      Cors, Jpa, Keycloak, Mail, Minio, OAuth2, OpenApi, Otp, Stripe,
-    │                WebSocket, Groq, StompAuthInterceptor
+    │                WebSocket, LlmConfig, StompAuthInterceptor
     ├── security/    SecurityConfig, JwtDecoderConfig, JwtIdentityResolver
     ├── audit/       AuditableEntity
     ├── dto/         ApiResponse<T>, ErrorResponse, PageResponse<T>
@@ -166,18 +166,25 @@ et `docker-compose.tools.yml` (profils optionnels : observabilité SigNoz et sca
 `trivy`/`semgrep`). Le CI/CD repose sur GitHub Actions (`.github/workflows/` : tests par app, release
 vers GHCR, gestion sémantique des versions).
 
-<div style="background-color: #f8f9fa; padding: 1rem; border-left: 4px solid #dc3545; margin: 1rem 0;">
-<strong>⚠️ Service IA Python vestigial</strong><br>
-<code>ai-service/app/main.py</code> est un <em>stub</em> : ses embeddings sont des vecteurs déterministes
-de hash SHA256 (16 dimensions, aucun modèle ML) et le scoring smart-assign est une formule pondérée
-manuelle. Le <code>TODO.md</code> indique « Remplacé par Groq direct » : en production, l'IA tourne en
-Java (<code>core/service/GroqService.java</code>) appelant directement l'API Groq
-(<code>llama-3.1-8b-instant</code> pour smart-assign, <code>llama-3.3-70b-versatile</code> pour
-l'assistant). Le backend ne dépend pas du service Python en prod. Voir
-<a href="../09-audits/Dette_Technique.md">Dette technique (DT-010)</a>.
+<div style="background-color: #f8f9fa; padding: 1rem; border-left: 4px solid #0d6efd; margin: 1rem 0;">
+<strong>Service IA Python : passerelle active, et non plus un vestige</strong><br>
+<em>Encadré corrigé le 23/07/2026 : il affirmait l'inverse de la réalité.</em> Il décrivait
+<code>ai-service</code> comme un <em>stub</em> à embeddings SHA256 dont le backend ne dépendait pas,
+l'IA tournant « en Java via <code>GroqService</code> appelant directement l'API Groq ».
+<strong>Les deux propositions sont fausses</strong>, et <code>GroqService</code> n'existe plus dans
+le code.<br><br>
+Le chemin réel est inversé : <code>SmartAssignService</code> appelle l'interface
+<code>LlmClient</code>, dont l'unique implémentation <code>AiGatewayClient</code> s'adresse à la
+passerelle Python <code>ai-service</code>, elle-même devant un modèle <strong>Qwen3 exécuté
+localement par Ollama</strong>. Le backend en dépend explicitement
+(<code>AI_SERVICE_URL</code>, dépendance déclarée dans la composition Docker).<br><br>
+Groq a été retiré le 16/07 (<code>TF-AI-GROQ-CLEANUP</code>) : bloqué par le réseau de l'école (403),
+et son implémentation n'enregistrait pas la consommation de jetons, ce qui désarmait silencieusement
+la facturation de l'IA. Conséquence pour la conformité : <strong>aucun contenu de travail ne quitte
+l'infrastructure</strong>.
 </div>
 
-Dépendances externes : Keycloak (identité), Stripe (facturation), Groq (LLM), GitHub & Slack (OAuth
+Dépendances externes : Keycloak (identité), Stripe (facturation), GitHub & Slack (OAuth
 intégrations), MinIO (stockage), RabbitMQ (temps réel), SMTP/Mailtrap (email).
 
 ## 6. Modèle de données

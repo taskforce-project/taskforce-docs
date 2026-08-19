@@ -64,12 +64,15 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | ProjectController | `/api/workspaces/{slug}/projects` | ✅ |
 | IssueController | `/api/workspaces/{slug}/projects/{projectId}/issues` | ✅ |
 | AnalyticsController | `/api/workspaces/{slug}/analytics` | ✅ |
+| AnalysisController | `/api/workspaces/{slug}` (→ `/analysis`, `/projects/{id}/brief`, `/priorities/{id}`) | ✅ |
 | AssistantController | `/api/workspaces/{slug}/assistant` | ✅ |
+| McpActionController | `/api/workspaces/{slug}/mcp` (→ `/actions/execute`, `/servers`) | ✅ |
 | ProfileController | `/api/workspaces/{slug}/profile` | ✅ |
 | NotificationController | `/api/workspaces/{slug}/notifications` | ✅ |
+| MyWorkController | `/api/workspaces/{slug}` (→ `/my-issues`, `/my-cycles`, `/my-pages`) | ✅ |
 | RoadmapController | `/api/workspaces/{slug}/roadmap` | ✅ |
 | WebhookController | `/api/workspaces/{slug}/webhooks` | ✅ |
-| IntegrationController | `/api/workspaces/{slug}/integrations/...` + `/api/integrations/*/callback` | ✅ |
+| IntegrationController | `/api/workspaces/{slug}/integrations/...` (+ `/connectors/{key}` générique) + `/api/integrations/*/callback` | ✅ |
 | StripeController / StripeWebhookController | `/api/stripe` · `/api/webhooks` | ✅ |
 | SalesController | `/api/sales` | ✅ |
 | FileController / AttachmentController (ged) | `/api/files` · `/api/workspaces/{slug}/projects/{projectId}/issues/{issueId}/attachments` | ✅ |
@@ -92,7 +95,50 @@ Workspace (`workspace-service`), Projet + Labels (`project-service`, `label-serv
 CRUD, `/members`, `/teams`, `/labels`, **`GET /{id}/activity?days=N`** = activité quotidienne pour la sparkline carte projet, QA2-32),
 Issue (`issue-service` ↔ `IssueController` : CRUD, **`GET /paged?page&size`** = liste paginée additive pour l'infinite-scroll backlog (QA2-33), `/statuses` + `/reorder`, `/types`, `/comments`,
 `/activity`, `/smart-assign`, `/relations`), Analytics (`analytics-service` : `/kpis`, **`/throughput?bucket=DAY|WEEK`** = série throughput, `WEEK` (8 sem., défaut) ou `DAY` (30 j, tendance « 1 mois » du dashboard ; 26/06/2026),
-`/burndown`, `/capacity`, `/insights`), Notifications (`notification-service`), Sales, Avatars (`FileController`).
+`/burndown`, `/capacity`, `/insights`, **`POST /chart`** = génération de graphe par l'IA (2 modes : série temporelle ou **répartition « X par Y » calculée en base** via un moteur de requête whitelisté — le modèle interroge la vraie DB sans écrire de SQL ; 10/07/2026), **`POST /breakdown`** = ré-exécution d'une répartition, **`GET/POST /charts`** + **`DELETE /charts/{id}`** = graphes épinglés « Custom »), Notifications (`notification-service`), Sales, Avatars (`FileController`).
+
+**Workflows d'analyse IA ✅** (10/07/2026) — `analysis-service` ↔ `AnalysisController`. L'analyse est **asynchrone** :
+`POST /analysis` (`{projectId, depth}`) rend immédiatement un job, exécuté en `@Async` par `AnalysisJobRunner` ;
+`GET /analysis` (dock) · `GET /analysis/{jobId}` · `DELETE /analysis/{jobId}` (masquage) ·
+`POST /analysis/{jobId}/answer` (HITL — reprise après clarification du modèle).
+La décision produite est persistée : `GET /projects/{projectId}/brief` (→ `null` si aucune analyse aboutie), et chaque
+priorité est actionnable : `POST /priorities/{id}/accept` (→ crée l'issue liée), `/pin`, `/dismiss` (bascules), `PUT /priorities/{id}` (édition).
+Le job publie son plan d'étapes sur `/topic/analysis.{workspaceId}` (STOMP) ; **le front n'y est pas encore abonné** et
+retombe sur un polling 5 s tant qu'un workflow est actif.
+> Remplace l'ancien `POST /projects/{projectId}/decision` (synchrone, non persisté), **supprimé** le 10/07/2026 avec `DecisionController`.
+
+**Hôte MCP ✅** (12/07/2026) — `McpActionController` (`/api/workspaces/{slug}/mcp`). TaskForce **consomme** des
+serveurs MCP externes : un connecteur du workspace portant un `mcpUrl` (config chiffrée) expose ses outils à
+Cortex (découverte `tools/list`, namespacing `<connecteur>__<outil>`, fusion dans la boucle de tool-calling).
+Les **écritures externes** sont **proposées** (toolCall `pending`) puis exécutées après validation via
+`POST /mcp/actions/execute` (`{toolRef, arguments}`). Gestion des serveurs : `GET /mcp/servers` (joignabilité
++ outils après allow-list `mcpAllow`), `POST /mcp/servers` (`{connectorKey, mcpUrl, mcpToken?, mcpAllow?}` →
+config **chiffrée**), `DELETE /mcp/servers/{connectorKey}`. **Gate BUSINESS+** (`PlanFeature.INTEGRATIONS` →
+409 sinon). Backend complet (cycle connect→execute→disconnect vérifié en HTTP) ; le front (dialog de connexion
++ bouton d'approbation des actions `pending`) reste à faire. Détail : [IA-MCP-002](../02-produit/IA.md).
+
+**« Ma file » — endpoints agrégés ✅** (20/07/2026) — `MyWorkController` (`/api/workspaces/{slug}`). La vue est
+**cross-projets** : elle affichait ses cycles et ses documents en rappelant l'API **projet par projet**, soit
+`3 + 2N` requêtes par affichage (N = nombre de projets) — assez pour épuiser le quota de rate limiting à
+l'usage normal. Deux endpoints agrégés remplacent ces boucles :
+`GET /my-cycles` → `ApiResponse<List<MyWorkCycleResponse>>` avec
+`MyWorkCycleResponse = { projectId, projectName, cycle: CycleResponse }` (décompte d'issues groupé en **une**
+requête, `CycleIssueRepository.countByCycleIds`) et `GET /my-pages` →
+`ApiResponse<List<MyWorkPageResponse>>` avec `MyWorkPageResponse = { projectId, projectName, page: PageResponse }`
+(borné à **50 documents récents**). Périmètre des deux : les projets visibles par l'appelant
+(`ProjectVisibilityGuard.viewableProjectIds`). L'enveloppe `{projectId, projectName}` est nécessaire parce que
+`CycleResponse`/`PageResponse` sont normalement servis depuis une route **déjà scopée par projet**.
+Mesure : « Ma file » passe de `3+2N` à **3 appels**, 0 appel par projet.
+> ⚠️ `MyWorkController` passe de `@RequestMapping("…/my-issues")` à `@RequestMapping("/api/workspaces/{slug}")`
+> + `@GetMapping("/my-issues")` : **l'URL externe de `/my-issues` est inchangée**.
+
+**En-têtes de rate limiting exposés ✅** (20/07/2026) — le 429 était muet côté client : `RateLimitFilter`
+n'émettait aucun `Retry-After`, et le profil `DEFAULT` (200 req/60 s, `refillIntervally`) rend tous les jetons
+d'un coup en fin de fenêtre — l'attente réelle va donc de **0 à 60 s**, indevinable. Le filtre émet désormais
+**`Retry-After`** et **`X-RateLimit-Remaining`**, tous deux **listés dans `CorsConfig.setExposedHeaders`** :
+sans cette déclaration, le navigateur les masque au JavaScript en cross-origin et le contrat reste inutilisable.
+Les préflights `OPTIONS` sont par ailleurs **exclus du comptage** (`shouldNotFilter`) — ils consommaient un
+jeton chacun, divisant le quota réel par deux. Cf. [PC-033](../09-audits/Problemes_Connus.md).
 
 **Cassé (404) ❌** — Cycles (`cycle-service` ↔ `CycleController`), Pages wiki (`page-service` ↔ `PageController`) :
 le front appelle `/api/workspaces/…`, le back sert `/workspaces/…`. Voir §4.1.
@@ -155,6 +201,6 @@ Front : `AUTH_ROUTES.REFRESH_TOKEN = /api/auth/refresh` ; back : méthode mappé
 
 > **Note Brain OS** — Vérifié dans le code au 08/06/2026 (branche `feat/dashboard`).
 
-**Dernière mise à jour :** 08/06/2026  
+**Dernière mise à jour :** 20/07/2026  
 **Version :** 1.0  
 **Projet :** Taskforce — Metz Numeric School 2025-2026

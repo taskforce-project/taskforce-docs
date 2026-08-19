@@ -11,10 +11,14 @@
             "id": "07f54c374437a3f5",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "World Model.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "Nouvel onglet"
+              "title": "World Model"
             }
           }
         ]
@@ -40,7 +44,7 @@
                 "autoReveal": false
               },
               "icon": "lucide-folder-closed",
-              "title": "Explorateur de fichiers"
+              "title": "Files"
             }
           },
           {
@@ -167,15 +171,19 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:Ouvrir le sélecteur rapide": false,
-      "graph:Ouvrir la vue graphique": false,
-      "canvas:Créer une nouvelle toile": false,
-      "templates:Insérer le modèle": false,
-      "bases:Créer une nouvelle base": false
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "templates:Insert template": false,
+      "bases:Create new base": false
     }
   },
   "active": "07f54c374437a3f5",
   "lastOpenFiles": [
+    "IDEA.md",
+    "World Model.md",
+    "v1/16-memoire-rncp/Bloc3_Backend.md.tmp.33264.72b45744ea63",
+    "v1/16-memoire-rncp/Bloc2_Frontend.md.tmp.33264.b1a3cb1fb542",
     "v1/04-engineering/git-workflow/MIGRATION_VERSIONING.md",
     "Brain_OS.md",
     "v1/04-engineering/git-workflow/labels-reference.md"

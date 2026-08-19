@@ -65,13 +65,17 @@ le <strong>socle minimal</strong> ; les items marqués ★ vont au-delà). À pi
 
 À traiter en premier : ils débloquent des pans entiers de l'app (cf. [Problèmes connus](../09-audits/Problemes_Connus.md)).
 
+> **▶ MAJ 05/07/2026** — Vérifié sur la branche `test/v1-hardening` (le snapshot 08/06 était sur `feat/dashboard`) :
+> **TF-FIX-001 à 005 sont ✅ résolus** dans le code actuel (préfixes `/api` présents partout, groupes de routes front déclarés,
+> import `profile-service` correct, refresh/logout désormais **Keycloak natif** — cf. TF-SEC-009, webhooks Stripe câblés).
+
 | ID | Tâche | Prio | Effort | RNCP | Réf |
 | -- | ----- | :--: | :----: | :--: | --- |
-| TF-FIX-001 | Ajouter le préfixe `/api` aux 5 contrôleurs (Cycle, Team, Page, Discussion, Channel) | 🔴 P0 | M | C24 | PC-001 |
-| TF-FIX-002 | Déclarer les 4 groupes de routes front manquants (MESSAGE/INTEGRATION/ATTACHMENT/ROADMAP) | 🔴 P0 | S | C17 | PC-002 |
-| TF-FIX-003 | Corriger l'import `profile-service.ts` (`./client`) | 🔴 P0 | S | C16 | PC-003 |
-| TF-FIX-004 | Aligner + implémenter le refresh token / logout (révocation) | 🟠 P1 | M | C24 | PC-004 |
-| TF-FIX-005 | Implémenter les handlers de webhook Stripe (abonnement/facture) | 🟠 P1 | L | C23 | PC-005 |
+| TF-FIX-001 | ✅ **Résolu** — préfixe `/api` présent sur les 5 contrôleurs (Cycle, Team, Page, Discussion, Channel) | 🔴 P0 | M | C24 | PC-001 |
+| TF-FIX-002 | ✅ **Résolu** — 4 groupes de routes front déclarés (MESSAGE/INTEGRATION/ATTACHMENT/ROADMAP) | 🔴 P0 | S | C17 | PC-002 |
+| TF-FIX-003 | ✅ **Résolu** — `profile-service.ts` importe bien `./client` | 🔴 P0 | S | C16 | PC-003 |
+| TF-FIX-004 | ✅ **Résolu (05/07)** — refresh/logout migrés sur Keycloak natif (rotation IdP, logout serveur) | 🟠 P1 | M | C24 | PC-004 |
+| TF-FIX-005 | ✅ **Résolu** — 5 handlers webhook Stripe câblés (`StripeWebhookController` → `StripeWebhookService`) | 🟠 P1 | L | C23 | PC-005 |
 
 ## 2. Frontend
 
@@ -131,6 +135,8 @@ le <strong>socle minimal</strong> ; les items marqués ★ vont au-delà). À pi
 | TF-INFRA-008 | ★ Durcissement images Docker (non-root, distroless, SBOM, scan trivy bloquant en CI) | 🟡 P2 | M | C26 | ★ |
 | TF-INFRA-009 | Runbooks ops (déploiement, incident, restore) — cf. `_templates/TPL_Runbook.md` | 🟡 P2 | M | C27/C32 | — |
 | TF-INFRA-010 | ★ IaC (Terraform/Ansible) pour l'environnement cible | 🟢 P3 | XL | C30 | ★ |
+| TF-INFRA-011 | **Corriger `docker-compose.prod.yml`** — des `` `n `` PowerShell **littéraux** (lignes ~65/114) cassent le YAML et attachent le volume d'import realm Keycloak au **mauvais service** (backend au lieu de keycloak). Découvert le 05/07. | 🟠 P1 | S | C30 | — |
+| TF-BUILD-001 | **Build backend cassé par dérive d'image** — le tag mouvant `maven:3.9-eclipse-temurin-21` a tiré JDK 21.0.11 → NPE javac `SharedNameTable` avec Lombok au `testCompile`. **Contournement appliqué** (`-XDuseUnsharedTable=true` + fork dans le `pom`). À terme : **épingler** l'image Maven sur un digest sain. Découvert le 05/07. | 🟡 P2 | S | C26 | — |
 
 ## 6. Tests & qualité
 
@@ -144,6 +150,7 @@ le <strong>socle minimal</strong> ; les items marqués ★ vont au-delà). À pi
 | TF-TEST-006 | ★ Tests de contrat API (front ↔ back) pour prévenir les régressions de routes | 🟡 P2 | M | C17/C24 | PC-001/002 |
 | TF-TEST-007 | Tests de non-régression + gate de couverture en CI | 🟡 P2 | M | C19/C26 | — |
 | TF-TEST-008 | Tests d'accessibilité (axe) et UX (utilisateurs en situation de handicap) | 🟢 P3 | M | C18 | — |
+| TF-TEST-009 | **Tests de charge/performance** (k6/Gatling) sur endpoints critiques — vérifier les seuils PERF-01..05 du STB (actuellement validés en comportement, pas en latence) | 🟡 P2 | M | C25 | STB §1 |
 
 ## 7. Sécurité
 
@@ -155,19 +162,25 @@ le <strong>socle minimal</strong> ; les items marqués ★ vont au-delà). À pi
 | TF-SEC-004 | Gestion des secrets (hors repo, vault/CI secrets, rotation) | 🟠 P1 | M | C21 | — |
 | TF-SEC-005 | En-têtes HTTP de sécurité (HSTS, CSP, X-Frame-Options…) + SSL valide | 🟠 P1 | M | C16 | DT-019 |
 | TF-SEC-006 | Contrôle d'accès : revue des `@PreAuthorize`/checks workspace/projet | 🟠 P1 | M | C21/C24 | — |
-| TF-SEC-007 | ★ Modèle de menaces (threat model) + registre des risques | 🟢 P3 | M | C21 | ★ |
+| TF-SEC-007 | ★ Modèle de menaces (threat model) + registre des risques — ✅ **05/07 : STRIDE documenté** (`07-securite/Threat_Model_STRIDE.md`, 6 catégories × flux réels + risques résiduels) | 🟢 P3 | M | C21 | ★ |
 | TF-SEC-008 | Sécurité paiement : vérification signature webhook Stripe, PCI scope | 🟠 P1 | M | C23 | PC-005 |
+| **TF-SEC-009** | ✅ **Résolu (05/07)** — émission des JWT migrée vers **Keycloak OIDC (RS256)** : `JwtService` custom supprimé, décodeur `NimbusJwtDecoder` sur JWK Keycloak + validation issuer, login/refresh/logout via `KeycloakAuthService` (ROPC + refresh natif + `users().logout()`). Auto-login post-inscription retiré (Keycloak exige le mot de passe) → redirection `/auth/login`. Table `refresh_tokens` conservée mais inutilisée. **Vérifié : 658 tests backend verts.** Doc auth à réviser : [[Auth_Autorisation]], [[Journal_Decisions_ADR]] (ADR-011). | 🟠 P1 | L | C21/C24 | PC-019 |
+| TF-SEC-010 | **DAST ZAP baseline en CI** (bloquant sur alerte HIGH) — complète TF-SEC-002/003 (SAST/SCA déjà spécifiés en CI). Intègre `security-scan.ps1 -Dast` au pipeline avant release. | 🟡 P2 | M | C19/C21 | Threat_Model_STRIDE §4 |
+| TF-SEC-011 | ✅ **Résolu (05/07)** — **rate limiting distribué** : `RateLimitFilter` accepte un `ProxyManager` Bucket4j/Lettuce (Redis) partagé entre instances ; fallback local si `ratelimit.distributed.enabled=false` (dev). Redis ajouté au compose prod + `render.yaml`. | 🟡 P2 | M | C30 | Threat_Model_STRIDE (D3) |
 
 ## 8. RGPD & légal
 
 | ID | Tâche | Prio | Effort | RNCP | Réf |
 | -- | ----- | :--: | :----: | :--: | --- |
-| TF-RGPD-001 | Bandeau de consentement cookies (caractéristiques techniques détaillées) | 🟠 P1 | M | C11/E9 | — |
-| TF-RGPD-002 | Vue « Politique de confidentialité & traitement des données personnelles » | 🟠 P1 | S | C11/E9 | — |
-| TF-RGPD-003 | Formulaire de demande d'accès aux données personnelles + traitement | 🟠 P1 | M | C11/E9 | — |
-| TF-RGPD-004 | Double opt-in sur les traitements collectant des données personnelles | 🟡 P2 | M | C11/E9 | — |
-| TF-RGPD-005 | Mentions légales + CGU/CGV | 🟡 P2 | S | C11 | — |
-| TF-RGPD-006 | Registre des traitements + analyse d'impact (collaborateurs : compétences/charge) | 🟡 P2 | M | C11 | ★ |
+| TF-RGPD-001 | ✅ **Résolu (05/07)** — bannière `cookie-banner.tsx` présente + requalifiée en **notice d'information** (l'app n'utilise que des cookies strictement nécessaires → consentement non requis par la CNIL ; un faux « Refuser » sur des cookies d'auth serait trompeur). CTA d'acquittement « Got it », mention de l'absence de traceurs. | 🟡 P2 | M | C11/E9 | Politique_Confidentialite_CGU §5 |
+| TF-RGPD-002 | ✅ **Politique de confidentialité** — **fait (05/07)** : `PrivacyPolicyPageNew.tsx` + `constants_en.ts` (privacy) | ✅ | — | C11/E9 | Politique_Confidentialite_CGU |
+| TF-RGPD-003 | ✅ **Accès/export/suppression RGPD** — **fait** : `GdprService.exportMyData` + `deleteMyAccount` + `GdprController` (`/api/gdpr/*`) | ✅ | — | C11/E9 | Audit_RGPD_Conformite §2 |
+| TF-RGPD-004 | Double opt-in sur les traitements collectant des données personnelles | 🟢 P3 | M | C11/E9 | — |
+| TF-RGPD-005 | 🟡 **Partiel (05/07)** — sous-traitants **corrigés** dans `constants_en.ts`/`constants_fr.ts` (AWS/GA faux → Stripe + Groq, démontrables). Reste : page **Mentions légales** dédiée (LEN Art. 6). | 🟡 P2 | S | C11 | Politique_Confidentialite_CGU §4 |
+| TF-RGPD-006 | ✅ **Registre des traitements + audit RGPD** — **fait (05/07)** : `Registre_Traitements_RGPD.md` (7 traitements Art. 30) + `Audit_RGPD_Conformite.md` (E9) | ✅ | — | C11/E9 | Registre_Traitements_RGPD |
+| TF-RGPD-007 | ✅ **Résolu (05/07)** — `GdprService.deleteMyAccount` supprime l'identité Keycloak (appel `KeycloakService.deleteUser` **après commit**, tolérant à l'échec ; invalide aussi les sessions). Vérifié en intégration Postgres. | 🟡 P2 | S | C11 | Audit_RGPD_Conformite §2.2 |
+| TF-RGPD-008 | **DPA formel Groq** — formaliser Data Processing Agreement avec Groq Inc. (USA) pour le contexte LLM Smart Assign | 🟡 P2 | S | C11 | Registre_Traitements_RGPD §T4 |
+| TF-RGPD-009 | **Procédure notification violations** (Art. 33 RGPD) — délai 72h CNIL non documenté comme procédure opérationnelle | 🟡 P2 | S | C11 | Audit_RGPD_Conformite §7 |
 
 ## 9. Conventions & process
 
@@ -193,6 +206,7 @@ le <strong>socle minimal</strong> ; les items marqués ★ vont au-delà). À pi
 | TF-DOC-008 | ADRs des décisions clés (stack, multi-tenant, IA Groq, STOMP) | 🟡 P2 | M | C10 | — |
 | TF-DOC-009 | Note de préconisations techniques (E3) + planification/budget (E2) | 🟡 P2 | M | C2/C3 | — |
 | TF-DOC-010 | Note justifiant la méthode **agile** + trame de compte rendu (E5/E6) | 🟡 P2 | S | C4 | — |
+| TF-DOC-011 | ✅ **Résolu (05/07)** — sweep doc auth HS512→OIDC : `Auth_Autorisation.md` (v1.1) + 17 fichiers alignés (PSSI, STRIDE, séquences UML, CdCT_v2, Dossier_Conception, Sécurité, Modules, Table_Reconciliation, STB, Registre/Audit RGPD, Politique_Tests, Matrice_Tracabilité, Cahier_Recettes, Plan_SSDLC, Stripe, FAQ, Release_Notes, Catalogue, Bloc1). Restent volontairement les mentions **historiques** (ADR-003/011, Note d'innovation, veille ANSSI). | 🟡 P2 | M | C27 | ADR-011 |
 
 ## 11. Synthèse de couverture RNCP
 
@@ -219,6 +233,6 @@ rédiger le mémoire (TF-DOC-001) au fur et à mesure que chaque preuve est prod
 > **Note Brain OS** — Registre vivant : mettre à jour le statut des tâches à chaque avancement. Relié à
 > [Problèmes connus](../09-audits/Problemes_Connus.md) (PC-xxx) et à la [matrice du mémoire](../16-memoire-rncp/README.md).
 
-**Dernière mise à jour :** 08/06/2026  
-**Version :** 1.0  
+**Dernière mise à jour :** 05/07/2026 (round de correctifs V1-hardening : TF-SEC-009/011, TF-RGPD-001/005/007, +TF-INFRA-011/TF-BUILD-001)  
+**Version :** 1.1  
 **Projet :** Taskforce — Metz Numeric School 2025-2026

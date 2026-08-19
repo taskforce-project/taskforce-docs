@@ -1,0 +1,257 @@
+---
+id: roadmap-documentation
+title: Roadmap de production de la documentation
+doc_type: roadmap
+statut: active
+version: 1.0
+date: "05/07/2026"
+auteur: Pierre MICHEL
+tags: [roadmap, documentation, production, memoire, rncp, soutenance]
+---
+
+# 🗺️ Roadmap Documentation — plan de production
+
+> **But** : produire **TOUS** les documents du [Catalogue exhaustif](../Catalogue_Documentation.md)
+> (~97 docs), **1 par 1**, dans un **ordre efficace** (les fondations réutilisables d'abord — elles
+> alimentent plusieurs docs — l'assemblage du mémoire à la fin).
+>
+> **Légende** : `[ ]` à produire · `[~]` en cours · `[x]` fait. ✅ = déjà existant/couvert dans le Brain OS.
+> ⭐ = va dans le **bundle PDF soutenance**. Croisé avec le **référentiel DFS** (E1–E29) + slides école.
+>
+> **Process par doc** : (1) rédiger/générer en Markdown dans le Brain OS → (2) lier aux preuves (code,
+> captures, autres docs) → (3) cocher ici + statut dans le [Catalogue](../Catalogue_Documentation.md) →
+> (4) MAJ du [mémoire](./README.md) si preuve d'une compétence.
+
+---
+
+## Phase 0 — Fondations réutilisables (GÉNÉRABLES DU CODE) 🏗️ ✅ **TERMINÉE (05/07)**
+> À faire **en premier** : ces artefacts sont réutilisés dans le CdCT, le dossier de conception, le mémoire.
+> **8/8 faits** — tous dérivés du code/schéma réel (`03-architecture/`), aucune donnée inventée.
+
+- [x] ⭐ **MERISE — MCD / MLD** — **fait (05/07)** : `03-architecture/Modele_Donnees_MCD_MLD.md` (7 diagrammes Mermaid par domaine, dérivés du schéma réel `information_schema` — 50 tables/94 FK — + règles de gestion justifiées). MPD = PostgreSQL 18 + pgvector.
+- [x] ⭐ **Diagramme de classes (UML)** — **fait (05/07)** : `03-architecture/Diagramme_Classes_UML.md` (5 diagrammes Mermaid par domaine, dérivés des 38 entités JPA réelles — 4 héritages `AuditableEntity`, 60 associations `@ManyToOne` ; documente le **modèle hybride** association JPA vs FK par `Long` id, justifié par le Javadoc `AuditLog`).
+- [x] ⭐ **Diagramme de cas d'usage (UML)** — **fait (05/07)** : `03-architecture/Diagramme_Cas_Usage_UML.md` (3 acteurs hiérarchiques MEMBER⊂ADMIN⊂OWNER + Stripe/Ordonnanceur, cas gardés par le code `AuthorizationService`/`assertIsOwner` ; cœur CDC = redistribution auto tracé).
+- [x] ⭐ **Diagrammes de séquence (UML)** — **fait (05/07)** : `03-architecture/Diagrammes_Sequence_UML.md` (6 séquences réelles : inscription+OTP, login Keycloak, smart-assign, redistribution, Stripe checkout/webhooks, export RGPD — chaque flèche = appel présent dans le code).
+- [x] **Diagramme d'activité / d'états** — **fait (05/07)** : `03-architecture/Diagramme_Etats_UML.md` (5 machines à états réelles : issue/invitation/cycle/abonnement + activité redistribution ; documente l'absence de contrainte de transition sur les issues et l'absence de statut workspace).
+- [x] **Dictionnaire de données** — **fait (05/07)** : `03-architecture/Dictionnaire_Donnees.md` (exhaustif, généré d'`information_schema` — 50 tables/483 colonnes/94 FK, avec types/nullable/défauts/clés/ON DELETE, groupé par domaine).
+- [x] ⭐ **Architecture C4** (contexte → conteneurs → composants) — **fait (05/07)** : `03-architecture/Architecture_C4.md` (3 niveaux Mermaid dérivés de `Architecture.md`/`ARCHITECTURE.md` ; ai-service marqué vestigial DT-010, règle `shared←core←modules`).
+- [x] **Table de réconciliation** UC ↔ entité ↔ migration ↔ test — **fait (05/07)** : `03-architecture/Table_Reconciliation.md` (matrice de traçabilité complète : ~30 UC × entités × 56 migrations Flyway × 72 fichiers de tests + cas transverses sécu/qualité).
+
+## Phase 1 — Cadrage & Produit 📌 ✅ **TERMINÉE (05/07)**
+- [x] ⭐ **Note de cadrage** — **fait (05/07)** : `01-projet/Note_Cadrage.md` (origine/problématique/périmètre/SMART/contraintes/risques/parties prenantes — synthèse fondée sur `Dossier_Projet.md`).
+- [x] 🔄 ⭐ **CdCF v2** — **fait (05/07)** : `01-projet/CdCF_v2.md` (périmètre réel livré : delta v1→v2, acteurs OWNER/ADMIN/MEMBER, 12 UC mis à jour, 3 scénarios, hors-périmètre V1 documenté).
+- [x] 🔄 ⭐ **CdCT v2** — **fait (05/07)** : `01-projet/CdCT_v2.md` (delta v1→v2, stack réelle Maven/SigNoz/Groq/pgvector, architecture packages, modèle de données, infra, sécurité OWASP, tests, observabilité OTEL→SigNoz).
+- [x] ⭐ **STB** — **fait (05/07)** : `01-projet/STB.md` (9 familles d'exigences : perf/capacité/dispo/sécu/qualité/conformité/intégration/contraintes/traçabilité — toutes fondées sur le code ou les configs réels).
+- [ ] **Expression de besoin** + **Analyse fonctionnelle** + **Analyse technique**
+- [x] ⭐ **PRD / Vision produit** — **fait (05/07)** : `01-projet/PRD_Vision_Produit.md` (personas, objectifs SMART, features V1, métriques de succès, backlog produit).
+- [x] ⭐ **Business model / pricing / monétisation** — **fait (05/07)** : `01-projet/Business_Model_Pricing.md` (freemium 3 niveaux FREE/PRO/Enterprise, unit economics CAC/LTV, Stripe V1 implémenté, concurrents, projection).
+- [ ] Personas + user stories / epics
+- ✅ Roadmap produit · Étude de marché · Stratégie marketing/vente
+
+## Phase 2 — Gestion de projet 📊
+- [x] ⭐ **Plan de projet** — **fait (05/07)** : `01-projet/Plan_Projet.md` (phases/jalons/MoSCoW/organisation/outils).
+- [x] ⭐ **Planning prévisionnel (Gantt)** — **fait (05/07)** : `01-projet/Gantt_Planning.md` (Mermaid gantt 9 phases + jalons J1–J6).
+- [x] ⭐ **Diagramme de PERT** — **fait (05/07)** : `01-projet/Diagramme_PERT.md` (dépendances + chemin critique + marges).
+- [ ] **Rétroplanning** — ⬜ backlog (optionnel soutenance)
+- [x] ⭐ **Budget prévisionnel + réel** — **fait (05/07)** : `01-projet/Budget_Previsionnel.md` (~38 k€ valeur travail + 0 € infra dev + ~900 €/an prod).
+- [x] ⭐ **Note méthode agile** — **fait (05/07)** : `01-projet/Note_Methode_Agile.md` (Scrum allégé + Kanban, DoD, feature freeze).
+- [ ] **Trame de compte-rendu** + ≥1 CR d'exemple — ⬜ backlog (optionnel)
+- [x] ⭐ **Registre des risques** — **fait (05/07)** : `01-projet/Registre_Risques.md` (12 risques, matrice Prob×Impact, statuts).
+- [x] ⭐ **Journal de décisions (ADR)** — **fait (05/07)** : `12-decisions/Journal_Decisions_ADR.md` (10 ADR : stack Maven, multi-tenant, Keycloak, Groq Java, pgvector, RabbitMQ/STOMP, no-mock Testcontainers, hybride FK, Brain OS @OneToOne, SigNoz/OTEL).
+- ✅ RACI · Organigramme · WBS · PBS · SMART
+
+## Phase 3 — Conception (assemblage) 🧩 ✅ **TERMINÉE (05/07)**
+- [x] ⭐ **Dossier de conception** (E8) — **fait (05/07)** : `03-architecture/Dossier_Conception.md` (synthèse narrative Phase 0 : UC/classes/MCD/séquences/C4/ADR + traçabilité exigences→conception + bilan gaps).
+- [x] ⭐ **Wireframes annotés** — **fait (05/07)** : `14-design/Wireframes_Annotes.md` (dérivés des 48 routes réelles `frontend/app/**/page.tsx` + layouts ASCII annotés UC + endpoints + rôles requis).
+
+## Phase 4 — Réalisation (documentation) 🛠️ ✅ **TERMINÉE (05/07)**
+- [x] ⭐ **Spec API OpenAPI/Swagger** — **fait (05/07)** : `05-api/Spec_API_OpenAPI.md` (33 contrôleurs / ~130 endpoints, groupés par domaine, avec auth/rôle requis par endpoint).
+- [x] ⭐ **Auth & autorisation** — **fait (05/07, v1.1 OIDC)** : `07-securite/Auth_Autorisation.md` (tokens OIDC RS256 émis par Keycloak — ex-JWT HS512, migré ADR-011 ; SecurityFilterChain, RBAC OWNER/ADMIN/MEMBER, OTP inscription, StompAuthInterceptor).
+- [x] ⭐ **Système de paiement** — **fait (05/07)** : `04-engineering/Systeme_Paiement_Stripe.md` (Checkout, 5 webhooks, FSM PlanStatus, portail billing, idempotence stripe_event_id, variables d'env).
+- [ ] Gestion des erreurs / codes — ⬜ backlog (GlobalExceptionHandler documenté dans CdCT v2)
+- [x] ⭐ **Design system / charte graphique** — **fait (05/07)** : `14-design/Design_System.md` (tokens CSS globals.css, palette light/dark, shadcn/Radix composants, Inter + SF Pro, Lucide icons, a11y).
+- [ ] i18n / traductions — ⬜ backlog (FR/EN constants documentés dans CdCT v2)
+- ✅ Accessibilité (`14-design/Accessibilite.md`) · Conventions front/back · Fiches Backend/Frontend (à finaliser 🟡)
+
+## Phase 5 — Qualité & Tests ✅ **TERMINÉE (05/07)**
+- [x] ⭐ **Politique de tests** — **fait (05/07)** : `08-operations/Politique_Tests.md` (pyramide unitaire/composant/intégration/E2E, no-mock Testcontainers ADR-007, gate JaCoCo 60 % / actuel 78 %, frontend 92 % Vitest, règles non-régression, CI 3 workflows).
+- [x] ⭐ **Cahier de recettes** — **fait (05/07)** : `08-operations/Cahier_Test_Recettes.md` (79 scénarios × UC-01 à UC-12 + cas transverses sécu — critères d'acceptation, fichiers de test tracés, 97 % automatisés).
+- [x] ⭐ **Matrice de traçabilité** exigences ↔ tests — **fait (05/07)** : `08-operations/Matrice_Tracabilite_Tests.md` (54 exigences STB × 8 familles PERF/CAP/DISP/SEC/QUAL/CONF/INT/CT — 76 % couvertes automatiquement, 5 gaps prioritisés).
+- [ ] **FeatureFiles Gherkin (BDD)** + documentation vivante
+- [ ] **Rapport de recette / validation jury** (remplace le PV client — N/A projet solo)
+- ✅ Stratégie & plan de tests (`Tests.md`) · Rapport de couverture (**back 73,71 % au 22/07 · front 88,63 % au 23/07**, cf. réconciliation) · Dossier d'anomalies (`Problemes_Connus.md`)
+
+## Phase 6 — Sécurité 🔐 ✅ **TERMINÉE (05/07)**
+- [x] ⭐ **PSSI** — **fait (05/07)** : `07-securite/PSSI.md` (DICP, 6 principes directeurs, IAM/RBAC, protection données + RGPD, couverture OWASP, journalisation/audit, rôles & responsabilités, gestion vulnérabilités — chaque règle ancrée dans le code réel).
+- [x] ⭐ **Plan de sécurisation (5 étapes)** + **S-SDLC** — **fait (05/07)** : `07-securite/Plan_Securisation_SSDLC.md` (S-SDLC 6 étapes conception→exploitation, plan 5 étapes cartographie→vérification, outillage DevSecOps Semgrep/Trivy/ZAP, checklist « 10 commandements », revue de code sécu).
+- [x] **Threat model (STRIDE)** — **fait (05/07)** : `07-securite/Threat_Model_STRIDE.md` (DFD + 4 gardes, 6 catégories STRIDE × flux réels avec preuves code, synthèse risques résiduels tracés au backlog, couverture STRIDE↔OWASP↔tests). Documente TF-SEC-007.
+- [x] Gestion des secrets · Références conformité — **couvert** dans PSSI §3.3 + §5 (ISO 27034/OWASP ASVS L1). Config WAF → renvoyée Phase 7 (infra).
+- ✅ Politique de sécurité + posture OWASP (`Sécurité.md`) · Pentest ZAP/SAST/SCA · Plan réponse incident (🟡)
+
+## Phase 7 — Infra / DevOps / Prod 🚀 🟡 **Partielle (05/07 — stand-by VM école)**
+- [ ] ⭐ **Architecture d'infrastructure / topologie** — ⬜ (dépend du choix hébergement — voir [[Strategie_Hebergement]])
+- [ ] ⭐ **Diagramme de déploiement** (E21) — ⬜ (idem, deux options documentées)
+- [x] ⭐ **Stratégie d'hébergement** — **fait (05/07)** : `06-infra/Strategie_Hebergement.md` (Option A : VM école + `docker-compose.prod.yml` · Option B : Render + `render.yaml` · comparaison + recommandation · variables d'env requises · décision pendante stand-by).
+- [ ] **DNS / TLS / domaine + certificats** (E23) — ⬜ (dépend du choix hébergement)
+- [x] ⭐ **Pipeline CI/CD** — **fait (05/07)** : `08-operations/Pipeline_CICD.md` (7 workflows GitHub Actions réels : backend-tests, frontend-tests, e2e-tests, release, landing-tests, sync-badges, version-management — versioning SemVer indépendant par service, images GHCR, flux complet feature→dev→main).
+- [ ] ⭐ **Runbooks / Dossier d'exploitation** (`10-runbooks/` — vide) — ⬜ backlog TF-INFRA-009
+- [x] ✅ **Observabilité** — **fait (05/07)** : `06-infra/Observabilite.md` (OTel→SigNoz→ClickHouse, 5 pipelines, 9 alertes Prometheus (dispo/erreurs/saturation/sécurité), métriques Micrometer).
+- [ ] Capacity planning / scaling — ⬜ backlog
+- ✅ PCA/PRA (`PS_PCA_PRA.md`)
+> ⚠️ Architecture d'infra + Diagramme de déploiement + DNS/TLS restent en attente du choix d'hébergement (VM école stand-by). Deux options documentées : [[Strategie_Hebergement]].
+
+## Phase 8 — Conformité & Légal ⚖️ ✅ **TERMINÉE (05/07)**
+- [x] ⭐ **Registre des traitements (Art. 30 RGPD)** — **fait (05/07)** : `07-securite/Registre_Traitements_RGPD.md` (7 traitements, bases légales, sous-traitants, droits exercés, anonymisation — tout dérivé des migrations Flyway + `GdprService`).
+- [x] ⭐ **Audit RGPD conformité** (E9) — **fait (05/07)** : `07-securite/Audit_RGPD_Conformite.md` (analyse ~75 % conforme, droits personnes, Privacy by Design, 9 gaps tracés TF-RGPD-001/004/005/007/008/009 au backlog).
+- [x] ⭐ **Politique de confidentialité + CGU/CGV** — **fait (05/07)** : `07-securite/Politique_Confidentialite_CGU.md` (pages réelles landing `PrivacyPolicyPageNew.tsx` + `TermsPageNew.tsx` documentées, cohérence code↔politique vérifiée, gap sous-traitants `constants_en.ts` identifié → TF-RGPD-005).
+- [ ] **Politique cookies** (bannière interactive) — ⬜ backlog TF-RGPD-001
+- [ ] **Mentions légales** (page dédiée LEN Art. 6) — ⬜ backlog TF-RGPD-005
+
+## Phase 9 — Utilisateur & Support 👥 ✅ **TERMINÉE (05/07)**
+- [x] ⭐ **Manuel utilisateur** — **fait (05/07)** : `15-utilisateur/Manuel_Utilisateur.md` (12 sections : inscription/OTP, rôles RBAC, workspaces, membres, projets, issues/Kanban, Smart Assign, cycles, pages wiki, chat STOMP, plans Stripe, RGPD — toutes fonctionnalités V1 documentées, dérivées des 48 routes et des UC-01→12).
+- [x] ⭐ **Release notes / CHANGELOG** (E29) — **fait (05/07)** : `15-utilisateur/Release_Notes.md` (V1.0.0 soutenance RNCP — 15 catégories de features, daté git historique Oct 2025→Jul 2026, note sur le changelog marketing aspirationnel landing page v2.x, roadmap backlog prioritaire).
+- [x] **FAQ** — **fait (05/07)** : `15-utilisateur/FAQ.md` (6 thèmes : compte/connexion, tâches/IA, collaboration, facturation, données/RGPD, problèmes techniques — toutes réponses dérivées du code réel).
+- [ ] **Guide d'administration** — ⬜ backlog (fonctionnalités ADMIN/OWNER — couvertes partiellement dans le Manuel)
+- ✅ Guide d'installation
+
+## Phase 10 — Veille & Innovation 🔭 ✅ **TERMINÉE (05/07)**
+- [x] ⭐ **Méthodologie de veille + 6 entrées tracées** — **fait (05/07)** : `17-veille/Veille_Technologique.md` (méthodologie sources/fréquence/processus, 6 entrées VT-001→006 : Spring Boot 4 Virtual Threads, Groq LPU, pgvector HNSW, SigNoz, OWASP/CNIL, Next.js 19 — chacune avec ADR, preuve code, suivi post-implémentation).
+- [x] ⭐ **Note d'innovation & distance critique** — **fait (05/07)** : `17-veille/Note_Innovation_Distance_Critique.md` (3 innovations : Smart Assign multi-dimensionnel + growth mode, Brain OS, observabilité sécurité ; 5 distances critiques : JWT HS512, rate limiting mono-instance, tests de charge absents, DPA Groq, Keycloak suppression ; éco-responsabilité : modèles légers/pgvector/Alpine/Groq LPU ; inclusion : WCAG 2.1 AA axe-core CI, growth mode Smart Assign, limites drag-and-drop/monolingue).
+
+## Phase 11 — Assemblage du dossier de validation 🎓 🟡 **En cours (05/07)**
+- [x] **Rédaction narrative** des 4 Blocs (`Bloc1..4`) — **fait (05/07)** : Bloc1 (C1–C12, v1.0), Bloc2 (C13–C20, v1.0), Bloc3 (C21–C26, v1.0), Bloc4 (C27–C32, v1.0) — critères cochés sur preuves réelles, narratif par compétence, gaps documentés honnêtement.
+- [x] **Tableau d'équivalences** compétence ↔ partie du dossier — **fait (05/07)** : `README.md` matrice mise à jour (statuts ✅/🟡/⬜ basés sur preuves réelles livrées).
+- [ ] ⭐ **Présentation de synthèse (diapositives) au format PDF** (annexe obligatoire) — ⬜ à produire
+- [ ] **Export & regroupement du bundle PDF** (tous les ⭐, ordre : Cadrage → Gestion → Conception → Réalisation → Qualité → Prod → Conformité → Utilisateur) — ⬜ à produire
+
+---
+
+## Séquencement conseillé
+**0 → 1 → 3 → 2** (fondations, puis cadrage, puis conception qui les assemble, puis gestion de projet en parallèle),
+puis **4/5/6/7** (réalisation/qualité/sécu/prod — beaucoup déjà couverts), **8/9/10** (conformité/user/veille),
+et enfin **11** (assemblage + PDF). Le **déploiement (Phase 7)** attend les VM.
+
+> Estimation : ~20–25 documents **à créer** (⬜) + ~15 à **finaliser** (🟡) + 2 à **refaire** (CdCF/CdCT v2).
+> Le reste (~30) est **déjà couvert**. On coche ici au fur et à mesure.
+
+---
+
+## Criteres jury pour le dossier - auto-audit (12/07/2026)
+
+> Deduits du retour du **prof** sur le projet QualiTrack d'un camarade (partage en reference). On verifie
+> que **TaskForce** remplit ces attentes (ce ne sont pas des critiques de notre dossier) :
+
+- [ ] **Caracteres "IA" a purger** dans TOUT le bundle avant export PDF (tirets longs, fleches,
+  emojis/puces decoratives) : un jure reticent a l'IA le penalise. Passe de nettoyage finale.
+- [ ] **Cahier de recette a renforcer** (`08-operations/Cahier_Test_Recettes.md`) : juge "un peu leger en
+  fonctionnalites". Viser **au moins 50 % des fonctionnalites** couvertes, avec **cas de reussite ET cas
+  d'echec anticipes**. Note : contrairement a ce que pense le camarade, **61 tests front automatises
+  existent** (Vitest/Playwright) - les referencer dans le cahier. Verifier la couverture reelle
+  scenarios vs fonctionnalites (le doc annonce 79 scenarios / 97 % automatises : confirmer).
+- [ ] **Schema d'architecture logicielle** : `03-architecture/Architecture_C4.md` existe deja (Phase 0) ;
+  s'assurer qu'il est **dans le bundle** et lisible (reutilisable en slide PPT, cf. Plan_Soutenance 7.5).
+- [ ] **Assemblage "un seul gros document"** : le camarade rend UN document ; nous en avons ~97 separes.
+  Prioriser la **Phase 11 "bundle PDF"** (regroupement dans l'ordre). Le camarade montrera son document
+  QualiTrack pour comparer la structure (a suivre - fichiers de reference : `QualiTrack_Documentation.pdf`
+  + `QualiTrack_Soutenance.pptx`).
+
+> Verification realite (repo, 12/07) : tests front, CI de tests et branche `dev` **existent** (le camarade
+> a juge sur `main`, qui est ~2394 commits en retard). Priorite projet : fusionner vers `main` pour que la
+> vue publique reflete la realite (detail dans `18-soutenance/Plan_Soutenance.md` section 7.6).
+
+---
+
+# Roadmap de cloture — 23/07/2026
+
+> Etat des lieux fait le 23/07 en parcourant le corpus reel, pas son inventaire.
+
+## Le constat qui change le plan
+
+**La documentation n'est pas a ecrire, elle est ecrite.** Sur les ~97 documents du catalogue, la quasi
+totalite a ete produite le 05/07. Ce qui manque n'est pas de la redaction : c'est de la **reconciliation**
+(les chiffres cites ont vieilli) et de l'**assemblage** (97 fichiers separes, le jury attend un dossier).
+
+Trois ecarts precis, releves en vérifiant fichier par fichier :
+
+| Ecart | Nature | Gravite |
+| --- | --- | --- |
+| Les chiffres de couverture sont cites **a 16 endroits** dans 5 fichiers, avec **trois jeux de valeurs differents** en circulation (92/78, 92,33/71,3, et le reel 88,83/73,71) | incoherence interne | **haute** — un jure qui recoupe deux pages du dossier trouve deux reponses |
+| `Bloc4_Deploiement_Production.md` §93 affirme que les certificats sont generes par Let's Encrypt via Certbot, et la matrice cote C28 en ✅ | **sur-declaration** | **critique** — il n'y a aucun deploiement a ce jour. Une competence declaree acquise et non demontrable est le pire cas possible |
+| `Audit_RGPD_Conformite.md` est etiquete **E9** et coche comme fait, alors qu'il audite **TaskForce** (son propre en-tete le dit : « conformite RGPD de TaskForce »). E9 demande un **cas professionnel externe** | livrable manquant masque par une etiquette | **haute** — E9 apparait comme fait alors qu'il n'est pas commence |
+
+Le premier et le troisieme sont des sous-estimations ou des erreurs d'etiquette. **Le deuxieme est une
+sur-declaration, et c'est le seul des trois qui puisse se retourner contre le projet en soutenance.**
+Un manque annonce se defend ; une preuve absente reclamee par le jury ne se defend pas.
+
+## Phase A — Reconciliation (a faire avant toute redaction)
+
+Rediger par-dessus des statuts perimes revient a jeter le travail. Cette phase est bloquante.
+
+- [ ] **A1 — Un chiffre, une source.** Fixer les valeurs mesurees les 21-23/07 comme canoniques
+  (**front 89,55 % lignes / 805 tests** · **back 73,71 % lignes / 792 tests apres `RetentionSchedulerTest`**)
+  et les propager aux 16 emplacements : `Bloc2_Frontend.md` (173, 181), `Bloc3_Backend.md` (155, 169),
+  `16-memoire-rncp/README.md` (101, 102, 134, 146), `Roadmap_Documentation.md` (82),
+  `18-soutenance/Plan_Minute.md` (139, 142, 287), `18-soutenance/Plan_Soutenance.md` (74, 82, 96, 173, 206).
+- [ ] **A2 — Corriger la sur-declaration Bloc 4.** C28/E23 : passer de ✅ a ⬜ tant qu'aucun domaine
+  n'est en service, et reformuler §93 au conditionnel (`nginx.conf.example` est **pret**, les certificats
+  seront emis au deploiement). Verifier au passage C29/C30 dans la meme matrice.
+- [ ] **A3 — Deseti queter E9.** Renommer la mention E9 de `Audit_RGPD_Conformite.md` (il prouve **C11
+  applique a TaskForce**, ce qui est utile et reel), et rouvrir E9 comme non commence.
+- [ ] **A4 — Statuts sous-estimes a relever**, tous verifies dans le code cette semaine :
+  **C20 SEO** mesure 92-100 % (etait « non mesure ») · **C23 Stripe** webhooks implementes, signature +
+  idempotence + rejeu (etait « stubes », `PC-005`) · **C11 RGPD** double opt-in implemente et retention
+  desormais automatisee (`RetentionScheduler`) · **C13/C15 accessibilite** 0 violation axe-core sur 3 pages.
+- [ ] **A5 — Grille XLSX.** `memoire/Grille_evaluation_TaskForce_REMPLIE_DFS_25-26.xlsx` — premier document
+  lu par le jury, et le seul qui ne soit pas en Markdown donc le seul qu'aucun grep ne rattrape.
+
+## Phase B — Les manques reels
+
+Ce qui reste effectivement a produire, une fois les faux manques ecartes.
+
+- [ ] **B1 — E9, audit RGPD d'un cas professionnel externe.** Non commence. **Depend d'un sujet impose par
+  l'ecole** : a reclamer sans attendre, c'est le seul livrable dont la matiere ne soit pas dans nos mains.
+
+  > **Verifie a la source le 23/07/2026** (`memoire/DFS_RNCP_Referentiel...pdf`, p. 8) : « Cas
+  > professionnel individuel ecrit inclus dans le Dossier de validation **(hors projet fil rouge)**.
+  > A partir d'**un site web marchand existant fourni**, non conforme et non optimise : E9, un audit
+  > de conformite reglementaire RGPD du site, **sur le plan technique exclusivement**. »
+  >
+  > **Consequence sous-estimee jusqu'ici : E9 ne pese pas un critere mais QUATRE.** Les criteres de
+  > C11 (outil de consentement aux cookies, vue de confidentialite, formulaire d'acces aux donnees,
+  > double opt-in) s'evaluent sur le site fourni, pas sur TaskForce. Ils avaient ete passes au vert
+  > dans la grille sur la foi de l'implementation TaskForce : erreur corrigee. L'implementation
+  > TaskForce reste une preuve de capacite, elle ne remplace pas le livrable.
+
+- [x] **B2 — E6, trame de compte-rendu d'activite + un exemple rempli.** **Fait le 23/07/2026.**
+  Classee « optionnelle » dans ce fichier (Phase 2), a tort : le critere `[R17]` exige que la trame
+  **soit operationnelle**. Livre : `01-projet/Trame_Compte_Rendu_Activite.md`, derivee point par
+  point des adaptations de la methode E5 (priorisation hebdomadaire Eisenhower, Definition of Done
+  en 6 points, validation de jalon en lieu et place de la revue de sprint, bilan de phase en lieu et
+  place de la retrospective), plus l'exemple rempli `01-projet/CR_2026-S30_Cloture_V1.md` portant sur
+  la semaine reelle du 20 au 23/07 avec references de commit verifiables et valeurs toutes mesurees.
+- [ ] **B3 — Presentation de synthese PDF.** Annexe **obligatoire** du dossier, distincte du support de
+  soutenance. Non commencee.
+- [ ] **B4 — Infra : architecture, diagramme de deploiement, DNS/TLS.** Reste suspendu au choix
+  d'hebergement. La VM de l'ecole est derriere le NAT, sans entree possible : si c'est l'option retenue,
+  l'application n'aura pas d'URL publique et C28 restera non demontrable.
+
+## Phase C — Assemblage
+
+- [ ] **C1 — Bundle PDF.** Regrouper les ⭐ dans l'ordre Cadrage → Gestion → Conception → Realisation →
+  Qualite → Prod → Conformite → Utilisateur. C'est l'ecart de forme le plus visible : le jury attend
+  **un** document, nous en avons 97.
+- [ ] **C2 — Purge des caracteres « IA »** sur tout le bundle avant export (tirets longs, fleches, emojis).
+  A faire **en dernier**, sinon la reecriture les reintroduit.
+- [ ] **C3 — Renforcer le cahier de recette** (`08-operations/Cahier_Test_Recettes.md`) : viser >= 50 % des
+  fonctionnalites avec **cas de reussite ET cas d'echec**, et y referencer les tests automatises reels.
+
+## Deja fait, contrairement a ce que `.ai/roadmap.md` declarait
+
+A ne pas refaire : **manuel utilisateur** (`15-utilisateur/Manuel_Utilisateur.md`, 399 lignes) ·
+**FAQ** · **release notes** · **veille technologique** (6 entrees tracees) · **note d'innovation et
+distance critique** · **plan de soutenance, script oral et plan minute** (`18-soutenance/`, 1 174 lignes).
+
+## Ordre conseille
+
+**A → B1 (a lancer en parallele, il depend de l'ecole) → B2/B3 → C.**
+La Phase A conditionne tout le reste : chaque paragraphe ecrit sur un chiffre perime devra etre reecrit.
