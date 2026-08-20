@@ -46,11 +46,16 @@ l'école** avant le rendu final.
 11. **Conclusion : une page maximum, 400 à 450 mots**
 12. Annexes : livrables techniques, captures d'écran, extraits de code, bibliographie
 
-**Conséquence directe sur l'ambition.** Le contenu est plafonné à 50 pages / 15 000 mots. « Plus
-dense et plus profond que les dossiers de référence » ne veut donc pas dire plus long : cela veut dire
-un raisonnement plus serré, des arbitrages plus argumentés, et une **annexe riche** (extraits de code
-commentés, schémas, captures) qui, elle, n'est pas comptée dans le plafond. On coupe pour tenir, on
-ne dilue pas pour remplir.
+**Enrichissements pro (ajoutés sans casser l'ordre imposé).** À la suite du résumé (5) : un **abstract
+en anglais** et une ligne de **mots-clés / keywords**. Figures et tableaux numérotés, **bibliographie**
+en annexe. Le niveau de rendu visé est professionnel, pas scolaire.
+
+**Ambition et pagination.** La fourchette 30 à 50 pages est la cible du certificateur, pas un couperet :
+on vise le **haut de la fourchette et on peut la dépasser quand le contenu le justifie** (choix validé
+par le candidat). Ce qui protège la qualité n'est pas le nombre de pages mais la densité : raisonnement
+serré, arbitrages argumentés, zéro remplissage. La profondeur qui ferait gonfler le corps (extraits de
+code longs, schémas détaillés, tableaux exhaustifs, tableau d'équivalence complet) part en **annexe**,
+hors décompte. On coupe le corps pour qu'il reste vif ; l'annexe porte le volume.
 
 ## 2. Périmètre de compétences couvert
 
@@ -86,6 +91,13 @@ ne dilue pas pour remplir.
 
 ## 4. Registre et style
 
+- **Récit orienté transformation (principe directeur).** Le dossier se construit autour de la
+  transformation produite, pas autour d'une liste de tâches. Fil conducteur : le problème, pourquoi il
+  compte, ce qui existait, ce que j'ai construit, pourquoi ces choix, ce que ça a changé. Le candidat
+  est le **guide**, l'audience est le héros du récit. Concrètement, l'introduction porte cet arc en
+  entier, et **chaque chapitre s'ouvre sur la tension qu'il traite et se referme sur ce que le choix a
+  changé**. On bannit le déroulé plat « voici l'entreprise, voici le cahier des charges, voici mon
+  architecture, voici mes tâches, merci ». (D'après Nancy Duarte, *Resonate*.)
 - **Première personne** (« j'ai conçu », « j'ai choisi », « je démontre »). La certification évalue
   les compétences du candidat : le jury doit voir ce que Pierre a fait et décidé.
 - **Raisonnement argumenté**, pas un catalogue. On problématise, on pose l'arbitrage (option retenue
