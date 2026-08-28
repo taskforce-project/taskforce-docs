@@ -76,14 +76,13 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | StripeController / StripeWebhookController | `/api/stripe` · `/api/webhooks` | ✅ |
 | SalesController | `/api/sales` | ✅ |
 | FileController / AttachmentController (ged) | `/api/files` · `/api/workspaces/{slug}/projects/{projectId}/issues/{issueId}/attachments` | ✅ |
-| **CycleController** | `/workspaces/{slug}/projects/{projectId}/cycles` | ❌ **manquant** |
-| **TeamController** | `/workspaces/{slug}/teams` | ❌ **manquant** |
-| **PageController** | `/workspaces/{slug}/projects/{projectId}/pages` | ❌ **manquant** |
-| **DiscussionController** | `/workspaces/{slug}/discussions` | ❌ **manquant** |
-| **ChannelController** (chat) | `/workspaces/{slug}/channels` | ❌ **manquant** |
+| CycleController | `/api/workspaces/{slug}/projects/{projectId}/cycles` | ✅ |
+| TeamController | `/api/workspaces/{slug}/teams` | ✅ |
+| PageController | `/api/workspaces/{slug}/projects/{projectId}/pages` | ✅ |
+| ProjectExportController | `/api/workspaces/{slug}/projects/{projectId}/export` | ✅ |
 
 <blockquote class="important">
-Les 5 contrôleurs sans <code>/api</code> sont injoignables aux URL appelées par le frontend → 404. Voir §4.1.
+Tous les contrôleurs portent désormais <code>/api</code> (règle d'or n°1, vérifiée au 28/08/2026). Les anciens « Chat » (<code>ChannelController</code>) et « Discussions » (<code>DiscussionController</code>) n'existent plus dans le code : ni contrôleur, ni route. Voir §4.1.
 </blockquote>
 
 ## 3. Cartographie par domaine
@@ -140,9 +139,12 @@ sans cette déclaration, le navigateur les masque au JavaScript en cross-origin 
 Les préflights `OPTIONS` sont par ailleurs **exclus du comptage** (`shouldNotFilter`) — ils consommaient un
 jeton chacun, divisant le quota réel par deux. Cf. [PC-033](../09-audits/Problemes_Connus.md).
 
-**Cassé (404) ❌** — Cycles (`cycle-service` ↔ `CycleController`), Pages wiki (`page-service` ↔ `PageController`) :
-le front appelle `/api/workspaces/…`, le back sert `/workspaces/…`. Voir §4.1.
-> ⚠️ Note (24/06/2026) : **Discussions aligné** — `DiscussionController` porte bien `@RequestMapping("/api/workspaces/{slug}/discussions")`, feature fonctionnelle (list/create/pin/lock/state). Teams également corrigé (cf. Frontend.md FE-TEAM-*). Re-vérifier Cycles/Pages avant de les laisser ici.
+**Cycles / Pages / Teams — alignés ✅** (vérifié 28/08/2026) — `CycleController` (`CycleController.java:33`),
+`PageController` (`PageController.java:39`) et `TeamController` (`TeamController.java:33`) portent tous
+`@RequestMapping("/api/workspaces/…")`. L'ancien défaut de préfixe est corrigé.
+> ⚠️ Note (28/08/2026) : **Chat et Discussions retirés du produit** — ni `ChannelController` ni
+> `DiscussionController` n'existent dans le code (grep à blanc). Les entrées correspondantes ont été
+> supprimées de ce document et de `Spec_API_OpenAPI.md`.
 
 **Cassé (undefined) ❌** — Messages (`message-service`, `MESSAGE_ROUTES`), Intégrations
 (`integration-service`, `INTEGRATION_ROUTES`), Pièces jointes (`attachment-service`, `ATTACHMENT_ROUTES`),
@@ -160,13 +162,12 @@ Groupes de routes **présents** dans `frontend/lib/config/api-routes.ts` : `AUTH
 
 ## 4. Incohérences détectées
 
-### 4.1 — Préfixe `/api` manquant sur 5 contrôleurs → 404 (HAUTE)
+### 4.1 — Préfixe `/api` : résolu (au 28/08/2026)
 
-`CycleController`, `TeamController`, `PageController`, `DiscussionController`, `ChannelController`
-déclarent des chemins **sans** `/api`. Aucun `context-path` n'étant configuré (vérifié dans
-`application.yml`, `-dev`, `-prod`), ils sont servis sous `/workspaces/…` alors que le front appelle
-`/api/workspaces/…`. **Résultat : Cycles, Teams, Pages, Discussions et Chat échouent en 404.** Cause :
-hypothèse périmée (`CorsConfig.java:65` « avec context-path=/api ») jamais appliquée. → [PC-001](../09-audits/Problemes_Connus.md).
+**Plus d'écart.** Tous les contrôleurs existants déclarent `/api` dans leur `@RequestMapping`
+(règle d'or n°1). Les 3 contrôleurs autrefois signalés sont corrigés — `CycleController.java:33`,
+`TeamController.java:33`, `PageController.java:39` — et les 2 autres (`DiscussionController`,
+`ChannelController`) n'existent plus dans le code. L'ancien risque 404 (PC-001) est clos.
 
 ### 4.2 — Constantes de routes front absentes → erreur runtime (HAUTE)
 
@@ -179,11 +180,16 @@ lève `Cannot read properties of undefined`. → [PC-002](../09-audits/Problemes
 Ligne 1 : `import apiClient from "./api-client";` — le module `./api-client` n'existe pas ; le vrai
 client est l'export **nommé** `apiClient` de `./client`. `getProfile()` échoue au runtime. → [PC-003](../09-audits/Problemes_Connus.md).
 
-### 4.4 — Désalignement du refresh auth (MOYENNE)
+### 4.4 — Refresh auth : implémenté, refresh token en cookie HttpOnly (au 28/08/2026)
 
-Front : `AUTH_ROUTES.REFRESH_TOKEN = /api/auth/refresh` ; back : méthode mappée sur
-`/api/auth/refresh-token` **et** non implémentée (TODO). La séquence `401 → refresh → retry` du
-`client.ts` ne peut pas aboutir. → [PC-004](../09-audits/Problemes_Connus.md).
+Le backend implémente `POST /api/auth/refresh-token` (`AuthController.java:281-310`) : il lit le
+refresh token depuis le cookie `tf_refresh` (repli sur le corps pour les sessions d'avant migration),
+renvoie **401** si le token est vide/absent, et re-pose le cookie à chaque succès. Le `login`
+(`AuthController.java:218-227`) renvoie l'`accessToken` en corps et met le refresh token en cookie
+`HttpOnly; Secure; SameSite=Lax; Path=/api/auth` (`RefreshTokenCookie.java:59-65`) — plus jamais dans
+le corps JSON. Le `logout` purge le cookie ; le callback OAuth (`OAuthLoginController.java:105-112`)
+pose le même cookie. Détail des contrats : `Spec_API_OpenAPI.md` §2.1–2.2.
+> ▶ Reste côté front : vérifier que `AUTH_ROUTES.REFRESH_TOKEN` pointe sur `/api/auth/refresh-token`.
 
 ## 5. Procédure pour câbler un nouvel endpoint
 
@@ -199,8 +205,10 @@ Front : `AUTH_ROUTES.REFRESH_TOKEN = /api/auth/refresh` ; back : méthode mappé
 
 ---
 
-> **Note Brain OS** — Vérifié dans le code au 08/06/2026 (branche `feat/dashboard`).
+> **Note Brain OS** — Vérifié dans le code au 08/06/2026 (branche `feat/dashboard`), puis
+> ré-audité contrôleur par contrôleur le 28/08/2026 (préfixe `/api` généralisé, Chat/Discussions
+> retirés, flux refresh en cookie HttpOnly).
 
-**Dernière mise à jour :** 20/07/2026  
+**Dernière mise à jour :** 28/08/2026  
 **Version :** 1.0  
 **Projet :** Taskforce — Metz Numeric School 2025-2026
