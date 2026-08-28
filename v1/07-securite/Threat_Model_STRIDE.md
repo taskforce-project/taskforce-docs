@@ -4,7 +4,7 @@ title: Threat Model STRIDE — TaskForce V1
 doc_type: securite
 statut: valide
 version: 1.0
-date: "05/07/2026"
+date: "28/08/2026"
 auteur: Pierre MICHEL
 tags: [threat-model, stride, securite, menaces, owasp, risques, memoire, rncp, soutenance]
 ---
@@ -69,8 +69,10 @@ Les **4 gardes** ①②③④ constituent la défense en profondeur côté backe
 | S1 | Forger un JWT valide | Fabriquer un token sans la clé privée | Signature **RS256** (clé privée détenue par Keycloak) vérifiée via JWK + issuer par `NimbusJwtDecoder` | `SecurityConfig.jwtDecoder()`, `AuthServiceTest` | 🟢 Faible |
 | S2 | Rejouer un token volé | Vol de token (XSS, MITM) | TLS + expiration courte + **révocation de session Keycloak** (`users().logout()`) | `SecurityConfig`, `KeycloakAuthService` | 🟢 Faible (révocation IdP possible) |
 | S3 | Brute-force de credentials | Essais massifs sur `/login` | Rate limiting 10 req/min/IP + Keycloak | `RateLimitFilter` (AUTH_STRICT) | 🟢 Faible |
-| S4 | Usurper une connexion WebSocket | Se connecter sans identité | Auth JWT au CONNECT STOMP | `StompAuthInterceptor`, `StompAuthInterceptorTest` | 🟢 Faible |
+| S4 | Usurper une connexion WebSocket | Se connecter sans identité, ou s'abonner au flux d'un autre tenant | Auth JWT au CONNECT STOMP **+ autorisation de chaque `SUBSCRIBE` par canal** (fix H2) | `StompAuthInterceptor`, `StompAuthInterceptorTest` | 🟢 Faible |
 | S5 | Faux compte à l'inscription | Email d'autrui | Vérification OTP (TTL 15 min) | `OtpService`, `V6` | 🟢 Faible |
+| S6 | Réutiliser des credentials volés | Mot de passe correct mais dérobé | **2FA TOTP géré par l'app** exigé au login si activé (secret hors Keycloak) | `TwoFactorService`, `TotpServiceTest`, `V79` | 🟢 Faible |
+| S7 | Prise de contrôle par identité e-mail (login social) | Compte IdP portant l'e-mail d'une victime | Login social **refusé si `email_verified=false`** ; rattachement sur e-mail vérifié (fix M7) | `AuthService.completeOAuthLogin` | 🟢 Faible |
 
 > **✅ S2 traité (05/07/2026)** : migration effectuée vers **Keycloak RS256 asymétrique + révocation
 > OIDC** (`users().logout()`). Le risque résiduel de rejeu passe de moyen à faible. → [[Journal_Decisions_ADR|ADR-011]], TF-SEC-009.
@@ -98,13 +100,14 @@ Les **4 gardes** ①②③④ constituent la défense en profondeur côté backe
 
 | # | Menace | Vecteur | Mitigation implémentée | Preuve | Résiduel |
 |---|---|---|---|---|:---:|
-| I1 | IDOR — lire une ressource d'un autre workspace | ID devinable | Garde d'appartenance transverse (403 non-membre) | `WorkspaceAccessInterceptor`, `AuthorizationServiceTest` | 🟢 Faible |
+| I1 | IDOR — lire une ressource d'un autre workspace/projet | ID devinable | Appartenance workspace (`WorkspaceAccessInterceptor`, 403) **+ visibilité projet `ProjectVisibilityGuard` (privé → 404) + liens GitHub scopés (H1) + abonnements temps réel par canal (H2)** | `WorkspaceAccessInterceptor`, `ProjectVisibilityGuard`, `AuthorizationServiceTest` | 🟢 Faible |
 | I2 | Fuite de stack trace / détails internes | Erreur non gérée | `GlobalExceptionHandler` + enveloppe `ApiResponse<T>` | Convention CT-07 | 🟢 Faible |
 | I3 | Vol de PII en base | Accès disque / dump | Chiffrement AES-256-GCM (PII libre) + cible chiffrement volume | `EncryptedStringConverter` | 🟠 Moyen (email/nom non chiffrés en colonne — clés de recherche) |
 | I4 | Interception réseau (MITM) | Trafic clair | TLS/HTTPS (Nginx prod) + HSTS preload | `SecurityConfig` (HSTS 1 an) | 🟢 Faible |
 | I5 | Fuite de secrets | Secret en dur / commit | Variables d'env, `.env` non versionné, scan Semgrep `p/secrets` | `security-scan.ps1`, CT-05 | 🟢 Faible |
 | I6 | Énumération de comptes | Réponses login distinctes | `401` uniforme (pas de leak « email inconnu ») | `AuthServiceTest` | 🟢 Faible |
 | I7 | Clickjacking / embedding | iframe malveillante | `X-Frame-Options: DENY` + CSP `frame-ancestors 'none'` | `SecurityHeadersWebMvcTest` | 🟢 Faible |
+| I8 | SSRF via URL de webhook sortant | URL visant le réseau interne (Docker/Tailscale/localhost/métadonnées `169.254`) | `SsrfGuard` : http(s) public only, DNS résolu et **chaque** IP vérifiée (boucle/privé/link-local/CGNAT/ULA), à la config **et** à l'envoi | `SsrfGuard`, `SsrfGuardTest`, `WebhookService` | 🟢 Faible |
 
 ### 3.5 🚫 Denial of Service — Déni de service
 
@@ -138,12 +141,12 @@ Les **4 gardes** ①②③④ constituent la défense en profondeur côté backe
 
 | Risque résiduel | Catégorie | Niveau | Action / backlog |
 |---|---|:---:|---|
-| Secret HS512 symétrique, pas de révocation immédiate | Spoofing S2 | 🟠 Moyen | Migration Keycloak RS256/OIDC — **TF-SEC-009** |
+| Secret HS512 symétrique, pas de révocation immédiate | Spoofing S2 | 🟢 Résolu | ✅ **TF-SEC-009** — migration Keycloak RS256/OIDC + révocation `users().logout()` (ADR-011) |
 | Rate limiting distribué | DoS D3 | 🟢 Résolu | ✅ **TF-SEC-011** — `ProxyManager` Redis supporté (repli local en dev), résolu 05/07/2026 |
 | Email/nom non chiffrés en colonne | Info Disclosure I3 | 🟠 Moyen | Chiffrement volume prod (transparent) — infra |
 | Immuabilité/rétention des logs SigNoz | Repudiation R3 | 🟠 Moyen | Durcir rétention prod — **TF-INFRA-005** |
 | `PUBLIC_MATCHERS` à auditer à chaque ajout | Elevation E5 | 🟠 Moyen | Checklist revue de code sécu |
-| Scans SAST/DAST non bloquants en CI | Transverse | 🟠 Moyen | SAST/SCA **TF-SEC-002/003** + DAST **TF-SEC-010** |
+| Scans SAST/DAST non bloquants en CI | Transverse | 🟢 Résolu | ✅ CI bloquante — `security-scan.yml` (Semgrep+Trivy), `codeql.yml` (CodeQL), `zap-dast.yml` — **TF-SEC-002/003/010** |
 | Bornage de payload non systématique | DoS D5 | 🟢 Faible | Étendre `@Size`/limites body |
 
 **Bilan** : aucune menace au niveau 🔴 Élevé non mitigée. Les gardes ①②③④ couvrent les menaces

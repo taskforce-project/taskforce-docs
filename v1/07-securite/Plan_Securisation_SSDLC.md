@@ -4,7 +4,7 @@ title: Plan de sécurisation & S-SDLC — TaskForce V1
 doc_type: securite
 statut: valide
 version: 1.0
-date: "05/07/2026"
+date: "28/08/2026"
 auteur: Pierre MICHEL
 tags: [securite, ssdlc, plan-securisation, devsecops, sast, dast, sca, owasp, memoire, rncp, soutenance]
 ---
@@ -109,7 +109,10 @@ Démarche méthodique appliquée pour sécuriser l'application, du diagnostic à
 | Rate limiting brute-force | ✅ | `RateLimitFilter` |
 | RBAC centralisé 3 niveaux | ✅ | `AuthorizationService` |
 | Garde anti-IDOR transverse | ✅ | `WorkspaceAccessInterceptor` |
-| Émission JWT par Keycloak (RS256/OIDC) | ⬜ cible | TF-SEC-009 |
+| Émission JWT par Keycloak (RS256/OIDC) | ✅ | `KeycloakAuthService` (ADR-011, TF-SEC-009 close) |
+| Refresh token en cookie HttpOnly (hors JS) | ✅ | `RefreshTokenCookie`, `AuthController` |
+| 2FA TOTP géré par l'app (login mot de passe) | ✅ | `TwoFactorService`, `TotpService`, `V79` |
+| Login social OAuth (`email_verified` exigé) | ✅ | `OAuthLoginController`, `AuthService.completeOAuthLogin` |
 
 ### Étape 3 — Protéger les données et les communications
 
@@ -131,6 +134,7 @@ Démarche méthodique appliquée pour sécuriser l'application, du diagnostic à
 | Validation entrées `@Valid`/Zod | ✅ | slices `@WebMvcTest` |
 | Sanitisation anti log-forging | ✅ | `ClientLogController.sanitize()` |
 | Signature HMAC webhooks Stripe | ✅ | `StripeWebhookController` |
+| Validation URL sortantes (anti-SSRF) | ✅ | `SsrfGuard` (`WebhookService`) |
 | CSP frontend par nonce (prod) | ⬜ cible | `next.config.ts` |
 
 ### Étape 5 — Vérifier en continu (scan + tests + monitoring)
@@ -138,11 +142,12 @@ Démarche méthodique appliquée pour sécuriser l'application, du diagnostic à
 | Mesure | Statut | Preuve |
 |---|:---:|---|
 | SAST (Semgrep) | ✅ | `security-scan.ps1` |
+| SAST flux/taint (CodeQL) | ✅ | `codeql.yml` (`security-extended`) |
 | SCA (Trivy filesystem + image) | ✅ | `security-scan.ps1` |
-| DAST (ZAP baseline) | ✅ | `security-scan.ps1 -Dast` |
+| DAST (ZAP baseline) | ✅ | `security-scan.ps1 -Dast` + CI `zap-dast.yml` (planifié/manuel) |
 | Tests sécurité automatisés | ✅ | suite JUnit prioritaire |
 | Audit + monitoring | ✅ | `AuditLog`, SigNoz, Prometheus |
-| Intégration scans en CI | ⬜ cible | TF-SEC-002/003 (SAST/SCA), TF-SEC-010 (DAST) |
+| Intégration scans en CI (gate bloquant) | ✅ | `security-scan.yml`, `codeql.yml`, `zap-dast.yml` — TF-SEC-002/003/010 close |
 
 ---
 
@@ -154,6 +159,10 @@ Démarche méthodique appliquée pour sécuriser l'application, du diagnostic à
 | SCA | Trivy filesystem | CVE libs (npm/maven) | idem |
 | Images | Trivy image | vulns conteneurs | idem |
 | DAST | OWASP ZAP baseline | vulns web dynamiques | `.\scripts\security-scan.ps1 -Dast` |
+
+> **En CI (bloquant)** : `security-scan.yml` (Semgrep + Trivy, push/PR, gate CRITICAL/ERROR), `codeql.yml`
+> (CodeQL `security-extended`, push/PR + hebdo), `zap-dast.yml` (ZAP, hebdo/manuel, gate HIGH). Le script
+> `security-scan.ps1` reste l'exécution locale à la demande.
 
 ---
 

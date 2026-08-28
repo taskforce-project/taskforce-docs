@@ -4,7 +4,7 @@ title: Rapport de sécurité consolidé — TaskForce V1
 doc_type: securite
 statut: valide
 version: 1.0
-date: "16/08/2026"
+date: "28/08/2026"
 auteur: Pierre MICHEL
 tags: [securite, rapport, pssi, stride, owasp, audit, memoire, rncp, soutenance]
 ---
@@ -45,6 +45,15 @@ corrigés** ; il ne reste que des points documentaires (STRIDE/PSSI à actualise
 - **OIDC Keycloak, tokens RS256** validés par JWKS + **contrôle de l'`issuer`** ; sessions **STATELESS**.
   L'ancien HS512 auto-émis a été supprimé (dette PC-019 / TF-SEC-009 close).
   → `shared/security/SecurityConfig.java`, [[Auth_Autorisation]].
+- **Refresh token en cookie `HttpOnly`** (`tf_refresh`, `SameSite=Lax`, `Path=/api/auth`) : détaché du corps
+  de réponse, jamais lisible par JS (plus de `localStorage`) ; l'access token reste en `Authorization: Bearer`.
+  → `shared/security/RefreshTokenCookie.java`, `core/api/AuthController.java`.
+- **2FA TOTP géré par l'app** (secret hors Keycloak, table `user_two_factor`), exigé au **login par mot de
+  passe** si activé. → `core/service/TwoFactorService.java`, `shared/security/TotpService.java`, `V79`
+  (tests `TwoFactorServiceTest`, `TotpServiceTest`).
+- **Login social OAuth** (GitHub/Google) : `state` anti-CSRF **signé côté serveur**, **`email_verified` exigé**
+  avant rattachement d'un compte (anti prise de contrôle par identité e-mail, fix M7).
+  → `core/api/OAuthLoginController.java`, `core/service/AuthService.completeOAuthLogin`.
 - **Anti-bot** à l'inscription : défi signé maison + **Cloudflare Turnstile** (jugement du visiteur).
   → `shared/security/TurnstileService`, `HumanChallengeService` (tests `TurnstileServiceTest` 9,
   `HumanChallengeServiceTest` 10). *(Contrôle réel — à intégrer à la [[PSSI]] / au [[Threat_Model_STRIDE]].)*
@@ -54,6 +63,9 @@ corrigés** ; il ne reste que des points documentaires (STRIDE/PSSI à actualise
   + `ProjectVisibilityGuard` (`assertCanView/assertCanWrite`) + `WorkspaceAccessInterceptor`.
 - Rôles : `WorkspaceRole {OWNER, ADMIN, MEMBER}`, `ProjectRole {LEAD, MEMBER, VIEWER}`.
 - **IDOR inter-tenant corrigés + testés** (PC-021 Pages, PC-034 pièces jointes) → accès croisé = **403**.
+- **Fuites cross-tenant fermées au-delà des IDOR REST** : liens GitHub scopés au workspace (fix **H1**,
+  `GitHubIntegrationService`) et abonnements temps réel autorisés **par canal** (fix **H2**,
+  `RealtimeAuthorizationService` + `StompAuthInterceptor`). Un projet privé invisible renvoie **404** (`ProjectVisibilityGuard`).
 
 ### 2.3 Protection des données (Art. 32)
 - **Chiffrement au repos AES-256-GCM** sur 4 colonnes PII (converter JPA) ; **clé hors base** (variable
@@ -67,20 +79,24 @@ corrigés** ; il ne reste que des points documentaires (STRIDE/PSSI à actualise
   `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, **CSP API** `default-src 'none';
   frame-ancestors 'none'; form-action 'none'`, Referrer-Policy, **Permissions-Policy** (camera/micro/geo/
   payment/usb désactivés).
-- ⚠️ **CORS** : `CorsConfig` code en dur les origines et **n'exploite pas** `cors.allowed-origins` (PC-027) —
-  à piloter par variable d'env avant prod.
+- **CORS** : `CorsConfig` lit les origines depuis `cors.allowed-origins` (`@Value` CSV → `CORS_ALLOWED_ORIGINS`),
+  appliquées via `setAllowedOriginPatterns` (PC-027 **corrigé** — cf. §6).
 
 ### 2.5 Limitation de débit
 - **Bucket4j** par profil IP : AUTH_STRICT 10/60 s, AUTH_REFRESH 20/60 s, AI 20/60 s, DEFAULT 200/60 s ;
-  émet `Retry-After` + `X-RateLimit-Remaining` ; exclut les préflights `OPTIONS` (PC-033).
-- **Mode distribué Redis** supporté (`ProxyManager`) → TF-SEC-011 **résolu dans le code** (le
-  [[Threat_Model_STRIDE]] le liste encore « gap D3 » : **à actualiser**).
+  émet `Retry-After` + `X-RateLimit-Remaining` ; exclut les préflights `OPTIONS` (PC-033). IP réelle
+  résolue via `CF-Connecting-IP` → `X-Real-IP` → **dernier** hop `X-Forwarded-For` (non spoofable, fix M5).
+- **Mode distribué Redis** supporté (`ProxyManager`) → TF-SEC-011 **résolu** (le
+  [[Threat_Model_STRIDE]] D3 marque désormais ce risque résolu).
 - Tests : `RateLimitFilterTest` (8).
 
 ### 2.6 Validation d'entrée
 - **Serveur (autorité)** : **76 `@Valid`** sur 27 fichiers (contrôleurs + DTOs), retours `ApiResponse<T>`.
 - **Client** : **Zod** câblé sur les formulaires d'auth (login/register, `lib/validation/auth-schemas.ts`)
   — ferme l'écart « Zod déclaré mais inutilisé » (16/08).
+- **URL sortantes (anti-SSRF)** : `SsrfGuard` valide toute URL de webhook fournie par l'utilisateur (http(s)
+  public, DNS résolu, IP interne rejetée) **à la configuration et à l'envoi**.
+  → `shared/security/SsrfGuard.java`, `core/service/WebhookService.java` (tests `SsrfGuardTest`).
 
 ### 2.7 Dépendances & secrets
 - **Durcissement** : overrides Trivy dans le `pom.xml` (tomcat, netty, thymeleaf, bouncycastle, postgresql,
@@ -145,7 +161,9 @@ relève de la bonne pratique, pas de la vulnérabilité.
 - **Corrigé (17/08)** : scans **intégrés à la CI** — workflow `security-scan.yml` (Trivy deps/secrets/misconfig +
   Semgrep SAST) sur push/PR (`main`, `dev`) + run **hebdo** planifié ; rapport complet en artefact et **gate
   bloquant sur le plus haut niveau** (Trivy CRITICAL corrigeable + Semgrep ERROR — 0 aujourd'hui). Le DAST (ZAP)
-  reste manuel via `security-scan.ps1 -Dast` (exige la stack levée). Clôt TF-SEC-002/003.
+  tourne en CI planifiée/manuelle (`zap-dast.yml`, cf. §6) et reste lançable en local (`security-scan.ps1 -Dast`). Clôt TF-SEC-002/003.
+- **Ajouté (28/08)** : `codeql.yml` — **CodeQL** (code scanning natif GitHub, requêtes `security-extended`,
+  suivi de flux/taint) sur push/PR (`main`, `dev`) + hebdo, en complément de Semgrep/Trivy ; alertes dans l'onglet Security.
 - **Corrigé (16/08)** : les **artefacts sont désormais archivés** et horodatés dans `security-reports/` (avant : seul un plan ZAP).
 
 ## 6. Risques résiduels & plan de traitement

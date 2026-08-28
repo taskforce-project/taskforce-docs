@@ -3,8 +3,8 @@ id: auth-autorisation
 title: Authentification & autorisation — TaskForce V1
 doc_type: securite
 statut: valide
-version: 1.1
-date: "05/07/2026"
+version: 1.2
+date: "28/08/2026"
 auteur: Pierre MICHEL
 tags: [auth, oidc, keycloak, rs256, jwt, rbac, securite, spring-security, memoire, rncp, soutenance]
 ---
@@ -17,6 +17,10 @@ tags: [auth, oidc, keycloak, rs256, jwt, rbac, securite, spring-security, memoir
 > **▶ v1.1 (05/07/2026)** — Ce document reflète la migration **[ADR-011]** : l'émission des JWT
 > a été déléguée à Keycloak (RS256), le `JwtService` HS512 custom a été supprimé. Voir §2.
 >
+> **▶ v1.2 (28/08/2026)** — Refresh token porté par un **cookie `HttpOnly`** (§2.4, plus dans le corps ni
+> `localStorage`), **login social OAuth** GitHub/Google (§2.5, `email_verified` exigé), et **autorisation
+> des abonnements STOMP par canal** (§7). Le 2FA est traité au §6.
+>
 > **Fichiers de référence** :
 > - `shared/security/SecurityConfig.java` (décodeur RS256 + chaînes de filtres)
 > - `core/service/KeycloakAuthService.java` (flux OIDC : login ROPC / refresh / logout)
@@ -24,6 +28,9 @@ tags: [auth, oidc, keycloak, rs256, jwt, rbac, securite, spring-security, memoir
 > - `core/service/AuthService.java` (orchestration)
 > - `shared/security/JwtIdentityResolver.java` (résolution de l'utilisateur depuis le token)
 > - `core/service/AuthorizationService.java` (RBAC)
+> - `shared/security/RefreshTokenCookie.java` (cookie HttpOnly du refresh token)
+> - `core/api/OAuthLoginController.java` · `shared/security/OAuthLoginService.java` (login social GitHub/Google)
+> - `core/service/RealtimeAuthorizationService.java` (autorisation des abonnements STOMP par canal)
 
 ---
 
@@ -47,7 +54,7 @@ tags: [auth, oidc, keycloak, rs256, jwt, rbac, securite, spring-security, memoir
 │  POST /api/auth/login ──▶ AuthService.login()                    │
 │    ──▶ KeycloakAuthService.authenticate()  (grant ROPC)          │
 │    ──▶ Keycloak émet { access_token (RS256), refresh_token }     │
-│    ──▶ { accessToken, refreshToken, user }                       │
+│    ──▶ { accessToken, user } + set-cookie                        │
 │                                                                  │
 │  Requête protégée                                                │
 │  ─────────────────                                               │
@@ -83,8 +90,9 @@ params.add("client_secret", clientSecret);
 // ← Keycloak renvoie { access_token (RS256), refresh_token, expires_in, ... }
 ```
 
-`AuthService.login()` renvoie directement ces tokens Keycloak (enveloppés dans `AuthResponse`
-avec le profil DB). **Preuve** : `AuthService.buildAuthResponse()`.
+`AuthService.login()` assemble ces tokens Keycloak + le profil DB (`AuthService.buildAuthResponse()`).
+**`AuthController` détache ensuite le refresh token du corps et le pose en cookie `HttpOnly`**
+(`AuthController.withRefreshCookie()`) — la réponse ne renvoie que `{ accessToken, user }` (cf. §2.4).
 
 ### 2.2 Validation — Resource Server RS256
 
@@ -131,8 +139,36 @@ return firstNonBlank(jwt.getClaimAsString("preferred_username"),
 | Refresh | `KeycloakAuthService.refreshToken()` → `grant_type=refresh_token` (rotation gérée par l'IdP) |
 | Logout | `KeycloakService.logoutUser()` → `users().logout()` (invalide **toutes** les sessions) |
 
-Plus de table `refresh_tokens` custom, plus de rotation maison. Le client Axios (`client.ts`)
-gère la séquence `401 → POST /api/auth/refresh-token → retry`.
+Plus de table `refresh_tokens` custom, plus de rotation maison. **Le refresh token voyage désormais dans
+un cookie `HttpOnly` (`tf_refresh`, `SameSite=Lax`, `Path=/api/auth`)** posé par le backend et jamais
+lisible par JS — il n'est plus stocké en `localStorage`. Le client Axios (`client.ts`) l'envoie
+automatiquement (`withCredentials`) et gère la séquence `401 → POST /api/auth/refresh-token → retry` en
+**single-flight** (un seul refresh partagé par les 401 concurrents, car Keycloak fait tourner le refresh
+token). Un refresh **sans cookie ni corps → 401** ; un refresh rejeté **purge le cookie**.
+→ `shared/security/RefreshTokenCookie.java`, `core/api/AuthController.java` (repli transitoire : le corps
+`refreshToken` reste accepté le temps que les sessions d'avant la migration basculent sur le cookie).
+
+### 2.5 Login social OAuth (GitHub / Google)
+
+Second chemin d'authentification, en plus du login mot de passe (ROPC) : la connexion via un fournisseur
+externe. Deux endpoints publics (`OAuthLoginController`, préfixe `/api/auth/oauth`) :
+
+| Étape | Endpoint | Rôle |
+|---|---|---|
+| Autorisation | `GET /api/auth/oauth/{provider}/authorize` | renvoie l'URL vers laquelle envoyer le navigateur — elle porte l'**état anti-CSRF signé côté serveur** (le client ne la construit pas) |
+| Rappel | `POST /api/auth/oauth/callback` | vérifie le `state`, échange le `code` contre des jetons Keycloak, lit le profil, ouvre la session |
+
+- **Liste blanche** des fournisseurs (`github`, `google`) : la valeur du chemin n'est jamais recopiée telle
+  quelle dans `kc_idp_hint`.
+- **`email_verified` exigé** : une connexion sociale dont le fournisseur déclare l'e-mail **non vérifié** est
+  refusée — sinon un compte IdP portant l'e-mail d'une victime pourrait se greffer sur son compte local
+  (prise de contrôle par identité e-mail, fix M7). Résolution du compte **par e-mail** : qui s'est inscrit
+  par mot de passe puis revient par GitHub retrouve son compte (jamais un second).
+- **Refresh en cookie `HttpOnly`**, exactement comme le login classique (§2.4). La session sociale **ne passe
+  pas** par le 2FA (le 2FA garde le login par mot de passe).
+
+**Preuve** : `OAuthLoginController`, `AuthService.completeOAuthLogin()` (contrôle `email_verified`),
+`shared/security/OAuthLoginService.java` (état signé, échange, `userinfo`).
 
 ---
 
@@ -376,6 +412,19 @@ Jwt jwt = jwtDecoder.decode(authorization.substring(7)); // valide signature + i
 
 Un client STOMP sans token Keycloak valide est rejeté avant de pouvoir s'abonner à un topic.
 
+**Au-delà du `CONNECT`, chaque `SUBSCRIBE` est autorisé par canal** (fix **H2**, TF-RT-AUTH-CHANNELS) : un
+client authentifié ne peut plus s'abonner au flux d'un autre tenant en énumérant des ids. `StompAuthInterceptor`
+reste mince et délègue la lecture en base à `RealtimeAuthorizationService` :
+
+| Canal | Règle d'abonnement |
+|---|---|
+| `/topic/notifications.{userId}` | l'abonné **doit être** ce `userId` |
+| `/topic/projects.{projectId}` | l'abonné **doit voir** le projet (`ProjectVisibilityGuard` : public / membre / OWNER-ADMIN) |
+| `/topic/analysis.{workspaceId}` | l'abonné **doit être membre** du workspace |
+
+Un abonnement non autorisé est refusé (frame `ERROR`), sans révéler l'existence de la ressource.
+**Preuve** : `StompAuthInterceptor`, `RealtimeAuthorizationService`, `StompAuthInterceptorTest`.
+
 ---
 
 ## 8. Gestion des secrets
@@ -401,10 +450,14 @@ Un client STOMP sans token Keycloak valide est rejeté avant de pouvoir s'abonne
 - Le client Keycloak doit autoriser le **grant `password`** (Direct Access Grants activé).
 - `application-prod.yml` : `spring.security.oauth2.resourceserver.jwt.issuer-uri` / `jwk-set-uri`
   pointant sur le realm de prod.
+- **Cookie de refresh** : `auth.refresh-cookie.secure=true` en prod (HTTPS) ; `SameSite=Lax` suppose
+  `app.*` et `api.*` sur le même site (eTLD+1).
+- **Login social** : les fournisseurs `github`/`google` configurés comme *Identity Providers* du realm,
+  avec l'URL de rappel du front enregistrée sur le client Keycloak.
 
 ---
 
 > 🔗 Voir aussi : [[Sécurité]] — [[Spec_API_OpenAPI]] §1.2 — [[Journal_Decisions_ADR]] (ADR-003, **ADR-011**)
 > — [[Diagrammes_Sequence_UML]] §1 (inscription OTP) §2 (login) — [[Threat_Model_STRIDE]] — [[PSSI]]
 
-**Dernière mise à jour :** 05/07/2026 · **Version :** 1.1 (migration OIDC RS256) · **Projet :** Taskforce
+**Dernière mise à jour :** 28/08/2026 · **Version :** 1.2 (refresh cookie HttpOnly, login social OAuth, SUBSCRIBE par canal) · **Projet :** Taskforce
