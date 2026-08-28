@@ -54,8 +54,9 @@ related:
 
 ### Le LLM décide du reste
 
-Modèles configurés, tailles réelles (`ollama list`) : `qwen3:14b` **9,3 Go**, `qwen3:8b` **5,2 Go**,
-`bge-m3` **1,2 Go** — soit **15,7 Go sur disque**, à garder résidents en mémoire pour servir.
+Modèles configurés (`config.py`, vérif `ollama list`) : `qwen3:14b` (deep) **9,3 Go**,
+`qwen2.5:7b-instruct` (fast — remplace `qwen3:8b`) **~4,7 Go**, `bge-m3` (embeddings) **1,2 Go**
+— ~15 Go sur disque, à garder résidents en mémoire pour servir.
 
 | | LLM déporté | LLM co-hébergé |
 |---|---|---|

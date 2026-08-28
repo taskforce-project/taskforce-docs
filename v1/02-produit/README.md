@@ -53,14 +53,15 @@ le frontend a besoin.
 
 **Bloc maintenu par l'agent** (cf. [`AGENTS.md`](../../AGENTS.md) §2-3) — recalculé après chaque tâche.
 
-- **État (05/07/2026) — phase CLÔTURE V1 :** décision 30/06 : **arrêt du dev de features**, focus tests + RGPD + sécu + déploiement (cf. `.ai/roadmap.md` §4). Branche `test/v1-hardening`. **CDC 100 % couvert** : le dernier reste de code (trou #4 « ajustements dynamiques ») est livré via **PROD-1.12 — redistribution proposée/validée** (`RedistributionService`/`Controller`, dialog « Rééquilibrer la charge », validé **e2e** + tests).
-- **Tests (C18/C25) ✅ :** **backend 670 tests, 78 % lignes** (≈81 % hors Brain OS) ; **frontend 746 tests, 92 % lignes** (périmètre logique) + **E2E Playwright 4/4** (auth + redistribution) ; JaCoCo + Vitest v8. Priorisation par criticité respectée (sécu/session/JWT/RGPD/paiement ~100 %).
+- **État (28/08/2026) — phase PRÉPA BÊTA FERMÉE :** décision 30/06 : **arrêt du dev de features**, focus tests + RGPD + sécu + déploiement (cf. `.ai/roadmap.md` §4). Branche `test/v1-hardening`. **CDC 100 % couvert** : le dernier reste de code (trou #4 « ajustements dynamiques ») est livré via **PROD-1.12 — redistribution proposée/validée** (`RedistributionService`/`Controller`, dialog « Rééquilibrer la charge », validé **e2e** + tests).
+- **Tests (C18/C25) ✅ :** **backend 786 tests, 73,71 % lignes** (cf. Backend.md BE-QA-001, 22/07 ; couche IA/agent + outillage bêta ajoutés depuis) ; **frontend 746 tests, 92 % lignes** (périmètre logique) + **E2E Playwright 4/4** (auth + redistribution) ; JaCoCo + Vitest v8. Priorisation par criticité respectée (sécu/session/JWT/RGPD/paiement ~100 %).
 - **Sécurité :** OWASP A01 (IDOR `AuthorizationService`+interceptor), A02 (chiffrement `EncryptedStringConverter`), **A05 en-têtes durcis testés** (`SecurityHeadersWebMvcTest` — CSP/HSTS/X-Frame/nosniff), A07 (JWT/OTP/rate-limit), A09 (audit).
 - **RGPD (C11) ✅ cœur :** export portabilité **corrigé** (était 500 → 200, bug QF-5) **et complété** (profil + memberships + skill profiles + worklogs) ; **anonymisation validée** (`GdprServiceIntegrationTest` 3/3). Reste : chiffrement disque (déploiement), registre Art.30, purge Keycloak.
 - **Bugs trouvés & corrigés (QA/validation) :** **QF-1** `canManage` toujours faux (page Membres — id number vs string) masquait rôles/invitation/redistribution ; **QF-5** export RGPD 500 ; `JwtServiceTest` ne compilait plus (méthode supprimée). Détail : [Problèmes connus](../09-audits/Problemes_Connus.md).
 - **Lot 20/07/2026 (branche `chore/v1-closure`) :** 3 problèmes remontés par l'usage, **tous résolus et vérifiés en live**, et dans les 3 cas **l'hypothèse de départ était fausse** — aperçu des pièces jointes (cause : notre **CSP**, pas MinIO), lignes mortes du Signal Center (liens de notification `NULL` en base → migration `V71`, **265/266** résolues), blocages de rate limiting (les préflights CORS `OPTIONS` consommaient le quota ; `Retry-After` désormais émis **et exposé au JS**). Contrat API : 2 endpoints agrégés `GET …/my-cycles` + `GET …/my-pages` — « Ma file » passe de `3+2N` à **3 appels**. Détail : [PC-031/032/033](../09-audits/Problemes_Connus.md).
 - **UI en anglais — EN COURS (décision produit 20/07) :** l'**interface applicative** passe en anglais ; **commentaires de code et documentation restent en français**. Fait : Signal Center, « Ma file », notifications (back + seed). Reste **mesuré** : ~1000 chaînes dans ~110 fichiers front, messages back, catalogue de connecteurs, seed, **prompts LLM**. **Bloqueur identifié** : deux systèmes i18n concurrents (`lib/i18n/index.tsx`, défaut `en` / `lib/store/preferences-store.ts`, défaut `fr`) — le sélecteur de langue des réglages ne pilote que le premier, et ~95 % des fichiers codent leurs chaînes en dur.
-- **▶ Prochaine action :** **unifier les deux systèmes i18n** (FE-CORE-015) **avant** de traduire à grande échelle — sinon la contradiction est figée dans ~110 fichiers de plus ; puis **config & hors-app** — PCA/PRA **opérationnel** (cron backup + restauration testée) + **audit sécu/pentest** (OWASP ZAP) → **CI** (gates JaCoCo/Vitest bloquants + scan CVE) → **déploiement** (Guacamole/VM école) → **doc** (conception C1–C12, registre RGPD).
+- **Durcissement & outillage bêta (28/08/2026) :** quotas IA **finalisés** (FREE 100k / BASIC 500k / BUSINESS 2M / ENTERPRISE illimité, 27/08, QA-46) ; **refresh token en cookie HttpOnly** + logout révocateur (BE-AUTH-001, ferme PC-004) ; **garde anti-SSRF** (BE-SEC-006) ; **2FA TOTP** (V79) ; **outillage bêta** — cohorte `beta_cohort`/`beta_context` (V80), **export projet** JSON/CSV (BE-EXPORT-001), runbook funnel `ops/analytics/beta-funnel.sql`. Webhooks Stripe **faits** (BE-BILLING-001) ; price Business distinct en dev.
+- **▶ Prochaine action :** **prépa bêta fermée** — tagguer les **cohortes** (V80) depuis l'intake et câbler le **dashboard funnel** (Grafana ← `beta-funnel.sql`) ; finir l'**i18n** (FE-CORE-015, unifier les deux systèmes) ; **registre RGPD Art.30** + purge Keycloak ; puis **doc de conception** (C1–C12).
 - **Backlog « plus » :** hors chemin V1, cf. `.ai/backlog-post-v1.md` (Brain OS Phases 4/5, niveau Plane, RBAC granulaire, intégrations…).
 
 </div>
@@ -146,7 +147,7 @@ Sources Plane : [core concepts](https://docs.plane.so/introduction/core-concepts
 | Guests / accès externes | ✓ | ⬜ | rôle GUEST partiel |
 | IA (Smart Assign, Assistant, Insights) | (basique) | ➕ | au-delà de Plane |
 | Chat / Discussions / Teams | — | ➕❌ | extra TaskForce, mais cassés (P0) |
-| Billing (Stripe) | (cloud) | ➕ | extra (webhooks à finir, PC-005) |
+| Billing (Stripe) | (cloud) | ➕ | extra ✅ webhooks faits (BE-BILLING-001, PC-005) |
 
 **Synthèse :** bases ✅, mais pour « gérer un projet complet » (niveau Plane / Linear / GitHub) il manque surtout
 **Modules, Views (+ layouts calendrier/tableur/gantt), Intake, Estimates, Templates, Import/Export**, et
@@ -205,6 +206,6 @@ SORT prio
 > **Note Brain OS** — Registre vivant, revue hebdomadaire. Quand un domaine atteint la parité, basculer
 > ses items en `[statut:: done]` et mettre à jour la matrice §2.
 
-**Dernière mise à jour :** 20/07/2026  
+**Dernière mise à jour :** 28/08/2026  
 **Version :** 1.0  
 **Projet :** Taskforce — Metz Numeric School 2025-2026
