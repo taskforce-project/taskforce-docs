@@ -81,15 +81,28 @@ sequenceDiagram
     alt échec
         KC-->>AS: exception
         AS-->>U: 401 (identifiants incorrects)
-    else succès
+    else succès (mot de passe OK)
         KC-->>AS: access_token (RS256) + refresh_token
         AS->>KC: getUserByEmail → emailVerified ?
         AS->>AS: findByKeycloakId (crée si absent)
-        AS->>INV: acceptPendingInvitations(user)
-        AS->>AUD: record(USER_LOGIN)
-        AS-->>U: 200 (tokens Keycloak + profil)
+        alt 2FA (TOTP) activée et code TOTP absent
+            AS-->>U: 200 (twoFactorRequired=true, AUCUN token émis)
+        else pas de 2FA (ou code TOTP valide)
+            AS->>INV: acceptPendingInvitations(user)
+            AS->>AUD: record(USER_LOGIN)
+            AS-->>AC: AuthResponse (accessToken + refresh_token + profil)
+            AC->>AC: withRefreshCookie (détache le refresh_token du corps)
+            AC-->>U: 200 (accessToken + profil ; refresh_token en cookie HttpOnly tf_refresh)
+        end
     end
 ```
+
+> **Note (28/08/2026).** Le **refresh token ne circule plus dans le corps JSON** : `AuthController`
+> le pose en cookie `HttpOnly tf_refresh` (`withRefreshCookie`). Le rafraîchissement est ensuite
+> **single-flight** côté front : sur un 401, `client.ts` appelle `POST /api/auth/refresh-token` **sans
+> corps** (le cookie part via `withCredentials`) ; le backend lit `@CookieValue tf_refresh`, délègue la
+> rotation à Keycloak, renvoie un nouvel `accessToken` et re-pose le cookie. À l'échec : cookie purgé,
+> 401, session vidée côté client et redirection `/auth/login`.
 
 ---
 

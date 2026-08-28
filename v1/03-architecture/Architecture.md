@@ -189,7 +189,7 @@ intégrations), MinIO (stockage), RabbitMQ (temps réel), SMTP/Mailtrap (email).
 
 ## 6. Modèle de données
 
-Persistance gérée par Hibernate en `ddl-auto=validate` + **migrations Flyway** `V1`→`V35`
+Persistance gérée par Hibernate en `ddl-auto=validate` + **migrations Flyway** `V1`→`V80`
 (`backend/tf-api/src/main/resources/db/migration/`). Le schéma appartient aux migrations ; les entités
 doivent rester synchronisées. Scripts d'init : `01-init-keycloak-db.sql`, `02-init-pgvector.sql`.
 
@@ -201,7 +201,7 @@ Issue     1─N { IssueComment, IssueActivity, IssueRelation, IssueGitHubLink, A
 Issue     N─M ProjectLabel ;  Issue N─M Cycle (via CycleIssue)
 Team      1─N TeamMember ─ User ;  Channel 1─N ChatMessage ; Channel N─M ChannelMember ─ User
 Integration 1─N { IssueGitHubLink | SlackChannel }
-User 1─1 OtpVerification ; User 1─N { Subscription, RefreshToken, Notification }
+User 1─1 OtpVerification ; User 1─N { Subscription, Notification }
 ```
 
 Chronologie des migrations détaillée dans [Modules §4](./Modules.md). Les 19 énumérations vivent dans
@@ -210,8 +210,12 @@ Chronologie des migrations détaillée dans [Modules §4](./Modules.md). Les 19 
 ## 7. Sécurité & authentification
 
 Modèle **OAuth2 / OIDC via Keycloak**. Le backend est un **resource server** JWT (RS256, validé contre
-le JWKS Keycloak). Le frontend stocke `accessToken`/`refreshToken` et tente un refresh automatique sur
-401. En dev, l'auth peut être contournée avec `keycloak.enabled=false`.
+le JWKS Keycloak). Le frontend ne stocke que l'`accessToken` (localStorage), attaché en
+`Authorization: Bearer` ; le **refresh token n'est plus accessible au JavaScript** : il vit dans un
+cookie `HttpOnly` `tf_refresh` posé par le backend (`Path=/api/auth`, `SameSite=Lax`, `Secure` en prod),
+envoyé automatiquement (`withCredentials`) et jamais renvoyé dans le corps JSON. Refresh automatique
+**single-flight** sur 401, avec purge de session et redirection `/auth/login` en cas d'échec (durcissement
+OWASP A07, 28/08/2026). En dev, l'auth peut être contournée avec `keycloak.enabled=false`.
 
 `SecurityConfig` définit deux chaînes : **publique** (`/api/auth/**`, `/api/sales/**`, `/api/stripe/**`,
 `/api/webhooks/**`, `/api/integrations/*/callback`, `/api/files/**`, `/ws/**`, `/actuator/**`,

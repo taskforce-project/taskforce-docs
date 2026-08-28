@@ -327,16 +327,20 @@ trois, dont un inutilisé :
 |---|:--:|---|
 | `EMAIL_VERIFICATION` | ✅ | Inscription et renvoi de code (`AuthService:135`, `:384`) |
 | `PASSWORD_RESET` | ✅ | Mot de passe oublié (`AuthService:419`, vérifié en `:438`) |
-| `TWO_FACTOR_AUTH` | ❌ | **Déclaré mais jamais généré** — aucune double authentification n'est implémentée |
+| `TWO_FACTOR_AUTH` | ❌ | **Valeur d'enum inutilisée** — la 2FA passe par un TOTP applicatif (RFC 6238), pas par l'OTP e-mail (voir ci-dessous) |
 
 > **▶ Corrigé le 24/07/2026.** Ce paragraphe affirmait « uniquement à l'inscription ». La
 > réinitialisation de mot de passe manquait. Le point importe pour l'analyse de risque : c'est un second
 > chemin par lequel un code à usage unique circule par courriel.
 >
-> ⚠️ **`TWO_FACTOR_AUTH` ne doit pas être présenté comme une fonctionnalité.** La valeur existe dans
-> l'enum, rien ne la produit. Annoncer une double authentification serait une surpromesse démentie par
-> une recherche de trois secondes dans le code. Le cycle de vie complet du code OTP est décrit dans
-> [[Diagramme_Etats_UML]] §7.
+> **▶ MAJ 28/08/2026 — la 2FA EST implémentée (TOTP applicatif).** La valeur d'enum `TWO_FACTOR_AUTH`
+> reste inutilisée car la double authentification **ne passe pas par l'OTP e-mail** : elle repose sur un
+> **TOTP RFC 6238 géré par l'application** (secret chiffré dans `user_two_factor`, migration `V79`), via
+> `TwoFactorService` + `TotpService`. Elle est **exigée à la connexion par mot de passe**
+> (`AuthService.login` renvoie `twoFactorRequired=true` sans émettre de token tant que le code n'est pas
+> fourni), activable par utilisateur (`GET/POST /api/users/me/2fa[/setup|/confirm]`, dialog QR côté front),
+> avec verrouillage anti-brute-force. Elle ne gate PAS le login social (chemin OAuth). Le cycle de vie du
+> code OTP e-mail (distinct) est décrit dans [[Diagramme_Etats_UML]] §7.
 
 ```
 1. POST /api/auth/register
