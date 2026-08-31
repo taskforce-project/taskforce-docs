@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 566" width="960" height="566" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a97a3"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="566" fill="#ffffff"/>
+  <text x="30" y="26" font-size="16" font-weight="700" fill="#1d1d1f">Chaîne d'intégration et de livraison continues (CI/CD) et flux de branches</text>
+  <text x="30" y="44" font-size="10.5" fill="#6e6e73">De la spécification au déploiement : branche dédiée, portes de qualité (GitHub Actions), promotion dev puis main, publication GHCR et déploiement sur les deux VM.</text>
+
+  <!-- ===== LANE A ===== -->
+  <rect x="20" y="58" width="920" height="112" rx="8" fill="#f7f9fb" stroke="#e6ebf0"/>
+  <text x="32" y="74" font-size="10.5" font-weight="700" fill="#2563eb">1 · Développement</text>
+
+  <rect x="40" y="98" width="180" height="46" rx="8" fill="#ffffff" stroke="#c7c7cc"/>
+  <text x="130" y="118" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1d1d1f">Spécification</text>
+  <text x="130" y="132" text-anchor="middle" font-size="9" fill="#6e6e73">issue / cahier des charges</text>
+
+  <line x1="220" y1="121" x2="248" y2="121" stroke="#8a97a3" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="250" y="98" width="200" height="46" rx="8" fill="#ffffff" stroke="#c7c7cc"/>
+  <text x="350" y="118" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1d1d1f">Branche feature/** · fix/**</text>
+  <text x="350" y="132" text-anchor="middle" font-size="9" fill="#6e6e73">créée depuis dev</text>
+
+  <line x1="450" y1="121" x2="478" y2="121" stroke="#8a97a3" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="480" y="98" width="190" height="46" rx="8" fill="#ffffff" stroke="#c7c7cc"/>
+  <text x="575" y="118" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1d1d1f">Développement + commits</text>
+  <text x="575" y="132" text-anchor="middle" font-size="9" fill="#6e6e73">grammaire Conventional Commits</text>
+
+  <line x1="670" y1="121" x2="698" y2="121" stroke="#8a97a3" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="700" y="98" width="220" height="46" rx="8" fill="#eef3f8" stroke="#b8c2cc"/>
+  <text x="810" y="118" text-anchor="middle" font-size="10.5" font-weight="700" fill="#16324f">Pull Request vers dev</text>
+  <text x="810" y="132" text-anchor="middle" font-size="9" fill="#6e6e73">déclenche l'intégration continue</text>
+
+  <!-- arrow A -> B -->
+  <line x1="810" y1="144" x2="810" y2="180" stroke="#8a97a3" stroke-width="1.5" marker-end="url(#ar)"/>
+
+  <!-- ===== LANE B ===== -->
+  <rect x="20" y="182" width="920" height="150" rx="8" fill="#f7f9fb" stroke="#e6ebf0"/>
+  <text x="32" y="198" font-size="10.5" font-weight="700" fill="#2563eb">2 · Intégration continue — GitHub Actions (portes de qualité)</text>
+
+  <!-- row 1 -->
+  <g>
+    <rect x="44" y="212" width="216" height="42" rx="6" fill="#ffffff" stroke="#d7dae0"/>
+    <text x="54" y="229" font-size="9.5" font-weight="700" fill="#16324f">backend-tests</text>
+    <text x="54" y="244" font-size="8.5" fill="#6e6e73">JUnit + JaCoCo, ligne ≥ 70 %</text>
+  </g>
+  <g>
+    <rect x="270" y="212" width="216" height="42" rx="6" fill="#ffffff" stroke="#d7dae0"/>
+    <text x="280" y="229" font-size="9.5" font-weight="700" fill="#16324f">frontend-tests</text>
+    <text x="280" y="244" font-size="8.5" fill="#6e6e73">ESLint · Vitest ≥ 70 % · tsc · build</text>
+  </g>
+  <g>
+    <rect x="496" y="212" width="216" height="42" rx="6" fill="#ffffff" stroke="#d7dae0"/>
+    <text x="506" y="229" font-size="9.5" font-weight="700" fill="#16324f">landing-tests</text>
+    <text x="506" y="244" font-size="8.5" fill="#6e6e73">build + Lighthouse</text>
+  </g>
+  <g>
+    <rect x="722" y="212" width="194" height="42" rx="6" fill="#ffffff" stroke="#d7dae0"/>
+    <text x="732" y="229" font-size="9.5" font-weight="700" fill="#16324f">version-management</text>
+    <text x="732" y="244" font-size="8.5" fill="#6e6e73">label de release requis</text>
+  </g>
+  <!-- row 2 -->
+  <g>
+    <rect x="44" y="262" width="216" height="42" rx="6" fill="#ffffff" stroke="#d7dae0"/>
+    <text x="54" y="279" font-size="9.5" font-weight="700" fill="#b5560f">security-scan</text>
+    <text x="54" y="294" font-size="8.5" fill="#6e6e73">Semgrep (ERROR) · Trivy (CRITICAL)</text>
+  </g>
+  <g>
+    <rect x="270" y="262" width="216" height="42" rx="6" fill="#ffffff" stroke="#d7dae0"/>
+    <text x="280" y="279" font-size="9.5" font-weight="700" fill="#b5560f">zap-dast</text>
+    <text x="280" y="294" font-size="8.5" fill="#6e6e73">OWASP ZAP (hebdomadaire)</text>
+  </g>
+  <g>
+    <rect x="496" y="262" width="216" height="42" rx="6" fill="#ffffff" stroke="#d7dae0"/>
+    <text x="506" y="279" font-size="9.5" font-weight="700" fill="#16324f">e2e-tests</text>
+    <text x="506" y="294" font-size="8.5" fill="#6e6e73">Playwright (sur activation)</text>
+  </g>
+  <g>
+    <rect x="722" y="262" width="194" height="42" rx="6" fill="#ffffff" stroke="#d7dae0"/>
+    <text x="732" y="279" font-size="9.5" font-weight="700" fill="#16324f">docs · badges</text>
+    <text x="732" y="294" font-size="8.5" fill="#6e6e73">Fern · versions README</text>
+  </g>
+
+  <text x="480" y="322" text-anchor="middle" font-size="9.5" font-style="italic" fill="#5b6b7a">Fusion sur dev uniquement si toutes les portes bloquantes sont vertes</text>
+
+  <!-- arrow B -> C -->
+  <line x1="480" y1="332" x2="480" y2="356" stroke="#8a97a3" stroke-width="1.5" marker-end="url(#ar)"/>
+
+  <!-- ===== LANE C ===== -->
+  <rect x="20" y="358" width="920" height="188" rx="8" fill="#f7f9fb" stroke="#e6ebf0"/>
+  <text x="32" y="374" font-size="10.5" font-weight="700" fill="#2563eb">3 · Livraison &amp; déploiement</text>
+
+  <rect x="40" y="392" width="210" height="50" rx="8" fill="#ffffff" stroke="#c7c7cc"/>
+  <text x="145" y="411" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1d1d1f">Merge sur dev (release.yml)</text>
+  <text x="145" y="426" text-anchor="middle" font-size="9" fill="#6e6e73">images GHCR + tag vX.Y.Z-rcN</text>
+
+  <line x1="250" y1="417" x2="278" y2="417" stroke="#8a97a3" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="280" y="392" width="150" height="50" rx="8" fill="#ffffff" stroke="#c7c7cc"/>
+  <text x="355" y="414" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1d1d1f">Pull Request</text>
+  <text x="355" y="428" text-anchor="middle" font-size="9.5" fill="#6e6e73">dev vers main</text>
+
+  <line x1="430" y1="417" x2="458" y2="417" stroke="#8a97a3" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="460" y="392" width="220" height="50" rx="8" fill="#ffffff" stroke="#c7c7cc"/>
+  <text x="570" y="411" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1d1d1f">Merge sur main (release.yml)</text>
+  <text x="570" y="426" text-anchor="middle" font-size="9" fill="#6e6e73">release stable (retrait -rc) + GHCR :latest</text>
+
+  <line x1="680" y1="417" x2="708" y2="417" stroke="#8a97a3" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="710" y="392" width="210" height="50" rx="8" fill="#eef3f8" stroke="#b8c2cc"/>
+  <text x="815" y="411" text-anchor="middle" font-size="10.5" font-weight="700" fill="#16324f">auto-deploy.sh (sur VM)</text>
+  <text x="815" y="426" text-anchor="middle" font-size="9" fill="#6e6e73">pull ff-only origin/main + rebuild par rôle</text>
+
+  <!-- C4 down to VMs -->
+  <line x1="765" y1="442" x2="765" y2="486" stroke="#8a97a3" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="865" y1="442" x2="865" y2="486" stroke="#8a97a3" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="700" y="488" width="120" height="46" rx="8" fill="#ffffff" stroke="#2563eb"/>
+  <text x="760" y="507" text-anchor="middle" font-size="10" font-weight="700" fill="#16324f">VM1</text>
+  <text x="760" y="521" text-anchor="middle" font-size="8.5" fill="#6e6e73">back-end · identité · BDD</text>
+  <rect x="828" y="488" width="120" height="46" rx="8" fill="#ffffff" stroke="#2563eb"/>
+  <text x="888" y="507" text-anchor="middle" font-size="10" font-weight="700" fill="#16324f">VM2</text>
+  <text x="888" y="521" text-anchor="middle" font-size="8.5" fill="#6e6e73">front-end · supervision</text>
+</svg>

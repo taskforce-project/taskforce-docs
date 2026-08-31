@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 648" width="960" height="648" font-family="'Segoe UI', Arial, sans-serif">
+  <rect x="0" y="0" width="960" height="648" fill="#ffffff"/>
+  <text x="30" y="26" font-size="16" font-weight="700" fill="#1d1d1f">Décomposition du produit (PBS) — TaskForce</text>
+  <text x="30" y="44" font-size="10.5" fill="#6e6e73">Les grands ensembles de livrables du produit et leurs composants. Version exhaustive ; le corps du dossier n'en donne qu'une vue resserrée.</text>
+
+  <!-- root -->
+  <rect x="380" y="58" width="200" height="34" rx="8" fill="#2563eb"/>
+  <text x="480" y="80" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">TaskForce (produit)</text>
+
+  <!-- bus -->
+  <line x1="480" y1="92" x2="480" y2="108" stroke="#c7c7cc" stroke-width="1.5"/>
+  <line x1="30" y1="108" x2="930" y2="108" stroke="#c7c7cc" stroke-width="1.5"/>
+  <line x1="30" y1="108" x2="30" y2="612" stroke="#c7c7cc" stroke-width="1.5"/>
+  <line x1="496" y1="108" x2="496" y2="612" stroke="#c7c7cc" stroke-width="1.5"/>
+
+  <!-- ============ COLUMN A ============ -->
+  <!-- A1 Socle & sécurité -->
+  <line x1="30" y1="184" x2="46" y2="184" stroke="#c7c7cc" stroke-width="1.5"/>
+  <g>
+    <rect x="46" y="124" width="424" height="120" rx="9" fill="#ffffff" stroke="#d7dae0"/>
+    <rect x="46" y="124" width="4" height="120" rx="2" fill="#2563eb"/>
+    <text x="64" y="146" font-size="12.5" font-weight="700" fill="#16324f">Socle &amp; sécurité</text>
+    <line x1="64" y1="154" x2="452" y2="154" stroke="#eef1f4" stroke-width="1"/>
+    <circle cx="68" cy="170" r="2" fill="#2563eb"/><text x="78" y="174" font-size="10.5" fill="#1d1d1f">Authentification Keycloak (OIDC, OAuth externes)</text>
+    <circle cx="68" cy="188" r="2" fill="#2563eb"/><text x="78" y="192" font-size="10.5" fill="#1d1d1f">Multi-locataire &amp; isolation des données</text>
+    <circle cx="68" cy="206" r="2" fill="#2563eb"/><text x="78" y="210" font-size="10.5" fill="#1d1d1f">Contrôle d'accès (rôles organisation + projet)</text>
+    <circle cx="68" cy="224" r="2" fill="#2563eb"/><text x="78" y="228" font-size="10.5" fill="#1d1d1f">Chiffrement au repos (AES-256-GCM) &amp; journal d'audit</text>
+  </g>
+
+  <!-- A2 Conformité RGPD -->
+  <line x1="30" y1="318" x2="46" y2="318" stroke="#c7c7cc" stroke-width="1.5"/>
+  <g>
+    <rect x="46" y="258" width="424" height="120" rx="9" fill="#ffffff" stroke="#d7dae0"/>
+    <rect x="46" y="258" width="4" height="120" rx="2" fill="#2563eb"/>
+    <text x="64" y="280" font-size="12.5" font-weight="700" fill="#16324f">Conformité RGPD</text>
+    <line x1="64" y1="288" x2="452" y2="288" stroke="#eef1f4" stroke-width="1"/>
+    <circle cx="68" cy="304" r="2" fill="#2563eb"/><text x="78" y="308" font-size="10.5" fill="#1d1d1f">Registre des traitements (article 30)</text>
+    <circle cx="68" cy="322" r="2" fill="#2563eb"/><text x="78" y="326" font-size="10.5" fill="#1d1d1f">Export &amp; portabilité, rectification</text>
+    <circle cx="68" cy="340" r="2" fill="#2563eb"/><text x="78" y="344" font-size="10.5" fill="#1d1d1f">Effacement / anonymisation, purge des données</text>
+    <circle cx="68" cy="358" r="2" fill="#2563eb"/><text x="78" y="362" font-size="10.5" fill="#1d1d1f">Procédure de violation, bannière cookies</text>
+  </g>
+
+  <!-- A3 Moteur d'affectation -->
+  <line x1="30" y1="452" x2="46" y2="452" stroke="#c7c7cc" stroke-width="1.5"/>
+  <g>
+    <rect x="46" y="392" width="424" height="120" rx="9" fill="#ffffff" stroke="#d7dae0"/>
+    <rect x="46" y="392" width="4" height="120" rx="2" fill="#f48120"/>
+    <text x="64" y="414" font-size="12.5" font-weight="700" fill="#16324f">Moteur d'affectation (smart-assign)</text>
+    <line x1="64" y1="422" x2="452" y2="422" stroke="#eef1f4" stroke-width="1"/>
+    <circle cx="68" cy="438" r="2" fill="#f48120"/><text x="78" y="442" font-size="10.5" fill="#1d1d1f">Profils de compétences (embeddings bge-m3)</text>
+    <circle cx="68" cy="456" r="2" fill="#f48120"/><text x="78" y="460" font-size="10.5" fill="#1d1d1f">Pré-filtre déterministe &amp; scoring pondéré</text>
+    <circle cx="68" cy="474" r="2" fill="#f48120"/><text x="78" y="478" font-size="10.5" fill="#1d1d1f">Reclassement sémantique (LLM, passerelle)</text>
+    <circle cx="68" cy="492" r="2" fill="#f48120"/><text x="78" y="496" font-size="10.5" fill="#1d1d1f">Historique &amp; repondération, redistribution</text>
+  </g>
+
+  <!-- A4 Gestion de projet -->
+  <line x1="30" y1="586" x2="46" y2="586" stroke="#c7c7cc" stroke-width="1.5"/>
+  <g>
+    <rect x="46" y="526" width="424" height="120" rx="9" fill="#ffffff" stroke="#d7dae0"/>
+    <rect x="46" y="526" width="4" height="120" rx="2" fill="#2563eb"/>
+    <text x="64" y="548" font-size="12.5" font-weight="700" fill="#16324f">Gestion de projet</text>
+    <line x1="64" y1="556" x2="452" y2="556" stroke="#eef1f4" stroke-width="1"/>
+    <circle cx="68" cy="572" r="2" fill="#2563eb"/><text x="78" y="576" font-size="10.5" fill="#1d1d1f">Projets, tâches (issues), priorités &amp; labels</text>
+    <circle cx="68" cy="590" r="2" fill="#2563eb"/><text x="78" y="594" font-size="10.5" fill="#1d1d1f">Cycles / sprints &amp; feuille de route</text>
+    <circle cx="68" cy="608" r="2" fill="#2563eb"/><text x="78" y="612" font-size="10.5" fill="#1d1d1f">Relevés de charge, congés &amp; disponibilités</text>
+    <circle cx="68" cy="626" r="2" fill="#2563eb"/><text x="78" y="630" font-size="10.5" fill="#1d1d1f">Notifications temps réel</text>
+  </g>
+
+  <!-- ============ COLUMN B ============ -->
+  <!-- B1 Expérience utilisateur -->
+  <line x1="496" y1="184" x2="512" y2="184" stroke="#c7c7cc" stroke-width="1.5"/>
+  <g>
+    <rect x="512" y="124" width="424" height="120" rx="9" fill="#ffffff" stroke="#d7dae0"/>
+    <rect x="512" y="124" width="4" height="120" rx="2" fill="#2563eb"/>
+    <text x="530" y="146" font-size="12.5" font-weight="700" fill="#16324f">Expérience utilisateur (front)</text>
+    <line x1="530" y1="154" x2="918" y2="154" stroke="#eef1f4" stroke-width="1"/>
+    <circle cx="534" cy="170" r="2" fill="#2563eb"/><text x="544" y="174" font-size="10.5" fill="#1d1d1f">Onboarding guidé (nourrit le profil)</text>
+    <circle cx="534" cy="188" r="2" fill="#2563eb"/><text x="544" y="192" font-size="10.5" fill="#1d1d1f">Tableau de bord &amp; file de travail</text>
+    <circle cx="534" cy="206" r="2" fill="#2563eb"/><text x="544" y="210" font-size="10.5" fill="#1d1d1f">Vues Liste / Kanban, page des membres</text>
+    <circle cx="534" cy="224" r="2" fill="#2563eb"/><text x="544" y="228" font-size="10.5" fill="#1d1d1f">Réglages d'accessibilité, thème clair / sombre</text>
+  </g>
+
+  <!-- B2 Monétisation -->
+  <line x1="496" y1="318" x2="512" y2="318" stroke="#c7c7cc" stroke-width="1.5"/>
+  <g>
+    <rect x="512" y="258" width="424" height="120" rx="9" fill="#ffffff" stroke="#d7dae0"/>
+    <rect x="512" y="258" width="4" height="120" rx="2" fill="#34c759"/>
+    <text x="530" y="280" font-size="12.5" font-weight="700" fill="#16324f">Monétisation</text>
+    <line x1="530" y1="288" x2="918" y2="288" stroke="#eef1f4" stroke-width="1"/>
+    <circle cx="534" cy="304" r="2" fill="#34c759"/><text x="544" y="308" font-size="10.5" fill="#1d1d1f">Paliers Free / Pro / Business, offre entreprise</text>
+    <circle cx="534" cy="322" r="2" fill="#34c759"/><text x="544" y="326" font-size="10.5" fill="#1d1d1f">Paiement Stripe (checkout, webhooks, portail)</text>
+    <circle cx="534" cy="340" r="2" fill="#34c759"/><text x="544" y="344" font-size="10.5" fill="#1d1d1f">Compteur d'IA par jetons (AiMeter)</text>
+    <circle cx="534" cy="358" r="2" fill="#34c759"/><text x="544" y="362" font-size="10.5" fill="#1d1d1f">Facturation au siège, changement de plan</text>
+  </g>
+
+  <!-- B3 Plateforme & industrialisation -->
+  <line x1="496" y1="452" x2="512" y2="452" stroke="#c7c7cc" stroke-width="1.5"/>
+  <g>
+    <rect x="512" y="392" width="424" height="120" rx="9" fill="#ffffff" stroke="#d7dae0"/>
+    <rect x="512" y="392" width="4" height="120" rx="2" fill="#2563eb"/>
+    <text x="530" y="414" font-size="12.5" font-weight="700" fill="#16324f">Plateforme &amp; industrialisation</text>
+    <line x1="530" y1="422" x2="918" y2="422" stroke="#eef1f4" stroke-width="1"/>
+    <circle cx="534" cy="438" r="2" fill="#2563eb"/><text x="544" y="442" font-size="10.5" fill="#1d1d1f">Conteneurisation Docker (parité dev / prod)</text>
+    <circle cx="534" cy="456" r="2" fill="#2563eb"/><text x="544" y="460" font-size="10.5" fill="#1d1d1f">Intégration continue &amp; registre GHCR</text>
+    <circle cx="534" cy="474" r="2" fill="#2563eb"/><text x="544" y="478" font-size="10.5" fill="#1d1d1f">Déploiement 2 VM + tunnel Cloudflare</text>
+    <circle cx="534" cy="492" r="2" fill="#2563eb"/><text x="544" y="496" font-size="10.5" fill="#1d1d1f">Supervision Prometheus / Grafana, sauvegarde</text>
+  </g>
+
+  <!-- B4 Documentation & connaissance -->
+  <line x1="496" y1="586" x2="512" y2="586" stroke="#c7c7cc" stroke-width="1.5"/>
+  <g>
+    <rect x="512" y="526" width="424" height="120" rx="9" fill="#ffffff" stroke="#d7dae0"/>
+    <rect x="512" y="526" width="4" height="120" rx="2" fill="#2563eb"/>
+    <text x="530" y="548" font-size="12.5" font-weight="700" fill="#16324f">Documentation &amp; connaissance</text>
+    <line x1="530" y1="556" x2="918" y2="556" stroke="#eef1f4" stroke-width="1"/>
+    <circle cx="534" cy="572" r="2" fill="#2563eb"/><text x="544" y="576" font-size="10.5" fill="#1d1d1f">Site vitrine (Astro, SEO)</text>
+    <circle cx="534" cy="590" r="2" fill="#2563eb"/><text x="544" y="594" font-size="10.5" fill="#1d1d1f">Docs produit &amp; référence API (Fern, MCP)</text>
+    <circle cx="534" cy="608" r="2" fill="#2563eb"/><text x="544" y="612" font-size="10.5" fill="#1d1d1f">Assistant IA (Cortex), Brain OS (docs-as-code)</text>
+    <circle cx="534" cy="626" r="2" fill="#2563eb"/><text x="544" y="630" font-size="10.5" fill="#1d1d1f">Dossier de validation</text>
+  </g>
+</svg>

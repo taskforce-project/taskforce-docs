@@ -1,0 +1,29 @@
+flowchart LR
+  U(["Utilisateur"])
+  CF["Cloudflare<br/>edge, tunnel"]
+  FE["Front-end<br/>Next.js"]
+  API["API back-end<br/>Spring Boot"]
+  KC["Keycloak<br/>identité"]
+  DB[("PostgreSQL<br/>+ pgvector")]
+  IA["Service IA<br/>Python, Ollama"]
+  EXT["Stripe, Brevo<br/>services externes"]
+
+  U --> CF
+  CF --> FE
+  FE -->|REST| API
+  API -->|OIDC| KC
+  API --> DB
+  API -->|requête modèle| IA
+  API -->|paiement, courriel| EXT
+  KC --> DB
+
+  classDef person fill:#2563eb,stroke:#1d4ed8,color:#ffffff,font-weight:bold;
+  classDef edge fill:#f2f2f4,stroke:#cfcfd4,color:#1d1d1f;
+  classDef cont fill:#ffffff,stroke:#d7dae0,color:#1d1d1f;
+  classDef store fill:#eef3f8,stroke:#b8c2cc,color:#1d1d1f;
+  classDef ext fill:#f2f2f4,stroke:#cfcfd4,color:#6e6e73;
+  class U person;
+  class CF edge;
+  class FE,API,KC,IA cont;
+  class DB store;
+  class EXT ext;

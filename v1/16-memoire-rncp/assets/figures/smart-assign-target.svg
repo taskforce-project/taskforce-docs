@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a97a3"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="430" fill="#ffffff"/>
+  <text x="30" y="26" font-size="16" font-weight="700" fill="#1d1d1f">Architecture cible du smart-assign, inspirée du « modèle du monde »</text>
+  <text x="30" y="45" font-size="10.5" fill="#6e6e73">La décision naît de l'état modélisé et de l'architecture ; le modèle de langage n'en formule que la sortie et reste interchangeable.</text>
+
+  <!-- deterministic core band -->
+  <rect x="30" y="72" width="612" height="214" rx="10" fill="#f4f8ff" stroke="#cdddf5"/>
+  <text x="46" y="90" font-size="11" font-weight="700" fill="#2563eb">Cœur déterministe — porte la décision (l'essentiel de la performance)</text>
+
+  <!-- Block 1: world model -->
+  <rect x="52" y="104" width="258" height="164" rx="9" fill="#ffffff" stroke="#d7dae0"/>
+  <text x="68" y="126" font-size="12" font-weight="700" fill="#16324f">Modèle du monde de l'équipe</text>
+  <text x="68" y="140" font-size="9.5" fill="#6e6e73">l'état sur lequel raisonne le moteur</text>
+  <line x1="68" y1="148" x2="294" y2="148" stroke="#eef1f4" stroke-width="1"/>
+  <circle cx="72" cy="164" r="2" fill="#2563eb"/><text x="82" y="168" font-size="10.5" fill="#1d1d1f">Compétences (vecteurs d'embedding)</text>
+  <circle cx="72" cy="184" r="2" fill="#2563eb"/><text x="82" y="188" font-size="10.5" fill="#1d1d1f">Charge courante (points ouverts)</text>
+  <circle cx="72" cy="204" r="2" fill="#2563eb"/><text x="82" y="208" font-size="10.5" fill="#1d1d1f">Disponibilité (congés, capacité)</text>
+  <circle cx="72" cy="224" r="2" fill="#2563eb"/><text x="82" y="228" font-size="10.5" fill="#1d1d1f">Historique des affectations</text>
+  <text x="68" y="252" font-size="9" fill="#6e6e73" font-style="italic">état persistant, mesuré et non déclaré</text>
+
+  <line x1="310" y1="186" x2="346" y2="186" stroke="#8a97a3" stroke-width="1.6" marker-end="url(#ar2)"/>
+
+  <!-- Block 2: deterministic engine -->
+  <rect x="348" y="104" width="278" height="164" rx="9" fill="#ffffff" stroke="#d7dae0"/>
+  <text x="364" y="126" font-size="12" font-weight="700" fill="#16324f">Moteur de décision déterministe</text>
+  <text x="364" y="140" font-size="9.5" fill="#6e6e73">calcul explicable, reproductible</text>
+  <line x1="364" y1="148" x2="610" y2="148" stroke="#eef1f4" stroke-width="1"/>
+  <circle cx="368" cy="164" r="2" fill="#2563eb"/><text x="378" y="168" font-size="10.5" fill="#1d1d1f">Appariement sous contraintes</text>
+  <circle cx="368" cy="184" r="2" fill="#2563eb"/><text x="378" y="188" font-size="10.5" fill="#1d1d1f">Scoring pondéré, poids explicites</text>
+  <circle cx="368" cy="204" r="2" fill="#2563eb"/><text x="378" y="208" font-size="10.5" fill="#1d1d1f">Similarité sémantique par vecteurs</text>
+  <circle cx="368" cy="224" r="2" fill="#2563eb"/><text x="378" y="228" font-size="10.5" fill="#1d1d1f">Tri, liste courte + scores</text>
+  <text x="364" y="252" font-size="9" fill="#6e6e73" font-style="italic">produit la décision et sa justification chiffrée</text>
+
+  <!-- arrow core -> LLM -->
+  <line x1="626" y1="186" x2="668" y2="186" stroke="#8a97a3" stroke-width="1.6" marker-end="url(#ar2)"/>
+
+  <!-- expression band -->
+  <rect x="672" y="72" width="258" height="214" rx="10" fill="#fff6ef" stroke="#f3d8bf"/>
+  <text x="688" y="90" font-size="11" font-weight="700" fill="#b5560f">Couche d'expression</text>
+
+  <rect x="690" y="104" width="222" height="118" rx="9" fill="#ffffff" stroke="#e6cbb2"/>
+  <text x="706" y="126" font-size="12" font-weight="700" fill="#16324f">Modèle de langage</text>
+  <text x="706" y="140" font-size="9.5" fill="#6e6e73">interchangeable, en bout de chaîne</text>
+  <line x1="706" y1="148" x2="896" y2="148" stroke="#f4e7da" stroke-width="1"/>
+  <circle cx="710" cy="164" r="2" fill="#f48120"/><text x="720" y="168" font-size="10.5" fill="#1d1d1f">Met en mots la justification</text>
+  <circle cx="710" cy="184" r="2" fill="#f48120"/><text x="720" y="188" font-size="10.5" fill="#1d1d1f">Affine la nuance sémantique</text>
+  <circle cx="710" cy="204" r="2" fill="#f48120"/><text x="720" y="208" font-size="10.5" fill="#1d1d1f">Ne tranche jamais seul</text>
+
+  <rect x="690" y="232" width="222" height="42" rx="8" fill="#fbe6d6" stroke="#f3d8bf"/>
+  <text x="801" y="249" text-anchor="middle" font-size="9.7" font-weight="700" fill="#b5560f">Part minime de la performance</text>
+  <text x="801" y="264" text-anchor="middle" font-size="9" fill="#8a5a2b">un petit modèle suffit, coût quasi nul</text>
+
+  <!-- down arrows to human -->
+  <line x1="487" y1="268" x2="487" y2="336" stroke="#8a97a3" stroke-width="1.6" marker-end="url(#ar2)"/>
+  <line x1="801" y1="274" x2="801" y2="312" stroke="#8a97a3" stroke-width="1.6"/>
+  <line x1="801" y1="312" x2="640" y2="312" stroke="#8a97a3" stroke-width="1.6"/>
+  <line x1="640" y1="312" x2="640" y2="336" stroke="#8a97a3" stroke-width="1.6" marker-end="url(#ar2)"/>
+
+  <!-- human decision -->
+  <rect x="330" y="338" width="320" height="52" rx="9" fill="#eef3f8" stroke="#b8c2cc"/>
+  <text x="490" y="360" text-anchor="middle" font-size="11.5" font-weight="700" fill="#16324f">Recommandation présentée au responsable</text>
+  <text x="490" y="376" text-anchor="middle" font-size="9.5" fill="#6e6e73">validation humaine, la décision finale reste à l'humain</text>
+</svg>

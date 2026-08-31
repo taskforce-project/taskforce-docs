@@ -1,0 +1,19 @@
+sequenceDiagram
+  autonumber
+  actor R as Responsable
+  participant API as API (contrôleur)
+  participant S as SmartAssignService
+  participant DB as PostgreSQL
+  participant G as Passerelle IA
+
+  R->>API: GET /issues/{id}/smart-assign
+  API->>S: recommend(issue)
+  S->>DB: candidats (hors congés), compétences, charge, historique
+  DB-->>S: métriques par candidat
+  S->>S: pré-filtre pondéré, liste courte (5)
+  S->>G: scorer la liste courte
+  G-->>S: score sémantique + justification
+  S->>S: score final pondéré
+  S->>DB: journaliser (ai_runs, assignment_events)
+  S-->>API: recommandation + alternatives
+  API-->>R: candidat, score, justification

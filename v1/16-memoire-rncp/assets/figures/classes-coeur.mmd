@@ -1,0 +1,26 @@
+classDiagram
+  direction LR
+  class Organisation {
+    ...
+  }
+  class Membre {
+    rôle
+    ...
+  }
+  class Projet {
+    ...
+  }
+  class Tâche {
+    statut
+    ...
+  }
+  class ProfilCompetences {
+    compétences
+    capacité
+    ...
+  }
+  Organisation "1" --> "*" Membre
+  Organisation "1" --> "*" Projet
+  Projet "1" --> "*" Tâche
+  Membre "1" --> "1" ProfilCompetences
+  Tâche "*" --> "0..1" Membre : affectée à

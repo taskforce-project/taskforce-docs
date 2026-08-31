@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 648" width="680" height="648" font-family="'Segoe UI', Arial, sans-serif">
+  <rect x="0" y="0" width="680" height="648" fill="#ffffff"/>
+
+  <text x="20" y="26" font-size="16" font-weight="700" fill="#1d1d1f">Matrice des risques : probabilité × impact</text>
+  <text x="20" y="44" font-size="11.5" fill="#6e6e73">Douze risques suivis · R01 (surcharge mono-acteur) dominant, géré par la priorisation et le gel des fonctionnalités</text>
+
+  <!-- criticality colour legend -->
+  <g font-size="10.5" fill="#3a3a3c">
+    <rect x="130" y="56" width="13" height="13" rx="2" fill="#fbe3e3" stroke="#e8b4b4"/><text x="148" y="66">critique</text>
+    <rect x="210" y="56" width="13" height="13" rx="2" fill="#fdecdd" stroke="#f0c99a"/><text x="228" y="66">élevé</text>
+    <rect x="282" y="56" width="13" height="13" rx="2" fill="#fdf6e3" stroke="#ecd9a0"/><text x="300" y="66">modéré</text>
+    <rect x="360" y="56" width="13" height="13" rx="2" fill="#e8f7ee" stroke="#aeddc0"/><text x="378" y="66">faible</text>
+  </g>
+
+  <!-- axis labels -->
+  <text x="34" y="268" font-size="13" font-weight="600" fill="#1d1d1f" text-anchor="middle" transform="rotate(-90 34 268)">Probabilité</text>
+  <text x="370" y="500" font-size="13" font-weight="600" fill="#1d1d1f" text-anchor="middle">Impact</text>
+
+  <!-- row labels -->
+  <g font-size="11.5" fill="#6e6e73" text-anchor="end">
+    <text x="118" y="152">Haut</text>
+    <text x="118" y="272">Moyen</text>
+    <text x="118" y="392">Faible</text>
+  </g>
+  <!-- col labels -->
+  <g font-size="11.5" fill="#6e6e73" text-anchor="middle">
+    <text x="210" y="470">Faible</text>
+    <text x="370" y="470">Moyen</text>
+    <text x="530" y="470">Haut</text>
+  </g>
+
+  <!-- cells -->
+  <!-- row Haut -->
+  <rect x="130" y="88" width="160" height="120" fill="#fdf6e3" stroke="#ffffff" stroke-width="3"/>
+  <rect x="290" y="88" width="160" height="120" fill="#fdecdd" stroke="#ffffff" stroke-width="3"/>
+  <rect x="450" y="88" width="160" height="120" fill="#fbe3e3" stroke="#ffffff" stroke-width="3"/>
+  <!-- row Moyen -->
+  <rect x="130" y="208" width="160" height="120" fill="#e8f7ee" stroke="#ffffff" stroke-width="3"/>
+  <rect x="290" y="208" width="160" height="120" fill="#fdf6e3" stroke="#ffffff" stroke-width="3"/>
+  <rect x="450" y="208" width="160" height="120" fill="#fdecdd" stroke="#ffffff" stroke-width="3"/>
+  <!-- row Faible -->
+  <rect x="130" y="328" width="160" height="120" fill="#e8f7ee" stroke="#ffffff" stroke-width="3"/>
+  <rect x="290" y="328" width="160" height="120" fill="#e8f7ee" stroke="#ffffff" stroke-width="3"/>
+  <rect x="450" y="328" width="160" height="120" fill="#fdf6e3" stroke="#ffffff" stroke-width="3"/>
+
+  <!-- risk chips -->
+  <g font-weight="700" fill="#1d1d1f" text-anchor="middle">
+    <!-- H x M : R03 -->
+    <text x="370" y="153" font-size="14">R03</text>
+    <!-- H x H : R01 (dominant) -->
+    <text x="530" y="150" font-size="17" fill="#b42318">R01</text>
+    <!-- M x M : R10 R12 -->
+    <text x="345" y="273" font-size="14">R10</text>
+    <text x="395" y="273" font-size="14">R12</text>
+    <!-- M x H : R02 R04 / R06 R07 -->
+    <text x="505" y="258" font-size="14">R02</text>
+    <text x="555" y="258" font-size="14">R04</text>
+    <text x="505" y="290" font-size="14">R06</text>
+    <text x="555" y="290" font-size="14">R07</text>
+    <!-- F x M : R05 R08 R09 -->
+    <text x="330" y="393" font-size="14">R05</text>
+    <text x="370" y="393" font-size="14">R08</text>
+    <text x="410" y="393" font-size="14">R09</text>
+    <!-- F x H : R11 -->
+    <text x="530" y="393" font-size="14">R11</text>
+  </g>
+
+  <!-- name legend -->
+  <line x1="20" y1="512" x2="660" y2="512" stroke="#e6e6e9"/>
+  <g font-size="11" fill="#3a3a3c">
+    <text x="24" y="536"><tspan font-weight="700" fill="#1d1d1f">R01</tspan> Surcharge mono-acteur</text>
+    <text x="24" y="558"><tspan font-weight="700" fill="#1d1d1f">R02</tspan> VM école non disponibles</text>
+    <text x="24" y="580"><tspan font-weight="700" fill="#1d1d1f">R03</tspan> Élargissement du périmètre</text>
+    <text x="24" y="602"><tspan font-weight="700" fill="#1d1d1f">R04</tspan> Complexité des intégrations</text>
+    <text x="24" y="624"><tspan font-weight="700" fill="#1d1d1f">R05</tspan> Dépendance au modèle hébergé</text>
+    <text x="240" y="536"><tspan font-weight="700" fill="#1d1d1f">R06</tspan> Conformité RGPD</text>
+    <text x="240" y="558"><tspan font-weight="700" fill="#1d1d1f">R07</tspan> Vulnérabilité de sécurité</text>
+    <text x="240" y="580"><tspan font-weight="700" fill="#1d1d1f">R08</tspan> Couverture de tests insuffisante</text>
+    <text x="240" y="602"><tspan font-weight="700" fill="#1d1d1f">R09</tspan> Abandon d'une bibliothèque</text>
+    <text x="240" y="624"><tspan font-weight="700" fill="#1d1d1f">R10</tspan> Isolement, perte de motivation</text>
+    <text x="470" y="536"><tspan font-weight="700" fill="#1d1d1f">R11</tspan> Migration de données</text>
+    <text x="470" y="558"><tspan font-weight="700" fill="#1d1d1f">R12</tspan> Accessibilité (WCAG 2.1 AA)</text>
+  </g>
+</svg>

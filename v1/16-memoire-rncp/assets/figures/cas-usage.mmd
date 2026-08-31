@@ -1,0 +1,46 @@
+flowchart LR
+  OWNER(["Propriétaire (OWNER)"])
+  ADMIN(["Gestionnaire (ADMIN)"])
+  MEMBER(["Collaborateur (MEMBER)"])
+  STRIPE(["Prestataire de paiement (externe)"])
+  SCHED(["Ordonnanceurs (système)"])
+
+  OWNER -->|est un| ADMIN
+  ADMIN -->|est un| MEMBER
+
+  subgraph UC_MEMBER["Collaborateur"]
+    UC1(["Gérer ses tâches (MyWork)"])
+    UC2(["Créer, commenter, déplacer une issue"])
+    UC3(["Enregistrer son temps"])
+    UC4(["Gérer son profil de compétences"])
+    UC5(["Déclarer ses congés"])
+    UC7(["Consulter roadmap, cycles, pages"])
+    UC8(["Interroger l'assistant IA"])
+    UC9(["Exporter ses données (RGPD)"])
+    UC10(["Consulter les analyses"])
+  end
+
+  subgraph UC_ADMIN["Gestionnaire"]
+    UM1(["Inviter des membres"])
+    UM2(["Gérer projets et équipes"])
+    UM3(["Proposer et appliquer une redistribution"])
+    UM4(["Gérer les compétences des autres"])
+    UM5(["Gérer les congés des autres"])
+    UM6(["Administrer la base de connaissance"])
+    UM7(["Consulter le journal d'audit"])
+    UM8(["Recevoir les alertes de surcharge"])
+    UM9(["Voir tous les projets"])
+  end
+
+  subgraph UC_OWNER["Propriétaire"]
+    UO1(["Changer le rôle d'un membre"])
+    UO2(["Supprimer l'organisation"])
+    UO3(["Gérer l'abonnement"])
+  end
+
+  MEMBER --- UC1 & UC2 & UC3 & UC4 & UC5 & UC7 & UC8 & UC9 & UC10
+  ADMIN --- UM1 & UM2 & UM3 & UM4 & UM5 & UM6 & UM7 & UM8 & UM9
+  OWNER --- UO1 & UO2 & UO3
+
+  STRIPE -->|notifie un paiement| UO3
+  SCHED -->|alerte de surcharge| UM8

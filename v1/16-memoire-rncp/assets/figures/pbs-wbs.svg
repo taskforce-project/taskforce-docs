@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 356" width="920" height="356" font-family="'Segoe UI', Arial, sans-serif">
+  <rect x="0" y="0" width="920" height="356" fill="#ffffff"/>
+
+  <text x="20" y="26" font-size="16" font-weight="700" fill="#1d1d1f">Découpage du produit (PBS) et du travail (WBS)</text>
+
+  <!-- ============ PBS (produit) ============ -->
+  <text x="20" y="52" font-size="12" font-weight="700" fill="#2563eb">PBS — décomposition du produit</text>
+  <rect x="20" y="62" width="210" height="34" rx="8" fill="#2563eb"/>
+  <text x="125" y="84" text-anchor="middle" font-size="12.5" font-weight="600" fill="#ffffff">TaskForce (produit)</text>
+
+  <!-- spine -->
+  <line x1="40" y1="96" x2="40" y2="292" stroke="#c7c7cc" stroke-width="1.5"/>
+
+  <!-- PBS children -->
+  <line x1="40" y1="127" x2="60" y2="127" stroke="#c7c7cc" stroke-width="1.5"/>
+  <rect x="60" y="108" width="378" height="38" rx="7" fill="#ffffff" stroke="#d7dae0"/>
+  <text x="74" y="125" font-size="12" font-weight="600" fill="#1d1d1f">Socle et sécurité</text>
+  <text x="74" y="139" font-size="9.5" fill="#6e6e73">authentification · multi-locataire · chiffrement · RGPD</text>
+
+  <line x1="40" y1="173" x2="60" y2="173" stroke="#c7c7cc" stroke-width="1.5"/>
+  <rect x="60" y="154" width="378" height="38" rx="7" fill="#ffffff" stroke="#d7dae0"/>
+  <text x="74" y="171" font-size="12" font-weight="600" fill="#1d1d1f">Moteur d'affectation</text>
+  <text x="74" y="185" font-size="9.5" fill="#6e6e73">pré-filtre · reclassement IA · scoring · historique</text>
+
+  <line x1="40" y1="219" x2="60" y2="219" stroke="#c7c7cc" stroke-width="1.5"/>
+  <rect x="60" y="200" width="378" height="38" rx="7" fill="#ffffff" stroke="#d7dae0"/>
+  <text x="74" y="217" font-size="12" font-weight="600" fill="#1d1d1f">Expérience utilisateur</text>
+  <text x="74" y="231" font-size="9.5" fill="#6e6e73">front · onboarding · tableau de bord · vitrine</text>
+
+  <line x1="40" y1="265" x2="60" y2="265" stroke="#c7c7cc" stroke-width="1.5"/>
+  <rect x="60" y="246" width="378" height="38" rx="7" fill="#ffffff" stroke="#d7dae0"/>
+  <text x="74" y="263" font-size="12" font-weight="600" fill="#1d1d1f">Industrialisation</text>
+  <text x="74" y="277" font-size="9.5" fill="#6e6e73">intégration continue · déploiement · supervision</text>
+
+  <!-- ============ WBS (travail) ============ -->
+  <text x="480" y="52" font-size="12" font-weight="700" fill="#2563eb">WBS — décomposition du travail</text>
+  <rect x="480" y="62" width="210" height="34" rx="8" fill="#6e6e73"/>
+  <text x="585" y="84" text-anchor="middle" font-size="12.5" font-weight="600" fill="#ffffff">Projet (travail)</text>
+
+  <line x1="500" y1="96" x2="500" y2="314" stroke="#c7c7cc" stroke-width="1.5"/>
+
+  <line x1="500" y1="123" x2="520" y2="123" stroke="#c7c7cc" stroke-width="1.5"/>
+  <rect x="520" y="108" width="380" height="30" rx="7" fill="#ffffff" stroke="#d7dae0"/>
+  <text x="534" y="122" font-size="12" font-weight="600" fill="#1d1d1f">Cadrage et conception</text>
+  <text x="534" y="134" font-size="9.5" fill="#6e6e73">besoin · choix techniques · modélisation</text>
+
+  <line x1="500" y1="165" x2="520" y2="165" stroke="#c7c7cc" stroke-width="1.5"/>
+  <rect x="520" y="150" width="380" height="30" rx="7" fill="#ffffff" stroke="#d7dae0"/>
+  <text x="534" y="164" font-size="12" font-weight="600" fill="#1d1d1f">Développement (M1 · M2 · M3)</text>
+  <text x="534" y="176" font-size="9.5" fill="#6e6e73">socle · métier et smart-assign · enrichissement</text>
+
+  <line x1="500" y1="207" x2="520" y2="207" stroke="#c7c7cc" stroke-width="1.5"/>
+  <rect x="520" y="192" width="380" height="30" rx="7" fill="#ffffff" stroke="#d7dae0"/>
+  <text x="534" y="206" font-size="12" font-weight="600" fill="#1d1d1f">Tests et qualité</text>
+  <text x="534" y="218" font-size="9.5" fill="#6e6e73">tests automatisés · recette · analyses de sécurité</text>
+
+  <line x1="500" y1="249" x2="520" y2="249" stroke="#c7c7cc" stroke-width="1.5"/>
+  <rect x="520" y="234" width="380" height="30" rx="7" fill="#ffffff" stroke="#d7dae0"/>
+  <text x="534" y="248" font-size="12" font-weight="600" fill="#1d1d1f">Déploiement</text>
+  <text x="534" y="260" font-size="9.5" fill="#6e6e73">infrastructure · tunnel · automatisation</text>
+
+  <line x1="500" y1="291" x2="520" y2="291" stroke="#c7c7cc" stroke-width="1.5"/>
+  <rect x="520" y="276" width="380" height="30" rx="7" fill="#ffffff" stroke="#d7dae0"/>
+  <text x="534" y="290" font-size="12" font-weight="600" fill="#1d1d1f">Documentation</text>
+  <text x="534" y="302" font-size="9.5" fill="#6e6e73">manuel · doc développeur · dossier de validation</text>
+</svg>

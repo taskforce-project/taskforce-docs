@@ -1,0 +1,29 @@
+flowchart LR
+  OWNER(["Propriétaire"])
+  ADMIN(["Gestionnaire"])
+  MEMBER(["Collaborateur"])
+  STRIPE(["Paiement (externe)"])
+  SCHED(["Ordonnanceurs (système)"])
+
+  OWNER -->|est un| ADMIN
+  ADMIN -->|est un| MEMBER
+
+  MEMBER --- M1(["Gérer ses tâches"])
+  MEMBER --- M2(["Gérer son profil, ses congés"])
+  MEMBER --- M3(["Interroger l'assistant IA"])
+
+  ADMIN --- A1(["Gérer projets et membres"])
+  ADMIN --- A2(["Proposer et appliquer une redistribution"])
+  ADMIN --- A3(["Consulter audit et alertes"])
+
+  OWNER --- O1(["Gérer les rôles et l'abonnement"])
+
+  STRIPE -->|notifie un paiement| O1
+  SCHED -->|alerte de surcharge| A3
+
+  classDef actor fill:#2563eb,stroke:#1d4ed8,color:#ffffff,font-weight:bold;
+  classDef uc fill:#ffffff,stroke:#d7dae0,color:#1d1d1f;
+  classDef ext fill:#f2f2f4,stroke:#cfcfd4,color:#6e6e73;
+  class OWNER,ADMIN,MEMBER actor;
+  class M1,M2,M3,A1,A2,A3,O1 uc;
+  class STRIPE,SCHED ext;
