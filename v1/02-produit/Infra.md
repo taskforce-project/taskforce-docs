@@ -47,7 +47,7 @@ related:
 | landing | 90 Mio | 0,25 / 0,25 Gio | — | Mesuré (Astro statique servi par `serve`) |
 | ai-service | **45 Mio** | 0,25 / 0,25 Gio | — | Mesuré. Passe-plat `fastapi`/`uvicorn`/`pydantic`, **aucun modèle en process** |
 | minio | 105 Mio | 0,5 / 0,5 Gio | selon pièces jointes | Mesuré |
-| redis | — | 0,25 / 0,25 Gio | — | **Configuré** : `--maxmemory 128mb`, sans persistance |
+| redis | — | 0,25 / 0,25 Gio | — | **Configuré** : `--maxmemory 128mb`, sans persistance. **Double rôle** : rate-limiting distribué (TF-SEC-011) + cache des agrégats dashboard (BE-PERF-001, TTL 5 min) |
 | nginx | — | 0,25 / 0,25 Gio | — | Reverse proxy + TLS |
 
 **Total hors LLM : ~5,75 Gio de RAM.** Les pics n'étant pas simultanés, une machine **4 vCPU / 8 Gio / 60 Go** couvre l'ensemble avec de la marge.
