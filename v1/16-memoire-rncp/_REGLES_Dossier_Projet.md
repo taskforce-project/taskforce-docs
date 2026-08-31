@@ -82,10 +82,13 @@ hors décompte. On coupe le corps pour qu'il reste vif ; l'annexe porte le volum
   front, Bloc 3 back), avec un cadrage projet en tête.
 - En complément, un **tableau d'équivalence exhaustif compétence vers section** ouvre ou clôt le
   dossier. Il reprend la [[README|matrice de couverture]] et rend le pointage du jury immédiat.
-- **Chaque section nomme les critères qu'elle sert et emploie leur vocabulaire.** Le jury note
-  **critère par critère** sur la grille Excel : les mots de la grille (« analyse statique »,
+- **Chaque section emploie le vocabulaire du critère qu'elle sert, mais ne le nomme jamais.** Le jury
+  note **critère par critère** sur la grille Excel : les mots de la grille (« analyse statique »,
   « couverture d'au moins 50 % », « conforme à au moins 70 % des critères SEO », « double opt-in »,
-  « compatible Chrome, Firefox et Safari », etc.) doivent apparaître dans le texte, au bon endroit.
+  « compatible Chrome, Firefox et Safari ») doivent apparaître dans le texte, au bon endroit. En
+  revanche, **aucune référence explicite** aux compétences ni à la grille dans la prose : pas de « la
+  première compétence », « la compétence C1 », « comme l'exige le référentiel ». Le lien est implicite ;
+  **la compétence se démontre, elle ne s'annonce pas.**
 - Chaque compétence est rattachée à son ou ses livrables **E1-E29** (voir [[README]] §2), cités
   explicitement.
 
@@ -100,6 +103,10 @@ hors décompte. On coupe le corps pour qu'il reste vif ; l'annexe porte le volum
   architecture, voici mes tâches, merci ». (D'après Nancy Duarte, *Resonate*.)
 - **Première personne** (« j'ai conçu », « j'ai choisi », « je démontre »). La certification évalue
   les compétences du candidat : le jury doit voir ce que Pierre a fait et décidé.
+- **Transitions impersonnelles.** Une section se referme en ouvrant la suivante **par le sujet**,
+  jamais par une annonce de ce que l'auteur va faire : « le chapitre suivant l'argumente », pas
+  « je l'exposerai au chapitre suivant ». Le « je » assume des choix et des actes accomplis, il
+  n'annonce pas le plan.
 - **Raisonnement argumenté**, pas un catalogue. On problématise, on pose l'arbitrage (option retenue
   contre alternatives), on tranche, et **chaque section ouvre la suivante** par une transition. La
   logique est explicite. On distingue les **faits** (mesurés, dans le code), les **interprétations**
@@ -109,15 +116,25 @@ hors décompte. On coupe le corps pour qu'il reste vif ; l'annexe porte le volum
   déposée brute.
 - **Pas de listes sèches** là où un raisonnement est attendu (le template maison le dit déjà). Les
   puces servent une énumération courte, pas à esquiver une démonstration.
-- **Brain OS et l'IA au-delà du smart-assign** : une demi-page maximum, cadrée usage métier
-  (comprendre une organisation pour affecter finement les tâches). Aucune techno exotique, rien qui
-  déborde du référentiel.
+- **Périmètre = ce que demande le CDC.** On ne présente que ce que le cahier des charges demande, ou
+  une fonctionnalité reliée par un **lien direct qu'il justifie**. Les extras hors CDC (Brain OS comme
+  produit, IA au-delà du smart-assign, chat IA, workflows) ne sont **pas mis en avant**, y compris dans
+  les limites et les perspectives : ne pas ouvrir une porte que le sujet ne demande pas d'ouvrir. Le
+  smart-assign, lui, est le différenciateur au cœur du sujet et se traite pleinement. (La place
+  éventuelle du Brain OS comme outil de développement pour documenter et suivre le projet a du sens, mais seulement s'il est relié à ce que demande le CDC ; sa justification est à demander au candidat.)
+- **Ton sobre.** Sous-affirmer plutôt que survendre : laisser le lecteur juger par lui-même, éviter
+  les formules fortes, l'auto-valorisation et les répétitions. La force vient de la preuve, pas de
+  l'emphase.
 - Français correct, phrases construites, ton clair et professionnel. Pas de style télégraphique.
 
 ## 5. Intégrité : rien d'inventé, démontrable uniquement
 
 Règle d'or : **toute affirmation doit être prouvable** par le code, un test, une mesure datée ou un
 document du dépôt. Un gap ne se cache pas : il devient une **perspective assumée**.
+
+Les **justifications et les « pourquoi » d'un choix** (motivation, arbitrage, intention personnelle) se
+demandent au candidat : elles ne s'inventent pas. Il fournit sa version, je la mets en forme. Ne pas
+hésiter à poser la question plutôt que de combler un « pourquoi » par une supposition.
 
 ### 5.1 Les chiffres
 
