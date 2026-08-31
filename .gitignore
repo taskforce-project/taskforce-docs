@@ -1,0 +1,4 @@
+# Artefacts de build régénérables du dossier de validation.
+# Le PDF livrable reste versionné (convention du repo) ; le .docx est un
+# sous-produit régénérable et n'est pas retenu comme livrable de soutenance.
+v1/16-memoire-rncp/Dossier_Validation.docx
