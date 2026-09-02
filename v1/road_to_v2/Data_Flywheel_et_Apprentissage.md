@@ -53,14 +53,21 @@ Après quelques mois : **des dizaines de milliers d'exemples** où l'on sait *ce
 rejeté, corrigé*. C'est **exactement** un dataset de **préférences** (type DPO) — le carburant d'un LoRA
 qui apprend « chez BrainOS, une bonne spec ressemble à ça ».
 
-## 5. Concret — la prochaine brique (roadmap, pas encore codée)
+## 5. Concret - la première brique EST FAITE (`ai_generations`)
 
-- **Trace de génération** : table `ai_generations` *(ou colonne metadata)* — `(workspace_id, kind, query,
-  context_refs[], draft, final, signal, edit_distance, model, created_at)`.
-- **Alimentée d'abord par le flux Spec IA** : `generateSpec` écrit le draft ; `approveSpec` écrit le final
-  + calcule le signal (`accepté` si final≈draft, `édité` sinon ; `rejeté` si abandon).
-- **Export** : un dump JSONL par workspace, prêt pour un entraînement LoRA/DPO ultérieur.
-- **RGPD / multi-tenant** : corpus **par workspace**, jamais de cross-tenant ; opt-in, effaçable.
+> ✅ **Implémenté le 02/09/2026** (`TF-FLYWHEEL-01`, migration V81) : la table de capture + le câblage aux
+> 3 gates HITL (spec, décision, smart-assign). Cf. `.ai/roadmap.md` et `v1/02-produit/IA.md` (`IA-FLYW-001`).
+> Reste en aval : l'export JSONL et le LoRA/DPO.
+
+- ✅ **Trace de génération** : table `ai_generations` `(workspace_id, kind, request_ref, context_refs[],
+  draft, final, signal, edit_distance, model, latency_ms, created_by, created_at)`. `kind` (VARCHAR) et
+  `final` (jsonb) restent extensibles → accueillir l'outcome d'exécution d'un agent en V2, sans migration.
+- ✅ **Alimentée par les 3 gates** : SPEC (`generateSpec` draft → `approveSpec` final + signal +
+  edit_distance), DECISION (`accept` → ACCEPTED, `dismiss` → REJECTED), SMART_ASSIGN (`recommend` reco →
+  `updateIssue` assigné réel). Best-effort (ne casse jamais le flux), corpus distinct d'`assignment_events`.
+- **Export** (à venir) : un dump JSONL par workspace, prêt pour un entraînement LoRA/DPO ultérieur.
+- **RGPD / multi-tenant** : corpus **par workspace**, jamais de cross-tenant ; **opt-in**
+  (`ai_learning_enabled`, défaut OFF), effaçable (`purgeWorkspace` + CASCADE workspace).
 
 > Tant que le volume est faible, la table ne sert « qu'à » l'observabilité et à la jambe *feedback* de
 > l'OODA. Le LoRA vient **plus tard**, quand le corpus est mûr — **on ne l'invente pas avant**.
