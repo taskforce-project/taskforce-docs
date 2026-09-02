@@ -66,7 +66,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | AnalyticsController | `/api/workspaces/{slug}/analytics` | ✅ |
 | AnalysisController | `/api/workspaces/{slug}` (→ `/analysis`, `/projects/{id}/brief`, `/priorities/{id}`) | ✅ |
 | AssistantController | `/api/workspaces/{slug}/assistant` | ✅ |
-| McpActionController | `/api/workspaces/{slug}/mcp` (→ `/actions/execute`, `/servers`) | ✅ |
+| McpActionController · McpOAuthCallbackController | `/api/workspaces/{slug}/mcp` (`/actions/execute`, `/servers`, `/servers/{key}/oauth/start`) · public `/api/mcp/oauth/callback` | ✅ |
 | ProfileController | `/api/workspaces/{slug}/profile` | ✅ |
 | NotificationController | `/api/workspaces/{slug}/notifications` | ✅ |
 | MyWorkController | `/api/workspaces/{slug}` (→ `/my-issues`, `/my-cycles`, `/my-pages`) | ✅ |
@@ -115,6 +115,8 @@ Les **écritures externes** sont **proposées** (toolCall `pending`) puis exécu
 config **chiffrée**), `DELETE /mcp/servers/{connectorKey}`. **Gate BUSINESS+** (`PlanFeature.INTEGRATIONS` →
 409 sinon). Backend complet (cycle connect→execute→disconnect vérifié en HTTP) ; le front (dialog de connexion
 + bouton d'approbation des actions `pending`) reste à faire. Détail : [IA-MCP-002](../02-produit/IA.md).
+
+**OAuth MCP 1-clic ✅** (02/09/2026, `[TF-MCP-02]`) — connexion d'un serveur MCP **sans coller de token**, via OAuth 2.1 **générique** (valable pour tout serveur conforme, zéro code par service). `POST /mcp/servers/{key}/oauth/start` (`{mcpUrl}`, gaté BUSINESS+ + manager) : **découverte** (probe `401`/`WWW-Authenticate` → Protected Resource Metadata RFC 9728 → Authorization Server Metadata RFC 8414) + **Dynamic Client Registration** RFC 7591 + **PKCE S256**, renvoie l'URL d'autorisation (le front y redirige). `GET /api/mcp/oauth/callback` (**public** : résout le workspace via le `state` anti-CSRF, jamais l'URL) : échange le code, stocke les tokens **chiffrés** dans le `config` de la connexion (**refresh auto** avant expiration via `McpTokenService`), redirige **toujours** vers l'UI. Table éphémère `mcp_oauth_states` (V82). **`SsrfGuard`** sur chaque fetch de découverte/DCR/token. Prouvé en live contre Linear (découverte + DCR + URL d'autorisation OK). Le champ URL + token reste en fallback bring-your-own.
 
 **« Ma file » — endpoints agrégés ✅** (20/07/2026) — `MyWorkController` (`/api/workspaces/{slug}`). La vue est
 **cross-projets** : elle affichait ses cycles et ses documents en rappelant l'API **projet par projet**, soit
