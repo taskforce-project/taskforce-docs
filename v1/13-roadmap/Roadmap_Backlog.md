@@ -109,6 +109,8 @@ le <strong>socle minimal</strong> ; les items marqués ★ vont au-delà). À pi
 | TF-BE-010 | Décision `ai-service` Python : supprimer ou documenter en legacy | 🟢 P3 | S | C22 | PC-012 |
 | TF-BE-011 | Validation/filtrage exhaustif des entrées (DTO `@Valid`) + chiffrement données sensibles | 🟠 P1 | M | C24 | — |
 | TF-BE-012 | Écoconception back : sobriété requêtes, tailles de payload | 🟢 P3 | S | C22 | — |
+| TF-MCP-03 | Cortex agentique : réflexe d'intégration. Pilier 1 (va chercher l'info via l'outil connecté au lieu de dire « pas d'accès ») ✅ ; Pilier 2 routage défaut TaskForce + propose les deux (prérequis : outils internes `create_issue`/`list_issues`) ; Pilier 3 « connecte X » (injection du catalogue) | 🟡 P2 | L | C22 | — |
+| TF-MCP-04 | Import de projet externe (Linear → issues natives TaskForce) dans le wizard nouveau projet, via les outils MCP de lecture (`list_projects`/`list_issues`) + mapping statuts/labels. Plus tard : sync continu 2 sens | 🟢 P3 | L | C22 | — |
 
 ## 4. Landing page
 
