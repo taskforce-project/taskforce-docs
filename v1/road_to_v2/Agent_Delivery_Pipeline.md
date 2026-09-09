@@ -91,7 +91,7 @@ interface DeliveryAgentProvider {
 - `AgentBrief` = spec + prompt (`generateSpec`) + **contexte** (Brain OS + repo + outils, §3.5) + **modele/effort recommandés** (§3.4) + **objectif/format de sortie attendu** (D4).
 - `AgentRunResult` = **artefact selon la tache** : PR (code), doc/fichier (rédaction), résumé + liens (analyse) + **colonne cible** + **lien direct** pour consulter.
 - Implémentations cibles :
-  - **`ClaudeCodeProvider`** (priorité 1) : via la **clé Anthropic de l'utilisateur** (son plan porte le coût). Exécution dans le cloud (cf. §7 - a confirmer : cloud Anthropic vs runner géré).
+  - **`ClaudeCodeProvider`** (priorité 1) : clé API Anthropic de l'utilisateur (facturée a l'usage sur son compte API). Exécution **hébergée par Anthropic** via **Managed Agents** (boucle + sandbox par session) OU **Claude Agent SDK** auto-hébergé sur un runner léger. Cf. §7.
   - **`CopilotProvider`** : assigne l'issue GitHub → Copilot coding agent → PR (**cloud GitHub, plan Copilot de l'utilisateur**).
   - **`CursorProvider`** : API background agents (**cloud Cursor, plan de l'utilisateur**).
   - **`…Provider`** : bring-your-own, meme patron.
@@ -136,7 +136,7 @@ Le contexte n'est pas que « repo + texte Brain OS ». C'est **la donnée de l'e
 ### 3.7 Assigné « agent » + suivi de consommation (D3)
 
 - L'agent est une **cible assignable légere** (pas un membre lourd) affichée **avec le logo du provider** (Anthropic/OpenAI/Gemini...).
-- **Lier le compte provider de l'utilisateur** → TaskForce **récupere sa consommation** (API usage/cost du provider) et l'**affiche** : il suit tout au meme endroit, sans ouvrir Claude Desktop en parallele.
+- **Lier le compte provider de l'utilisateur** → TaskForce **récupere sa consommation** et l'**affiche** : il suit tout au meme endroit, sans ouvrir Claude Desktop en parallele. Côté Anthropic, c'est l'**Admin API (usage & cost reports)** (raw HTTP, hors SDK) ; côté Copilot/Cursor, leurs endpoints d'usage respectifs.
 - Vision : **on refait un Claude Desktop, mais sans GUI de chat** (ou minimaliste, découpé par secteur). Le cœur de valeur reste le **Brain OS** ; si l'utilisateur préfere son Claude, TaskForce devient **le hub ou Claude se branche** (« Claude → TaskForce » plutot que « TaskForce → Claude »). La feature est donc **peu coûteuse a dégager/pivoter** (§8).
 
 ## 4. Sécurité, coût, garde-fous
@@ -165,8 +165,9 @@ Le contexte n'est pas que « repo + texte Brain OS ». C'est **la donnée de l'e
 
 ## 7. Questions ouvertes (a trancher avant P1)
 
-- **Ou tourne Claude Code ?** VM1 = **hors sujet** (RAM). Piste retenue : **le compte Claude de l'utilisateur / son cloud** (il ne paie pas en plus s'il connecte son compte - a **confirmer** selon l'offre Anthropic : API key = facturé a l'usage sur son compte ; « Claude cloud agent » si dispo = idéal). C'est de toute façon **ce que feront les utilisateurs**. Reste a valider : faut-il un **runner léger géré** par TaskForce pour piloter Claude Code headless, ou l'offre cloud d'Anthropic suffit-elle ?
-- **Auth Claude** : clé Anthropic récupérée depuis la **console Anthropic** de l'utilisateur (a voir avec le compte Claude existant : la console permet de créer une clé API rattachée au compte). Flux « connect » par provider dans le catalogue.
+- **Ou tourne Claude ? (résolu)** VM1 = hors sujet (RAM). L'option propre « cloud, rien a héberger » = **Anthropic Managed Agents** : Anthropic **exécute la boucle ET héberge un sandbox par session** (bash/fichiers/exécution de code). TaskForce ne fait qu'**orchestrer via l'API** (SDK **Java natif** `com.anthropic.*` → **pas de Python**, cf. D1). Alternative auto-hébergée = **Claude Agent SDK** (Claude Code packagé en librairie) sur un runner léger - plus d'infra, a éviter au début. Pour Copilot/Cursor, l'exécution est **déja** dans leur cloud.
+- **Facturation Claude (a clarifier au user)** : l'**API Anthropic** (console.anthropic.com) est **séparée de l'abonnement claude.ai (Pro/Max)** et **facturée a l'usage (par token)** sur le **compte API**. Donc « connecter son compte » = **connecter une clé API** facturée a l'usage sur ce compte, PAS « gratuit parce qu'il a un abonnement chat ». C'est cohérent avec D3 (le compte de l'utilisateur porte le coût), mais ce n'est pas le meme portefeuille que sa souscription claude.ai. Copilot/Cursor : porté par leur abonnement respectif.
+- **Auth Claude** : **clé API créée dans la console Anthropic** (login distinct de claude.ai). Flux « connect » par provider dans le catalogue.
 - **Concurrence / charge** : stratégies startup-early mais **scalables et robustes** → spécifiées dans [[Scalabilite_et_Robustesse]] (file de runs, montée en charge DB verticale/horizontale).
 - **Coût** : tranché (D3, plan de l'utilisateur).
 - **Statuts** : extensibles + **custom + supprimables** (D7).
