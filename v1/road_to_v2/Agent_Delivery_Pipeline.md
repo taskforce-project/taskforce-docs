@@ -56,7 +56,7 @@ related:
 
 ## 2. Ce qui manque (les ajouts)
 
-1. Contrat **`CodingAgentProvider`** + implémentations (Claude Code d'abord).
+1. Contrat **`DeliveryAgentProvider`** + implémentations (Claude Code d'abord). Nom « Delivery » (pas « Coding ») car task-agnostic (D4).
 2. **Lien Projet ↔ repo GitHub** + bootstrap a la création de projet **et lien en cours de route** (§3.2) ; UI a l'échelle (§[[UX_Actions_At_Scale]]).
 3. **Job de délégation** (patron `AnalysisJobRunner`).
 4. **Assigné « agent »** (léger) **avec logo du provider** + lien du compte provider de l'utilisateur → **récupération de sa consommation**.
@@ -163,7 +163,7 @@ Le contexte n'est pas que « repo + texte Brain OS ». C'est **la donnée de l'e
 - ⚠️ **Risque live** : un vrai run = minutes, réseau-dépendant. Repo **pré-chauffé**, tache **courte/déterministe**, filet = montrer spec → dispatch → remontée en Review meme si la PR est modeste.
 - Task-agnostic complet + multi-provider = **post-soutenance**.
 
-## 7. Questions ouvertes (a trancher avant P1)
+## 7. Points techniques (tranchés - a valider au build)
 
 - **Ou tourne Claude ? (résolu)** VM1 = hors sujet (RAM). L'option propre « cloud, rien a héberger » = **Anthropic Managed Agents** : Anthropic **exécute la boucle ET héberge un sandbox par session** (bash/fichiers/exécution de code). TaskForce ne fait qu'**orchestrer via l'API** (SDK **Java natif** `com.anthropic.*` → **pas de Python**, cf. D1). Alternative auto-hébergée = **Claude Agent SDK** (Claude Code packagé en librairie) sur un runner léger - plus d'infra, a éviter au début. Pour Copilot/Cursor, l'exécution est **déja** dans leur cloud.
 - **Facturation Claude (a clarifier au user)** : l'**API Anthropic** (console.anthropic.com) est **séparée de l'abonnement claude.ai (Pro/Max)** et **facturée a l'usage (par token)** sur le **compte API**. Donc « connecter son compte » = **connecter une clé API** facturée a l'usage sur ce compte, PAS « gratuit parce qu'il a un abonnement chat ». C'est cohérent avec D3 (le compte de l'utilisateur porte le coût), mais ce n'est pas le meme portefeuille que sa souscription claude.ai. Copilot/Cursor : porté par leur abonnement respectif.
