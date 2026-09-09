@@ -26,6 +26,9 @@ related:
 
 > Stack : Astro 5 (SSG). Légende : ✅ `done` · 🔄 `wip` · ⬜ `todo`. Compétence RNCP dominante : **C20 (SEO)**.
 
+## Version produit (footer)
+- [x] **Version produit unique dans le footer (10/09/2026)** [id:: LP-VERSION-001] [statut:: done] [parite:: ok] [ref:: landing-page/src/product-version.ts + src/components/site/nav.ts + scripts/bump-product-version.mjs + .github/workflows/release.yml] — Le footer affichait `v0.3.23` en dur, incohérent avec les tags par service (backend/frontend/landing versionnés indépendamment). Solution : **source de vérité** `src/product-version.ts` (`PRODUCT_VERSION`, seed **0.4.0**) lue par le footer (`nav.ts` → `APP_VERSION`) ; **script** `scripts/bump-product-version.mjs <major|minor|patch>` (= le plus fort bump parmi les services touchés, à lancer au release) ; la CI `release.yml` crée en plus le **tag produit unique** `taskforce-v<version>` sur main (lu depuis le fichier). Vercel redéploie la landing quand le fichier change → footer toujours à jour. typecheck + build landing verts.
+
 ## SEO & performance
 - [ ] Métadonnées, sitemap.xml, robots.txt, Open Graph, JSON-LD [id:: LP-SEO-001] [statut:: todo] [parite:: gap] [prio:: P1] (TF-LP-001 · C20)
 - [ ] Score Lighthouse SEO ≥ 70 % [id:: LP-SEO-002] [statut:: todo] [prio:: P1] (TF-LP-002 · C20)
