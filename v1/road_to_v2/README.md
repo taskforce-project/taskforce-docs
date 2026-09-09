@@ -31,7 +31,9 @@ related:
 | [[Contrat_API_et_Donnees]] | **AI Gateway** (Python) + schéma « expériences » World Model + flux bout-en-bout |
 | [[Connecteurs_et_Catalogue]] | **Système d'intégrations** — catalogue déclaratif (47 outils, 16 catégories) + API/UI générique ; ajouter un outil = une ligne |
 | [[Data_Flywheel_et_Apprentissage]] | **RAG→LoRA** — pourquoi on n'entraîne pas Qwen aujourd'hui ; collecter le corpus produit (draft vs final + signal) pour un LoRA de préférences demain |
-| [[Agent_Delivery_Pipeline]] | **Délégation a un coding agent** (provider-agnostic : Claude Code / Copilot / Cursor) : ferme la boucle « copier le prompt », repo créé au projet, contexte Brain OS, PR → Review. Spécifie le lot 2b de la Phase B (`TF-AGENT-DELIVERY`) |
+| [[Agent_Delivery_Pipeline]] | **Délégation a un agent** (provider-agnostic : Claude Code / Copilot / Cursor, **task-agnostic**) : ferme la boucle « copier le prompt », exécution dans le cloud du provider sous le compte user, repo créé au projet, contexte Brain OS + outils, résultat → colonne, **décision humaine 1 clic**. Lot 2b Phase B (`TF-AGENT-DELIVERY`) |
+| [[UX_Actions_At_Scale]] | **UX des actions/outils a l'échelle** - éviter le dropdown-hell façon Linear (command menu, mini-pickers cherchables, progressive disclosure). Refactor de surface, métier intact |
+| [[Scalabilite_et_Robustesse]] | **Montée en charge** - DB verticale/horizontale, file durable de runs, concurrence bornée, robustesse. Startup-early mais scalable, activable par palier |
 | [[Roadmap_Consolidee]] | **Master roadmap** — phases A→D + socle RNCP en parallèle |
 
 ## Décisions actées (07/07/2026)

@@ -58,4 +58,14 @@ Chaque agent :
 - **Coût** : n'appeler un agent que sur les événements qui le concernent (pas les 3 à chaque micro-action).
 
 ## Extensions (post-PFR)
-CFO (coût/budget projet & entreprise) · CISO (sécurité/conformité) · agents *métier* injectés selon le domaine du workspace. Voir [[Roadmap_v2]].
+CFO (coût/budget projet & entreprise) · CISO (sécurité/conformité) · CGO (growth) · agents *métier* injectés selon le domaine du workspace. Voir [[Roadmap_v2]].
+
+## C-level comme domaines de données (contexte de délégation)
+
+> Ajout 09/09/2026, en lien avec [[Agent_Delivery_Pipeline]] §3.5.
+
+Au-dela du trio *delivery*, chaque Chief (CEO / COO / CFO / CTO / CGO...) est surtout un **domaine de données** : il porte **son contexte** et **les outils qu'il utilise au quotidien** (CRM, Slack, Stripe, analytics...). Pour qu'un agent tire la **bonne data au bon endroit**, TaskForce doit cartographier, par domaine : **ou est la donnée, qui l'utilise, ou elle va, a quoi elle sert, comment on l'utilise, quel levier.**
+
+- Le contexte d'un agent = **base d'onboarding** (l'entreprise, qui est qui - amorce obligatoire) + **Brain OS** (auto-alimenté ensuite) + **les outils rattachés au domaine** concerné (via l'hote MCP + [[Connecteurs_et_Catalogue]]).
+- Ce n'est pas 3 LLM qui débattent : c'est une **carte de données** sur laquelle le moteur ([[Moteur_IA_World_Model_OODA]]) raisonne, et que les providers d'exécution consomment comme contexte.
+- Garde-fou inchangé : **décision humaine, 1 clic** ([[Agent_Delivery_Pipeline]] D6).

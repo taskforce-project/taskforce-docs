@@ -1,137 +1,176 @@
 ---
 id: agent-delivery-pipeline
-title: Agent Delivery Pipeline - deleguer une tache a un coding agent (provider-agnostic)
+title: Agent Delivery Pipeline - deleguer une tache a un agent (provider-agnostic)
 doc_type: spec
 statut: draft
-version: 0.1
+version: 0.2
 date: "09/09/2026"
 auteur: Pierre MICHEL
 backlog_id: TF-AGENT-DELIVERY
-tags: [road-to-v2, spec, ia, coding-agent, claude-code, copilot, cursor, github, ooda]
+tags: [road-to-v2, spec, ia, coding-agent, claude-code, copilot, cursor, github, ooda, brain-os]
 related:
   - "README.md"
   - "Roadmap_Consolidee.md"
   - "Moteur_IA_World_Model_OODA.md"
+  - "Agents_C_Level.md"
   - "Benchmark_Modeles_IA.md"
   - "Connecteurs_et_Catalogue.md"
+  - "UX_Actions_At_Scale.md"
+  - "Scalabilite_et_Robustesse.md"
   - "../02-produit/Backend.md"
   - "../02-produit/Frontend.md"
 ---
 
 # Agent Delivery Pipeline
 
-> **Thèse.** Aujourd'hui l'humain **copie** le prompt généré par l'IA et le **colle** lui-meme dans Claude Code (Phase B lot 1). Ce spec **ferme la boucle** : on **délègue** la tache au coding agent de son **choix** (Claude Code, GitHub Copilot, Cursor, autre), qui a **tout le contexte** (repo cloné + Brain OS), fait le travail, ouvre une **PR**, et l'issue **remonte en colonne Review** jusqu'a validation humaine. C'est le **lot 2b déja planifié** ([[Roadmap_Consolidee]] Phase B), rendu **autonome + provider-agnostic**, PAS un refactor. La feature est **invisible tant qu'on n'assigne pas une tache a un agent** : zéro impact sur les flux existants.
+> **Thèse.** Aujourd'hui l'humain **copie** le prompt généré par l'IA et le **colle** lui-meme dans Claude Code (Phase B lot 1). Ce spec **ferme la boucle** : on **délégue** la tache a l'agent de son **choix** (Claude Code, GitHub Copilot, Cursor, autre), qui a **tout le contexte** (repo + Brain OS + outils de l'entreprise), fait le travail **dans SON cloud sous le compte de l'utilisateur**, produit un **résultat** (PR, doc, résumé... selon la tache), et l'issue **remonte dans une colonne** avec le lien direct - **jusqu'a la décision humaine (1 clic)**. C'est le **lot 2b déja planifié** ([[Roadmap_Consolidee]] Phase B), rendu **autonome, provider-agnostic et task-agnostic**. Additif, PAS un refactor. Invisible tant qu'on ne délégue rien.
+
+## 0. Décisions actées (09/09/2026)
+
+| # | Décision |
+|---|---|
+| D1 | **Orchestration Java-native, provider-agnostic. PAS de Python / LangChain / LangGraph.** On s'inspire de leurs patrons (graphe d'étapes, checkpoints, interruptions HITL) - qu'on a **déja** dans `AnalysisJobRunner` - sans importer un 2e runtime. Cf. §3.1. |
+| D2 | **L'exécution tourne dans le cloud du provider, sous le compte/plan de l'utilisateur** (Copilot/Cursor : nativement cloud ; Claude : clé Anthropic de l'utilisateur). **TaskForce n'héberge aucun runtime lourd** (VM1 = hors sujet). |
+| D3 | **Le coût d'exécution est porté par le plan de l'utilisateur** (son Claude/Cursor/Copilot). TaskForce **récupere et affiche sa consommation** pour qu'il suive tout au meme endroit. Notre IA n'est facturée que sur nos usages (spec, résumé) via le quota existant. |
+| D4 | **Task-agnostic** : pas que du code. Une tache déléguable peut etre « rédige ce mail », « analyse marketing », « écris cette doc ». Le **résultat** dépend de l'objectif (PR, doc, résumé + liens) + la **colonne** d'arrivée + le **lien direct**. |
+| D5 | **Événementiel multi-source** : pas que GitHub. Le signal de fin vient idéalement de **l'agent lui-meme** (« workflow terminé ») ou de l'outil concerné, normalisé en un événement de délégation. |
+| D6 | **La décision reste TOUJOURS humaine, en 1 clic.** Jamais d'auto-merge, jamais d'auto-exécution du critique. |
+| D7 | **Colonnes custom + supprimables**, meme celles fournies par défaut. On peut étendre les statuts, mais l'utilisateur reste maitre de son board. |
+| D8 | **UI/UX ouverte au refactor** partout, tant que ça sert l'utilisateur et reste cohérent. On **ne touche pas le métier** (sinon on casse la démo Smart Assign), seulement l'évolue. Approche a l'échelle : [[UX_Actions_At_Scale]]. |
 
 ## 1. Ce qui existe déja (ne PAS reconstruire)
 
 | Brique nécessaire | Réalité v1 | Référence |
 |---|---|---|
-| Génération spec + **prompt d'exécution** + découpage + « déja vu » RAG | ✅ fait | `IssueAiService.generateSpec` / `approveSpec` ; endpoints `ai/spec`, `ai/spec/approve` |
-| Moteur de **job async, streamé STOMP, reprennable** (HITL) | ✅ fait | `AnalysisJobRunner` (OBSERVE→ANALYZE→CLARIFY→PERSIST) |
-| Framework **tool-calling** + registre + adaptateur externe | ✅ fait | `AgentService` (Cortex), `AgentTool`, `ExternalMcpTool` |
+| Génération spec + **prompt d'exécution** + découpage + « déja vu » RAG | ✅ fait | `IssueAiService.generateSpec` / `approveSpec` |
+| Moteur de **job async, streamé STOMP, reprennable** (HITL) | ✅ fait | `AnalysisJobRunner` |
+| Framework **tool-calling** + registre + adaptateur externe | ✅ fait | `AgentService`, `AgentTool`, `ExternalMcpTool` |
 | **Stockage de credentials chiffrés** + OAuth + refresh | ✅ fait | `McpTokenService`, `McpOAuthService`, `ConnectorCatalog` |
 | **Hote MCP** (appeler des outils externes pendant le job) | ✅ fait | `McpClient`, `WorkspaceMcpService` |
 | **Contexte métier/vision** (RAG) | ✅ fait | Brain OS (`search_brain`, ingestion auto) |
-| **Scope GitHub write déja consenti** | ✅ le scope OAuth est `repo,read:org` | `GitHubIntegrationService` (le scope `repo` autorise déja `POST /user/repos` et l'assignation d'issue ; le code ne fait que du GET aujourd'hui) |
-| Point d'extension **exécution** anticipé dans le modèle | ✅ prévu | `AiGenerationKind.EXECUTION` (commenté « outcome of an agent qui implémente la tache », non implémenté) |
+| **Scope GitHub write déja consenti** | ✅ scope OAuth `repo,read:org` | `GitHubIntegrationService` (autorise déja `POST /user/repos` + assign ; le code ne fait que du GET) |
+| Point d'extension **exécution** anticipé | ✅ prévu | `AiGenerationKind.EXECUTION` (commenté, non implémenté) |
+| **Webhook sortant** (a activer) | ⚠️ dead code | `WebhookService.fire()` jamais appelé |
 
-> Conséquence : ~2/3 de la plomberie est la. Les ajouts sont **ciblés et additifs**, greffés sur ces coutures.
+> ~2/3 de la plomberie est la. Les ajouts sont **ciblés et additifs**.
 
-## 2. Ce qui manque (les ajouts, petits et localisés)
+## 2. Ce qui manque (les ajouts)
 
-1. **Contrat `CodingAgentProvider`** + implémentations (Claude Code d'abord).
-2. **Lien Projet ↔ repo GitHub** (le modèle `Project` n'a **aucun** champ repo aujourd'hui) + bootstrap a la création de projet (créer / lier / aucun).
-3. **Job de délégation** (nouveau type, patron `AnalysisJobRunner`) : compose le brief, dispatch, suit, met a jour l'issue.
-4. **Assigné « agent »** comme cible assignable (léger, pas un type de membre lourd).
-5. **Reco de modèle + puissance** ajoutée a la sortie de `generateSpec`.
-6. **Webhook GitHub entrant** + **auto-move kanban** (statuts « In review by AI » / « Blocked ») ; activer `WebhookService.fire()` (aujourd'hui **dead code**, jamais appelé) pour l'événementiel sortant.
+1. Contrat **`CodingAgentProvider`** + implémentations (Claude Code d'abord).
+2. **Lien Projet ↔ repo GitHub** + bootstrap a la création de projet **et lien en cours de route** (§3.2) ; UI a l'échelle (§[[UX_Actions_At_Scale]]).
+3. **Job de délégation** (patron `AnalysisJobRunner`).
+4. **Assigné « agent »** (léger) **avec logo du provider** + lien du compte provider de l'utilisateur → **récupération de sa consommation**.
+5. **Reco de modele + puissance** dans `generateSpec`.
+6. **Ingestion d'événements multi-source** + **auto-move kanban** (statuts custom) ; activer `WebhookService.fire()`.
+7. **Base d'onboarding entreprise** + contexte par **domaine C-level** (§3.5, [[Agents_C_Level]]).
 
 ## 3. Architecture
 
-### 3.1 Contrat provider-agnostic
+### 3.1 Orchestration : Java-native, agnostic (D1)
 
-Une interface, N implémentations, façon connecteurs. Le marché bouge vite (Devin, Codex, Jules...) : l'abstraction est le bon pari.
+**On ne prend PAS Python/LangChain/LangGraph.** Raisons :
+- Le moteur est **déja tout en Java** (`AgentService`, `AnalysisJobRunner`, `McpClient`) - un 2e runtime Python = split-brain, double sécurité, double déploiement, double montée en charge.
+- On a **déja l'équivalent de LangGraph** : `AnalysisJobRunner` est une machine a états async, checkpointée, avec **interruption HITL** (suspend/resume) et streaming STOMP. C'est exactement le patron « graphe + checkpoint + interrupt ».
+- Les agents (Claude Code/Cursor/Copilot) sont **externes** et tournent dans **leur** cloud (D2). L'orchestration ne fait que **composer → dispatcher → suivre → ingérer l'événement**. Elle n'a pas besoin d'un framework d'agents Python.
+
+On **s'inspire** des bons patrons de LangGraph (noeuds, arretes conditionnelles, checkpoints, human-in-the-loop, reprise) et on les implémente proprement en Java, orienté **robustesse + scalabilité** (cf. [[Scalabilite_et_Robustesse]]).
+
+### 3.2 Contrat provider-agnostic
 
 ```java
-interface CodingAgentProvider {
-    String key();                       // "claude-code" | "github-copilot" | "cursor" | ...
-    CapabilityProfile capabilities();   // modeles dispo, effort/puissance, sandbox hébergé ?
-    AgentRun dispatch(AgentBrief brief);// lance le run (async), renvoie un handle
-    AgentRunStatus poll(AgentRun run);  // running | pr_opened | blocked | done + prUrl
-    // + ingestion d'événements entrants (webhook) pour les providers qui en émettent
+interface DeliveryAgentProvider {
+    String key();                         // "claude-code" | "github-copilot" | "cursor" | ...
+    ProviderBranding branding();          // nom + logo (Anthropic, OpenAI, Gemini...)
+    CapabilityProfile capabilities();     // modeles, effort, cloud hébergé ?, types de tache
+    AgentRun dispatch(AgentBrief brief);  // lance le run dans le cloud du provider (compte user)
+    AgentRunStatus poll(AgentRun run);    // running | needs_input | done | failed + resultRef
+    UsageSnapshot usage(Account account); // consommation a afficher dans TaskForce (D3)
 }
 ```
 
-- `AgentBrief` = spec + prompt (de `generateSpec`) + **contexte Brain OS** (métier/vision) + **repoRef** (l'agent clone et lit la doc tech lui-meme) + modele/effort recommandés.
+- `AgentBrief` = spec + prompt (`generateSpec`) + **contexte** (Brain OS + repo + outils, §3.5) + **modele/effort recommandés** (§3.4) + **objectif/format de sortie attendu** (D4).
+- `AgentRunResult` = **artefact selon la tache** : PR (code), doc/fichier (rédaction), résumé + liens (analyse) + **colonne cible** + **lien direct** pour consulter.
 - Implémentations cibles :
-  - **`ClaudeCodeProvider`** (priorité 1) : Claude Code **headless** dans un sandbox isolé (clone repo → exécute → PR). Utilise la clé Anthropic du workspace. C'est « ouvrir un nouveau chat qui a tout », automatisé.
-  - **`CopilotProvider`** : assigne l'issue GitHub a **Copilot coding agent** → PR (GitHub héberge le sandbox, zéro runtime a exploiter).
-  - **`CursorProvider`** : API **background agents** (lance un agent sur le repo → PR).
+  - **`ClaudeCodeProvider`** (priorité 1) : via la **clé Anthropic de l'utilisateur** (son plan porte le coût). Exécution dans le cloud (cf. §7 - a confirmer : cloud Anthropic vs runner géré).
+  - **`CopilotProvider`** : assigne l'issue GitHub → Copilot coding agent → PR (**cloud GitHub, plan Copilot de l'utilisateur**).
+  - **`CursorProvider`** : API background agents (**cloud Cursor, plan de l'utilisateur**).
   - **`…Provider`** : bring-your-own, meme patron.
-- Choix **par workspace (défaut) ou par issue**. Credentials dans l'infra chiffrée existante (`McpTokenService`).
+- Choix **par workspace (défaut) ou par issue**, via un **picker façon Linear** (pas un dropdown géant, cf. [[UX_Actions_At_Scale]]).
 
-### 3.2 Bootstrap Projet ↔ repo GitHub (façon Linear)
+### 3.3 Lien Projet ↔ repo GitHub (façon Linear)
 
-A la création d'un projet, une étape optionnelle : **créer un repo GitHub** / **lier un repo existant** / **aucun** - « on coche les options GitHub comme d'hab » via la connexion GitHub déja en place.
+- **A la création de projet** : étape optionnelle - **créer un repo** / **lier un existant** / **aucun** (« cocher les options GitHub comme d'hab »).
+- **En cours de route** : lier/délier depuis le projet OU depuis une issue, **via le command menu / une action contextuelle**, jamais un dropdown qui gonfle (le vrai sujet UX, cf. [[UX_Actions_At_Scale]]).
+- **Ajouts** : `Project.repoFullName` (+ `repoProvider` pour généraliser) ; `GitHubIntegrationService.createRepo()` → `POST /user/repos` (scope déja consenti).
+- Comme Linear : le repo se lie **au niveau projet** (défaut hérité par les issues) et **au niveau issue** (surcharge ponctuelle) - jamais imposé, toujours découvrable a la demande.
 
-- **Ajout modèle** : `Project.repoFullName` (+ éventuellement `repoProvider` pour généraliser GitLab plus tard).
-- **Ajout service** : `GitHubIntegrationService.createRepo(...)` → `POST /user/repos` (scope `repo` **déja consenti**) ; ou sélection dans `GET /user/repos` (déja implémenté).
-- **Effet** : chaque projet a un repo → le coding agent sait **ou** travailler sans config manuelle. C'est ce qui rend « Claude a tout » vrai.
+### 3.4 Le job de délégation
 
-### 3.3 Le job de délégation
+Patron `AnalysisJobRunner` (async, streamé, reprennable) :
 
-Nouveau type de job, patron `AnalysisJobRunner` (async, streamé, reprennable) :
+1. **COMPOSE** - `AgentBrief` = `generateSpec` + contexte (Brain OS + repo + outils) + objectif/format attendu.
+2. **DISPATCH** - `provider.dispatch(brief)` dans le cloud du provider ; l'issue passe en **« Délégué / In progress by AI »**.
+3. **TRACK** - `poll` et/ou **événement entrant** (l'agent signale la fin, cf. §3.6) ; blocages → statut **Blocked** / sous-issues.
+4. **RESULT** - a la fin : artefact selon la tache (PR/doc/résumé + liens) + l'issue **remonte en colonne** avec **lien direct**.
+5. **DÉCISION HUMAINE (1 clic, D6)** - l'humain valide/rejette/modifie. Jamais d'auto-merge.
+6. **CLOSE** - outcome écrit en node **`AiGenerationKind.EXECUTION`** (le Brain OS grandit) + `assignment_events` (audit + [[Data_Flywheel_et_Apprentissage]]).
 
-1. **COMPOSE** - assemble le `AgentBrief` : `generateSpec` (spec + prompt) + récupération Brain OS (contexte métier/vision) + `repoRef` du projet.
-2. **DISPATCH** - `provider.dispatch(brief)` ; l'issue passe en **« Delegated / In progress by AI »**.
-3. **TRACK** - `poll` et/ou événements entrants (webhook) ; les sous-taches/blocages détectés deviennent des **sous-issues** ou un statut **Blocked**.
-4. **REVIEW** - PR ouverte → l'issue remonte en **« In review by AI »** (jamais mergée sans humain).
-5. **CLOSE** - merge humain → **Done** ; l'outcome est écrit en node **`AiGenerationKind.EXECUTION`** (le Brain OS grandit) + `assignment_events` (audit + data flywheel, cf. [[Data_Flywheel_et_Apprentissage]]).
+### 3.5 Contexte de l'agent (le nerf : tout est une question de données)
 
-### 3.4 Reco de modèle + puissance (par notre IA)
+Le contexte n'est pas que « repo + texte Brain OS ». C'est **la donnée de l'entreprise, la ou elle vit** :
 
-`generateSpec` (Groq/Qwen, cheap) enrichit sa sortie d'un bloc **recommandation** : « pour cette tache je recommande **tel provider / tel modele / tel niveau d'effort** ». Cheap model **planifie et route**, strong model **exécute** - le split que tu décris. Ancré sur [[Benchmark_Modeles_IA]] ; la reco reste **overridable** par l'humain (human-in-the-loop).
+- **Base d'onboarding (obligatoire)** : c'est quoi l'entreprise, qui est qui, les grandes lignes. **Sans base, pas de contexte.** Le Brain OS **s'auto-alimente ensuite** au fil du travail, mais il faut une amorce (→ onboarding a spécifier, extension de [[../02-produit/Frontend.md]] onboarding).
+- **Brain OS** : le « pourquoi » (métier, vision, produit), RAG existant.
+- **Repo / doc tech** : le « comment » (l'agent clone et lit lui-meme).
+- **Outils de l'entreprise = données externes** : CRM, Slack, Stripe... rattachés a des **domaines C-level** (CEO/COO/CFO/CTO/CGO...). Chaque Chief a **son contexte + ses outils du quotidien** ; l'agent doit pouvoir **tirer la bonne data au bon endroit** (via l'hote MCP + le catalogue de connecteurs déja la). Cf. [[Agents_C_Level]] et [[Connecteurs_et_Catalogue]].
 
-### 3.5 Contexte de l'agent (le découpage)
+> Cadre mental : **ou est la donnée, qui l'utilise, ou elle va, a quoi elle sert, comment je l'utilise, quel levier.** Le moteur (World Model × OODA, [[Moteur_IA_World_Model_OODA]]) raisonne sur cette carte de données.
 
-- **Brain OS** : entreprise, vision, produit, « le pourquoi » → contexte **métier** injecté dans le brief (RAG existant).
-- **Repo / doc tech** : « le comment » → l'agent y accède **directement** en clonant.
+### 3.6 Événements + résultat (multi-source, D5)
 
-Zéro refactor : on réutilise la récupération Brain OS existante comme bloc de contexte.
+- Le signal de fin vient idéalement de **l'agent** (« workflow terminé : PR ouverte / tests passés / doc rédigée »), pas seulement d'un webhook GitHub.
+- **Ingestion normalisée** : un endpoint entrant générique (`delivery-events`) qui accepte GitHub, mais aussi le rapport direct d'un provider ou d'un autre outil → un **événement de délégation** unique.
+- **Sortie de l'agent** = résumé + artefact (doc, lien PR, ...) **selon l'objectif** + **colonne d'arrivée** + **lien direct**. C'est ce que TaskForce affiche a l'utilisateur.
+- Côté **sortant**, activer `WebhookService.fire()` (dead code) pour notifier les outils tiers.
 
-## 4. Sécurité / garde-fous
+### 3.7 Assigné « agent » + suivi de consommation (D3)
 
-- **Jamais de merge auto** : la PR s'arrete en Review, validation humaine obligatoire (cohérent avec la philosophie human-in-the-loop du moteur, cf. [[Moteur_IA_World_Model_OODA]]).
-- **Repos autorisés** bornés par workspace ; scope minimal ; credentials chiffrés (`McpTokenService`).
-- **Sandbox isolé** par run (surtout Claude Code headless self-hosté : conteneur jetable).
-- **Coût / débit** : réutiliser `AiMeter` + `AiUsageService` (quota par compte + garde-débit) pour plafonner les runs d'agent.
-- **Audit** : chaque run tracé (`assignment_events` + node `EXECUTION`).
+- L'agent est une **cible assignable légere** (pas un membre lourd) affichée **avec le logo du provider** (Anthropic/OpenAI/Gemini...).
+- **Lier le compte provider de l'utilisateur** → TaskForce **récupere sa consommation** (API usage/cost du provider) et l'**affiche** : il suit tout au meme endroit, sans ouvrir Claude Desktop en parallele.
+- Vision : **on refait un Claude Desktop, mais sans GUI de chat** (ou minimaliste, découpé par secteur). Le cœur de valeur reste le **Brain OS** ; si l'utilisateur préfere son Claude, TaskForce devient **le hub ou Claude se branche** (« Claude → TaskForce » plutot que « TaskForce → Claude »). La feature est donc **peu coûteuse a dégager/pivoter** (§8).
+
+## 4. Sécurité, coût, garde-fous
+
+- **Décision humaine, 1 clic, toujours (D6).** Jamais d'auto-merge ni d'exécution auto du critique. Aligné human-in-the-loop du moteur ([[Moteur_IA_World_Model_OODA]]).
+- **Coût porté par le plan de l'utilisateur (D3)** ; TaskForce affiche la conso récupérée. Notre IA n'est facturée que sur nos usages (spec/résumé) via `AiMeter`/`AiUsageService`.
+- **Un max de sécurité + feedback + accés** (pas de GUI chat pour rattraper les erreurs) : repos/outils autorisés bornés par workspace, credentials chiffrés, scopes minimaux.
+- **Audit a fond + historisation** : chaque run tracé (`assignment_events` + node `EXECUTION`), consultable.
 
 ## 5. Phases
 
 | Phase | Contenu | Effort |
 |---|---|---|
-| **P1 - Claude Code de bout en bout** (priorité user) | `CodingAgentProvider` + `ClaudeCodeProvider` (sandbox headless) + **bootstrap repo a la création de projet** + job de délégation + statut « In review » + reco de modele dans `generateSpec`. Tache créée dans l'app → dispatch → PR → Review. | L |
-| **P2 - Multi-provider** | `CopilotProvider` (assign issue → PR) + `CursorProvider` (background agents) + picker de provider (workspace/issue). Copilot = le moins d'infra (sandbox hébergé par GitHub). | M |
-| **P3 - Automatisation complete** | Webhook GitHub entrant → machine a états (PR opened→Review, merged→Done, failed→Blocked) ; auto-création de sous-issues sur blocage ; routage de modele **auto** ; activer `WebhookService.fire()` (sortant). | M |
-| **P4 - Marketplace / 2-way** | Agent Packs, GitHub 2-way complet, exposer TaskForce en **serveur MCP** (inbound) pour que Cursor/Claude Desktop/VSCode pull la tache nativement. | L |
+| **P1 - Claude Code bout-en-bout** (priorité user) | `DeliveryAgentProvider` + `ClaudeCodeProvider` (clé Anthropic user, cloud) + **bootstrap repo** + **lien repo en cours de route** + job de délégation + statut « In review » + reco de modele + **picker façon Linear** + affichage conso. | L |
+| **P2 - Multi-provider** | `CopilotProvider` + `CursorProvider` + logos + comptes liés + conso par provider. | M |
+| **P3 - Task-agnostic + auto** | taches non-code (mail, analyse, doc) + événements multi-source + machine a états (Result → colonne + lien) + sous-issues sur blocage. | M |
+| **P4 - Hub / 2-way** | exposer TaskForce en **serveur MCP (inbound)** → Cursor/Claude Desktop/VSCode pull la tache nativement ; marketplace Agent Packs. | L |
 
 ## 6. Scope soutenance (v2 « qui ne se voit pas », démo-safe)
 
-- **Câbler UN provider pour de vrai** : **Claude Code** (priorité user) sur un repo de démo contrôlé, OU **Copilot** si on veut zéro runtime a héberger le jour J.
-- **Le picker présent** (Claude Code / Copilot / Cursor visibles), meme si un seul est pleinement branché.
-- La partie « notre IA rédige la spec + le prompt depuis le Brain OS » **marche déja** → moment fort de la démo.
-- ⚠️ **Risque live** : un vrai run d'agent = minutes (clone/build/PR), dépend du réseau. Pour une démo fiable ET honnête (pas de mock) : repo de démo **pré-chauffé**, tache **courte et déterministe**, filet = montrer la spec + le dispatch + la remontée en Review meme si le code de la PR est modeste.
-- Multi-provider complet + machine a états robuste = **post-soutenance**.
+- **Câbler Claude Code pour de vrai** (priorité user) sur un repo de démo contrôlé, via la clé Anthropic de Pierre (cf. §7).
+- **Picker présent** (Claude Code / Copilot / Cursor + logos), un seul pleinement branché.
+- « Notre IA rédige la spec + le prompt + recommande le modele depuis le Brain OS » **marche déja** → moment fort.
+- ⚠️ **Risque live** : un vrai run = minutes, réseau-dépendant. Repo **pré-chauffé**, tache **courte/déterministe**, filet = montrer spec → dispatch → remontée en Review meme si la PR est modeste.
+- Task-agnostic complet + multi-provider = **post-soutenance**.
 
 ## 7. Questions ouvertes (a trancher avant P1)
 
-- **Ou tourne Claude Code headless ?** Conteneur jetable sur VM1 (RAM ~3,8 Go, tension) vs runner dédié vs cloud. Impacte coût + concurrence.
-- **Modele de coût** : runs d'agent = tokens externes (Anthropic/Cursor) hors quota Groq actuel → nouveau compteur / plafond.
-- **Concurrence** : combien de runs simultanés (RAM/CPU) ; file d'attente.
-- **Auth par provider** : Claude Code (clé Anthropic), Copilot (OAuth GitHub + activation Copilot sur le repo), Cursor (clé API) - flux distincts a modéliser dans le catalogue.
-- **Statuts** : étendre `IssueStatusCategory` (enum figée : BACKLOG/UNSTARTED/STARTED/COMPLETED/CANCELLED) vs statuts nommés custom par projet.
+- **Ou tourne Claude Code ?** VM1 = **hors sujet** (RAM). Piste retenue : **le compte Claude de l'utilisateur / son cloud** (il ne paie pas en plus s'il connecte son compte - a **confirmer** selon l'offre Anthropic : API key = facturé a l'usage sur son compte ; « Claude cloud agent » si dispo = idéal). C'est de toute façon **ce que feront les utilisateurs**. Reste a valider : faut-il un **runner léger géré** par TaskForce pour piloter Claude Code headless, ou l'offre cloud d'Anthropic suffit-elle ?
+- **Auth Claude** : clé Anthropic récupérée depuis la **console Anthropic** de l'utilisateur (a voir avec le compte Claude existant : la console permet de créer une clé API rattachée au compte). Flux « connect » par provider dans le catalogue.
+- **Concurrence / charge** : stratégies startup-early mais **scalables et robustes** → spécifiées dans [[Scalabilite_et_Robustesse]] (file de runs, montée en charge DB verticale/horizontale).
+- **Coût** : tranché (D3, plan de l'utilisateur).
+- **Statuts** : extensibles + **custom + supprimables** (D7).
 
 ## 8. En une phrase
 
-> On ne délegue plus a des humains **uniquement** : on délegue a **l'agent de son choix**, avec le **repo créé a la création du projet** et le **contexte nourri par le Brain OS**, notre IA **recommande le modele**, l'agent **fait le travail**, et l'issue **remonte en Review** jusqu'a validation humaine. C'est le lot 2b de la Phase B, spécifié.
+> On ne délegue plus a des humains **uniquement** : on délegue a **l'agent de son choix**, qui tourne **sous le compte de l'utilisateur**, avec le **repo créé au projet** et le **contexte nourri par le Brain OS + les outils de l'entreprise**, notre IA **recommande le modele**, l'agent **fait le travail** (code, mail, analyse...), rend un **résultat** et **remonte l'issue dans une colonne** - **la décision reste humaine, en 1 clic**. Le moat reste le **Brain OS** : si l'utilisateur préfere son Claude, TaskForce devient le **hub** ou Claude se branche.
