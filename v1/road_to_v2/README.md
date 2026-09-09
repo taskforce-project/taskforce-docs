@@ -31,6 +31,7 @@ related:
 | [[Contrat_API_et_Donnees]] | **AI Gateway** (Python) + schéma « expériences » World Model + flux bout-en-bout |
 | [[Connecteurs_et_Catalogue]] | **Système d'intégrations** — catalogue déclaratif (47 outils, 16 catégories) + API/UI générique ; ajouter un outil = une ligne |
 | [[Data_Flywheel_et_Apprentissage]] | **RAG→LoRA** — pourquoi on n'entraîne pas Qwen aujourd'hui ; collecter le corpus produit (draft vs final + signal) pour un LoRA de préférences demain |
+| [[Agent_Delivery_Pipeline]] | **Délégation a un coding agent** (provider-agnostic : Claude Code / Copilot / Cursor) : ferme la boucle « copier le prompt », repo créé au projet, contexte Brain OS, PR → Review. Spécifie le lot 2b de la Phase B (`TF-AGENT-DELIVERY`) |
 | [[Roadmap_Consolidee]] | **Master roadmap** — phases A→D + socle RNCP en parallèle |
 
 ## Décisions actées (07/07/2026)
