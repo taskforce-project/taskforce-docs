@@ -80,6 +80,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | TeamController | `/api/workspaces/{slug}/teams` | ✅ |
 | PageController | `/api/workspaces/{slug}/projects/{projectId}/pages` | ✅ |
 | ProjectExportController | `/api/workspaces/{slug}/projects/{projectId}/export` | ✅ |
+| DeliveryController | `/api/workspaces/{slug}/delivery` (→ `GET /providers`, `POST /issues/{id}/delegate`, `GET /issues/{id}/run`, clés `GET/POST/DELETE /{anthropic\|cursor}`) | ✅ |
 
 <blockquote class="important">
 Tous les contrôleurs portent désormais <code>/api</code> (règle d'or n°1, vérifiée au 28/08/2026). Les anciens « Chat » (<code>ChannelController</code>) et « Discussions » (<code>DiscussionController</code>) n'existent plus dans le code : ni contrôleur, ni route. Voir §4.1.
