@@ -3,8 +3,8 @@ id: audit-rgpd-conformite
 title: Audit RGPD — Analyse de conformité (E9)
 doc_type: rgpd
 statut: valide
-version: 1.0
-date: "05/07/2026"
+version: 1.1
+date: "13/09/2026"
 auteur: Pierre MICHEL
 tags: [rgpd, audit, conformite, gdpr, e9, memoire, rncp, soutenance]
 ---
@@ -22,7 +22,7 @@ tags: [rgpd, audit, conformite, gdpr, e9, memoire, rncp, soutenance]
 
 ## 1. Inventaire des traitements (synthèse)
 
-> Détail complet → [[Registre_Traitements_RGPD]] (7 traitements documentés)
+> Détail complet → [[Registre_Traitements_RGPD]] (9 traitements documentés)
 
 | # | Traitement | Base légale | Statut |
 |---|---|---|---|
@@ -32,7 +32,8 @@ tags: [rgpd, audit, conformite, gdpr, e9, memoire, rncp, soutenance]
 | T4 | Profils de compétences + embeddings | Art. 6.1.f | ✅ Conforme (facultatif) |
 | T5 | Journal d'audit | Art. 6.1.c + 6.1.f | ✅ Conforme |
 | T6 | Leads Enterprise | Art. 6.1.f | ✅ Conforme (chiffré) |
-| T7 | Tokens OAuth intégrations | Art. 6.1.a | 🟡 Partiel (pas de révocation auto à l'effacement) |
+| T7 | Tokens OAuth intégrations | Art. 6.1.a | ✅ Conforme (chiffrés au repos, purgés à l'effacement) |
+| T8 | Mesure d'audience (analytics PostHog) | Art. 6.1.a (consentement) | ✅ Conforme (opt-in, hébergement UE, aucun cookie avant consentement) |
 
 ---
 
@@ -97,7 +98,7 @@ Le chiffrement AES-256-GCM est appliqué sur les colonnes à risque (code `Encry
 |---|---|---|---|
 | `message` | `enterprise_inquiries` | ✅ | `@Convert(converter = EncryptedStringConverter)` |
 | `notes` | `enterprise_inquiries` | ✅ | idem |
-| `access_token` | `integrations` | ❌ Pas chiffré | Gap TF-SEC-008 (en clair dans la DB) |
+| `access_token` | `integrations` | ✅ | `@Convert(converter = EncryptedStringConverter)` sur `Integration.accessToken` (TF-SEC-008 clos) |
 
 ---
 
@@ -138,6 +139,7 @@ Le chiffrement AES-256-GCM est appliqué sur les colonnes à risque (code `Encry
 | Groq *(optionnel)* | USA | Faible — **uniquement si le provider Groq est activé** (`GROQ_API_KEY`) ; contexte tâche, pas PII directes ; **aucun par défaut (IA locale Ollama)** | Si activé : DPA + CCT/DPF → TF-RGPD-008 |
 | GitHub | USA | Faible (OAuth token workspace) | DPA GitHub (SCCs) |
 | Slack | USA | Faible (OAuth token) | DPA Slack (SCCs) |
+| PostHog (EU Cloud) | **EU (données à Francfort)** ; éditeur US | Faible — analytics d'usage, **consentement préalable** (opt-in), pas de PII directe | Hébergement **UE** (`eu.i.posthog.com`, aucun transfert hors UE) + consentement CNIL + DPA PostHog (SCCs) |
 | Keycloak (auto-hébergé) | EU | Nul | Auto-hébergé |
 | MinIO (auto-hébergé) | EU | Nul | Auto-hébergé |
 
@@ -149,8 +151,8 @@ Le chiffrement AES-256-GCM est appliqué sur les colonnes à risque (code `Encry
 |---|---|---|
 | Politique de confidentialité | ✅ Page dédiée | `landing-page/src/pages/legal/privacy.astro` |
 | CGU/CGV | ✅ Page dédiée | `landing-page/src/pages/legal/terms.astro` |
-| Mentions légales | ⬜ Pas de page dédiée | Gap — mentions légales à ajouter dans la landing (nom, adresse, SIRET) |
-| Politique cookies | ✅ Notice d'information présente | `cookie-banner.tsx` (05/07) — cookies strictement nécessaires uniquement, donc consentement non requis CNIL ; pas de traceurs → TF-RGPD-001 clos |
+| Mentions légales | ✅ Page dédiée | `landing-page/src/pages/legal/notice.astro` (directeur de publication, hébergeurs UE/US, domaine/DNS) — **SIRET en attente d'immatriculation** de la société |
+| Politique cookies + consentement | ✅ Bandeau de consentement à catégories | **App** `components/common/cookie-consent.tsx` (v0.32.0) + **landing** `components/site/CookieConsent.tsx` (v0.33.0) — Nécessaires (exemptés, toujours ON) + Analytics PostHog (**opt-in explicite**, aucun cookie avant consentement, révocable via « Manage cookies ») → TF-RGPD-001 clos |
 | Accès à l'export et à la suppression | ✅ | `GdprController` (`/api/gdpr/export`, `/api/gdpr/delete-account`) |
 
 ---
@@ -161,7 +163,7 @@ Le chiffrement AES-256-GCM est appliqué sur les colonnes à risque (code `Encry
 |---|---|
 | Registre des traitements | ✅ [[Registre_Traitements_RGPD]] (ce dossier, Art. 30) |
 | Traçabilité des accès aux données | ✅ `audit_logs` (GDPR_EXPORT, GDPR_DELETE) |
-| Notification violations (Art. 33) | ⬜ Procédure à définir → TF-RGPD-005 |
+| Notification violations (Art. 33/34) | ✅ Procédure documentée → [[Procedure_Violation_Donnees]] (détection, chaîne de responsabilité, notification CNIL ≤ 72 h) — TF-RGPD-009 clos |
 
 ---
 
@@ -173,23 +175,24 @@ Le chiffrement AES-256-GCM est appliqué sur les colonnes à risque (code `Encry
 |---|---|---|---|
 | Droits des personnes | 5/6 | — | Art. 18 (limitation) |
 | Minimisation | ✅ | — | — |
-| Sécurité technique | ✅ | — | `integrations.access_token` non chiffré |
-| Sous-traitants | 4/6 | Groq DPA (si provider activé) | — |
-| Transparence | 2/4 | Cookies | Mentions légales, bannière |
+| Sécurité technique | ✅ | — | — (`integrations.access_token` désormais chiffré) |
+| Sous-traitants | 6/7 | Groq DPA (si provider activé) | — |
+| Transparence | 4/4 | — | SIRET (en attente d'immatriculation) |
 | Documentation Art. 30 | ✅ | — | — |
 
-**Taux de conformité estimé : ~75 %** pour un proto-produit pédagogique.
+**Taux de conformité estimé : ~85 %** pour un proto-produit pédagogique (bannière de consentement, mentions légales et procédure de violation livrées ; reste Art. 18 et double opt-in).
 
 ### 8.2 Items backlog RGPD
 
-| ID | Priorité | Description |
-|---|---|---|
-| TF-RGPD-001 | P2 | Bannière cookies interactive (CNIL) |
-| TF-RGPD-004 | P3 | Double opt-in sur les traitements collectant des données personnelles |
-| TF-RGPD-005 | P2 | Mentions légales dédiées (LEN Art. 6) + corriger sous-traitants `constants_en.ts` |
-| TF-RGPD-007 | P2 | Suppression automatique compte Keycloak à l'effacement |
-| TF-RGPD-008 | P2 | DPA formel + CCT/DPF avec Groq, Inc. — **applicable seulement si le provider Groq est activé** (`GROQ_API_KEY`) ; sans objet tant que l'IA tourne en local (Ollama, défaut) |
-| TF-RGPD-009 | P2 | Procédure notification violations (Art. 33) — 72h CNIL |
+| ID | Priorité | Description | Statut |
+|---|---|---|---|
+| TF-RGPD-001 | P2 | Bannière cookies interactive (CNIL) | ✅ **Clos (13/09)** — outil de consentement à catégories, app (v0.32.0) + landing (v0.33.0), PostHog en opt-in |
+| TF-RGPD-004 | P3 | Double opt-in sur les traitements collectant des données personnelles | ⬜ Ouvert (vérification e-mail à l'inscription existante, mais pas de double opt-in généralisé) |
+| TF-RGPD-005 | P2 | Mentions légales dédiées (LEN Art. 6) + corriger sous-traitants `constants_en.ts` | ✅ **Clos** — `legal/notice.astro` + `constants_*.ts` corrigés (SIRET en attente d'immatriculation) |
+| TF-RGPD-007 | P2 | Suppression automatique compte Keycloak à l'effacement | ✅ **Clos** — `GdprService.deleteKeycloakIdentityAfterCommit` → `keycloakService.deleteUser` |
+| TF-RGPD-008 | P2 | DPA formel + CCT/DPF avec Groq, Inc. — **applicable seulement si le provider Groq est activé** (`GROQ_API_KEY`) ; sans objet tant que l'IA tourne en local (Ollama, défaut) | ⬜ Ouvert (conditionnel) |
+| TF-RGPD-009 | P2 | Procédure notification violations (Art. 33) — 72h CNIL | ✅ **Clos** — [[Procedure_Violation_Donnees]] |
+| TF-RGPD-010 | P3 | Signer le DPA PostHog (standard, disponible en ligne) — hébergement UE + consentement déjà en place | ⬜ Ouvert |
 
 ---
 

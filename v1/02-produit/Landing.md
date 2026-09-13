@@ -35,9 +35,9 @@ related:
 - [ ] Lighthouse perf & a11y ≥ 90 [id:: LP-PERF-001] [statut:: todo] [prio:: P2] (TF-LP-005)
 
 ## Mesure & contenu
-- [ ] Analytics respectueux RGPD [id:: LP-ANA-001] [statut:: todo] [prio:: P2] [besoin-backend:: —] (TF-LP-003)
+- [x] **Analytics respectueux RGPD (13/09/2026, v0.33.0)** [id:: LP-ANA-001] [statut:: done] [parite:: ok] [prio:: P2] [besoin-backend:: —] (TF-LP-003) — **PostHog en offre EU Cloud** (`eu.i.posthog.com`, aucune donnée hors UE), chargé **uniquement après consentement** (opt-in). Bandeau de consentement à catégories (`src/components/site/CookieConsent.tsx`, îlot `client:load`) : Nécessaires (exemptés) + Analytics (opt-in) ; module `src/lib/consent.ts` (miroir de l'app, choix versionné localStorage) + `src/lib/analytics.ts` (init PostHog gaté). Révocation par « Manage cookies » au footer (bouton statique → délégation `document.click` car le footer est SSR non hydraté). **Ancien plan Umami retiré** (`AudienceTracking.astro` supprimé). Vérifié live (astro dev) : rien avant consentement, egress EU confirmé après opt-in, opt-out à la révocation. Pages légales alignées (`legal/cookies.astro`, `legal/subprocessors.astro`, audit + registre RGPD). Fix CI au passage : job Lighthouse repassé en node 22 (Astro 7). Voir [[Audit_RGPD_Conformite]] + [[Registre_Traitements_RGPD]] (traitement n°9).
 - [~] Contenu : pricing, CTA, proposition de valeur [id:: LP-CNT-001] [statut:: wip] [prio:: P2] (TF-LP-004) — pricing **aligné backend** (3 tiers, limites ws 2/10 + membres 5/50) 20/06 ; reste copy projets/integrations/storage non enforced
 - [ ] i18n FR/EN (si cible bilingue) [id:: LP-I18N-001] [statut:: todo] [prio:: P3] (TF-LP-006)
 
 ---
-**Dernière mise à jour :** 09/06/2026 · **Projet :** Taskforce — Metz Numeric School 2025-2026
+**Dernière mise à jour :** 13/09/2026 · **Projet :** Taskforce — Metz Numeric School 2025-2026

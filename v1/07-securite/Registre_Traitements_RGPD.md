@@ -194,41 +194,35 @@ tags: [rgpd, registre, traitements, donnees-personnelles, art30, conformite, mem
 
 ---
 
-## Traitement n°9 — Mesure d'audience du site vitrine
+## Traitement n°9 — Mesure d'audience (site vitrine et application)
 
 | Champ | Valeur |
 |---|---|
-| **Finalité** | Mesure d'audience du site vitrine : pages consultées, provenance, type d'appareil. Sert à évaluer le référencement et l'intérêt suscité par les pages produit |
-| **Base légale** | Intérêt légitime (Art. 6.1.f) — mesure d'audience strictement nécessaire au fonctionnement et à l'amélioration du site |
-| **Catégories de personnes** | Visiteurs du site vitrine, non authentifiés |
-| **Données collectées** | URL de la page, référent, type d'appareil, navigateur, pays. **Aucun identifiant persistant, aucun cookie, aucune adresse IP conservée** : l'outil dérive un identifiant de visite éphémère et le rejette |
-| **Source** | Navigation sur les pages publiques |
-| **Durée de conservation** | Statistiques agrégées. Aucune donnée individuelle réidentifiable n'est stockée |
-| **Destinataires** | **Aucun tiers.** L'outil (Umami) est **auto-hébergé** sur la même infrastructure, dans une base dédiée |
-| **Transferts hors UE** | **Aucun** |
-| **Mesures de sécurité** | Télémétrie sortante de l'outil désactivée (`DISABLE_TELEMETRY`) · console d'administration non exposée publiquement · script chargé en `defer`, sans effet sur le rendu · aucun script émis si les variables d'environnement sont vides |
-| **Preuve** | `docker-compose.dev.yml` et `docker-compose.prod.yml` (service `umami`) · `landing-page/src/components/AudienceTracking.astro` · `db/init/03-init-umami-db.sql` |
+| **Finalité** | Mesure d'audience du site vitrine et de l'application : pages consultées, provenance, type d'appareil. Sert à évaluer le référencement, l'intérêt suscité par les pages produit et l'usage de l'application pour l'améliorer |
+| **Base légale** | **Consentement (Art. 6.1.a)** — l'outil dépose des cookies/identifiants ; il n'est chargé qu'après opt-in explicite du visiteur |
+| **Catégories de personnes** | Visiteurs du site vitrine (non authentifiés) et utilisateurs de l'application ayant consenti |
+| **Données collectées** | URL de la page, référent, type d'appareil, navigateur, pays (dérivé de l'IP côté PostHog, non stockée en clair), identifiant de dispositif/session PostHog, évènements de navigation (`$pageview`). **Aucune donnée collectée avant consentement** |
+| **Source** | Navigation, **uniquement après consentement analytics** |
+| **Durée de conservation** | Selon la rétention configurée sur le projet PostHog EU (statistiques d'usage, non finalisées à des fins de profilage publicitaire) |
+| **Destinataires** | **PostHog (PostHog Inc.), offre EU Cloud** — données hébergées dans l'UE (Francfort). Éditeur de droit américain, transfert encadré (cf. sous-traitants) |
+| **Transferts hors UE** | **Aucun transfert de données** : l'ingestion et le stockage se font sur `eu.i.posthog.com` (UE). L'accès potentiel de l'éditeur US est encadré par le DPA/CCT PostHog |
+| **Mesures de sécurité** | **Consentement préalable (opt-in)**, aucun cookie/traceur avant l'acceptation · révocable à tout moment (« Manage cookies » → `opt_out_capturing`) · clé projet publique write-only (`phc_...`) · host forcé sur l'UE · rien n'est émis sans clé (no-op) |
+| **Preuve** | **Landing** : `landing-page/src/lib/analytics.ts` + `src/lib/consent.ts` + `src/components/site/CookieConsent.tsx`. **App** : `frontend/components/analytics/posthog-provider.tsx` + `lib/analytics/consent.ts` + `components/common/cookie-consent.tsx` |
 
-> **Pourquoi cet outil et pas un autre, et pourquoi il n'y a pas de bandeau de consentement.**
-> Une solution du marché hébergée hors UE aurait introduit un destinataire étranger dans ce
-> registre et un transfert à encadrer, ce qui aurait contredit la logique suivie partout ailleurs
-> ici : une IA **locale par défaut** (modèle de langage auto-hébergé), le provider IA tiers (Groq)
-> restant **optionnel et inactif par défaut**.
+> **Pourquoi PostHog EU avec un bandeau de consentement, et pas l'ancien traceur exempté.**
+> Le site utilisait auparavant un plan pour un traceur auto-hébergé cookieless (Umami), exempté de
+> consentement par la CNIL car il ne déposait aucun identifiant persistant. Ce plan est **retiré**
+> (`AudienceTracking.astro` supprimé) au profit de **PostHog en offre EU Cloud** (décision CEO), qui
+> apporte une vraie analyse produit mais **dépose des cookies/identifiants** : le consentement
+> préalable redevient donc **obligatoire**. C'est ce que fait le bandeau à catégories déployé sur
+> l'app (v0.32.0) et la landing (v0.33.0) : la catégorie **Analytics** est en opt-in, décochée par
+> défaut, et rien n'est chargé tant qu'elle n'est pas acceptée.
 >
-> **Sur l'exemption de consentement, formulation vérifiée dans le script servi le 23/07/2026.**
-> Le script **n'écrit rien** dans le terminal du visiteur : aucun `Set-Cookie` sur la requête de
-> collecte (vérifié), aucun appel d'écriture en stockage local, et aucun identifiant persistant,
-> l'identifiant de visite étant dérivé puis rejeté.
->
-> Une nuance doit toutefois être portée honnêtement plutôt que tue : le script effectue **une
-> lecture**, celle de la clé `umami.disabled`, et une seule. Elle sert uniquement à respecter une
-> opposition que le visiteur a lui-même exprimée. Il ne s'agit donc pas d'un accès à des fins de
-> suivi, mais le dire est plus solide que d'écrire « aucune lecture », affirmation qu'un examen du
-> script contredirait.
->
-> Ces caractéristiques correspondent à l'exemption prévue par la CNIL pour la mesure d'audience.
-> Si l'outil venait à être configuré autrement, notamment avec un identifiant persistant,
-> l'exemption tomberait et le bandeau de consentement existant devrait être étendu.
+> **Le choix de l'offre EU reste guidé par la même logique que partout ailleurs ici** : garder les
+> données dans l'UE (aucun transfert hors UE), comme l'IA **locale par défaut** (Ollama) et le
+> provider tiers (Groq) **optionnel et inactif par défaut**. La première clé fournie était sur la
+> région US (rejetée par l'endpoint EU) ; une organisation **EU** a été recréée pour garantir la
+> résidence des données en UE.
 
 ---
 
@@ -241,6 +235,7 @@ tags: [rgpd, registre, traitements, donnees-personnelles, art30, conformite, mem
 | **Groq, Inc.** *(optionnel)* | USA | Contexte de tâche pour l'inférence (pas de PII directes) — **seulement si `GROQ_API_KEY` est configuré** | **Sous-traitant OPTIONNEL** ; par défaut IA locale → aucun transfert. Si activé : **DPA** + **CCT** ou EU-US DPF |
 | **GitHub Inc.** | USA | OAuth token, meta workspace | DPA GitHub (SCCs) |
 | **Slack Technologies** | USA | OAuth token, channel meta | DPA Slack (SCCs) |
+| **PostHog, Inc.** *(EU Cloud)* | **EU (Francfort)** ; éditeur USA | Évènements d'audience (pages vues, appareil, pays dérivé) — **uniquement après consentement** | Hébergement **UE** (`eu.i.posthog.com`, aucun transfert hors UE) + **consentement préalable** (opt-in) + DPA PostHog (SCCs, à signer → TF-RGPD-010) |
 | **Cloudflare (Turnstile)** *(optionnel)* | USA / mondial | **Adresse IP** + signaux navigateur du visiteur (anti-robot à l'inscription) — **seulement si `security.turnstile.secret-key` est configuré** | **Sous-traitant OPTIONNEL** (processeur de sécurité) ; inactif tant que la clé n'est pas fournie (repli sur le défi signé maison, sans tiers). Si activé : **DPA Cloudflare** + **CCT/DPF** |
 | **MinIO** (auto-hébergé) | EU (VM école / Render Frankfurt) | Fichiers uploadés | Auto-hébergé |
 | **Ollama / Qwen3** (auto-hébergé) | EU / poste de développement | Contenu d'issue soumis à l'inférence | Auto-hébergé — **aucun tiers, aucun transfert** |
