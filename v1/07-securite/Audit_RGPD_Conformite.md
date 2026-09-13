@@ -52,7 +52,11 @@ tags: [rgpd, audit, conformite, gdpr, e9, memoire, rncp, soutenance]
 
 ### 2.2 Processus d'effacement — analyse détaillée
 
-Le `GdprService.deleteMyAccount()` exécute les étapes suivantes (code réel) :
+**Deux modalités au choix de l'utilisateur** (Art. 17, code réel) :
+- **Planifiée (défaut)** — `deleteMyAccount()` pose une date de suppression ; le compte reste **récupérable** pendant un délai de grâce de 30 j (`restoreMyAccount()`), puis un ordonnanceur exécute la purge réelle. Filet anti-erreur (une suppression accidentelle détruisait instantanément les workspaces partagés).
+- **Immédiate** — `deleteMyAccountImmediately()` (endpoint `DELETE /api/gdpr/account?immediate=true`) purge **sur-le-champ**, sans délai. Conforme à l'exigence d'effacement « sans délai indu » ; l'utilisateur choisit explicitement l'irréversible (double confirmation UI : choix du mode + ressaisie de l'email).
+
+La **purge réelle** (`purgeAccount()`, commune aux deux modalités) : transfère les workspaces **partagés** au membre le plus ancien (leur travail survit), supprime les workspaces **solo** (cascade DB), puis anonymise le row résiduel :
 
 ```
 1. email          → deleted-{id}@anonymized.invalid
@@ -71,7 +75,7 @@ Le `GdprService.deleteMyAccount()` exécute les étapes suivantes (code réel) :
 - `subscription_history` : obligation légale comptable (10 ans)
 - Contenu créé dans les workspaces : ownership transféré ou orphan (à définir)
 
-**✅ Corrigé (05/07/2026)** : la suppression du compte Keycloak est désormais automatisée — `GdprService.deleteMyAccount` appelle `KeycloakService.deleteUser` **après commit** (tolérant à l'échec, journalisé pour rejeu). L'identité est effacée côté IdP et les sessions invalidées. TF-RGPD-007 clos. *(Auparavant : accès coupé via `isActive=false` mais identité conservée dans l'IdP.)*
+**✅ Corrigé (05/07/2026)** : la suppression du compte Keycloak est désormais automatisée — la purge (`GdprService.purgeAccount`) appelle `KeycloakService.deleteUser` **après commit** (tolérant à l'échec, journalisé pour rejeu). L'identité est effacée côté IdP et les sessions invalidées. TF-RGPD-007 clos. *(Auparavant : accès coupé via `isActive=false` mais identité conservée dans l'IdP.)*
 
 ---
 
