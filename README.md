@@ -1,10 +1,21 @@
-# 📚 TaskForce — Documentation (Brain OS)
+# ⚡ TaskForce - la couche d'exécution IA pour les équipes qui livrent
 
-Base de connaissance complète de TaskForce, organisée comme un **vault Obsidian versionné** (modèle inspiré
-du « documentation operating system » de Plania). Conçue pour être navigable par un **humain** et par une **IA**.
+**TaskForce** se pose au-dessus des outils qu'une équipe utilise déjà (Linear, Notion, GitHub, Claude) et
+transforme une intention en résultat livré. Les outils de gestion de projet *suivent* le travail ; TaskForce
+le *comprend* : il concentre le contexte de chaque projet dans un modèle unique, le **Brain OS**, qu'un humain
+et un agent parcourent de la même façon - jusqu'à anticiper le coût d'une décision avant qu'elle ne soit prise.
 
-> 🧠 **[Brain OS — Hub central](./Brain_OS.md)** : point d'entrée unique (architecture, API, modules, dette,
-> problèmes connus, état produit). 🤖 Une IA lit d'abord **[AGENTS.md](./AGENTS.md)**.
+<p align="center">
+  <a href="https://taskforce-project.fr"><b>🌐 Site</b></a> ·
+  <a href="https://app.taskforce-project.fr"><b>🚀 Application</b></a> ·
+  <a href="https://docs.taskforce-project.fr"><b>📖 Référence API</b></a> ·
+  <a href="https://github.com/taskforce-project"><b>🏛️ Organisation</b></a>
+</p>
+
+> 📁 **Ce dépôt est le vault de documentation - le « Brain OS ».** La base de connaissance versionnée *derrière*
+> TaskForce : architecture, ADR, contrats d'API, modèle de données, runbooks, sécurité, R&D. Navigable par un
+> **humain** (comme un vault Obsidian) et par une **IA** (qui lit d'abord **[AGENTS.md](./AGENTS.md)**). Pour
+> découvrir le produit, suis les liens ci-dessus ; pour la doc, le hub est **[Brain OS](./Brain_OS.md)**.
 
 ---
 
@@ -26,8 +37,8 @@ dans un document (cf. [Conventions](./v1/04-engineering/Conventions_Documentatio
 
 ## 📖 Accès rapide
 
-- 🧠 **[Brain OS — Hub](./Brain_OS.md)** · 🤖 **[AGENTS.md](./AGENTS.md)** · ⚙️ **[SOP](./frameworks/SOP_Developpement.md)**
-- 📦 **[Index v1 — tous les domaines](./v1/README.md)**
+- 🧠 **[Brain OS - Hub](./Brain_OS.md)** · 🤖 **[AGENTS.md](./AGENTS.md)** · ⚙️ **[SOP](./frameworks/SOP_Developpement.md)**
+- 📦 **[Index v1 - tous les domaines](./v1/README.md)**
 - 🏛️ [Architecture](./v1/03-architecture/Architecture.md) · 🔌 [API](./v1/05-api/API.md) · 🧩 [Modules](./v1/03-architecture/Modules.md)
 - 🚧 [État Produit](./v1/02-produit/README.md) · 📋 [Backlog](./v1/13-roadmap/Roadmap_Backlog.md) · 🔥 [Problèmes connus](./v1/09-audits/Problemes_Connus.md)
 - 🎓 [Mémoire RNCP](./v1/16-memoire-rncp/README.md) · 👥 [Doc utilisateur](./v1/15-utilisateur/Manuel_Utilisateur.md)
@@ -46,9 +57,10 @@ dans [`v1/20-archive/`](./v1/20-archive/README.md).
 
 ## 🔗 Liens utiles
 
+- Produit : [Site](https://taskforce-project.fr) · [Application](https://app.taskforce-project.fr) · [Référence API publique](https://docs.taskforce-project.fr)
 - Code source : [`../taskforce-fullstack`](../taskforce-fullstack) · version compacte IA : `../taskforce-fullstack/.ai/`
-- Swagger API : `http://localhost:8080/api/swagger-ui.html` · Keycloak : `http://localhost:8180`
+- Dev local : Swagger `http://localhost:8080/api/swagger-ui.html` · Keycloak `http://localhost:8180`
 
 ---
 
-**Dernière mise à jour :** 09/06/2026 · **Brain OS v1** · Projet Taskforce — Metz Numeric School 2025-2026
+**Dernière mise à jour :** 15/09/2026 · **Brain OS v1** · Projet TaskForce · Metz Numeric School 2025-2026
