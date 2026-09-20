@@ -32,7 +32,7 @@ related:
 | # | Décision |
 |---|---|
 | D1 | **Orchestration Java-native, provider-agnostic. PAS de Python / LangChain / LangGraph.** On s'inspire de leurs patrons (graphe d'étapes, checkpoints, interruptions HITL) - qu'on a **déja** dans `AnalysisJobRunner` - sans importer un 2e runtime. Cf. §3.1. |
-| D2 | **L'exécution tourne dans le cloud du provider, sous le compte/plan de l'utilisateur** (Copilot/Cursor : nativement cloud ; Claude : clé Anthropic de l'utilisateur). **TaskForce n'héberge aucun runtime lourd** (VM1 = hors sujet). |
+| D2 | **L'exécution tourne dans le cloud du provider, sous le compte/plan de l'utilisateur** (Copilot/Cursor : nativement cloud ; Claude : clé Anthropic de l'utilisateur). **TaskForce n'héberge aucun runtime lourd** (VM1 = hors sujet). **Écart assumé le 20/09/2026** : un runner LOCAL (Claude Code sur le poste de la personne) existe en prototype, désactivé par défaut en production. TaskForce n'héberge toujours rien. Cf. ADR-013 ([[../12-decisions/Journal_Decisions_ADR]]). |
 | D3 | **Le coût d'exécution est porté par le plan de l'utilisateur** (son Claude/Cursor/Copilot). TaskForce **récupere et affiche sa consommation** pour qu'il suive tout au meme endroit. Notre IA n'est facturée que sur nos usages (spec, résumé) via le quota existant. |
 | D4 | **Task-agnostic** : pas que du code. Une tache déléguable peut etre « rédige ce mail », « analyse marketing », « écris cette doc ». Le **résultat** dépend de l'objectif (PR, doc, résumé + liens) + la **colonne** d'arrivée + le **lien direct**. |
 | D5 | **Événementiel multi-source** : pas que GitHub. Le signal de fin vient idéalement de **l'agent lui-meme** (« workflow terminé ») ou de l'outil concerné, normalisé en un événement de délégation. |

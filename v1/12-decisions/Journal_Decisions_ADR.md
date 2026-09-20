@@ -3,8 +3,8 @@ id: journal-decisions-adr
 title: Journal de décisions d'architecture (ADR) — TaskForce V1
 doc_type: adr
 statut: valide
-version: 1.0
-date: "05/07/2026"
+version: 1.1
+date: "20/09/2026"
 auteur: Pierre MICHEL
 tags: [adr, decisions, architecture, backend, frontend, ia, securite, memoire, rncp]
 ---
@@ -34,6 +34,9 @@ tags: [adr, decisions, architecture, backend, frontend, ia, securite, memoire, r
 | [ADR-008](#adr-008--modèle-hybride-fk--long-id-pour-authfacturation) | Modèle hybride FK : `Long id` pour Auth/Facturation | ✅ Accepté | Déc 2025 |
 | [ADR-009](#adr-009--brain-os--architecture-1-workspace--1-brain-onetoone-unique) | Brain OS : 1 workspace = 1 brain, @OneToOne unique | ✅ Accepté | Avr 2026 |
 | [ADR-010](#adr-010--observabilité--opentelemetry--signoz-prometheus-en-complément) | Observabilité : OpenTelemetry → SigNoz, Prometheus en complément | ✅ Accepté | Fév 2026 |
+| [[#ADR-011 — Émission des tokens par Keycloak (OIDC RS256), retrait du JWT HS512 custom\|ADR-011]] | Émission des tokens par Keycloak (OIDC RS256), retrait du JWT HS512 custom | ✅ Accepté | Juil 2026 |
+| ADR-012 | Brain OS : moteur interne, produit-connaissance exposé (brouillon, `recherche/decisions/`) | 📝 Proposé | Juil 2026 |
+| [[#ADR-013 - Runner local de délégation : Claude Code sur le poste de l'utilisateur\|ADR-013]] | Runner local de délégation : Claude Code sur le poste de l'utilisateur | ✅ Accepté (prototype) | Sept 2026 |
 
 ---
 
@@ -623,6 +626,158 @@ pas PC-019).
 - **⚠️ Pré-requis déploiement** : le realm Keycloak doit émettre le claim `email` dans l'access token
   (scope `email` par défaut) — sinon la résolution d'utilisateur échoue.
 - **📝 Note** : l'auto-login post-inscription est perdu (cf. ci-dessus) ; UX « login après inscription ».
+
+---
+
+## ADR-013 - Runner local de délégation : Claude Code sur le poste de l'utilisateur
+
+**Date** : 20/09/2026 | **Décideur** : Pierre MICHEL | **Statut** : ✅ Accepté, **prototype** (désactivé par défaut en production)
+
+> Le numéro ADR-012 est réservé au brouillon `recherche/decisions/ADR-012-DRAFT-brain-os-exposition.md`.
+
+### Contexte
+
+La délégation d'une issue à un agent existe déjà ([[../road_to_v2/Agent_Delivery_Pipeline|Agent Delivery Pipeline]]) :
+providers cloud (`claude-api`, `cursor`, `github-copilot`), run tracé, auto-move de l'issue. Le provider
+`claude-code` n'était qu'un placeholder, en attente d'une exécution hébergée (Managed Agents).
+
+Le besoin : déléguer une issue à **Claude Code installé sur le poste de la personne**, qui code dans un
+vrai checkout, lit le contexte dans TaskForce, et revient avec une pull request.
+
+Quatre contraintes cadrent la solution :
+
+1. **Le backend ne peut pas joindre un poste local** (NAT, pas de port ouvert). L'échange part donc du poste.
+2. **En production, Keycloak n'est pas joignable de l'extérieur** : seul nginx expose des ports, le backend
+   est le seul interlocuteur de l'IdP (posture de l'ADR-011).
+3. **Un agent lit du texte écrit par d'autres** (issues, commentaires, notes). Une instruction glissée
+   dans ce texte ne doit pas pouvoir agir au-delà de la tâche.
+4. **Conditions d'Anthropic** : le login par abonnement (Free/Pro/Max) sert un usage personnel et
+   individuel. Un produit ne peut pas faire passer les requêtes de ses utilisateurs par un abonnement ; il
+   doit utiliser une clé API.
+
+### Décision
+
+**1. Provider « pull ».** `DeliveryAgentProvider.pullBased()` : pour `claude-code`, rien n'est dispatché. Le
+run reste `QUEUED` ; un runner le **réclame** (mise à jour atomique : un seul gagnant), travaille, envoie
+des signes de vie, puis **pousse** son résultat. Un runner muet plus de 10 min fait passer le run en échec
+au lieu de le laisser « en cours » pour toujours. Migration `V88` : `claimed_by`, `claimed_at`, `heartbeat_at`.
+
+**2. Identité machine Keycloak, jamais le mot de passe de la personne.** Un client confidentiel
+`tf-runner-<nom>` réduit au grant `client_credentials` (aucun flux navigateur, aucun password grant). Un
+jeton de runner cumule quatre preuves signées par Keycloak, toutes requises : le rôle de realm
+`delivery-runner`, le préfixe du client, un sujet qui est bien le compte de service de ce client, et le
+claim `tf_runner_owner` (mapper « hardcoded claim », modifiable par un administrateur du realm seulement).
+Le jeton s'obtient par `POST /api/auth/runner/token`, que le backend relaie vers Keycloak : le runner ne
+connaît qu'une URL. Ce relais refuse tout client hors préfixe et ne rend le jeton qu'après avoir vérifié
+les quatre preuves. Provisionnement idempotent : `scripts/keycloak-runner.ps1`.
+
+**3. Autorité bornée au propriétaire.** Un runner ne voit et ne réclame que les runs délégués **par son
+propriétaire**. Les droits de celui-ci sont réévalués au claim : s'il a perdu l'écriture sur le projet
+depuis la délégation, le run est clos en échec, pas exécuté.
+
+**4. Session déléguée : deux bornes empilées.** Le temps d'un run, l'agent agit **au nom du délégant**.
+
+| Borne | Règle |
+|---|---|
+| Plafond | Les droits de la personne. Chaque appel est évalué par les services existants comme s'il venait d'elle : un projet privé qu'elle ne voit pas reste invisible. |
+| Workspace | Un seul : celui du run. |
+| Lecture | Liste fermée de sous-arbres : `projects`, `brain`, `my-issues`, `analytics`, plus `POST brain/search` (une lecture portée par un POST). |
+| Écriture | `POST/PATCH/PUT` sous `projects/{projet du run}/issues` uniquement. |
+| Suppression | Jamais (D6 : la décision destructive reste humaine). |
+| Durée | Tant que le run est `RUNNING`, réclamé par ce runner, et au plus 120 min après le claim. |
+
+C'est une liste **d'autorisation** : tout chemin absent est refusé, futurs endpoints compris. Membres,
+intégrations, clés, webhooks, serveurs MCP, facturation, profil et les autres workspaces sont hors d'atteinte.
+Mise en œuvre : `DeliverySessionFilter`, placé juste après l'authentification du bearer. Transparent pour
+un jeton d'utilisateur, **fail-closed** pour un jeton de runner : hors de ses endpoints machine, il lui
+faut l'en-tête `X-TaskForce-Delivery-Run` désignant un run valide, sinon `403`. Un jeton qui ressemble à
+un jeton de runner sans en porter toutes les preuves est refusé, jamais traité comme un utilisateur.
+
+**5. Exécution locale bornée elle aussi.** `taskforce-runner` crée un worktree git isolé sur une branche
+neuve ; le checkout de la personne n'est jamais touché. Claude Code tourne en mode `dontAsk` avec une liste
+fermée d'outils : lire, éditer, `git status/diff/log/add/commit`. Pas de shell libre, pas de réseau, pas de
+push. Le **runner** pousse la branche et ouvre la PR après l'agent. **Rien n'est jamais fusionné** (D6).
+Le MCP de l'agent reçoit un jeton de courte durée, jamais le secret du runner.
+
+**6. Désactivé par défaut.** `delivery.local-runner.enabled` (vrai en dev, faux en prod). Désactivé,
+`claude-code` reste « à venir », et ni les endpoints machine ni le filtre n'existent.
+
+**7. Abonnement = prototype personnel.** `agent.auth: "subscription"` fait tourner Claude Code avec le login
+de la personne, sur son poste, pour elle-même. Proposer le runner à d'autres utilisateurs suppose
+`agent.auth: "api-key"` ou un accord écrit d'Anthropic. La clé API ambiante est retirée de
+l'environnement de l'agent en mode abonnement, pour ne pas facturer le compte API sans prévenir.
+
+### Écart assumé à la décision D2 de la spec
+
+D2 dit : « l'exécution tourne dans le cloud du provider, TaskForce n'héberge aucun runtime lourd ». La
+seconde moitié reste vraie : TaskForce n'héberge rien, le runtime est chez la personne. L'esprit de D2 et
+D3 est tenu (exécution sous le compte et le plan de l'utilisateur, coût porté par lui). La lettre ne l'est
+pas : ce n'est pas le cloud du provider. La spec (§7) citait déjà ce « runner léger » comme alternative
+« à éviter au début » ; elle devient un prototype, à côté des providers cloud, sans les remplacer.
+
+### Pourquoi ce n'est pas l'usurpation écartée par l'ADR-011
+
+L'ADR-011 a écarté le Token Exchange parce que « le back pourrait usurper n'importe qui ». Ici l'identité
+empruntée est **unique et fixée dans l'IdP** (claim signé), elle n'existe que pendant un run que la personne
+a **elle-même** délégué, et elle est bornée en durée comme en périmètre. Aucun jeton n'est émis au nom de
+la personne : le principal délégué ne vit que le temps d'une requête, dans le contexte de sécurité, et ne
+reprend aucun claim du jeton machine. Fuite du secret d'un runner : l'attaquant peut, au plus, réclamer les
+tâches que CE propriétaire délègue à Claude Code et agir dans le périmètre ci-dessus pendant ces runs.
+
+### Alternatives écartées
+
+| Alternative | Raison du rejet |
+|---|---|
+| Jeton ou mot de passe de la personne dans le runner (ce que fait `taskforce-mcp` en dev) | Mot de passe sur disque, droits complets sans borne, pas révocable à part |
+| Device flow OAuth | Suppose que le navigateur joigne Keycloak : faux en production |
+| Token Exchange Keycloak | Déjà écarté par l'ADR-011 (usurpation générale) |
+| API dédiée étroite, sans délégation | Duplique toute la surface de lecture, ne donne pas « les droits de la personne », à réécrire à chaque extension (inter-projets) |
+| Workspace entier en écriture, borné par les seuls droits de la personne | Rayon d'action trop large face à une instruction glissée dans une issue : on commence par un projet |
+| Webhook du backend vers le runner | Impossible derrière un NAT, et ouvrirait un port sur le poste |
+| Managed Agents (exécution hébergée) | Reste la cible produit ; suppose une clé API |
+
+### Preuve
+
+`V88__delivery_runs_local_runner.sql` · `core/service/delivery/{ClaudeCodeProvider, LocalRunnerService,
+RunnerIdentityResolver, DeliverySessionScope, RunnerTokenService, LocalRunnerSettings}.java` ·
+`core/security/DeliverySessionFilter.java` · `core/api/{DeliveryRunnerController, RunnerAuthController}.java` ·
+`shared/security/{SecurityConfig, PostAuthenticationFilter}.java` · `scripts/keycloak-runner.ps1` ·
+`taskforce-mcp` 0.3.0 (`taskforce_get_issue`, `taskforce_add_comment`, en-tête de session) · `taskforce-runner/`.
+
+**Vérifié le 20/09/2026 sur la stack dev** : suite backend complète verte (1264 tests, 0 échec), dont 131 tests ciblés sur le runner (dont 57 cas de périmètre et 15 du
+filtre) et 39 tests du runner verts ; 34 sondes HTTP en direct, toutes conformes (proxy de jeton, runner
+hors session, session en cours, session d'un run terminé) ; un run complet
+`délégation -> claim -> worktree -> MCP en session déléguée -> commit -> push -> DONE -> « In review by AI »`,
+et le chemin d'échec `FAILED -> « Blocked »`. Le commentaire posté par l'agent porte bien l'identité du
+délégant ; les deux écritures hors périmètre tentées par l'agent ont reçu `403`.
+
+**Non vérifié** : l'agent était un substitut (`test/fixtures/stub-agent`), le CLI Claude Code n'étant pas
+installé sur le poste de test. Restent donc à éprouver avec le vrai CLI : les options de `claude -p`
+(tirées de la documentation officielle), et l'ouverture de la PR par `gh` (le test poussait vers un dépôt
+local sans GitHub).
+
+### Conséquences
+
+- **✅ Positif** : aucun changement front. Le picker et le suivi du run existaient ; `claude-code` y devient
+  simplement disponible.
+- **✅ Positif** : aucun contrôleur ni garde RBAC modifié. La délégation se joue avant eux, dans un seul
+  filtre, couvert par des tests de périmètre exhaustifs.
+- **⚠️ Limite** : le jeton remis au MCP de l'agent est le jeton machine du runner. Il ouvre aussi les
+  endpoints machine (réclamer ou clore un run du même propriétaire). Durcissement prévu : un jeton de
+  session **par run**, émis au claim, inutilisable hors de la session.
+- **⚠️ Limite** : la durée d'un run est plafonnée par la durée de vie de ce jeton.
+- **⚠️ Limite** : la révocation d'un runner n'est pas instantanée. Désactiver son client Keycloak arrête
+  l'émission, mais un jeton déjà émis reste valide jusqu'à son expiration et peut encore réclamer un run du
+  propriétaire. Le script donne donc au client sa **propre durée de vie de jeton, 60 min par défaut**
+  (`-TokenLifespanMinutes`), au lieu d'hériter de celle du realm (480 min mesurées en dev). Coupure
+  immédiate : `delivery.local-runner.enabled=false`.
+- **⚠️ Limite** : un run `QUEUED` sans runner à l'écoute attend indéfiniment (pas d'expiration de file, pas
+  d'annulation depuis l'interface).
+- **⚠️ Limite** : un commentaire posté par l'agent apparaît au nom du délégant. Le modèle n'a pas d'auteur
+  « agent ».
+- **⚠️ Limite** : Cortex (`POST assistant`) est refusé en session, car il peut écrire une note de workspace.
+- **📝 Hors périmètre** : gating par plan et métrage de la délégation ; écriture inter-projets ; script de
+  provisionnement pour la production (les commandes `kcadm` sont celles du script dev).
 
 ---
 
