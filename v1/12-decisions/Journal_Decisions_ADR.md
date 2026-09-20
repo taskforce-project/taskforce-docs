@@ -651,9 +651,11 @@ Quatre contraintes cadrent la solution :
    est le seul interlocuteur de l'IdP (posture de l'ADR-011).
 3. **Un agent lit du texte écrit par d'autres** (issues, commentaires, notes). Une instruction glissée
    dans ce texte ne doit pas pouvoir agir au-delà de la tâche.
-4. **Conditions d'Anthropic** : le login par abonnement (Free/Pro/Max) sert un usage personnel et
-   individuel. Un produit ne peut pas faire passer les requêtes de ses utilisateurs par un abonnement ; il
-   doit utiliser une clé API.
+4. **Conditions d'Anthropic** (page « Legal and compliance » de Claude Code, relue le 20/09/2026). Chaque
+   personne peut se connecter au binaire Claude Code non modifié avec **son propre** abonnement. Un
+   produit, lui, ne peut ni proposer le login claude.ai dans son application, ni collecter, stocker ou
+   relayer les identifiants Claude de ses utilisateurs, ni payer ou intermédier leur usage. Les limites des
+   abonnements supposent un usage ordinaire et individuel.
 
 ### Décision
 
@@ -702,10 +704,22 @@ Le MCP de l'agent reçoit un jeton de courte durée, jamais le secret du runner.
 **6. Désactivé par défaut.** `delivery.local-runner.enabled` (vrai en dev, faux en prod). Désactivé,
 `claude-code` reste « à venir », et ni les endpoints machine ni le filtre n'existent.
 
-**7. Abonnement = prototype personnel.** `agent.auth: "subscription"` fait tourner Claude Code avec le login
-de la personne, sur son poste, pour elle-même. Proposer le runner à d'autres utilisateurs suppose
-`agent.auth: "api-key"` ou un accord écrit d'Anthropic. La clé API ambiante est retirée de
-l'environnement de l'agent en mode abonnement, pour ne pas facturer le compte API sans prévenir.
+**7. Chacun son Claude Code, chacun son compte.** Le runner lance le Claude Code **de la personne**, non
+modifié, sur son poste ; elle s'y est connectée elle-même, avec son abonnement (`agent.auth: "subscription"`)
+ou sa clé API (`"api-key"`). TaskForce ne voit, ne stocke et ne relaie jamais ses identifiants Claude, et ne
+paie ni n'intermédie son usage. C'est la forme que les conditions d'Anthropic admettent, pour Pierre comme
+pour tout autre utilisateur. En mode abonnement, la clé API ambiante est retirée de l'environnement de
+l'agent, pour ne pas facturer le compte API sans prévenir : c'est le choix de la personne, le runner ne
+retire aucune méthode d'authentification.
+
+> **Correction du 20/09/2026.** La première rédaction disait « abonnement = prototype personnel, un usage
+> produit suppose une clé API ». C'était une lecture incomplète de la page d'Anthropic, qui prévoit
+> explicitement qu'un utilisateur se connecte au binaire non modifié avec son propre abonnement. Ce qui
+> reste interdit : un login claude.ai dans TaskForce, des jetons Claude côté serveur, un usage payé ou
+> revendu par TaskForce. Avant une mise sur le marché : accepter les Commercial Terms d'Anthropic, vérifier
+> l'usage du nom et du logo (on peut écrire que le produit fait tourner Claude Code, pas en faire un nom de
+> fonctionnalité ni afficher le logo sans permission), et faire confirmer le cas d'usage par écrit. Cette
+> lecture n'est pas un avis juridique.
 
 ### Écart assumé à la décision D2 de la spec
 
