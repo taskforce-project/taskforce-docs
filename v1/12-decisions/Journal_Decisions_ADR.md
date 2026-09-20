@@ -696,7 +696,7 @@ un jeton de runner sans en porter toutes les preuves est refusé, jamais traité
 **5. Exécution locale bornée elle aussi.** `taskforce-runner` crée un worktree git isolé sur une branche
 neuve ; le checkout de la personne n'est jamais touché. Claude Code tourne en mode `dontAsk` avec une liste
 fermée d'outils : lire, éditer, `git status/diff/log/add/commit`. Pas de shell libre, pas de réseau, pas de
-push. Le **runner** pousse la branche et ouvre la PR après l'agent. **Rien n'est jamais fusionné** (D6).
+push. Le runner ne passe **jamais par un shell** pour lancer un processus (tableaux d'arguments ; le nom de modèle venu du serveur est validé avant d'atteindre une ligne de commande). Le **runner** pousse la branche et ouvre la PR après l'agent. **Rien n'est jamais fusionné** (D6).
 Le MCP de l'agent reçoit un jeton de courte durée, jamais le secret du runner.
 
 **6. Désactivé par défaut.** `delivery.local-runner.enabled` (vrai en dev, faux en prod). Désactivé,
@@ -745,7 +745,7 @@ RunnerIdentityResolver, DeliverySessionScope, RunnerTokenService, LocalRunnerSet
 `taskforce-mcp` 0.3.0 (`taskforce_get_issue`, `taskforce_add_comment`, en-tête de session) · `taskforce-runner/`.
 
 **Vérifié le 20/09/2026 sur la stack dev** : suite backend complète verte (1264 tests, 0 échec), dont 131 tests ciblés sur le runner (dont 57 cas de périmètre et 15 du
-filtre) et 39 tests du runner verts ; 34 sondes HTTP en direct, toutes conformes (proxy de jeton, runner
+filtre) et 59 tests du runner verts ; CI verte sur `dev` (tests backend, CodeQL, Semgrep) ; 34 sondes HTTP en direct, toutes conformes (proxy de jeton, runner
 hors session, session en cours, session d'un run terminé) ; un run complet
 `délégation -> claim -> worktree -> MCP en session déléguée -> commit -> push -> DONE -> « In review by AI »`,
 et le chemin d'échec `FAILED -> « Blocked »`. Le commentaire posté par l'agent porte bien l'identité du
