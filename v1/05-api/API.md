@@ -72,7 +72,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | MyWorkController | `/api/workspaces/{slug}` (→ `/my-issues`, `/my-cycles`, `/my-pages`) | ✅ |
 | RoadmapController | `/api/workspaces/{slug}/roadmap` | ✅ |
 | WebhookController | `/api/workspaces/{slug}/webhooks` | ✅ |
-| IntegrationController | `/api/workspaces/{slug}/integrations/...` (+ `/connectors/{key}` générique) + `/api/integrations/*/callback` | ✅ |
+| IntegrationController | `/api/workspaces/{slug}/integrations/...` (+ `/connectors/{key}` générique) + `/api/integrations/*/callback` ; `GET github/connect?returnTo=` (chemin applicatif où revenir après le consentement, validé, 21/09/2026) | ✅ |
 | StripeController / StripeWebhookController | `/api/stripe` · `/api/webhooks` | ✅ |
 | SalesController | `/api/sales` | ✅ |
 | FileController / AttachmentController (ged) | `/api/files` · `/api/workspaces/{slug}/projects/{projectId}/issues/{issueId}/attachments` | ✅ |

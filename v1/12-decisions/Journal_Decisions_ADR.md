@@ -695,8 +695,10 @@ un jeton d'utilisateur, **fail-closed** pour un jeton de runner : hors de ses en
 faut l'en-tête `X-TaskForce-Delivery-Run` désignant un run valide, sinon `403`. Un jeton qui ressemble à
 un jeton de runner sans en porter toutes les preuves est refusé, jamais traité comme un utilisateur.
 
-**5. Exécution locale bornée elle aussi.** `taskforce-runner` crée un worktree git isolé sur une branche
-neuve ; le checkout de la personne n'est jamais touché. Claude Code tourne en mode `dontAsk` avec une liste
+**5. Exécution locale bornée elle aussi.** Le dépôt est celui que le projet porte dans TaskForce (créé ou
+lié à la création du projet). `taskforce-runner` le clone à la demande avec le `gh` de la personne, donc
+avec SES droits GitHub, dans son propre dossier ; il n'y a aucun chemin à déclarer (MAJ 21/09/2026). Il y
+crée un worktree git isolé sur une branche neuve ; le checkout de la personne n'est jamais touché. Claude Code tourne en mode `dontAsk` avec une liste
 fermée d'outils : lire, éditer, `git status/diff/log/add/commit`. Pas de shell libre, pas de réseau, pas de
 push. Le runner ne passe **jamais par un shell** pour lancer un processus (tableaux d'arguments ; le nom de modèle venu du serveur est validé avant d'atteindre une ligne de commande). Le **runner** pousse la branche et ouvre la PR après l'agent. **Rien n'est jamais fusionné** (D6).
 Le MCP de l'agent reçoit un jeton de courte durée, jamais le secret du runner.
