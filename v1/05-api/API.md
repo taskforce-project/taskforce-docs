@@ -80,7 +80,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | TeamController | `/api/workspaces/{slug}/teams` | ✅ |
 | PageController | `/api/workspaces/{slug}/projects/{projectId}/pages` | ✅ |
 | ProjectExportController | `/api/workspaces/{slug}/projects/{projectId}/export` | ✅ |
-| DeliveryController | `/api/workspaces/{slug}/delivery` (→ `GET /providers`, `POST /issues/{id}/delegate`, `GET /issues/{id}/run`, clés `GET/POST/DELETE /{anthropic\|cursor}`) | ✅ |
+| DeliveryController | `/api/workspaces/{slug}/delivery` (→ `GET /providers`, `POST /issues/{id}/delegate`, `GET /issues/{id}/run`, clés `GET/POST/DELETE /{anthropic\|cursor}`) ; un run renvoie aussi `issueKey`, `issueTitle`, `projectId`, `projectName` (21/09/2026) | ✅ |
 | DeliveryRunnerController | `/api/delivery/runner` (→ `POST /claim`, `POST /runs/{id}/heartbeat`, `POST /runs/{id}/result`) : endpoints **machine** du runner local (ADR-013), jeton de compte de service Keycloak, 403 pour un jeton utilisateur ; n'existent que si `delivery.local-runner.enabled=true` ; masqués de la doc Fern | ✅ |
 | RunnerAuthController | `/api/auth/runner` (→ `POST /token`) : `client_credentials` relayé vers Keycloak pour un client `tf-runner-*` ; public, limité en débit comme un login ; même condition d'activation | ✅ |
 
