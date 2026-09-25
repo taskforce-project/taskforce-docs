@@ -23,6 +23,12 @@ tags: [utilisateur, release-notes, changelog, versions, e29, rncp, soutenance]
 
 ---
 
+## landing-v1.3.0 · produit v0.40.0 (25/09/2026) : runner local présenté, Enterprise sur un écran
+
+- **Runner local (Beta, accès anticipé)** : la page Orchestration explique ce qui tourne aujourd'hui. On assigne une issue à Claude Code, un runner sur la machine de l'utilisateur la prend, travaille dans une branche isolée et ouvre une pull request qu'une personne relit. Ce que l'agent peut toucher est détaillé ; TaskForce ne voit jamais les identifiants Claude.
+- **Home** : le bloc Entreprise tient sur un écran (texte et garanties à côté de la vue d'audit), et la vue d'audit reste lisible sur téléphone.
+- **Ponctuation** : les derniers tirets de liaison des textes d'introduction sont remplacés par la vraie ponctuation.
+
 ## landing-v1.2.0 · produit v0.39.0 (25/09/2026) : site repositionné et poli
 
 - **Positionnement** (24/09, produit v0.38.1) : le hero présente TaskForce comme la couche gouvernée au-dessus des agents de code (Claude Code, Cursor, Copilot).
