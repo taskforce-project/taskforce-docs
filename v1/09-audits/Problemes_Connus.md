@@ -177,6 +177,8 @@ appliqué). Échelle d'effort : S ≤2h · M ½–1j · L 1–3j · XL &gt;3j.
 | PC-044 | ✅ **Résolu (QA-49)** | **M7 — OAuth `email_verified`** : liaison par e-mail sans vérif. Fix refus si `false`, `AuthService.java:674-681`. | Prise de contrôle par e-mail | S | Haute |
 | PC-045 | ✅ **Résolu (QA-49)** | **L12 — fuite de message d'exception** : `application-prod.yml:55` `include-message: never`. | Détails internes en réponse | S | Haute |
 | PC-046 | ✅ **Résolu (QA-50)** | **L8 — oracle d'énumération avatar** : 404 JSON vs 404 vide. Fix même 404 vide, `FileController.java:36-51`. | Énumération d'utilisateurs | S | Haute |
+| PC-047 | ✅ **Résolu (25/09)** | **Release landing sans tag et version produit désalignée** : sur `main`, `release.yml` prend comme stable la dernière RC landing privée de son suffixe `-rc` ; les pushs directs sur `dev` ne font que `rc+1` sur la même base (`v1.1.5-rc36`), donc la PR #316 a calculé `landing-v1.1.5`, déjà existant : ni tag ni Release. En parallèle, le bump produit n'est écrit que sur la branche de release, donc `dev` était resté en 0.38.0 (prod 0.38.1). Fix : PR `feature/* → dev` labellisée `landing:release:minor` (→ `v1.2.0-rc1` puis `v1.2.0`, #317/#318) + commit `chore(version)` qui réaligne `dev`. | Release sans tag ; version en régression à la release suivante | S | Haute |
+| PC-048 | ✅ **Résolu (25/09)** | **Frise « The run » illisible sur mobile** : le `fitView` de React Flow réduisait la chaîne horizontale de 7 étapes à ~0,32 sous 640 px (textes d'environ 4 px). Fix : `StepChainFlow` prend `stackOnMobile` (verticale sous 640 px via `useNarrow`, remontage à la rotation), `OrchestrationFlows.tsx`. | Section clé de la home illisible sur téléphone | S | Haute |
 
 ## 2. Détails par problème
 

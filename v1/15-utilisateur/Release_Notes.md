@@ -23,6 +23,17 @@ tags: [utilisateur, release-notes, changelog, versions, e29, rncp, soutenance]
 
 ---
 
+## landing-v1.2.0 · produit v0.39.0 (25/09/2026) : site repositionné et poli
+
+- **Positionnement** (24/09, produit v0.38.1) : le hero présente TaskForce comme la couche gouvernée au-dessus des agents de code (Claude Code, Cursor, Copilot).
+- **Hero** : mise en page scindée avec une table de runs animée par rôle (Engineering, Product, Operations, Client services), marquée « Illustrative ».
+- **Home plus courte** : de 14,3 à 11,0 écrans (sections fusionnées, doublons retirés, détail des 7 checkpoints repliable).
+- **Lecture** : titres de section révélés au défilement (désactivé si l'utilisateur réduit les animations, contraste AA conservé) ; titres de cartes sur une échelle unique.
+- **Mobile** : la frise « The run » passe en vertical sur téléphone.
+- **Référencement** : metas de 155 caractères au plus, meta dédiée par fiche connecteur, `/docs` retiré du sitemap.
+
+---
+
 ## v1.0.0 — 05/07/2026 — Livraison soutenance RNCP
 
 > Version complète livrée pour la soutenance **Développeur Full Stack RNCP niveau 6**.
