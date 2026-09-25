@@ -787,13 +787,45 @@ local sans GitHub).
   propriétaire. Le script donne donc au client sa **propre durée de vie de jeton, 60 min par défaut**
   (`-TokenLifespanMinutes`), au lieu d'hériter de celle du realm (480 min mesurées en dev). Coupure
   immédiate : `delivery.local-runner.enabled=false`.
-- **⚠️ Limite** : un run `QUEUED` sans runner à l'écoute attend indéfiniment (pas d'expiration de file, pas
-  d'annulation depuis l'interface).
+- **✅ Résolu le 25/09/2026** : un run `QUEUED` sans runner à l'écoute attendait indéfiniment. Il est
+  désormais clos en échec après `delivery.local-runner.claim-timeout-minutes` (15 min), avec un message qui
+  dit quoi faire (voir la mise à jour ci-dessous). **⚠️ Reste** : pas d'annulation depuis l'interface.
 - **⚠️ Limite** : un commentaire posté par l'agent apparaît au nom du délégant. Le modèle n'a pas d'auteur
   « agent ».
 - **⚠️ Limite** : Cortex (`POST assistant`) est refusé en session, car il peut écrire une note de workspace.
 - **📝 Hors périmètre** : gating par plan et métrage de la délégation ; écriture inter-projets ; script de
   provisionnement pour la production (les commandes `kcadm` sont celles du script dev).
+
+### Mise à jour du 25/09/2026 : prod, file d'attente et marque
+
+- **Constat en prod** : le flag était allumé par un override hors dépôt (test du 23/09). « Claude Code »
+  était donc proposé à tous les utilisateurs, et une délégation sans runner restait `QUEUED` pour toujours
+  (`DeliveryRunner.refresh` ne relisait que les runs `RUNNING`). Smart Assign ne recommande pas
+  `claude-code` (ses préférences sont Cursor, Copilot, Claude API, toujours disponibles) : le piège suppose
+  un choix manuel.
+- **Expiration de file** : `DeliveryAgentProvider.claimTimeout()` (null pour un provider « push ») ;
+  `DeliveryRunner.refresh` clôt un run « pull » encore en attente au-delà du délai, par une mise à jour
+  **conditionnelle** (`DeliveryRunRepository.expireUnclaimed` : encore `QUEUED` et sans runner). Un claim
+  concurrent gagne donc toujours, et rien n'écrase la copie réclamée. L'issue passe en « Blocked » avec le
+  message « No runner picked this task up within 15 min… ». Un runner allumé avant toute relecture prend
+  encore la tâche. La relecture vient du contrôleur (`DeliveryController.latestRun` et `listRuns`), qui
+  relit désormais aussi les runs en attente : il ne relisait que les runs `RUNNING`, ce qui rendait la
+  clôture inopérante malgré des tests unitaires verts.
+- **Écarté** : une disponibilité par utilisateur (Claude Code proposé seulement quand son runner est en
+  ligne). Plus juste, mais elle recouvre le chantier « Connect a runner » (libre-service), qui portera le
+  statut du runner dans l'interface.
+- **Flag durable** : `DELIVERY_LOCAL_RUNNER_ENABLED: ${DELIVERY_LOCAL_RUNNER_ENABLED:-false}` dans
+  `docker-compose.prod.yml`, valeur posée dans `.env.prod` de la VM1. Elle survit aux rebuilds (l'auto-deploy
+  passe `--env-file .env.prod`) ; l'override hors dépôt est supprimé.
+- **Marque** : les conditions d'Anthropic, relues le 20/09, interdisent d'utiliser son logo sans
+  permission et de faire de Claude Code un nom de fonctionnalité. Règle `NAME_ONLY` au seul point de rendu
+  de chaque front (`frontend/components/ui/brand-logo.tsx`, `landing-page/src/components/site/BrandLogo.tsx`) :
+  Anthropic est nommée en texte, avec un repli neutre à la place du logo. Sur le site, la fonctionnalité
+  s'appelle « Local runner ».
+- **Livré en prod le 25/09/2026 (v0.40.1, PR #321 puis #322)**, vérifié : conteneur backend recréé par
+  l'auto-deploy, `DELIVERY_LOCAL_RUNNER_ENABLED=true` lu de `.env.prod`, override supprimé ensuite ; règle
+  `NAME_ONLY` présente dans le bundle de l'app déployée ; aucun `/logos/anthropic` servi par le site. Suite
+  backend complète verte (1311 tests), CodeQL sans alerte.
 
 ---
 

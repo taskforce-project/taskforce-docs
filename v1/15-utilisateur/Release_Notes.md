@@ -23,6 +23,12 @@ tags: [utilisateur, release-notes, changelog, versions, e29, rncp, soutenance]
 
 ---
 
+## produit v0.40.1 (25/09/2026) : délégation au runner local fiabilisée, logo Anthropic retiré
+
+- **Runner local** : une tâche confiée à Claude Code que personne ne prend en charge passe en échec au bout de 15 minutes, avec un message qui dit quoi faire, au lieu de rester « en attente » sans fin.
+- **Production** : le réglage qui active le runner local est désormais durable (il ne saute plus à la mise à jour suivante).
+- **Marque** : le logo d'Anthropic n'est plus affiché, ni sur le site ni dans l'application ; Claude et Anthropic sont nommés en texte.
+
 ## landing-v1.3.0 · produit v0.40.0 (25/09/2026) : runner local présenté, Enterprise sur un écran
 
 - **Runner local (Beta, accès anticipé)** : la page Orchestration explique ce qui tourne aujourd'hui. On assigne une issue à Claude Code, un runner sur la machine de l'utilisateur la prend, travaille dans une branche isolée et ouvre une pull request qu'une personne relit. Ce que l'agent peut toucher est détaillé ; TaskForce ne voit jamais les identifiants Claude.
