@@ -827,6 +827,27 @@ local sans GitHub).
   `NAME_ONLY` présente dans le bundle de l'app déployée ; aucun `/logos/anthropic` servi par le site. Suite
   backend complète verte (1311 tests), CodeQL sans alerte.
 
+### Mise à jour du 28/09/2026 : identité de runner en libre-service
+
+- **Décision** : l'identité machine d'un runner se crée désormais depuis l'application, par la personne
+  elle-même (Réglages > Agents), au lieu du script d'admin. Endpoint utilisateur `GET/POST
+  /api/delivery/runners` (`RunnerProvisioningController`), hors du préfixe machine, gaté par le même flag.
+- **Ce qui ne change pas** : la forme de l'identité (client confidentiel en `client_credentials` seul, rôle
+  `delivery-runner`, propriétaire signé `tf_runner_owner`) et les quatre preuves de `RunnerIdentityResolver`.
+  Le service porte les étapes de `ops/kc-runner.sh` via le client admin Keycloak déjà présent.
+- **Garde-fou** : le propriétaire est toujours l'e-mail de l'appelant authentifié, jamais une valeur venue
+  du client ; une personne ne peut donc créer qu'un runner qui agit en son nom. Client `tf-runner-u<id>`,
+  un par personne. Le secret est régénéré à chaque provisionnement et rendu une seule fois ; côté front, il
+  ne passe jamais par l'état global.
+- **Mode interactif** : un plugin Claude Code (`taskforce-plugin/`, commande `/taskforce`) branche le serveur
+  MCP sur le jeton de l'utilisateur, sans en-tête de délégation : ce n'est pas une session déléguée, c'est la
+  personne elle-même. v1 avec un jeton d'accès collé (court) ; un jeton personnel durable reste à faire.
+- **Livré en prod le 28/09/2026 (v0.41.0, PR #323 puis #324)**, vérifié : backend reconstruit par l'auto-deploy
+  (VM1 sur `365a8b86`), redémarré sain avec le flag, classe du contrôleur présente dans le jar, aucune erreur
+  au démarrage ; app servie en 0.41.0 ; site passé au libre-service. Avant la release : bout-en-bout réel sur
+  la stack dev contre Keycloak (identité créée, jeton machine émis pour elle par le relais, ancien secret
+  refusé après régénération) ; suite backend complète (1317 tests) ; CodeQL sans alerte.
+
 ---
 
 > 🔗 Voir aussi : [[Architecture_C4]] · [[CdCT_v2]] · [[CdCF_v2]] · [[Table_Reconciliation]] ·

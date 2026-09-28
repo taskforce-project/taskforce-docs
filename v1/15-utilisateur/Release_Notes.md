@@ -23,6 +23,13 @@ tags: [utilisateur, release-notes, changelog, versions, e29, rncp, soutenance]
 
 ---
 
+## produit v0.41.0 (28/09/2026) : runner local en libre-service
+
+- **Runner local** : chacun configure le sien dans Réglages > Agents. Un bouton crée son identité, puis l'application affiche une seule fois le fichier `.env` et les commandes pour lancer le runner. Régénérer le secret demande une confirmation, puisque cela coupe un runner déjà lancé.
+- **Délégation non prise en charge** : le message d'échec indique maintenant où configurer son runner.
+- **Site** : la section Local runner, le changelog, la roadmap et la FAQ décrivent la configuration en libre-service au lieu de l'accès anticipé.
+- **Plugin Claude Code** (hors application) : une commande `/taskforce` pour travailler ses tâches TaskForce depuis son propre Claude Code, en tant que soi.
+
 ## produit v0.40.1 (25/09/2026) : délégation au runner local fiabilisée, logo Anthropic retiré
 
 - **Runner local** : une tâche confiée à Claude Code que personne ne prend en charge passe en échec au bout de 15 minutes, avec un message qui dit quoi faire, au lieu de rester « en attente » sans fin.
