@@ -37,6 +37,13 @@ tags: [adr, decisions, architecture, backend, frontend, ia, securite, memoire, r
 | [[#ADR-011 — Émission des tokens par Keycloak (OIDC RS256), retrait du JWT HS512 custom\|ADR-011]] | Émission des tokens par Keycloak (OIDC RS256), retrait du JWT HS512 custom | ✅ Accepté | Juil 2026 |
 | ADR-012 | Brain OS : moteur interne, produit-connaissance exposé (brouillon, `recherche/decisions/`) | 📝 Proposé | Juil 2026 |
 | [[#ADR-013 - Runner local de délégation : Claude Code sur le poste de l'utilisateur\|ADR-013]] | Runner local de délégation : Claude Code sur le poste de l'utilisateur | ✅ Accepté (prototype) | Sept 2026 |
+| [[#ADR-014 - TaskForce 1.0 : projet open source lean et auto-hébergeable\|ADR-014]] | TaskForce 1.0 : projet open source lean et auto-hébergeable | ✅ Accepté | Oct 2026 |
+| [[#ADR-015 - Licence AGPL-3.0\|ADR-015]] | Licence AGPL-3.0 | ✅ Accepté, appliqué | Oct 2026 |
+| [[#ADR-016 - Retrait de la facturation et des limites de plan\|ADR-016]] | Retrait de la facturation et des limites de plan | ✅ Accepté (lot 2) | Oct 2026 |
+| [[#ADR-017 - Brain OS réduit à son cœur\|ADR-017]] | Brain OS réduit à son cœur | ✅ Accepté (lot 3) | Oct 2026 |
+| [[#ADR-018 - Agents de code : Claude Code et Copilot\|ADR-018]] | Agents de code : Claude Code et Copilot | ✅ Accepté (lot 5) | Oct 2026 |
+| [[#ADR-019 - Fournisseur d'IA générique, Ollama par défaut\|ADR-019]] | Fournisseur d'IA générique, Ollama par défaut | ✅ Accepté (lot 4) | Oct 2026 |
+| [[#ADR-020 - Connexion générale : MCP et webhooks sortants\|ADR-020]] | Connexion générale : MCP et webhooks sortants | ✅ Accepté (lot 6) | Oct 2026 |
 
 ---
 
@@ -847,6 +854,325 @@ local sans GitHub).
   au démarrage ; app servie en 0.41.0 ; site passé au libre-service. Avant la release : bout-en-bout réel sur
   la stack dev contre Keycloak (identité créée, jeton machine émis pour elle par le relais, ancien secret
   refusé après régénération) ; suite backend complète (1317 tests) ; CodeQL sans alerte.
+
+---
+
+## ADR-014 - TaskForce 1.0 : projet open source lean et auto-hébergeable
+
+**Date** : 14/10/2026 | **Décideur** : Pierre MICHEL | **Statut** : ✅ Accepté (suivi : [[Plan_Release_Open_Source]])
+
+### Contexte
+
+La soutenance est passée. Constat du CEO : commercialement, la v1 ne résout presque aucun problème. Elle attaque la
+gestion de projet, catégorie saturée où changer d'outil coûte cher, sans canal de distribution. La seule brique
+vraiment distinctive est l'assignation intelligente.
+
+Une recherche stratégique (04/10) a cherché un point d'entrée vendable tout de suite. Conclusion : la couche
+« identité et autorité des agents » est déjà disputée par les éditeurs d'annuaires et les clouds, mauvais point
+d'entrée pour une équipe de deux ; le choix d'un métier à vendre dépend d'un réseau commercial à cartographier. La
+recherche est mise en pause.
+
+Un audit complet du code (14/10, cinq passes en lecture seule) montre un cœur de gestion de projet qui fonctionne de
+bout en bout, entouré de surfaces à moitié faites (agents factices, 138 tuiles d'intégration dont 3 réelles, webhooks
+jamais envoyés), de failles à fermer, et d'une installation à neuf impossible.
+
+### Décision
+
+TaskForce est publié comme un projet open source fini, sur le modèle de Plane : on peut le forker, l'utiliser seul ou
+en entreprise, et l'héberger chez soi avec son propre modèle d'IA ou son propre agent de code.
+
+1. **Pas de fissure** : ce qui marche à moitié est fini ou supprimé, jamais laissé en l'état.
+2. **IA locale d'abord** : Ollama et de petits modèles par défaut ; Groq ou tout fournisseur compatible OpenAI pour
+   qui n'a pas la puissance (ADR-019).
+3. **Agents** : Claude Code et Copilot, les deux que le CEO peut tester (ADR-018).
+4. **Calendrier** : tout passe par `dev` et un test en Docker local. La production ne change que le jour des résultats
+   du diplôme, avec le post LinkedIn ; d'ici là, le jury voit la version de la soutenance (v0.41.0). Le lancement est
+   marqué 1.0.0.
+5. **Signal de marché** : étoiles, forks, issues et demandes d'entreprises décideront d'en refaire un produit, avec la
+   communauté.
+
+### Alternatives considérées
+
+| Option | Avantages | Inconvénients |
+| ------ | --------- | ------------- |
+| Pivot commercial immédiat | Revenu possible | Aucun métier validé ni canal identifié ; des semaines d'analyse avant un premier client |
+| Garder la v1 en l'état | Aucun travail | Fissures visibles, licence non libre, installation impossible : rien à montrer |
+| Réécriture « v2 » | Architecture neuve | Des mois sans utilisateur, alors que le cœur actuel fonctionne |
+
+### Conséquences
+
+**Positives :** un produit montrable et utilisable par d'autres ; un vrai signal de marché ; moins de code à maintenir.
+
+**Négatives / risques :** du travail sans revenu ; la prod doit rester stable jusqu'au jour J (déploiement automatique
+depuis `main`) ; l'instance publique `taskforce-project.fr` devient gratuite et doit poser ses propres plafonds d'IA.
+
+### Preuve
+
+Plan et suivi item par item : [[Plan_Release_Open_Source]]. Branches `feature/lean-oss` du code et de la doc.
+
+---
+
+## ADR-015 - Licence AGPL-3.0
+
+**Date** : 14/10/2026 | **Décideur** : Pierre MICHEL | **Statut** : ✅ Accepté, appliqué
+
+### Contexte
+
+La licence maison « Fair Use License with Commercial Restrictions » interdisait l'usage commercial, l'hébergement
+payant et l'intégration à un produit : exactement l'usage en entreprise que vise l'ADR-014. Ce n'était pas une licence
+open source au sens de l'OSI, alors que le dépôt est public et que le site annonçait déjà « Open Source ».
+
+### Décision
+
+GNU Affero General Public License v3.0 (identifiant SPDX `AGPL-3.0-only`), texte copié tel quel depuis gnu.org, comme
+Plane. Usage, modification et hébergement libres, y compris en entreprise ; quiconque fait tourner une version
+modifiée pour des utilisateurs à travers un réseau doit leur en donner le code source. Le nom et le logo TaskForce
+restent hors licence : une version modifiée distribuée prend un autre nom.
+
+### Alternatives considérées
+
+| Option | Avantages | Inconvénients |
+| ------ | --------- | ------------- |
+| MIT ou Apache-2.0 | Adoption maximale | Un concurrent peut en faire un service fermé sans rien rendre |
+| Licence maison actuelle | Contrôle total | Pas open source ; une entreprise ne peut pas l'utiliser sereinement |
+| BSL ou « fair source » | Protection commerciale | Pas open source ; contraire au but de l'ADR-014 |
+
+### Conséquences
+
+**Positives :** usage en entreprise autorisé sans négociation ; protection contre un fork fermé hébergé.
+
+**Négatives / risques :** certaines entreprises interdisent l'AGPL en interne. Si une offre commerciale revient un
+jour (double licence), il faudra l'accord des contributeurs : prévoir un accord de contribution avant d'accepter des
+contributions externes importantes.
+
+### Preuve
+
+Commit `47c921b8` de `taskforce-fullstack` : `LICENSE` (texte officiel, 661 lignes), badge et section du README (et le
+script qui régénère le badge), `pom.xml`, métadonnées OpenAPI, champ `license` des `package.json` et de leurs
+lockfiles, manifeste du plugin Claude Code ; mentions « All rights reserved » retirées du site et des e-mails.
+
+---
+
+## ADR-016 - Retrait de la facturation et des limites de plan
+
+**Date** : 14/10/2026 | **Décideur** : Pierre MICHEL | **Statut** : ✅ Accepté, à mettre en œuvre (lot 2)
+
+### Contexte
+
+Facturation Stripe à quatre plans (en mode test), et limites codées en dur appliquées à tout compte sans abonnement :
+2 workspaces par propriétaire, 250 issues par workspace, 5 collaborateurs sur un projet privé, 50 000 jetons d'IA par
+mois, intégrations et MCP réservés au plan Business, analytics de capacité réservées, historique d'activité tronqué à
+100 entrées. En auto-hébergement sans Stripe, tout le monde resterait bloqué au plan gratuit. Le profil de prod limite
+en plus chaque compte à une requête d'IA par minute.
+
+### Décision
+
+Retirer la facturation (Stripe, pages de paiement, upgrades, badges, cadenas, module de contact commercial) et toutes
+les limites de plan : chaque instance a toutes les fonctionnalités. Restent des protections d'exploitation réglables
+par variables d'environnement, illimitées par défaut : quota mensuel de jetons d'IA par compte et limitation de débit
+(`AiRateGuard`). L'instance publique fixe ses propres plafonds. Les tables de facturation restent en base (aucune
+migration destructive dans cette release) ; le code reste dans l'historique git.
+
+### Alternatives considérées
+
+| Option | Avantages | Inconvénients |
+| ------ | --------- | ------------- |
+| Facturation gardée mais désactivée | Offre cloud payante plus tard sans recoder | Code à maintenir et tester pour rien ; surface d'attaque |
+| Plans gardés, limites réglables | Moins de changements | Une notion de « plan » sans facturation n'a pas de sens pour un utilisateur |
+
+### Conséquences
+
+**Positives :** produit complet pour tous ; moins de code dans le backend et le front.
+
+**Négatives / risques :** l'instance publique doit poser des plafonds d'IA pour ne pas être abusée ; une offre payante
+future repartira de l'historique git.
+
+### Preuve
+
+À venir (lot 2 du [[Plan_Release_Open_Source]]).
+
+---
+
+## ADR-017 - Brain OS réduit à son cœur
+
+**Date** : 14/10/2026 | **Décideur** : Pierre MICHEL | **Statut** : ✅ Accepté, à mettre en œuvre (lot 3)
+
+### Contexte
+
+Brain OS (ADR-009) réunit un arbre de pages, un éditeur markdown (`#tags`, `[[wikilinks]]`), une recherche sémantique
+(pgvector et embeddings `bge-m3` via Ollama), une ingestion automatique (cycles, issues, GitHub, Slack, Plane), un
+graphe « cœur et galaxies », des gabarits de workspace (SaaS, e-commerce, marketplace, agentique) et l'étiquette
+« Labs ». C'est la mémoire que lisent Cortex et les agents (outil MCP `brain_search`). Le graphe ignore le filtre par
+tag, les notes initiales sont en français, et un workspace nommé `demo` reçoit un gabarit interne périmé.
+
+### Décision
+
+Garder le cœur : arbre de pages, éditeur, recherche, ingestion. Sans lui, Cortex perd sa recherche, les agents perdent
+leur contexte, et les intégrations GitHub, Slack et Plane n'ont plus de destination. Couper le graphe, les galaxies,
+les gabarits (un seul workspace vierge), le préremplissage `demo` et l'étiquette Labs. Notes initiales en anglais.
+
+### Alternatives considérées
+
+| Option | Avantages | Inconvénients |
+| ------ | --------- | ------------- |
+| Tout supprimer | Plus léger | Emporte la recherche de Cortex, `brain_search` et trois intégrations |
+| Tout garder | Aucun travail | Fonctions à moitié faites (filtre du graphe), étiquette expérimentale |
+
+### Conséquences
+
+**Positives :** ce qui distingue TaskForce de Plane reste (une base de connaissance que les agents lisent) ; moins de
+surface à maintenir.
+
+**Négatives / risques :** la recherche dépend d'un modèle d'embeddings (ADR-019) ; doublon partiel avec les pages de
+projet, à consolider plus tard.
+
+### Preuve
+
+À venir (lot 3 du [[Plan_Release_Open_Source]]).
+
+---
+
+## ADR-018 - Agents de code : Claude Code et Copilot
+
+**Date** : 14/10/2026 | **Décideur** : Pierre MICHEL | **Statut** : ✅ Accepté, à mettre en œuvre (lot 5) ; complète l'ADR-013
+
+### Contexte
+
+Cinq fournisseurs de délégation existent : `claude-code` (runner local de l'ADR-013, testé en réel), `claude-api` (un
+appel au modèle, texte seul), `github-copilot` (en réalité un appel d'inférence GitHub Models, jamais testé), `cursor`
+(API Background Agents, jamais testée, branche `main` écrite en dur) et `stub` (faux run avec un lien example.com,
+visible en production).
+
+Recherche du 14/10 sur les agents déclenchables par API : l'agent cloud de Copilot se voit assigner une issue via
+l'API GitHub (`copilot-swe-agent[bot]`, préversion publique, jeton utilisateur, abonnement Copilot requis) ; Codex
+cloud n'a pas d'API ; Devin exige un plan Teams ; Cursor est payant ; l'API de Jules est en alpha.
+
+Vérification de la doc de Claude Code (14/10) : un produit tiers ne peut pas utiliser l'Agent SDK avec la connexion
+d'un abonnement (page « Agent SDK overview », règle reprise par « Legal and compliance ») ; lancer le binaire `claude`
+non modifié, connecté par la personne à son propre compte, reste admis.
+
+### Décision
+
+1. **Deux agents** : Claude Code (runner local) et Copilot, cette fois le vrai agent cloud : l'issue est assignée dans
+   le dépôt lié avec le jeton GitHub du workspace, puis suivie par la PR qu'il ouvre. Le CEO peut tester les deux.
+2. **Retirés** : `claude-api`, le faux `github-copilot`, `cursor` et `stub`.
+3. **Le runner garde le CLI `claude`**, jamais l'Agent SDK avec un abonnement. Il gagne :
+   - le suivi en direct (`--output-format stream-json --verbose` relayé au backend, chronologie dans l'app) ;
+   - les validations : un hook `PermissionRequest` déclaré dans le fichier passé par `--settings` interroge TaskForce ;
+     on autorise ou on refuse dans l'app, avec une notification ; sans réponse avant le délai, l'action est refusée ;
+   - l'isolement des hooks du dépôt cloné : un dépôt piégé ne doit pas exécuter de commande sur la machine.
+4. **Mode interactif** (plugin `/taskforce`) : jeton personnel durable et révocable, serveur MCP servi par l'instance en
+   HTTP.
+5. Les autres clients MCP (Copilot dans VS Code, Cursor, Codex CLI, Gemini CLI) se branchent sur ce même serveur, sans
+   garantie : le README dit « testé avec Claude Code ».
+
+### Alternatives considérées
+
+| Option | Avantages | Inconvénients |
+| ------ | --------- | ------------- |
+| Garder les cinq fournisseurs | Liste impressionnante | Trois non testés et un factice : contraire à la règle « pas de fissure » |
+| Runner sur l'Agent SDK | API plus confortable (`canUseTool`) | Interdit avec un abonnement ; exigerait une clé d'API payante |
+| `--permission-prompt-tool` (outil MCP) | Tout reste dans le serveur MCP | Contrat d'entrée et de sortie non documenté officiellement |
+
+### Conséquences
+
+**Positives :** chaque agent affiché fonctionne vraiment ; l'humain garde la main sur les actions sensibles.
+
+**Négatives / risques :** Copilot exige un abonnement et repose sur une API en préversion ; le délai maximal d'un hook
+n'est pas documenté (à tester) ; la clause des conditions d'Anthropic sur « faire tourner Claude Code dans un
+produit » reste à confirmer par écrit.
+
+### Preuve
+
+À venir (lot 5 du [[Plan_Release_Open_Source]]).
+
+---
+
+## ADR-019 - Fournisseur d'IA générique, Ollama par défaut
+
+**Date** : 14/10/2026 | **Décideur** : Pierre MICHEL | **Statut** : ✅ Accepté, à mettre en œuvre (lot 4)
+
+### Contexte
+
+Le backend appelle le service Python `ai-service` (FastAPI, proxy mince) : chat vers Groq si `GROQ_API_KEY` est
+posée, sinon vers Ollama ; embeddings toujours via Ollama (`bge-m3`, 1024 dimensions imposées par la migration V59),
+avec un repli de mauvaise qualité. Les variables `GROQ_*` acceptent en fait tout fournisseur compatible OpenAI, mais
+pas pour les embeddings. Plusieurs appels au modèle ont lieu dans une transaction de base : un modèle local lent peut
+épuiser le pool de connexions. Le service n'a ni authentification ni tests. L'ADR-004 (« Groq appelé directement en
+Java, pas de microservice Python ») ne décrit plus le code.
+
+### Décision
+
+1. Configuration générique compatible OpenAI pour le chat et les embeddings (URL de base, clé, modèles) ; les
+   variables `GROQ_*` restent comme alias pour ne pas casser la prod.
+2. Ollama par défaut avec de petits modèles qui gèrent les outils, embeddings `bge-m3` ; le suffixe `/no_think` ne
+   s'applique qu'à Qwen3.
+3. Les appels au modèle sortent des transactions de base.
+4. Sans fournisseur configuré : échec immédiat et état « IA non configurée » dans l'interface, au lieu d'attendre un
+   délai à chaque appel.
+5. `ai-service` reste en Python, joignable seulement sur le réseau interne, protégé par un secret partagé.
+
+### Alternatives considérées
+
+| Option | Avantages | Inconvénients |
+| ------ | --------- | ------------- |
+| Porter le service en Java (direction de l'ADR-004) | Un service de moins | Réécriture et risque avant le jour J |
+| Rester sur Groq | Rapide | Contraire au positionnement local ; clé payante |
+
+### Conséquences
+
+**Positives :** l'IA tourne sur la machine de l'utilisateur ; un seul format de configuration couvre Ollama, Groq,
+LM Studio, OpenRouter ; un modèle lent ne bloque plus l'application.
+
+**Négatives / risques :** la qualité dépend du modèle choisi ; les petits modèles locaux gèrent moins bien les outils.
+
+### Preuve
+
+À venir (lot 4 du [[Plan_Release_Open_Source]]). L'ADR-004 sera marquée remplacée à ce moment.
+
+---
+
+## ADR-020 - Connexion générale : MCP et webhooks sortants
+
+**Date** : 14/10/2026 | **Décideur** : Pierre MICHEL | **Statut** : ✅ Accepté, à mettre en œuvre (lot 6)
+
+### Contexte
+
+Le catalogue compte 138 tuiles : 3 intégrations réelles (GitHub, Slack, Plane), 129 tuiles qui demandent seulement
+l'URL d'un serveur MCP (dont 25 avec une URL officielle préremplie) et 6 « bientôt ». Tout le MCP est réservé au plan
+Business sans que l'interface le dise, et Cortex n'a pas accès aux outils MCP par défaut. Les webhooks sortants ont un
+écran de gestion, mais rien n'est jamais envoyé ni signé.
+
+### Décision
+
+Deux méthodes générales plutôt qu'une tuile par outil :
+
+1. **MCP pour les actions** : « connecter n'importe quel serveur MCP » (URL, OAuth en un clic ou en-tête), avec les 25
+   préréglages officiels. Les 104 autres tuiles disparaissent. Les outils sont proposés à Cortex ; les écritures
+   demandent une confirmation et sont réservées aux propriétaires et administrateurs.
+2. **Webhooks sortants pour les événements** : issues et commentaires, signés HMAC, avec nouvelles tentatives. Ils
+   branchent n8n, Zapier, Make ou un script maison.
+
+GitHub, Slack et Plane restent des intégrations natives.
+
+### Alternatives considérées
+
+| Option | Avantages | Inconvénients |
+| ------ | --------- | ------------- |
+| Garder les 138 tuiles | Catalogue impressionnant | 104 tuiles ne sont qu'un champ URL : promesse trompeuse |
+| Supprimer les webhooks | Moins de code | Plus aucun moyen de pousser les événements vers un outil d'automatisation |
+
+### Conséquences
+
+**Positives :** deux méthodes qui couvrent tout l'écosystème au lieu d'un catalogue à maintenir ; l'interface ne
+promet plus que ce qui marche.
+
+**Négatives / risques :** un serveur MCP arbitraire est une surface d'attaque (garde anti-SSRF du lot 1, écritures
+réservées) ; les webhooks demandent une file de nouvelles tentatives.
+
+### Preuve
+
+À venir (lot 6 du [[Plan_Release_Open_Source]]).
 
 ---
 

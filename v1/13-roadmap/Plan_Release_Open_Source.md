@@ -1,0 +1,181 @@
+---
+id: plan-release-open-source
+title: Plan de release open source (TaskForce 1.0)
+doc_type: plan
+statut: active
+version: 1.0
+date: "14/10/2026"
+auteur: Pierre MICHEL
+review_cycle: weekly
+tags: [roadmap, open-source, release, securite, ia, agents, auto-hebergement]
+related:
+  - "../12-decisions/Journal_Decisions_ADR.md"
+  - "./Roadmap_Backlog.md"
+  - "../02-produit/README.md"
+---
+
+# Plan de release open source (TaskForce 1.0)
+
+**Version :** 1.0
+**Date :** 14/10/2026
+**Auteur(s) :** Pierre MICHEL
+
+[![Type: Plan](https://img.shields.io/badge/Type-Plan-blue?style=for-the-badge)]() [![Statut: Actif](https://img.shields.io/badge/Statut-Actif-brightgreen?style=for-the-badge)]()
+
+## Liens rapides
+
+- [Journal des ADR](../12-decisions/Journal_Decisions_ADR.md) : ADR-014 à ADR-020
+- [Backlog & roadmap](./Roadmap_Backlog.md) · [État produit](../02-produit/README.md)
+- Code : branche `feature/lean-oss` de `taskforce-fullstack`, trace dans `.ai/roadmap.md`
+
+**Tags :** `#open-source` `#release` `#securite` `#auto-hebergement`
+
+## 1. Pourquoi ce plan
+
+La soutenance est passée. Le constat du CEO : commercialement, la v1 ne résout presque aucun problème. Elle attaque la
+gestion de projet, une catégorie saturée où changer d'outil coûte cher, sans canal de distribution. La recherche d'un
+point d'entrée commercial (04/10) est mise en pause (ADR-014).
+
+Le 14/10, le CEO décide de publier TaskForce comme un projet open source fini, sur le modèle de Plane : forkable,
+utilisable seul ou en entreprise, hébergeable chez soi avec son propre modèle d'IA ou son propre agent de code. Le
+post LinkedIn « projet de fin d'études » sortira le jour des résultats du diplôme, en même temps que la mise en
+production. D'ici là, la production reste en v0.41.0, la version vue par le jury.
+
+## 2. Décisions du 14/10/2026
+
+| Sujet | Choix | ADR |
+|---|---|---|
+| Positionnement | Open source lean et auto-hébergeable ; pas de fissure : fini ou supprimé | ADR-014 |
+| Licence | AGPL-3.0 (comme Plane), nom et logo hors licence | ADR-015 |
+| Facturation | Retirée, avec toutes les limites de plan ; plafonds d'IA réglables par l'instance | ADR-016 |
+| Brain OS | Garder le cœur (pages, éditeur, recherche, ingestion) ; couper graphe, galaxies, gabarits, Labs | ADR-017 |
+| Agents de code | Claude Code (runner local, validations dans l'app) et vrai Copilot ; les autres retirés | ADR-018 |
+| IA | Config générique compatible OpenAI, Ollama et petits modèles par défaut | ADR-019 |
+| Intégrations | MCP générique + webhooks sortants signés ; GitHub, Slack, Plane natifs | ADR-020 |
+| Calendrier | `dev` + test en Docker local ; prod le jour des résultats, version 1.0.0 | ADR-014 |
+
+## 3. Constat de l'audit (14/10/2026)
+
+Audit en lecture seule en cinq passes : backend, frontend et site, outillage des agents et auto-hébergement, mécanismes
+de Claude Code (doc officielle), agents de code déclenchables par API.
+
+- **Ce qui fonctionne de bout en bout** : comptes, workspaces, droits, invitations, équipes, projets, issues (statuts,
+  commentaires, sous-issues, checklist, temps passé), cycles, labels, pages de projet, pièces jointes, notifications en
+  direct, inbox, roadmap, My Work, dashboard, analytics, RGPD, onboarding, 2FA, Smart Assign, spec, briefs d'analyse.
+- **Fissures** : appels d'IA dans des transactions de base ; Cortex outillé seulement si la demande contient des verbes
+  français ; quatre fournisseurs d'agent sur cinq factices ou jamais testés ; 138 tuiles d'intégration dont 3 réelles ;
+  webhooks jamais envoyés ; limites du plan gratuit codées en dur ; chaînes françaises dans l'interface anglaise.
+- **Failles** : voir le lot 1.
+- **Installation à neuf impossible** : chemin documenté en PowerShell seulement, `.env.dev` racine introuvable,
+  Keycloak absent du compose de base, Ollama absent de tous les compose, images Docker privées.
+- **Historique git** : scanné en entier (valeurs masquées) ; aucun secret de production ; identifiants de dev et mot de
+  passe Mailtrap sandbox présents.
+
+## 4. Lots
+
+Chaque lot donne une PR vers `dev`, CI verte, commits atomiques au nom du CEO. Le CEO teste en Docker local à la fin
+des lots visibles (2, 3, 5, 7).
+
+### Lot 0 : licence, fichiers communautaires, ménage
+
+- [x] Licence AGPL-3.0 et toutes ses références [id:: OSS-0.1] [statut:: done] [ref:: 47c921b8]
+- [x] SECURITY.md, CODE_OF_CONDUCT.md, formulaires d'issues, modèle de PR avec les vrais labels [id:: OSS-0.2] [statut:: done] [ref:: a8886689]
+- [x] Ménage : QUICKSTART et compose Keycloak (identifiants Mailtrap en clair), TODO.md, `.instructions/`, `.pyc`, sous-module orphelin, lockfile vide, cible k6 locale [id:: OSS-0.3] [statut:: done] [ref:: c4250b1f, 5bb89eb4, d6377462, 2fa314f9]
+- [x] Dates en anglais (travail en cours du CEO) [id:: OSS-0.4] [statut:: done] [ref:: 001b0b55]
+
+### Lot 1 : sécurité
+
+- [ ] La connexion GitHub ne contourne plus la 2FA [id:: OSS-1.1] [statut:: todo]
+- [ ] URL MCP collée vérifiée contre les adresses internes (SSRF) [id:: OSS-1.2] [statut:: todo]
+- [ ] `/actuator` limité à la santé [id:: OSS-1.3] [statut:: todo]
+- [ ] Plus de réglage qui désactive l'authentification (`keycloak.enabled=false`) [id:: OSS-1.4] [statut:: todo]
+- [ ] Exécution d'outils MCP en écriture réservée aux propriétaires et administrateurs [id:: OSS-1.5] [statut:: todo]
+- [ ] Profil par défaut sûr ; comptes de seed et logs bavards seulement en dev explicite [id:: OSS-1.6] [statut:: todo]
+- [ ] Recherche de membres limitée (fin de la fuite d'e-mails entre workspaces) [id:: OSS-1.7] [statut:: todo]
+- [ ] Runner : hooks du dépôt cloné ignorés [id:: OSS-1.8] [statut:: todo]
+- [ ] Clés PostHog en dur retirées, logos Anthropic retirés de la landing, `ai-service` jamais exposé [id:: OSS-1.9] [statut:: todo]
+
+### Lot 2 : facturation et limites
+
+- [ ] Backend : plus aucune limite de plan (workspaces, issues, collaborateurs, intégrations, MCP, analytics, historique) [id:: OSS-2.1] [statut:: todo]
+- [ ] Plafonds d'IA et limitation de débit réglables par variables, illimités par défaut [id:: OSS-2.2] [statut:: todo]
+- [ ] Stripe, facturation et module commercial retirés du backend [id:: OSS-2.3] [statut:: todo]
+- [ ] Front : `/billing`, `/payment`, upgrades, badges, cadenas, étape d'upsell du tour, « View plans » retirés [id:: OSS-2.4] [statut:: todo]
+- [ ] Docs Stripe et matrice des plans retirées ; tables gardées (aucune migration destructive) [id:: OSS-2.5] [statut:: todo]
+
+### Lot 3 : coupes et anglais
+
+- [ ] Routes mortes, 38 fichiers inatteignables, dépendances jamais importées [id:: OSS-3.1] [statut:: todo]
+- [ ] Étiquette Labs retirée partout [id:: OSS-3.2] [statut:: todo]
+- [ ] Fournisseurs d'agent retirés : stub, faux Copilot, Cursor, Claude API [id:: OSS-3.3] [statut:: todo]
+- [ ] Brain OS : graphe, galaxies, gabarits, préremplissage `demo` retirés [id:: OSS-3.4] [statut:: todo]
+- [ ] Tout en anglais : interface, erreurs backend, messages Slack, prompts, notes initiales [id:: OSS-3.5] [statut:: todo]
+- [ ] Code backend mort : endpoints jamais appelés, ancienne 2FA Keycloak, config JWT, capture `ai_generations` [id:: OSS-3.6] [statut:: todo]
+- [ ] Raccourcis clavier affichés mais non câblés retirés ; page Help corrigée ou retirée [id:: OSS-3.7] [statut:: todo]
+
+### Lot 4 : IA locale d'abord
+
+- [ ] Appels au modèle sortis des transactions de base [id:: OSS-4.1] [statut:: todo]
+- [ ] Config générique compatible OpenAI (chat et embeddings), alias `GROQ_*` conservés [id:: OSS-4.2] [statut:: todo]
+- [ ] Ollama par défaut avec de petits modèles ; `/no_think` seulement pour Qwen3 [id:: OSS-4.3] [statut:: todo]
+- [ ] Sans fournisseur : échec immédiat et état « IA non configurée » [id:: OSS-4.4] [statut:: todo]
+- [ ] Cortex : le modèle choisit ses outils, prompts en anglais, outils MCP avec confirmation [id:: OSS-4.5] [statut:: todo]
+- [ ] `ai-service` : réseau interne, secret partagé, santé du fournisseur, tests [id:: OSS-4.6] [statut:: todo]
+
+### Lot 5 : Claude Code et Copilot
+
+- [ ] Jetons personnels durables et révocables (Réglages) [id:: OSS-5.1] [statut:: todo]
+- [ ] Serveur MCP servi par l'instance en HTTP ; plugin corrigé (nom du serveur, jeton, plus de chemin local) [id:: OSS-5.2] [statut:: todo]
+- [ ] Runner : suivi en direct (`stream-json`) et chronologie dans l'app [id:: OSS-5.3] [statut:: todo]
+- [ ] Validations : hook `PermissionRequest`, Autoriser ou Refuser dans l'app, refus si pas de réponse [id:: OSS-5.4] [statut:: todo]
+- [ ] Notifications : run terminé, run en échec, validation demandée [id:: OSS-5.5] [statut:: todo]
+- [ ] Vrai Copilot : assignation de l'issue à l'agent cloud, suivi de la PR [id:: OSS-5.6] [statut:: todo]
+- [ ] Smart Assign ne propose que des agents configurés ; tests des contrôleurs du runner [id:: OSS-5.7] [statut:: todo]
+- [ ] Distribution du runner et du serveur MCP en une commande (npm, compte du CEO) [id:: OSS-5.8] [statut:: todo]
+
+### Lot 6 : intégrations
+
+- [ ] « Connecter un serveur MCP » + 25 préréglages officiels ; 104 tuiles retirées [id:: OSS-6.1] [statut:: todo]
+- [ ] Webhooks sortants envoyés, signés HMAC, avec nouvelles tentatives [id:: OSS-6.2] [statut:: todo]
+- [ ] GitHub : statut des PR rafraîchi, dépôt modifiable après création, « Disconnect » réparé [id:: OSS-6.3] [statut:: todo]
+- [ ] Slack : messages en anglais, variables branchées en prod [id:: OSS-6.4] [statut:: todo]
+
+### Lot 7 : auto-hébergement
+
+- [ ] Compose d'auto-hébergement multi-OS, Ollama en option, point d'entrée unique [id:: OSS-7.1] [statut:: todo]
+- [ ] `.env.example` minimal et script de génération des secrets (bash et PowerShell) [id:: OSS-7.2] [statut:: todo]
+- [ ] Inscription possible sans SMTP [id:: OSS-7.3] [statut:: todo]
+- [ ] Keycloak 26 partout, realm configuré par variables (dont `frontendUrl`) [id:: OSS-7.4] [statut:: todo]
+- [ ] SELF_HOSTING.md et CONTRIBUTING.md [id:: OSS-7.5] [statut:: todo]
+- [ ] Test d'une installation à neuf (Linux) [id:: OSS-7.6] [statut:: todo]
+- [ ] Déploiement de la prod du CEO compatible (VM1, VM2) [id:: OSS-7.7] [statut:: todo]
+
+### Lot 8 : vitrine
+
+- [ ] Landing ramenée à une dizaine de pages, promesses fausses retirées, positionnement open source [id:: OSS-8.1] [statut:: todo]
+- [ ] README en anglais avec captures [id:: OSS-8.2] [statut:: todo]
+- [ ] Docs Fern : auto-hébergement, API régénérée [id:: OSS-8.3] [statut:: todo]
+- [ ] Purge de `.ai/` et `docs/` ; fichiers d'instructions des assistants regroupés [id:: OSS-8.4] [statut:: todo]
+- [ ] Brouillon du post LinkedIn [id:: OSS-8.5] [statut:: todo]
+
+### Jour J : résultats du diplôme
+
+- [ ] Release 1.0.0 sur `main` [id:: OSS-J.1] [statut:: todo]
+- [ ] Variables d'environnement de prod mises à jour (VM1, VM2) [id:: OSS-J.2] [statut:: todo]
+- [ ] Images GHCR publiques, signalement privé de vulnérabilités activé, description du dépôt (CEO) [id:: OSS-J.3] [statut:: todo]
+- [ ] Branche `feature/lean-oss` de la doc fusionnée [id:: OSS-J.4] [statut:: todo]
+- [ ] Post LinkedIn (CEO) [id:: OSS-J.5] [statut:: todo]
+
+## 5. Actions du CEO hors code
+
+- Régénérer le mot de passe Mailtrap (présent dans l'historique public).
+- Révoquer la clé personnelle PostHog `phx_` (rappel de l'audit du 22/09).
+- Tester Copilot avec son compte (lot 5).
+- Créer ou fournir l'accès npm pour publier le runner et le serveur MCP (lot 5).
+- Valider en Docker local à la fin des lots 2, 3, 5 et 7.
+- Jour J : rendre publics les paquets GHCR, activer le signalement privé de vulnérabilités, mettre à jour la
+  description et les topics du dépôt.
+
+---
+
+**Projet :** Taskforce, Metz Numeric School 2025-2026

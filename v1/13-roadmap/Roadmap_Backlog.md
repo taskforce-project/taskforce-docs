@@ -24,6 +24,9 @@ Logo projet        : assets/images/logo_taskforce.png
 **Date :** 08/06/2026  
 **Auteur(s) :** Pierre MICHEL
 
+> **▶ 14/10/2026 :** le chantier en cours est la release open source de TaskForce 1.0, suivie item par item dans
+> [[Plan_Release_Open_Source]] (ADR-014 à ADR-020). Ce backlog reste la référence historique de la v1.
+
 [![Type: Registre](https://img.shields.io/badge/Type-Registre-blue?style=for-the-badge)]() [![Statut: Actif](https://img.shields.io/badge/Statut-Actif-brightgreen?style=for-the-badge)]() [![Couverture: RNCP + Pro](https://img.shields.io/badge/Couverture-RNCP%20%2B%20Ultra%20Pro-purple?style=for-the-badge)]()
 
 ## Liens rapides
