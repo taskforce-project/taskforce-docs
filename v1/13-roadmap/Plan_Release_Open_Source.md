@@ -161,10 +161,11 @@ des lots visibles (2, 3, 5, 7).
 
 ### Release de sécurité (avant les résultats)
 
-- [ ] Suite backend complète verte, PR vers `dev`, CI verte [id:: OSS-S.1] [statut:: wip]
-- [ ] Validation du CEO en Docker local [id:: OSS-S.2] [statut:: todo]
-- [ ] `POSTHOG_KEY` posée sur VM2, relais de métriques VM1 repointé sur 8081, `PUBLIC_POSTHOG_KEY` sur Vercel (CEO) [id:: OSS-S.3] [statut:: todo]
-- [ ] Release sur `main`, déploiement automatique vérifié [id:: OSS-S.4] [statut:: todo]
+- [x] Suite backend complète verte (1366 tests), PR [#335](https://github.com/taskforce-project/taskforce-fullstack/pull/335) vers `dev`, CI 16/16 verte [id:: OSS-S.1] [statut:: done]
+- [x] Validation en Docker local (navigateur intégré, compte de seed ; aller-retour GitHub couvert par les tests) [id:: OSS-S.2] [statut:: done]
+- [x] `POSTHOG_KEY` posée sur VM2, relais de métriques VM1 repointé sur 8081 [id:: OSS-S.3] [statut:: done]
+- [ ] `PUBLIC_POSTHOG_KEY` sur Vercel puis redéploiement du site (CEO) [id:: OSS-S.5] [statut:: todo]
+- [x] Release [#336](https://github.com/taskforce-project/taskforce-fullstack/pull/336) sur `main` (v0.42.0, 16/10), déploiement vérifié : backend, app, site, Prometheus [id:: OSS-S.4] [statut:: done]
 
 ### Après la 1.0 : mode desktop
 

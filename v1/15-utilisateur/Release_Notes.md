@@ -23,6 +23,14 @@ tags: [utilisateur, release-notes, changelog, versions, e29, rncp, soutenance]
 
 ---
 
+## produit v0.42.0 (16/10/2026) : release de sécurité, licence AGPL-3.0
+
+- **Connexion GitHub ou Google** : quand la double authentification est activée, l'application demande maintenant le code à six chiffres après le retour du fournisseur. Auparavant, ce mode de connexion la contournait.
+- **Invitations** : la recherche ne propose plus que les personnes avec qui l'on partage déjà un espace de travail. Pour inviter quelqu'un d'autre, on saisit son adresse complète.
+- **Serveurs MCP** : une adresse qui vise le réseau interne du serveur est refusée ; les actions qui modifient des données dans un outil externe sont réservées aux propriétaires et administrateurs.
+- **Licence** : TaskForce est désormais un logiciel libre sous licence AGPL-3.0 ; le pied de page du site l'indique.
+- **Sécurité technique** : métriques du serveur déplacées sur un port interne, Next.js 16.3.6, logos d'Anthropic retirés du site.
+
 ## produit v0.41.0 (28/09/2026) : runner local en libre-service
 
 - **Runner local** : chacun configure le sien dans Réglages > Agents. Un bouton crée son identité, puis l'application affiche une seule fois le fichier `.env` et les commandes pour lancer le runner. Régénérer le secret demande une confirmation, puisque cela coupe un runner déjà lancé.
