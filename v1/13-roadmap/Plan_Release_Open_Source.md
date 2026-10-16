@@ -52,7 +52,8 @@ production. D'ici là, la production reste en v0.41.0, la version vue par le jur
 | Agents de code | Claude Code (runner local, validations dans l'app) et vrai Copilot ; les autres retirés | ADR-018 |
 | IA | Config générique compatible OpenAI, Ollama et petits modèles par défaut | ADR-019 |
 | Intégrations | MCP générique + webhooks sortants signés ; GitHub, Slack, Plane natifs | ADR-020 |
-| Calendrier | `dev` + test en Docker local ; prod le jour des résultats, version 1.0.0 | ADR-014 |
+| Calendrier | `dev` + test en Docker local ; release de sécurité (lots 0 et 1) avant les résultats ; le reste le jour des résultats, version 1.0.0 | ADR-014 |
+| Distribution (16/10) | Plus de serveur après les résultats : 1.0 = téléchargement Docker ; ensuite essai d'un mode desktop | ADR-014 |
 
 ## 3. Constat de l'audit (14/10/2026)
 
@@ -85,15 +86,15 @@ des lots visibles (2, 3, 5, 7).
 
 ### Lot 1 : sécurité
 
-- [ ] La connexion GitHub ne contourne plus la 2FA [id:: OSS-1.1] [statut:: todo]
-- [ ] URL MCP collée vérifiée contre les adresses internes (SSRF) [id:: OSS-1.2] [statut:: todo]
-- [ ] `/actuator` limité à la santé [id:: OSS-1.3] [statut:: todo]
-- [ ] Plus de réglage qui désactive l'authentification (`keycloak.enabled=false`) [id:: OSS-1.4] [statut:: todo]
-- [ ] Exécution d'outils MCP en écriture réservée aux propriétaires et administrateurs [id:: OSS-1.5] [statut:: todo]
-- [ ] Profil par défaut sûr ; comptes de seed et logs bavards seulement en dev explicite [id:: OSS-1.6] [statut:: todo]
-- [ ] Recherche de membres limitée (fin de la fuite d'e-mails entre workspaces) [id:: OSS-1.7] [statut:: todo]
-- [ ] Runner : hooks du dépôt cloné ignorés [id:: OSS-1.8] [statut:: todo]
-- [ ] Clés PostHog en dur retirées, logos Anthropic retirés de la landing, `ai-service` jamais exposé [id:: OSS-1.9] [statut:: todo]
+- [x] La connexion GitHub ne contourne plus la 2FA (défi scellé + `POST /api/auth/oauth/2fa`) [id:: OSS-1.1] [statut:: done] [ref:: f4a7a049]
+- [x] URL MCP collée vérifiée contre les adresses internes (SSRF), option `MCP_ALLOW_PRIVATE_NETWORK` [id:: OSS-1.2] [statut:: done] [ref:: cdd20266]
+- [x] Actuator sur le port de gestion 8081 en prod, `/livez` et `/readyz` sur le port de l'API [id:: OSS-1.3] [statut:: done] [ref:: 2d9c4a93]
+- [x] Plus de réglage qui désactive l'authentification (`keycloak.enabled=false`) [id:: OSS-1.4] [statut:: done] [ref:: 2d9c4a93]
+- [x] Exécution d'outils MCP en écriture réservée aux propriétaires et administrateurs ; allow-list appliquée à l'exécution [id:: OSS-1.5] [statut:: done]
+- [x] Profil par défaut sûr : l'image backend démarre déjà en `prod` ; compose racine refait au lot 7 [id:: OSS-1.6] [statut:: done]
+- [x] Recherche de membres limitée aux personnes qui partagent un workspace (fin de la fuite d'e-mails) [id:: OSS-1.7] [statut:: done]
+- [x] Runner : réglages du dépôt cloné ignorés (`--setting-sources user`, vérifié sur la CLI 2.1.293) [id:: OSS-1.8] [statut:: done] [ref:: 98ef93d5]
+- [x] Clés PostHog en dur retirées, logos Anthropic retirés ; `ai-service` déjà non exposé [id:: OSS-1.9] [statut:: done] [ref:: 4905f653, cc791f54]
 
 ### Lot 2 : facturation et limites
 
@@ -157,6 +158,17 @@ des lots visibles (2, 3, 5, 7).
 - [ ] Docs Fern : auto-hébergement, API régénérée [id:: OSS-8.3] [statut:: todo]
 - [ ] Purge de `.ai/` et `docs/` ; fichiers d'instructions des assistants regroupés [id:: OSS-8.4] [statut:: todo]
 - [ ] Brouillon du post LinkedIn [id:: OSS-8.5] [statut:: todo]
+
+### Release de sécurité (avant les résultats)
+
+- [ ] Suite backend complète verte, PR vers `dev`, CI verte [id:: OSS-S.1] [statut:: wip]
+- [ ] Validation du CEO en Docker local [id:: OSS-S.2] [statut:: todo]
+- [ ] `POSTHOG_KEY` posée sur VM2, relais de métriques VM1 repointé sur 8081, `PUBLIC_POSTHOG_KEY` sur Vercel (CEO) [id:: OSS-S.3] [statut:: todo]
+- [ ] Release sur `main`, déploiement automatique vérifié [id:: OSS-S.4] [statut:: todo]
+
+### Après la 1.0 : mode desktop
+
+- [ ] Essai de deux à trois jours : coque Tauri ou Electron, profil local sans Keycloak, base embarquée, Claude Code lancé directement ; mesure du poids, de la RAM et de l'effort [id:: OSS-D.1] [statut:: todo]
 
 ### Jour J : résultats du diplôme
 

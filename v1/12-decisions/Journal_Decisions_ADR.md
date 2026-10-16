@@ -910,6 +910,23 @@ depuis `main`) ; l'instance publique `taskforce-project.fr` devient gratuite et 
 
 Plan et suivi item par item : [[Plan_Release_Open_Source]]. Branches `feature/lean-oss` du code et de la doc.
 
+### Mise à jour du 16/10/2026 : fin des serveurs, cap sur le desktop
+
+- **Contexte** : l'accès aux serveurs (VM1, VM2) prend fin après les résultats du diplôme. Il n'y aura donc plus
+  d'instance hébergée : TaskForce se télécharge.
+- **Décision** : la 1.0 se distribue en auto-hébergement Docker (lot 7), qui marche pour une équipe comme pour une
+  personne seule, données sur sa machine. Ensuite, un essai de deux à trois jours d'un mode desktop (coque Tauri ou
+  Electron, profil local sans Keycloak, base embarquée, Claude Code lancé directement par l'app) mesurera le poids et
+  l'effort réels avant de s'y engager. À terme, le CEO veut une app desktop, sur le modèle de Claude Desktop.
+- **Conséquence produit à trancher au moment de l'essai** : une app desktop est mono-utilisateur par défaut ; le côté
+  équipe (membres, invitations, droits) ne revient qu'avec une synchronisation.
+- **Release de sécurité anticipée** : les lots 0 et 1 partent en production dès qu'ils sont prêts, avant les résultats,
+  car ils ne retirent rien de visible pour le jury et ferment des failles présentes en production. Les suppressions
+  (lots 2 et suivants) restent pour le jour des résultats.
+- **Veille** : l'outil open source le plus proche de l'idée desktop est Vibe Kanban (kanban qui lance Claude Code ou
+  Codex dans des worktrees, distribué par `npx` et Tauri) ; aucun outil open source trouvé ne réunit gestion de
+  projet, base de connaissance locale, Ollama et agents de code.
+
 ---
 
 ## ADR-015 - Licence AGPL-3.0
