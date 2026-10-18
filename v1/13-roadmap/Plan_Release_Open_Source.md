@@ -132,14 +132,15 @@ des lots visibles (2, 3, 5, 7).
 
 ### Lot 5 : Claude Code et Copilot
 
-- [ ] Jetons personnels durables et révocables (Réglages) [id:: OSS-5.1] [statut:: todo]
-- [ ] Serveur MCP servi par l'instance en HTTP ; plugin corrigé (nom du serveur, jeton, plus de chemin local) [id:: OSS-5.2] [statut:: todo]
-- [ ] Runner : suivi en direct (`stream-json`) et chronologie dans l'app [id:: OSS-5.3] [statut:: todo]
-- [ ] Validations : hook `PermissionRequest`, Autoriser ou Refuser dans l'app, refus si pas de réponse [id:: OSS-5.4] [statut:: todo]
-- [ ] Notifications : run terminé, run en échec, validation demandée [id:: OSS-5.5] [statut:: todo]
-- [ ] Vrai Copilot : assignation de l'issue à l'agent cloud, suivi de la PR [id:: OSS-5.6] [statut:: todo]
-- [ ] Smart Assign ne propose que des agents configurés ; tests des contrôleurs du runner [id:: OSS-5.7] [statut:: todo]
-- [ ] Distribution du runner et du serveur MCP en une commande (npm, compte du CEO) [id:: OSS-5.8] [statut:: todo]
+- [x] Jetons personnels durables et révocables (`tfp_`, empreinte SHA-256, expiration 30, 90, 365 jours ou aucune) dans Réglages > Agents ; utilisables seulement sur le serveur MCP (filtre fail-closed) ; V95 [id:: OSS-5.1] [statut:: done] [ref:: 1edf5345, 6ccec74f]
+- [x] Serveur MCP servi par le backend en HTTP (`POST /api/workspaces/{slug}/mcp`, 12 outils, chaque outil rejugé par la portée de la session déléguée sur son équivalent REST) ; plugin en HTTP avec jeton personnel ; `taskforce-mcp` (Node) retiré [id:: OSS-5.2] [statut:: done] [ref:: 9e787f2d, 2a49a48b, 2592d8e9]
+- [x] Runner : `stream-json` relayé par lots, chronologie de l'issue (500 événements au plus par run) ; MCP de l'instance en HTTP (plus de build local) ; V96 [id:: OSS-5.3] [statut:: done] [ref:: 1c93b20d, 5501346b, 6ccec74f]
+- [x] Validations : `--permission-mode manual --permission-prompts none` + hook `PermissionRequest` HTTP vers un serveur local du runner ; Allow ou Deny sur l'issue, par la seule personne qui a délégué ; refus au bout de 10 minutes ; vérifié en réel sur Claude Code 2.1.293 [id:: OSS-5.4] [statut:: done] [ref:: 1c93b20d, 5501346b, 6ccec74f]
+- [x] Notifications : validation demandée, run terminé, run en échec (y compris jamais réclamé), réglage « Coding agents » [id:: OSS-5.5] [statut:: done] [ref:: 9303fe24, 6ccec74f]
+- [x] Vrai Copilot : tâche de l'agent cloud de GitHub (API des tâches d'agent, préversion publique) dans le dépôt du projet, avec le jeton GitHub du workspace ; état suivi, lien vers la PR ; **à tester par le CEO avec un abonnement Copilot** [id:: OSS-5.6] [statut:: done] [ref:: 48fd096b, 9de77e50]
+- [x] Agents prêts seulement (runner créé pour Claude Code ; GitHub connecté et dépôt lié pour Copilot) dans Smart Assign, le menu Assignee et la délégation ; tests des contrôleurs du runner [id:: OSS-5.7] [statut:: done] [ref:: b33ef7cc, 20196ef3, 9de77e50]
+- [ ] Distribution du runner en une commande (npm, compte et nom de paquet à choisir par le CEO) ; le serveur MCP n'a plus à être distribué, l'instance le sert. Côté code, il restera à lire `.env` et `runner.config.json` dans le dossier du runner quand il est installé par npm [id:: OSS-5.8] [statut:: todo]
+- [x] Suites vertes (backend complet, runner 125, front avec seuils) ; essais réels : Claude Code branché en HTTP avec un jeton personnel, validations sur la CLI 2.1.293, run complet runner + faux agent (chronologie, validation autorisée, notifications) ; PR [#345](https://github.com/taskforce-project/taskforce-fullstack/pull/345) vers `dev` [id:: OSS-5.9] [statut:: done]
 
 ### Lot 6 : intégrations
 
