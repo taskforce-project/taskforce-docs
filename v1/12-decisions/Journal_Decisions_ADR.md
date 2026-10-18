@@ -27,7 +27,7 @@ tags: [adr, decisions, architecture, backend, frontend, ia, securite, memoire, r
 | [ADR-001](#adr-001--stack-technique--spring-boot-4--maven--java-21) | Stack technique : Spring Boot 4 + Maven + Java 21 | ✅ Accepté | Nov 2025 |
 | [ADR-002](#adr-002--multi-tenant-par-workspace--hiérarchie-owneradminmember) | Multi-tenant par workspace, hiérarchie OWNER/ADMIN/MEMBER | ✅ Accepté | Nov 2025 |
 | [ADR-003](#adr-003--keycloak-comme-identity-provider--jwt-hs512) | Keycloak comme Identity Provider + JWT HS512 | ✅ Accepté | Nov 2025 |
-| [ADR-004](#adr-004--groq-api-appelée-directement-en-java-pas-de-microservice-python) | Groq API appelée directement en Java, pas de microservice Python | ✅ Accepté | Mar 2026 |
+| [ADR-004](#adr-004--groq-api-appelée-directement-en-java-pas-de-microservice-python) | Groq API appelée directement en Java, pas de microservice Python | Remplacée par ADR-019 | Mar 2026 |
 | [ADR-005](#adr-005--pgvector-natif-postgresql-pas-de-base-vectorielle-séparée) | pgvector natif PostgreSQL, pas de base vectorielle séparée | ✅ Accepté | Avr 2026 |
 | [ADR-006](#adr-006--rabbitmq--stomp-pour-le-temps-réel) | RabbitMQ + STOMP pour le temps réel | ✅ Accepté | Déc 2025 |
 | [ADR-007](#adr-007--politique-no-mock--testcontainers-pour-les-tests-dintégration) | Politique no-mock : Testcontainers pour les tests d'intégration | ✅ Accepté | Jan 2026 |
@@ -42,7 +42,7 @@ tags: [adr, decisions, architecture, backend, frontend, ia, securite, memoire, r
 | [[#ADR-016 - Retrait de la facturation et des limites de plan\|ADR-016]] | Retrait de la facturation et des limites de plan | ✅ Mis en œuvre (lot 2, 18/10) | Oct 2026 |
 | [[#ADR-017 - Brain OS réduit à son cœur\|ADR-017]] | Brain OS réduit à son cœur | ✅ Accepté, mis en œuvre (lot 3) | Oct 2026 |
 | [[#ADR-018 - Agents de code : Claude Code et Copilot\|ADR-018]] | Agents de code : Claude Code et Copilot | ✅ Accepté (lot 5) | Oct 2026 |
-| [[#ADR-019 - Fournisseur d'IA générique, Ollama par défaut\|ADR-019]] | Fournisseur d'IA générique, Ollama par défaut | ✅ Accepté (lot 4) | Oct 2026 |
+| [[#ADR-019 - Fournisseur d'IA générique, Ollama par défaut\|ADR-019]] | Fournisseur d'IA générique, Ollama par défaut | ✅ Accepté, mis en œuvre (lot 4) | Oct 2026 |
 | [[#ADR-020 - Connexion générale : MCP et webhooks sortants\|ADR-020]] | Connexion générale : MCP et webhooks sortants | ✅ Accepté (lot 6) | Oct 2026 |
 | [[#ADR-021 - Application desktop locale, sur le modèle de Claude Desktop\|ADR-021]] | Application desktop locale, sur le modèle de Claude Desktop | ✅ Accepté (cap), essai à faire | Oct 2026 |
 
@@ -228,7 +228,7 @@ spring:
 
 ## ADR-004 — Groq API appelée directement en Java, pas de microservice Python
 
-**Date** : Mars 2026 | **Décideur** : Pierre MICHEL | **Statut** : ✅ Accepté
+**Date** : Mars 2026 | **Décideur** : Pierre MICHEL | **Statut** : Remplacée par [[#ADR-019 - Fournisseur d'IA générique, Ollama par défaut|ADR-019]] le 18/10/2026 (le code passait déjà par l'`ai-service` Python depuis juillet)
 
 ### Contexte
 
@@ -1129,7 +1129,7 @@ produit » reste à confirmer par écrit.
 
 ## ADR-019 - Fournisseur d'IA générique, Ollama par défaut
 
-**Date** : 14/10/2026 | **Décideur** : Pierre MICHEL | **Statut** : ✅ Accepté, à mettre en œuvre (lot 4)
+**Date** : 14/10/2026 | **Décideur** : Pierre MICHEL | **Statut** : ✅ Accepté, mis en œuvre le 18/10/2026 (lot 4)
 
 ### Contexte
 
@@ -1167,7 +1167,22 @@ LM Studio, OpenRouter ; un modèle lent ne bloque plus l'application.
 
 ### Preuve
 
-À venir (lot 4 du [[Plan_Release_Open_Source]]). L'ADR-004 sera marquée remplacée à ce moment.
+Lot 4 du [[Plan_Release_Open_Source]], branche `feature/lean-oss` (pas en prod) :
+
+1. `ai-service/app/config.py` : `AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL`, `AI_MODEL_FAST`, `AI_EMBED_*`, `AI_TIMEOUT`,
+   `AI_PROVIDER=none` ; `GROQ_*` et `OLLAMA_*` en alias (testé par `tests/test_config.py`).
+2. Ollama sur la machine hôte par défaut, `qwen3:8b` pour les deux tiers et `bge-m3` ; `/no_think` seulement pour
+   Qwen3 (`with_no_think`, testé).
+3. Plus aucun appel au modèle sous transaction : `IssueAiService`, `AiConversationService`, `SmartAssignService`,
+   `BrainSearchService` lisent dans une transaction courte (`TransactionTemplate`), appellent le modèle, puis écrivent.
+4. `AiStatusService` lit `GET /v1/status` (30 s) : sans IA, `AiGatewayClient` échoue tout de suite ; l'interface
+   lit `GET /api/ai/status` et affiche « AI is not configured » dans Cortex.
+5. Secret partagé obligatoire sur toutes les routes `/v1` (`ai-service/app/security.py`), service sans port publié,
+   60 tests pytest et workflow `ai-service-tests.yml`.
+
+Écart assumé : le repli « lexical » des embeddings est supprimé plutôt que gardé. Ses vecteurs de hachage étaient
+rangés avec les vrais et rendaient les similarités incomparables ; la recherche passe en plein texte sans modèle
+(V94 lie chaque vecteur à son modèle).
 
 ---
 
