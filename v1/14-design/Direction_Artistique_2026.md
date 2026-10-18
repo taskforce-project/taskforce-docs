@@ -2,8 +2,8 @@
 id: direction-artistique-2026
 title: Direction artistique 2026 - alignement sur le portfolio
 doc_type: design
-statut: propose
-version: 0.1
+statut: applique
+version: 0.2
 date: "18/10/2026"
 auteur: Pierre MICHEL
 review_cycle: on-change
@@ -16,7 +16,8 @@ related:
 
 # Direction artistique 2026 : alignement sur le portfolio
 
-**Version :** 0.1 (spécification, pas encore appliquée)
+**Version :** 0.2 (appliquée à l'application le 18/10/2026, branche `feature/lean-oss`, pas en prod ; site, doc Fern
+et README au lot 8)
 **Date :** 18/10/2026
 **Auteur(s) :** Pierre MICHEL
 
@@ -24,8 +25,7 @@ related:
 
 Le CEO veut pour TaskForce la direction artistique de son portfolio
 (<https://ai-portfolio-pierre-michel.vercel.app/>). Elle s'applique à l'application (web et desktop, qui partagent le
-même front), au site, à la doc Fern et au README. Le [[Design_System]] actuel (Inter, gris froids, rayon 10 px) sera
-mis à jour une fois la refonte appliquée.
+même front), au site, à la doc Fern et au README. Le [[Design_System]] (v2.0) décrit la charte appliquée.
 
 ## 2. Relevé du portfolio (18/10/2026)
 
@@ -143,3 +143,33 @@ faites) :
 6. Mise à jour du [[Design_System]].
 
 Critère de fin : aucune couleur hors jetons dans `app/` et `components/`, contraste AA vérifié en clair et en sombre.
+
+## 7. Mise en œuvre (18/10/2026)
+
+Branche `feature/lean-oss`, pas en prod. Étapes 1 à 3 du §6 faites, plus les écrans de connexion :
+
+- `e4af23f1` : jetons clairs et sombres, Geist et Geist Mono, rayon 0, composants de base (bouton à liseré, badge
+  teinte et encre, voiles bleu nuit, avatar de workspace en tuile pleine), `lib/palette.ts` ; le contraste élevé
+  surcharge aussi les nouveaux jetons ; `hsl(var(--x))` sur des jetons hex corrigés (le navigateur les ignorait).
+- `9679cbfe` : couleurs stockées. La couleur d'accent d'un projet ou d'une équipe est une classe Tailwind en base :
+  V93 convertit l'ancienne palette (`bg-violet-500` vers `bg-shape-pink`…), sinon les projets perdaient leur
+  couleur. Sélecteurs, valeurs par défaut du backend (statuts, types, libellés) et seeds sur la palette.
+- `c50100a3` : 563 classes de couleur codées en dur et les hex des composants passés aux jetons, par une règle par
+  famille de couleur (voir [[Design_System]] §2.3) ; palettes dupliquées regroupées, palettes mortes retirées.
+- `788daa0a` : écrans de connexion. Panneau de marque en papier doux avec filet ; intro de connexion en aplat bleu
+  (au lieu de la vague du Lab) ; `labs-wave.jpg` supprimée.
+
+Choix faits en cours de route :
+
+- La palette n'a pas de violet : administrateur et lecteur passent en bleu, « fusionnée » (PR) et mention en rose.
+- Priorité moyenne en bleu : la palette n'a qu'un jaune, pris par la priorité haute.
+- Initiales sur une forme verte ou rouge en bleu nuit : le blanc y est à 4,1:1, sous le seuil AA du petit texte.
+- Logo inchangé : il est monochrome (noir, inversé en sombre), aucune recoloration nécessaire.
+- Illustrations isométriques non reprises tant que leur licence n'est pas vérifiée (§5).
+
+Reporté au lot 8 du [[Plan_Release_Open_Source]], qui retouche les mêmes fichiers : site Astro, doc Fern, bannière du
+README et captures, dont celle du panneau de connexion (`frontend/public/screens/dashboard.webp`, encore à
+l'ancienne charte). Les captures attendent aussi la fin des lots 4 à 7, qui changent encore des écrans.
+
+Critère de fin atteint pour l'application : plus aucune classe de la palette Tailwind par défaut, hex limités aux
+exceptions listées dans [[Design_System]] §2.3, contrastes AA calculés ([[Design_System]] §9).

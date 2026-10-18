@@ -159,7 +159,7 @@ des lots visibles (2, 3, 5, 7).
 
 ### Lot 8 : vitrine
 
-- [ ] Landing ramenée à une dizaine de pages, promesses fausses retirées, positionnement open source [id:: OSS-8.1] [statut:: todo]
+- [ ] Landing ramenée à une dizaine de pages, promesses fausses retirées, positionnement open source, direction artistique (OSS-DA.4) [id:: OSS-8.1] [statut:: todo]
 - [ ] README en anglais avec captures [id:: OSS-8.2] [statut:: todo]
 - [ ] Docs Fern : auto-hébergement, API régénérée [id:: OSS-8.3] [statut:: todo]
 - [ ] Purge de `.ai/` et `docs/` ; fichiers d'instructions des assistants regroupés [id:: OSS-8.4] [statut:: todo]
@@ -176,10 +176,10 @@ des lots visibles (2, 3, 5, 7).
 ### Lot DA : direction artistique du portfolio
 
 - [x] Relevé du portfolio, correspondance des jetons, point sur la ressemblance avec Dust [id:: OSS-DA.0] [statut:: done] [ref:: [[Direction_Artistique_2026]]]
-- [ ] Jetons clairs et sombres, polices Geist, rayon à 0 [id:: OSS-DA.1] [statut:: todo]
-- [ ] Composants de base (bouton à liseré, champs, badges teinte et encre) [id:: OSS-DA.2] [statut:: todo]
-- [ ] Couleurs codées en dur ramenées aux jetons (666 classes, 127 hexadécimaux le 18/10) [id:: OSS-DA.3] [statut:: todo]
-- [ ] Illustrations, logo recoloré, site, doc Fern, README, captures [id:: OSS-DA.4] [statut:: todo]
+- [x] Jetons clairs et sombres, polices Geist, rayon à 0 ; contraste élevé étendu aux nouveaux jetons [id:: OSS-DA.1] [statut:: done] [ref:: e4af23f1]
+- [x] Composants de base (bouton à liseré, badges teinte et encre, voiles, avatar de workspace) ; écrans de connexion (panneau papier doux, intro en aplat bleu) [id:: OSS-DA.2] [statut:: done] [ref:: e4af23f1, 788daa0a]
+- [x] Couleurs codées en dur ramenées aux jetons (563 classes après le lot 3, hex des composants) ; couleurs stockées converties par V93 [id:: OSS-DA.3] [statut:: done] [ref:: c50100a3, 9679cbfe]
+- [ ] Site, doc Fern, README, captures : faits avec le lot 8 (mêmes fichiers, et les écrans changent encore aux lots 4 à 7) ; logo inchangé (monochrome) ; illustrations en attente de la licence [id:: OSS-DA.4] [statut:: todo]
 
 ### Desktop (ADR-021)
 
