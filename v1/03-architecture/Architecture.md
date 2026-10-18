@@ -133,12 +133,10 @@ com.taskforce.tf_api
 │   ├── dto/         request/ + response/
 │   └── enums/       (19 enums)
 ├── modules/       # features bornées (api/domain/service/repository/dto propres)
-│   ├── chat/        canaux + messages + WebSocket
-│   ├── ged/         gestion documentaire (pièces jointes + MinIO + service avatars)
-│   └── sales/       capture de leads entreprise
+│   └── ged/         gestion documentaire (pièces jointes + MinIO + service avatars)
 └── shared/        # transverse (AUCUNE logique métier)
-    ├── config/      Cors, Jpa, Keycloak, Mail, Minio, OAuth2, OpenApi, Otp, Stripe,
-    │                WebSocket, LlmConfig, StompAuthInterceptor
+    ├── config/      Cache, Cors, Jpa, Keycloak, Mail, Minio, OAuth2, OpenApi, Otp,
+    │                RateLimit, RedisRateLimit, WebSocket, StompAuthInterceptor
     ├── security/    SecurityConfig, JwtDecoderConfig, JwtIdentityResolver
     ├── audit/       AuditableEntity
     ├── dto/         ApiResponse<T>, ErrorResponse, PageResponse<T>
@@ -234,6 +232,6 @@ inclure le préfixe <code>/api</code> explicitement — or 5 ne le font pas. Cau
 > **Note Brain OS** — Document vérifié dans le code au 08/06/2026 (branche `feat/dashboard`).
 > Divergences tracées dans [Dette technique](../09-audits/Dette_Technique.md) et [Problèmes connus](../09-audits/Problemes_Connus.md).
 
-**Dernière mise à jour :** 08/06/2026  
+**Dernière mise à jour :** 18/10/2026  
 **Version :** 1.0  
 **Projet :** Taskforce — Metz Numeric School 2025-2026

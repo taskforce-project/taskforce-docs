@@ -75,7 +75,7 @@ une contrainte).
 | Workspaces et projets | Gardé | Plusieurs espaces et projets pour une même personne. |
 | Issues (tableau, liste, backlog, cycles, roadmap, sous-tâches, relations, checklists, commentaires, temps passé) | Gardé | |
 | Pièces jointes | Adapté | Fichiers dans un dossier de l'app au lieu de MinIO. |
-| Brain OS (arbre de pages, éditeur, recherche, ingestion) | Gardé | Données locales ; recherche sémantique si un modèle d'embeddings est disponible, sinon lexicale. |
+| Brain OS (arbre de pages, éditeur, recherche, ingestion) | Gardé | Données locales ; recherche sémantique si un modèle d'embeddings est disponible, sinon plein texte (lot 4). |
 | Cortex (chat IA avec outils) | Limité | Qualité selon le modèle et la machine (§5.4). |
 | Analyses IA, insights, suggestions de compétences | Limité | Idem ; désactivées proprement sans IA. |
 | Smart Assign | Adapté | Voir §6 : plus de collègues à départager. |
@@ -148,7 +148,7 @@ Inventaire du code du 18/10/2026 (backend, front et IA, en lecture seule).
 | Redis | Limites de débit, cache des analytics, garde-débit IA (prod seulement) | Rien : chaque usage a déjà un repli local | Nul |
 | MinIO | Pièces jointes des issues (liens présignés), avatars et fichiers Brain (servis par le backend) | Dossier local derrière `MinioService`, pièces jointes servies par une route du backend | Faible |
 | SMTP | Codes d'inscription et de réinitialisation, bienvenue, invitations, notifications, demandes RGPD, retours | Coupé : les parcours qui l'utilisent disparaissent | Faible |
-| Service Python (`ai-service`) | Simple relais : `POST /v1/chat` (compatible OpenAI, paliers, `/no_think` pour Qwen) et `POST /v1/embeddings` (Ollama, repli lexical) ; aucune dépendance de ML | Porté en Java : le backend appelle Ollama ou l'API directement | Faible |
+| Service Python (`ai-service`) | Simple relais : `POST /v1/chat` (compatible OpenAI, paliers, `/no_think` pour Qwen) et `POST /v1/embeddings` (même fournisseur ou un autre, Ollama par défaut ; plus de repli lexical depuis le lot 4) ; aucune dépendance de ML | Porté en Java : le backend appelle Ollama ou l'API directement | Faible |
 | Tâches planifiées (4) | Purge des comptes (4 h), nettoyage (3 h 30), alertes d'échéance (8 h) et de surcharge (8 h 30) | Rattrapage au démarrage pour les échéances ; purge et surcharge sans objet pour une personne | Faible |
 | Retours OAuth (GitHub, Slack, MCP, fournisseurs Keycloak) | Retour après consentement, sur une adresse publique | Device flow pour GitHub, retour sur 127.0.0.1 pour le MCP ; un secret d'application ne reste pas secret dans une app installée | Moyen |
 | Runner et clients Keycloak | Délégation à Claude Code depuis un serveur distant | L'app lance l'agent elle-même (§5.5) | Moyen |
@@ -175,8 +175,8 @@ verrous de ligne restent tels quels. SQLite ou H2 obligeraient à réécrire tou
 **pgvector, le point dur.** Une seule colonne vectorielle sert (`knowledge_nodes.embedding vector(1024)`, index HNSW,
 recherche de Brain OS) ; les colonnes `vector(384)` de V32 et V33 ne sont lues ni écrites par aucun code. Mais
 l'extension est créée par les migrations V32, V33, V52 et V59 : **sans pgvector dans la base embarquée, les migrations
-échouent**. Deux sorties : livrer l'extension compilée pour les trois OS, ou une variante desktop de ces migrations avec
-le repli lexical. C'est la première question de l'essai (§8).
+échouent**. Deux sorties : livrer l'extension compilée pour les trois OS, ou une variante desktop de ces migrations, la
+recherche restant alors en plein texte (lot 4). C'est la première question de l'essai (§8).
 
 **Sauvegarde et portabilité** : copie de la base avant chaque migration (donc avant chaque mise à jour) ; export
 complet en un fichier (base et fichiers) ; import depuis une instance serveur, à partir de l'export de projet JSON
@@ -210,12 +210,17 @@ prend de 60 à 170 s, très variable. Ordres de grandeur pour la spec, à re-mes
 un scoring JSON prend environ 52 s avec `qwen3:8b` contre environ 2,4 s avec `qwen2.5:7b-instruct`. Le desktop part
 donc d'un modèle rapide sans mode « réflexion » pour le palier rapide (lot 4).
 
+Mesure du 18/10/2026 après le lot 4 (machine de dev, Ollama, modèle déjà chargé, même scoring JSON de trois
+candidats) : `qwen2.5:7b-instruct` 1,5 s ; `qwen3:8b` sans réflexion (`/no_think`) 8,9 s ; `qwen3:8b` avec réflexion
+15,1 s. Changer de modèle coûte 6 à 8 s de chargement. La webapp garde un seul modèle par défaut (`qwen3:8b` pour les
+deux paliers, sans rechargement) ; le modèle du palier rapide du desktop reste à choisir pendant l'essai.
+
 **Embeddings.** Recherche sémantique de Brain OS et des issues : un petit modèle d'embeddings local (taille et choix à
-fixer pendant l'essai ; `bge-m3` actuel pèse environ 1,2 Go). Sans modèle d'embeddings, la recherche bascule sur le
-repli lexical existant. Défaut à corriger au lot 4 : `EmbeddingClient` stocke aussi les vecteurs du repli lexical
-(il ignore le drapeau `real:false`) et ils ne sont jamais recalculés, puisque le rattrapage ne prend que les vecteurs
-vides. Sur un poste où Ollama démarre après l'app, c'est le cas normal. Autre écart : le front abandonne un appel IA
-à 200 s, le backend à 300 s.
+fixer pendant l'essai ; `bge-m3` actuel pèse environ 1,2 Go). Sans modèle d'embeddings, la recherche passe en
+plein texte PostgreSQL. **Corrigé au lot 4** : le repli lexical, dont `EmbeddingClient` stockait les vecteurs avec les
+vrais sans jamais les recalculer, est supprimé ; chaque vecteur porte son modèle (V94) et une tâche de fond calcule
+les vecteurs manquants ou périmés, ce qui couvre le poste où Ollama démarre après l'app. Les délais sont alignés :
+120 s pour l'`ai-service`, 150 s pour le backend, 200 s pour le front.
 
 **Règle de conception.** Tout ce qui n'a pas besoin d'un LLM n'en utilise pas : tri, filtres, analytics, liens,
 historique. L'IA reste une aide, jamais un point de passage obligé.

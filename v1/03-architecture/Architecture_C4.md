@@ -30,22 +30,20 @@ flowchart TB
     subgraph EXT_ACTORS[" "]
         direction LR
         MEMBER["🧑‍💻 Collaborateur<br/><i>membre d'un workspace</i>"]
-        MANAGER["🧑‍💼 Gestionnaire / Propriétaire<br/><i>gère équipes, projets, abonnement</i>"]
+        MANAGER["🧑‍💼 Gestionnaire / Propriétaire<br/><i>gère équipes, projets, membres</i>"]
     end
 
     TF{{"<b>TaskForce</b><br/>SaaS de gestion de projet<br/>multi-tenant + IA"}}
 
     KC["🔐 Keycloak<br/><i>identité / OIDC / JWT</i>"]
-    STRIPE["💳 Stripe<br/><i>facturation / abonnements</i>"]
-    OLLAMA["🤖 Ollama Qwen3<br/><i>modèle auto-hébergé, hors de tout tiers</i>"]
+    OLLAMA["🤖 Fournisseur d'IA compatible OpenAI<br/><i>Ollama sur la machine hôte par défaut</i>"]
     OAUTH["🔗 GitHub / Slack<br/><i>OAuth intégrations</i>"]
     SMTP["✉️ SMTP / Mailtrap<br/><i>e-mails OTP & notifications</i>"]
 
     MEMBER -->|HTTPS / WebSocket| TF
     MANAGER -->|HTTPS / WebSocket| TF
     TF -->|OIDC, émission JWT| KC
-    TF -->|paiement, webhooks| STRIPE
-    TF -->|inférence locale, via ai-service| OLLAMA
+    TF -->|inférence, via ai-service| OLLAMA
     TF -->|OAuth, webhooks| OAUTH
     TF -->|envoi e-mail| SMTP
 ```
@@ -64,7 +62,7 @@ flowchart TB
         LAND["🪧 Landing<br/>Astro 5 · :4321"]
         FRONT["🖥️ Frontend app<br/>Next.js 16 · React 19 · :3000"]
         BACK["⚙️ Backend API<br/>Spring Boot 4 · Java 21 · :8080<br/>core + modules + shared"]
-        AISVC["🐍 ai-service<br/>FastAPI · :8000<br/><i>⚠️ vestigial (stub, cf. DT-010)</i>"]
+        AISVC["🐍 ai-service<br/>FastAPI · :8000<br/><i>passerelle IA, secret partagé</i>"]
     end
 
     PG[("🐘 PostgreSQL 18<br/>+ pgvector · :5432")]
@@ -73,8 +71,7 @@ flowchart TB
     RMQ["🐇 RabbitMQ<br/>relais STOMP · :61613"]
     NGINX["🌐 Nginx<br/><i>prod uniquement</i>"]
 
-    STRIPE["💳 Stripe"]:::ext
-    OLLAMA["🤖 Ollama Qwen3 (local)"]:::ext
+    OLLAMA["🤖 Ollama (hôte) ou fournisseur<br/>compatible OpenAI"]:::ext
     OAUTH["🔗 GitHub/Slack"]:::ext
     SMTP["✉️ SMTP"]:::ext
 
@@ -88,8 +85,8 @@ flowchart TB
     FRONT -->|OIDC login| KC
     BACK -->|objets S3| MINIO
     BACK <-->|STOMP| RMQ
-    BACK -->|via ai-service| OLLAMA
-    BACK -->|paiement/webhooks| STRIPE
+    BACK -->|HTTP + AI_SERVICE_TOKEN| AISVC
+    AISVC -->|API compatible OpenAI| OLLAMA
     BACK -->|OAuth| OAUTH
     BACK -->|e-mail| SMTP
 
@@ -111,6 +108,11 @@ flowchart TB
 > et son implémentation n'enregistrait pas la consommation de jetons, ce qui désarmait silencieusement
 > la facturation de l'IA. Conséquence pour la conformité, et c'est l'argument le plus fort du
 > registre des traitements : **aucun contenu de travail ne quitte l'infrastructure**.
+>
+> **▶ MAJ 18/10/2026 (lot 4, ADR-019, pas en prod)** : l'`ai-service` parle désormais à tout fournisseur
+> compatible OpenAI. Avec la configuration par défaut (Ollama sur la machine hôte), la phrase ci-dessus reste
+> vraie. Une instance qui pose `GROQ_API_KEY` ou un `AI_BASE_URL` externe envoie à ce fournisseur les contenus
+> soumis au modèle : c'est un choix de l'hébergeur, à inscrire dans son registre des traitements.
 
 ---
 
@@ -122,14 +124,12 @@ Zoom dans le conteneur **Backend API**. Règle de dépendance **stricte** : `sha
 ```mermaid
 flowchart TB
     subgraph MODULES["📦 modules/ (features bornées)"]
-        CHAT["chat<br/>canaux + WebSocket"]
         GED["ged<br/>pièces jointes + MinIO"]
-        SALES["sales<br/>leads entreprise"]
     end
 
     subgraph CORE["🎯 core/ (domaine principal)"]
         API["api/<br/>contrôleurs REST"]
-        SVC["service/<br/>logique métier<br/>(SmartAssign, Redistribution,<br/>Auth, Gdpr, Stripe…)"]
+        SVC["service/<br/>logique métier<br/>(SmartAssign, Redistribution,<br/>Auth, Gdpr, Brain OS…)"]
         REPO["repository/<br/>Spring Data JPA"]
         MODEL["model/<br/>entités JPA + enums"]
         API --> SVC --> REPO --> MODEL
@@ -137,7 +137,7 @@ flowchart TB
 
     subgraph SHARED["🧰 shared/ (transverse, sans métier)"]
         SEC["security/<br/>SecurityConfig, JwtDecoder"]
-        CFG["config/<br/>Cors, Keycloak, Stripe, LlmConfig,<br/>WebSocket, Otp, Minio…"]
+        CFG["config/<br/>Cors, Keycloak, Mail, Minio,<br/>WebSocket, Otp, RateLimit…"]
         DTO["dto/<br/>ApiResponse&lt;T&gt;"]
         EXC["exception/<br/>GlobalExceptionHandler"]
         AUD["audit/<br/>AuditableEntity"]
