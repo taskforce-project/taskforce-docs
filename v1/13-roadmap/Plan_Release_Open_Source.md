@@ -98,11 +98,12 @@ des lots visibles (2, 3, 5, 7).
 
 ### Lot 2 : facturation et limites
 
-- [ ] Backend : plus aucune limite de plan (workspaces, issues, collaborateurs, intégrations, MCP, analytics, historique) [id:: OSS-2.1] [statut:: todo]
-- [ ] Plafonds d'IA et limitation de débit réglables par variables, illimités par défaut [id:: OSS-2.2] [statut:: todo]
-- [ ] Stripe, facturation et module commercial retirés du backend [id:: OSS-2.3] [statut:: todo]
-- [ ] Front : `/billing`, `/payment`, upgrades, badges, cadenas, étape d'upsell du tour, « View plans » retirés [id:: OSS-2.4] [statut:: todo]
-- [ ] Docs Stripe et matrice des plans retirées ; tables gardées (aucune migration destructive) [id:: OSS-2.5] [statut:: todo]
+- [x] Backend : plus aucune limite de plan (workspaces, issues, collaborateurs, intégrations, MCP, analytics, historique) [id:: OSS-2.1] [statut:: done] [ref:: d30a51b1]
+- [x] Plafonds d'IA et limitation de débit réglables par variables, illimités par défaut (`AI_MONTHLY_TOKENS_PER_ACCOUNT`, `AI_RATE_*`, transmis au conteneur prod) [id:: OSS-2.2] [statut:: done] [ref:: 1d4ed5bf, 6600906f]
+- [x] Stripe, facturation et module commercial retirés du backend ; inscription sans étape de forfait ; V90 rend son défaut `'FREE'` à `users.plan_type` (NOT NULL sans défaut depuis V6) [id:: OSS-2.3] [statut:: done] [ref:: 881cb666, 1b1940f4]
+- [x] Front : `/billing`, `/payment`, upgrades, badges, cadenas, étape d'upsell du tour, « View plans » retirés ; paquets `@stripe/*` retirés [id:: OSS-2.4] [statut:: done] [ref:: 57a83a16, 0bee8e01]
+- [x] Docs Stripe et matrice des plans retirées ; tables gardées (aucune migration destructive) ; page Fern « IA et consommation » [id:: OSS-2.5] [statut:: done] [ref:: 6600906f, f2165d44]
+- [x] Suite backend complète verte (1304 tests), front 864 tests et seuils de couverture, validation en Docker local, PR [#341](https://github.com/taskforce-project/taskforce-fullstack/pull/341) vers `dev` [id:: OSS-2.6] [statut:: done]
 
 ### Lot 3 : coupes et anglais
 
@@ -174,7 +175,7 @@ des lots visibles (2, 3, 5, 7).
 ### Jour J : résultats du diplôme
 
 - [ ] Release 1.0.0 sur `main` [id:: OSS-J.1] [statut:: todo]
-- [ ] Variables d'environnement de prod mises à jour (VM1, VM2) [id:: OSS-J.2] [statut:: todo]
+- [ ] Variables d'environnement de prod mises à jour (VM1, VM2), dont les plafonds IA de l'instance publique (Groq) : sans eux elle devient illimitée. Anciennes valeurs : `AI_RATE_GLOBAL_TPM=8000`, `AI_RATE_ACCOUNT_TPM=6000`, `AI_RATE_ACCOUNT_RPM=1` ; `AI_MONTHLY_TOKENS_PER_ACCOUNT` si la clé est payante [id:: OSS-J.2] [statut:: todo]
 - [ ] Images GHCR publiques, signalement privé de vulnérabilités activé, description du dépôt (CEO) [id:: OSS-J.3] [statut:: todo]
 - [ ] Branche `feature/lean-oss` de la doc fusionnée [id:: OSS-J.4] [statut:: todo]
 - [ ] Post LinkedIn (CEO) [id:: OSS-J.5] [statut:: todo]

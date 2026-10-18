@@ -39,7 +39,7 @@ tags: [adr, decisions, architecture, backend, frontend, ia, securite, memoire, r
 | [[#ADR-013 - Runner local de délégation : Claude Code sur le poste de l'utilisateur\|ADR-013]] | Runner local de délégation : Claude Code sur le poste de l'utilisateur | ✅ Accepté (prototype) | Sept 2026 |
 | [[#ADR-014 - TaskForce 1.0 : projet open source lean et auto-hébergeable\|ADR-014]] | TaskForce 1.0 : projet open source lean et auto-hébergeable | ✅ Accepté | Oct 2026 |
 | [[#ADR-015 - Licence AGPL-3.0\|ADR-015]] | Licence AGPL-3.0 | ✅ Accepté, appliqué | Oct 2026 |
-| [[#ADR-016 - Retrait de la facturation et des limites de plan\|ADR-016]] | Retrait de la facturation et des limites de plan | ✅ Accepté (lot 2) | Oct 2026 |
+| [[#ADR-016 - Retrait de la facturation et des limites de plan\|ADR-016]] | Retrait de la facturation et des limites de plan | ✅ Mis en œuvre (lot 2, 18/10) | Oct 2026 |
 | [[#ADR-017 - Brain OS réduit à son cœur\|ADR-017]] | Brain OS réduit à son cœur | ✅ Accepté (lot 3) | Oct 2026 |
 | [[#ADR-018 - Agents de code : Claude Code et Copilot\|ADR-018]] | Agents de code : Claude Code et Copilot | ✅ Accepté (lot 5) | Oct 2026 |
 | [[#ADR-019 - Fournisseur d'IA générique, Ollama par défaut\|ADR-019]] | Fournisseur d'IA générique, Ollama par défaut | ✅ Accepté (lot 4) | Oct 2026 |
@@ -972,7 +972,7 @@ lockfiles, manifeste du plugin Claude Code ; mentions « All rights reserved » 
 
 ## ADR-016 - Retrait de la facturation et des limites de plan
 
-**Date** : 14/10/2026 | **Décideur** : Pierre MICHEL | **Statut** : ✅ Accepté, à mettre en œuvre (lot 2)
+**Date** : 14/10/2026 | **Décideur** : Pierre MICHEL | **Statut** : ✅ Accepté, mis en œuvre le 18/10/2026 (lot 2)
 
 ### Contexte
 
@@ -1006,7 +1006,14 @@ future repartira de l'historique git.
 
 ### Preuve
 
-À venir (lot 2 du [[Plan_Release_Open_Source]]).
+Lot 2 du [[Plan_Release_Open_Source]], PR [#341](https://github.com/taskforce-project/taskforce-fullstack/pull/341)
+vers `dev` (18/10/2026) : limites retirées (`d30a51b1`), quota IA réglé par l'instance (`1d4ed5bf`), Stripe
+et inscription payante retirés (`881cb666`), module commercial retiré (`1b1940f4`), front sans forfait
+(`57a83a16`), configuration et docs (`6600906f`). Suite backend complète verte (1304 tests), front 864 tests.
+
+Écart avec le texte de la décision : une migration a été nécessaire, non destructive. `users.plan_type` était
+`NOT NULL` sans défaut depuis V6 ; une fois le champ sorti de l'entité, plus aucun compte ne se créait. **V90**
+lui rend son défaut `'FREE'`. La purge RGPD efface toujours les identifiants Stripe hérités de la bêta hébergée.
 
 ---
 
