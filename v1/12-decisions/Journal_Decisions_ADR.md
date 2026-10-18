@@ -1141,7 +1141,10 @@ produit » reste à confirmer par écrit.
   4. **Copilot** : écart assumé sur le moyen, pas sur l'agent. La tâche part par l'API des tâches d'agent de GitHub
      (`POST /agents/repos/{repo}/tasks`, préversion publique) plutôt que par l'assignation d'une issue GitHub : même
      agent cloud, un état explicite à suivre (`queued`, `in_progress`, `completed`...) et pas d'issue en double sur
-     GitHub. Non testé faute d'abonnement : test du CEO.
+     GitHub. Non testé faute d'abonnement : test du CEO. **Risque connu** : la référence de l'API des tâches ne cite
+     que les jetons fins et les jetons utilisateur d'App GitHub, alors que la connexion GitHub du workspace est un
+     jeton d'application OAuth (le guide de GitHub, lui, l'annonce accepté). Si GitHub refuse (403) au test, le repli
+     à écrire est l'assignation d'une issue à `copilot-swe-agent[bot]`, documentée pour les jetons utilisateur.
   5. Seuls les agents prêts pour la personne et le projet sont proposés (Smart Assign, menu Assignee, délégation).
   Commits `1edf5345`, `9e787f2d`, `9303fe24`, `1c93b20d`, `5501346b`, `6ccec74f`, `2a49a48b`, `2592d8e9`,
   `b33ef7cc`, `20196ef3`, `48fd096b`, `9de77e50`.
