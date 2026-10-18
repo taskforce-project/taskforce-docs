@@ -241,9 +241,10 @@ touche jamais aux identifiants Anthropic. Options de la CLI vérifiées sur la v
 - `--mcp-config` et `--strict-mcp-config` : la session reçoit le serveur MCP de TaskForce (lecture du projet, de Brain
   OS, commentaires) et rien d'autre ;
 - `--settings` et `--setting-sources user` : réglages de la session imposés par l'app, ceux du dépôt cloné ignorés
-  (OSS-1.8). Aujourd'hui le runner lance l'agent en `--permission-mode dontAsk` avec une liste d'outils fixe. Avec
-  le lot 5, la demande d'autorisation passera par un crochet `PermissionRequest` (ou `--permission-prompt-tool`) qui
-  interroge l'API locale : l'utilisateur clique Autoriser ou Refuser dans l'app ; sans réponse, refus (OSS-5.4).
+  (OSS-1.8). Depuis le lot 5, le runner lance l'agent en `--permission-mode manual --permission-prompts none` : une
+  action hors du socle pré-autorisé appelle un crochet `PermissionRequest` HTTP vers un serveur local du runner, qui
+  ouvre la demande dans TaskForce ; l'utilisateur clique Allow ou Deny sur l'issue ; sans réponse, refus (OSS-5.4,
+  vérifié sur la CLI 2.1.293). Le desktop garde ce mécanisme, la demande restant dans l'app.
 
 Le dépôt est un dossier choisi par l'utilisateur ; chaque run travaille dans un worktree git dédié, comme le runner
 actuel. Le mode « sans dépôt » du runner (réponse en commentaire) est conservé.
@@ -254,7 +255,8 @@ suivi de la PR par interrogation périodique de l'API (pas de webhook entrant po
 
 **MCP.** Deux sens, comme dans Claude Desktop :
 
-- TaskForce **expose** son serveur MCP aux agents qu'il lance (stdio ou HTTP sur 127.0.0.1, passé par `--mcp-config`) ;
+- TaskForce **expose** son serveur MCP aux agents qu'il lance : servi par le backend en HTTP depuis le lot 5
+  (`/api/workspaces/{slug}/mcp`), sur 127.0.0.1 en desktop, passé par `--mcp-config` ;
 - Cortex **utilise** des serveurs MCP : distants en HTTP (existant), et locaux en stdio (à ajouter : lancer un
   processus déclaré dans les réglages, comme `claude_desktop_config.json`). Sur le desktop, la garde anti-SSRF du lot 1
   doit autoriser 127.0.0.1 (`MCP_ALLOW_PRIVATE_NETWORK`), puisque les serveurs locaux sont le cas normal.
