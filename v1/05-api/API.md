@@ -74,12 +74,14 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | WebhookController | `/api/workspaces/{slug}/webhooks` | ✅ |
 | IntegrationController | `/api/workspaces/{slug}/integrations/...` (+ `/connectors/{key}` générique) + `/api/integrations/*/callback` ; `GET github/connect?returnTo=` (chemin applicatif où revenir après le consentement, validé, 21/09/2026) | ✅ |
 | ~~Billing, Stripe, StripeWebhook, Sales~~ | `/api/billing`, `/api/stripe`, `/api/webhooks/stripe`, `/api/sales`, `/api/auth/select-plan`, `/api/workspaces/{slug}/usage` : retirés le 18/10/2026 (ADR-016) | ➖ |
+| ~~Feedback et endpoints sans appelant~~ | `POST /api/feedback` ; `POST /api/users/me/password/reset`, `POST /api/users/me/data-request`, `GET /api/workspaces/current` ; sous `/api/workspaces/{slug}` : `POST /ai/conversations`, variante `text/event-stream` de `POST /assistant`, `GET /analysis/{jobId}`, `GET /notifications/unread-count`, `GET /projects/{id}/activity` (remplacé par `GET /projects/activity`) : retirés le 18/10/2026 (lot 3) | ➖ |
 | FileController / AttachmentController (ged) | `/api/files` · `/api/workspaces/{slug}/projects/{projectId}/issues/{issueId}/attachments` | ✅ |
 | CycleController | `/api/workspaces/{slug}/projects/{projectId}/cycles` | ✅ |
 | TeamController | `/api/workspaces/{slug}/teams` | ✅ |
 | PageController | `/api/workspaces/{slug}/projects/{projectId}/pages` | ✅ |
+| KnowledgeController (Brain OS) | `/api/workspaces/{slug}/brain` (→ `GET` vue d'ensemble, `POST /search`, `POST /nodes`, `PATCH /nodes/{id}`, `PATCH /nodes/{id}/move`, `DELETE /nodes/{id}` ; `POST /files` dans `BrainAttachmentController`) ; `POST /reseed`, `GET /nodes`, `GET /nodes/{id}`, `POST /edges` et `DELETE /edges/{id}` retirés le 18/10/2026 (lot 3, ADR-017) : les liens viennent des `#tags` et des `[[wikilinks]]` | ✅ |
 | ProjectExportController | `/api/workspaces/{slug}/projects/{projectId}/export` | ✅ |
-| DeliveryController | `/api/workspaces/{slug}/delivery` (→ `GET /providers`, `POST /issues/{id}/delegate`, `GET /issues/{id}/run`, clés `GET/POST/DELETE /{anthropic\|cursor}`) ; un run renvoie aussi `issueKey`, `issueTitle`, `projectId`, `projectName` (21/09/2026) | ✅ |
+| DeliveryController | `/api/workspaces/{slug}/delivery` (→ `GET /providers`, `POST /issues/{id}/delegate`, `GET /issues/{id}/run`, `GET /runs`) ; un run renvoie aussi `issueKey`, `issueTitle`, `projectId`, `projectName` (21/09/2026) ; seul fournisseur : `claude-code` (runner local) ; clés `GET/POST/DELETE /{anthropic\|cursor}` retirées le 18/10/2026 (lot 3) | ✅ |
 | DeliveryRunnerController | `/api/delivery/runner` (→ `POST /claim`, `POST /runs/{id}/heartbeat`, `POST /runs/{id}/result`) : endpoints **machine** du runner local (ADR-013), jeton de compte de service Keycloak, 403 pour un jeton utilisateur ; n'existent que si `delivery.local-runner.enabled=true` ; masqués de la doc Fern | ✅ |
 | RunnerAuthController | `/api/auth/runner` (→ `POST /token`) : `client_credentials` relayé vers Keycloak pour un client `tf-runner-*` ; public, limité en débit comme un login ; même condition d'activation | ✅ |
 | RunnerProvisioningController | `/api/delivery/runners` (→ `GET` état, `POST` provisionner) : **libre-service** « Connect a runner » (28/09/2026), jeton **utilisateur** ; crée ou met à jour l'identité du runner de l'appelant (client `tf-runner-u<id>` en `client_credentials` seul, rôle `delivery-runner`, propriétaire = e-mail de l'appelant) et rend le secret **une seule fois** (régénéré à chaque `POST`) ; `GET` ne renvoie jamais de secret ; hors du préfixe machine `/api/delivery/runner/` ; même condition d'activation | ✅ |
@@ -94,20 +96,21 @@ Services front dans `frontend/lib/api/`. Lecture : `fonction front` → `méthod
 
 **Aligné ✅** — Auth (`auth-service` ↔ `AuthController`), Utilisateur (`user-service` ↔ `UserController`),
 Workspace (`workspace-service`), Projet + Labels (`project-service`, `label-service` ↔ `ProjectController` :
-CRUD, `/members`, `/teams`, `/labels`, **`GET /{id}/activity?days=N`** = activité quotidienne pour la sparkline carte projet, QA2-32),
+CRUD, `/members`, `/teams`, `/labels`, **`GET /activity?days=N`** = activité quotidienne de tous les projets visibles en un appel, pour les sparklines ; l'ancien `GET /{id}/activity` (QA2-32) est retiré le 18/10/2026),
 Issue (`issue-service` ↔ `IssueController` : CRUD, **`GET /paged?page&size`** = liste paginée additive pour l'infinite-scroll backlog (QA2-33), `/statuses` + `/reorder`, `/types`, `/comments`,
 `/activity`, `/smart-assign`, `/relations`), Analytics (`analytics-service` : `/kpis`, **`/throughput?bucket=DAY|WEEK`** = série throughput, `WEEK` (8 sem., défaut) ou `DAY` (30 j, tendance « 1 mois » du dashboard ; 26/06/2026),
 `/burndown`, `/capacity`, `/insights`, **`POST /chart`** = génération de graphe par l'IA (2 modes : série temporelle ou **répartition « X par Y » calculée en base** via un moteur de requête whitelisté — le modèle interroge la vraie DB sans écrire de SQL ; 10/07/2026), **`POST /breakdown`** = ré-exécution d'une répartition, **`GET/POST /charts`** + **`DELETE /charts/{id}`** = graphes épinglés « Custom »), Notifications (`notification-service`), Sales, Avatars (`FileController`).
 
 **Workflows d'analyse IA ✅** (10/07/2026) — `analysis-service` ↔ `AnalysisController`. L'analyse est **asynchrone** :
 `POST /analysis` (`{projectId, depth}`) rend immédiatement un job, exécuté en `@Async` par `AnalysisJobRunner` ;
-`GET /analysis` (dock) · `GET /analysis/{jobId}` · `DELETE /analysis/{jobId}` (masquage) ·
+`GET /analysis` (dock) · `DELETE /analysis/{jobId}` (masquage) ·
 `POST /analysis/{jobId}/answer` (HITL — reprise après clarification du modèle).
 La décision produite est persistée : `GET /projects/{projectId}/brief` (→ `null` si aucune analyse aboutie), et chaque
 priorité est actionnable : `POST /priorities/{id}/accept` (→ crée l'issue liée), `/pin`, `/dismiss` (bascules), `PUT /priorities/{id}` (édition).
 Le job publie son plan d'étapes sur `/topic/analysis.{workspaceId}` (STOMP) ; **le front n'y est pas encore abonné** et
 retombe sur un polling 5 s tant qu'un workflow est actif.
 > Remplace l'ancien `POST /projects/{projectId}/decision` (synchrone, non persisté), **supprimé** le 10/07/2026 avec `DecisionController`.
+> `GET /analysis/{jobId}` est retiré le 18/10/2026 (lot 3) : le panneau lit la liste.
 
 **Hôte MCP ✅** (12/07/2026) — `McpActionController` (`/api/workspaces/{slug}/mcp`). TaskForce **consomme** des
 serveurs MCP externes : un connecteur du workspace portant un `mcpUrl` (config chiffrée) expose ses outils à

@@ -109,13 +109,16 @@ des lots visibles (2, 3, 5, 7).
 
 ### Lot 3 : coupes et anglais
 
-- [ ] Routes mortes, 38 fichiers inatteignables, dépendances jamais importées [id:: OSS-3.1] [statut:: todo]
-- [ ] Étiquette Labs retirée partout [id:: OSS-3.2] [statut:: todo]
-- [ ] Fournisseurs d'agent retirés : stub, faux Copilot, Cursor, Claude API [id:: OSS-3.3] [statut:: todo]
-- [ ] Brain OS : graphe, galaxies, gabarits, préremplissage `demo` retirés [id:: OSS-3.4] [statut:: todo]
-- [ ] Tout en anglais : interface, erreurs backend, messages Slack, prompts, notes initiales [id:: OSS-3.5] [statut:: todo]
-- [ ] Code backend mort : endpoints jamais appelés, ancienne 2FA Keycloak, config JWT, capture `ai_generations` [id:: OSS-3.6] [statut:: todo]
-- [ ] Raccourcis clavier affichés mais non câblés retirés ; page Help corrigée ou retirée [id:: OSS-3.7] [statut:: todo]
+- [x] Routes mortes (issues, teams et help du workspace, `projects/new`, liste des issues du projet), 35 fichiers inatteignables, 25 paquets jamais importés (dont `keycloak-js`, `@tanstack/react-query`, `@assistant-ui/react`) [id:: OSS-3.1] [statut:: done] [ref:: e19c354e]
+- [x] Étiquette Labs retirée partout : bandeau « Experimental space », fiole de la sidebar, groupe Labs du Ctrl+K et du dashboard, étape de la visite [id:: OSS-3.2] [statut:: done] [ref:: 8327b697]
+- [x] Fournisseurs d'agent retirés : stub, faux Copilot, Cursor, Claude API, avec les endpoints de clé `/delivery/anthropic` et `/delivery/cursor` ; Claude Code (runner local) reste seul ; V91 supprime les clés stockées et clôt en échec les runs bloqués [id:: OSS-3.3] [statut:: done] [ref:: 56ca4e0c]
+- [x] Brain OS : graphe, galaxies, gabarits, préremplissage `demo` et reseed retirés, comme les endpoints sans appelant (`GET /brain/nodes`, `GET /brain/nodes/{id}`, `POST` et `DELETE /brain/edges`) ; V92 change les pages `TEMPLATE` en notes [id:: OSS-3.4] [statut:: done] [ref:: d68c71c1, 80b13ad8]
+- [x] Tout en anglais : interface (locale française retirée, environ 80 chaînes traduites, nombres en `en-US`), erreurs backend, messages Slack, e-mails, notes initiales (environ 500 chaînes côté backend). Les prompts passent au lot 4 (OSS-4.5) [id:: OSS-3.5] [statut:: done] [ref:: a16b91ea, 4942114e, ddcd2b2f]
+- [x] Code backend mort : endpoints jamais appelés, ancienne 2FA Keycloak, config JWT, capture `ai_generations` [id:: OSS-3.6] [statut:: done] [ref:: 212bdb12, 7348e8dd, 5700e4b1, 428c3a0e]
+- [x] Raccourcis clavier affichés mais non câblés retirés ; page Help retirée, « Replay the product tour » passe dans Ctrl+K [id:: OSS-3.7] [statut:: done] [ref:: 37bc299c, e19c354e]
+- [x] Dépendances vulnérables mises à jour : Next.js 16.3.8, axios 1.20, vitest 4 et vite 8 (seuils de couverture recalibrés), SDK MCP 1.32.1, Astro 7.4.0, BouncyCastle 1.85 ; deux erreurs ESLint corrigées [id:: OSS-3.8] [statut:: done] [ref:: 14489c4e, eefd7725, 39b84d19, c18def7b, c3b08198]
+- [x] Feedback intégré remplacé par « Report an issue on GitHub » dans Ctrl+K ; endpoint, service et entité retirés, table `feedback` gardée [id:: OSS-3.9] [statut:: done] [ref:: 8327b697]
+- [x] Dernières mentions de forfait retirées : carte de débit, toast MCP, carte d'usage de Cortex, conditions d'utilisation [id:: OSS-3.10] [statut:: done] [ref:: 0369ecc6]
 
 ### Lot 4 : IA locale d'abord
 
@@ -123,7 +126,7 @@ des lots visibles (2, 3, 5, 7).
 - [ ] Config générique compatible OpenAI (chat et embeddings), alias `GROQ_*` conservés [id:: OSS-4.2] [statut:: todo]
 - [ ] Ollama par défaut avec de petits modèles ; `/no_think` seulement pour Qwen3 [id:: OSS-4.3] [statut:: todo]
 - [ ] Sans fournisseur : échec immédiat et état « IA non configurée » [id:: OSS-4.4] [statut:: todo]
-- [ ] Cortex : le modèle choisit ses outils, prompts en anglais, outils MCP avec confirmation [id:: OSS-4.5] [statut:: todo]
+- [ ] Cortex : le modèle choisit ses outils, outils MCP avec confirmation ; prompts de Cortex et des services IA en anglais (reportés du lot 3) [id:: OSS-4.5] [statut:: todo]
 - [ ] `ai-service` : réseau interne, secret partagé, santé du fournisseur, tests [id:: OSS-4.6] [statut:: todo]
 
 ### Lot 5 : Claude Code et Copilot

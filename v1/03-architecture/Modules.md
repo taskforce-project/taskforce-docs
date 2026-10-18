@@ -49,21 +49,24 @@ service → store → routes côté frontend. L'état « Santé » est réconcil
 | ------- | ------------------------------ | -------------------------- | :---: |
 | Auth & Inscription | `AuthController` · `AuthService`,`KeycloakService`,`KeycloakAuthService`,`OtpService`,`EmailService` | `auth-service` · `auth-context` | ✅ (OIDC RS256 Keycloak ; refresh/logout natifs) |
 | Facturation | retirée le 18/10/2026 (ADR-016) : Stripe, paiement, forfaits, module `sales` | retirée | ➖ |
+| Feedback in-app | retiré le 18/10/2026 (lot 3) : `FeedbackController`, `FeedbackService`, entité ; table `feedback` gardée | retiré : « Report an issue on GitHub » dans Ctrl+K | ➖ |
 | Profil utilisateur | `User`/`ProfileController` · `UserService`,`ProfileService` | `user`/`profile-service` · `user`/`profile-store` | ⚠️ import profile-service |
 | Workspace (tenant) | `WorkspaceController` · `WorkspaceService` | `workspace-service` · `workspace-store` | ✅ |
 | Projet | `ProjectController` · `ProjectService` | `project`/`label-service` · `project`/`label-store` | ✅ |
 | Issues | `IssueController` · `IssueService`,`SmartAssignService` | `issue-service` · `issue-store` | ✅ |
 | Cycles (sprints) | `CycleController` · `CycleService` | `cycle-service` · `cycle-store` | ❌ 404 (`/api`) |
 | Roadmap | `RoadmapController` · `IssueService` | `issue-service.getScheduledIssues` | ❌ route front absente |
-| Teams | `TeamController` · `TeamService` | `team-service` · `team-store` | ❌ 404 + store incomplet |
+| Teams | `TeamController` · `TeamService` | `team-service` (onglet Teams du projet ; `team-store`, jamais importé, supprimé le 18/10/2026) | ❌ 404 |
 | Pages (wiki) | `PageController` · `PageService` | `page-service` · `page-store` | ❌ 404 (`/api`) |
+| Brain OS | `KnowledgeController`,`BrainAttachmentController` · `KnowledgeService`,`BrainSearchService`,`BrainIngestionService`,`BrainSeedingService` | `brain-service` · `brain-store` (page `/brain`, pages dans Ctrl+K) | ✅ cœur seul depuis le 18/10/2026 (ADR-017) : arbre de pages, éditeur, recherche, ingestion ; graphe, gabarits et reseed retirés |
 | ~~Discussions~~ | — | — | ⛔️ Supprimé (11/07/2026, migration V64 — hors CdC) |
 | ~~Chat (temps réel)~~ | — | — | ⛔️ Supprimé (11/07/2026, migration V64 — hors CdC ; STOMP conservé pour notifs/issues/workflows) |
 | Notifications/Inbox | `NotificationController` · `NotificationService` | `notification-service` · `notification-store` | ✅ |
 | Analytics | `AnalyticsController` · `AnalyticsService` | `analytics-service` | ✅ |
-| Assistant IA | `AssistantController` · `AssistantService`,`AiGatewayClient` | FAB / command palette | ⚠️ streaming simulé |
+| Assistant IA | `AssistantController` · `AssistantService`,`AiGatewayClient` | FAB / command palette | ⚠️ pas de streaming (variante SSE simulée retirée le 18/10/2026) |
 | AI Insights | `AnalyticsController /insights` · `AnalyticsService`,`AiGatewayClient` | `analytics-service.getAiInsights` | ⚠️ pas de cache |
 | Smart Assign | `IssueController /smart-assign` · `SmartAssignService`,`LlmClient` | `issue-service.smartAssignIssue` · `smart-assign-panel` | ✅ (repli Groq) |
+| Délégation (agents de code) | `DeliveryController`,`DeliveryRunnerController`,`RunnerAuthController`,`RunnerProvisioningController` · `DeliveryService`,`DeliveryRunner`,`ClaudeCodeProvider`,`LocalRunnerService` | `delivery-service` · `delivery-store` (Réglages > Agents, menu Assignee, panneau AI Workflows) | ✅ Claude Code seul, via le runner local (ADR-013) ; stub, Claude API, Copilot et Cursor retirés le 18/10/2026 |
 | Pièces jointes (GED) | `AttachmentController`,`FileController` · `AttachmentService`,`MinioService` | `attachment-service` | ❌ route front absente |
 | Intégrations | `IntegrationController`,`WebhookController` · `GitHub`/`Slack`/`WebhookService` | `integration-service` · `integration-store` | ❌ route front absente |
 | Sales (leads) | `SalesController` · `SalesService` | dialog contact entreprise | ⚠️ notification stub |
@@ -92,8 +95,8 @@ l'autorisation ; `AiGatewayClient` est le client du modèle auto-hébergé, part
 ## 3. Stores frontend
 
 Stores **Zustand** dans `frontend/lib/store/`, un par domaine, appelant un (parfois deux) service(s) :
-`user`, `workspace`, `project`, `issue`, `cycle`, `label`, `page`, `team` *(incomplet)*, `discussion`,
-`message`, `notification`, `profile`, `integration`, `preferences` (local). La plupart indexent leurs
+`user`, `workspace`, `project`, `issue`, `cycle`, `label`, `page`, `discussion`,
+`message`, `notification`, `profile`, `integration`, `brain`, `delivery`, `preferences` (local). La plupart indexent leurs
 données par slug de workspace / `projectId` ; changer de workspace devrait réinitialiser les stores
 dépendants. `auth-context` conditionne l'ensemble.
 
