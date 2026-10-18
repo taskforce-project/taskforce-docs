@@ -54,6 +54,8 @@ production. D'ici là, la production reste en v0.41.0, la version vue par le jur
 | Intégrations | MCP générique + webhooks sortants signés ; GitHub, Slack, Plane natifs | ADR-020 |
 | Calendrier | `dev` + test en Docker local ; release de sécurité (lots 0 et 1) avant les résultats ; le reste le jour des résultats, version 1.0.0 | ADR-014 |
 | Distribution (16/10) | Plus de serveur après les résultats : 1.0 = téléchargement Docker ; ensuite essai d'un mode desktop | ADR-014 |
+| Desktop (18/10) | App desktop locale sur le modèle de Claude Desktop, appelée à devenir la seule version ; une base de code, profils `desktop` et `server` ; rôle de la webapp tranché après la spec ; lot 7 gelé au minimum | ADR-021 |
+| Direction artistique (18/10) | Celle du portfolio du CEO : Geist, bleu `#2f6bf6`, gris chauds, angles droits ; logo propre, pas de formes multicolores | [[Direction_Artistique_2026]] |
 
 ## 3. Constat de l'audit (14/10/2026)
 
@@ -142,7 +144,7 @@ des lots visibles (2, 3, 5, 7).
 - [ ] GitHub : statut des PR rafraîchi, dépôt modifiable après création, « Disconnect » réparé [id:: OSS-6.3] [statut:: todo]
 - [ ] Slack : messages en anglais, variables branchées en prod [id:: OSS-6.4] [statut:: todo]
 
-### Lot 7 : auto-hébergement
+### Lot 7 : auto-hébergement (gelé au minimum, ADR-021)
 
 - [ ] Compose d'auto-hébergement multi-OS, Ollama en option, point d'entrée unique [id:: OSS-7.1] [statut:: todo]
 - [ ] `.env.example` minimal et script de génération des secrets (bash et PowerShell) [id:: OSS-7.2] [statut:: todo]
@@ -168,9 +170,25 @@ des lots visibles (2, 3, 5, 7).
 - [ ] `PUBLIC_POSTHOG_KEY` sur Vercel puis redéploiement du site (CEO) [id:: OSS-S.5] [statut:: todo]
 - [x] Release [#336](https://github.com/taskforce-project/taskforce-fullstack/pull/336) sur `main` (v0.42.0, 16/10), déploiement vérifié : backend, app, site, Prometheus [id:: OSS-S.4] [statut:: done]
 
-### Après la 1.0 : mode desktop
+### Lot DA : direction artistique du portfolio
 
-- [ ] Essai de deux à trois jours : coque Tauri ou Electron, profil local sans Keycloak, base embarquée, Claude Code lancé directement ; mesure du poids, de la RAM et de l'effort [id:: OSS-D.1] [statut:: todo]
+- [x] Relevé du portfolio, correspondance des jetons, point sur la ressemblance avec Dust [id:: OSS-DA.0] [statut:: done] [ref:: [[Direction_Artistique_2026]]]
+- [ ] Jetons clairs et sombres, polices Geist, rayon à 0 [id:: OSS-DA.1] [statut:: todo]
+- [ ] Composants de base (bouton à liseré, champs, badges teinte et encre) [id:: OSS-DA.2] [statut:: todo]
+- [ ] Couleurs codées en dur ramenées aux jetons (666 classes, 127 hexadécimaux le 18/10) [id:: OSS-DA.3] [statut:: todo]
+- [ ] Illustrations, logo recoloré, site, doc Fern, README, captures [id:: OSS-DA.4] [statut:: todo]
+
+### Desktop (ADR-021)
+
+- [x] ADR-021 et spécification fonctionnelle et technique [[Specification_App_Desktop]] [id:: OSS-D.0] [statut:: done]
+- [ ] Essai de deux à trois jours, critères chiffrés (§8 de la spec) [id:: OSS-D.1] [statut:: todo]
+- [ ] Profil `desktop` du backend : API locale, utilisateur unique, stockage fichier, courtier en mémoire, caches locaux, sans SMTP, sans service Python [id:: OSS-D.2] [statut:: todo]
+- [ ] Base embarquée, emplacement des données, sauvegarde avant migration, export et import [id:: OSS-D.3] [statut:: todo]
+- [ ] Coque Electron : processus, écran d'attente, trousseau, notifications système [id:: OSS-D.4] [statut:: todo]
+- [ ] Claude Code lancé par l'app (worktrees, MCP, autorisations, chronologie) [id:: OSS-D.5] [statut:: todo]
+- [ ] Copilot et GitHub par device flow et interrogation [id:: OSS-D.6] [statut:: todo]
+- [ ] Interface en profil `desktop` : écrans multi-utilisateurs retirés, onboarding local [id:: OSS-D.7] [statut:: todo]
+- [ ] Paquets, signature, mises à jour, page de téléchargement [id:: OSS-D.8] [statut:: todo]
 
 ### Jour J : résultats du diplôme
 

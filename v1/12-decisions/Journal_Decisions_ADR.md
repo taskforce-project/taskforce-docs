@@ -44,6 +44,7 @@ tags: [adr, decisions, architecture, backend, frontend, ia, securite, memoire, r
 | [[#ADR-018 - Agents de code : Claude Code et Copilot\|ADR-018]] | Agents de code : Claude Code et Copilot | ✅ Accepté (lot 5) | Oct 2026 |
 | [[#ADR-019 - Fournisseur d'IA générique, Ollama par défaut\|ADR-019]] | Fournisseur d'IA générique, Ollama par défaut | ✅ Accepté (lot 4) | Oct 2026 |
 | [[#ADR-020 - Connexion générale : MCP et webhooks sortants\|ADR-020]] | Connexion générale : MCP et webhooks sortants | ✅ Accepté (lot 6) | Oct 2026 |
+| [[#ADR-021 - Application desktop locale, sur le modèle de Claude Desktop\|ADR-021]] | Application desktop locale, sur le modèle de Claude Desktop | ✅ Accepté (cap), essai à faire | Oct 2026 |
 
 ---
 
@@ -926,6 +927,8 @@ Plan et suivi item par item : [[Plan_Release_Open_Source]]. Branches `feature/le
 - **Veille** : l'outil open source le plus proche de l'idée desktop est Vibe Kanban (kanban qui lance Claude Code ou
   Codex dans des worktrees, distribué par `npx` et Tauri) ; aucun outil open source trouvé ne réunit gestion de
   projet, base de connaissance locale, Ollama et agents de code.
+- **18/10/2026** : cap précisé par l'[[#ADR-021 - Application desktop locale, sur le modèle de Claude Desktop|ADR-021]] :
+  la version desktop devient la cible, appelée à rester la seule ; le lot 7 (Docker multi-OS) est gelé au minimum.
 
 ---
 
@@ -1197,6 +1200,64 @@ réservées) ; les webhooks demandent une file de nouvelles tentatives.
 ### Preuve
 
 À venir (lot 6 du [[Plan_Release_Open_Source]]).
+
+---
+
+## ADR-021 - Application desktop locale, sur le modèle de Claude Desktop
+
+**Date** : 18/10/2026 | **Décideur** : Pierre MICHEL | **Statut** : ✅ Accepté (cap) ; architecture à confirmer par l'essai OSS-D.1
+
+### Contexte
+
+Le 16/10, la fin des serveurs après les résultats du diplôme a fait de TaskForce un logiciel à télécharger : 1.0 en
+auto-hébergement Docker, puis un essai de mode desktop (mise à jour du 16/10 de l'ADR-014). Le 18/10, le CEO va plus
+loin : on prépare directement la version desktop, appelée à devenir la seule. L'app tourne sur le PC de
+l'utilisateur, Brain OS et toutes les données y restent, l'IA dépend de sa machine, sur le modèle de Claude Desktop. Le
+sort de la webapp sera tranché après la spécification.
+
+La pile actuelle est une pile serveur : Keycloak pour l'identité (le mot de passe et le nom des utilisateurs n'existent
+que chez lui), PostgreSQL avec pgvector (86 migrations, requêtes natives propres à Postgres), MinIO pour les fichiers,
+un SMTP, un service Python devant les modèles et le serveur Next.js. RabbitMQ et Redis sont déjà facultatifs. Le
+détail de ce que chaque brique devient est dans la [[Specification_App_Desktop]] (inventaire du code du 18/10).
+
+### Décision
+
+1. TaskForce devient une application desktop (Windows, macOS, Linux) : mono-utilisateur, sans compte, données sur la
+   machine, utilisable hors ligne hors IA distante. IA locale par Ollama, ou par une clé d'API compatible OpenAI
+   fournie par l'utilisateur.
+2. Une seule base de code, deux profils : `desktop` (local) et `server` (l'édition d'équipe auto-hébergée actuelle).
+   Le profil `desktop` remplace Keycloak, MinIO, le SMTP et le service Python par des équivalents locaux ; il se
+   passe de RabbitMQ et de Redis, déjà facultatifs.
+3. Architecture visée, à valider par l'essai : coque Electron, front Next.js existant servi en local, backend Spring
+   Boot existant lancé par la coque avec un JRE embarqué, PostgreSQL embarqué (pgvector compris : quatre migrations
+   en dépendent). Claude Code est lancé directement par l'app : plus de relais Keycloak ni de modèle « pull ».
+4. La webapp n'est plus développée au-delà des lots en cours tant que la spécification n'a pas tranché son rôle. Son
+   rôle candidat : combler les trous du desktop (travail en équipe, accès à distance, intégrations entrantes).
+5. Le lot 7 (installation Docker multi-OS) est gelé au minimum : l'effort d'empaquetage va au desktop.
+
+### Alternatives considérées
+
+| Option | Avantages | Inconvénients |
+| ------ | --------- | ------------- |
+| Electron et pile actuelle embarquée (retenu) | Réutilise presque tout le code ; Chromium identique sur les trois OS ; Node inclus pour le serveur Next ; outillage mûr (paquets, mises à jour) ; Claude Desktop et VS Code sont faits ainsi | App lourde (environ 300 à 400 Mo installée, à mesurer) ; démarrage de quelques secondes (JVM) |
+| Tauri et mêmes processus | Coque d'environ 10 Mo | WebView différente selon l'OS (WebKit sur macOS et Linux) ; Node à embarquer quand même pour Next ; glue en Rust à écrire |
+| Réécriture local-first (TypeScript, SQLite) | App légère et simple | Réécrire un backend d'environ 520 classes Java et 86 migrations : hors de portée |
+| Rester en web et Docker | Existe déjà | Docker Desktop requis, ce n'est pas une app grand public ; pas l'expérience « comme Claude Desktop » |
+
+### Conséquences
+
+**Positives :** plus d'hébergement ni de serveur à payer ; données privées par construction ; l'agent de code tourne à
+côté du dépôt de l'utilisateur, sans runner ni jeton de service ; une seule interface à maintenir.
+
+**Négatives / risques :** plus de collaboration à plusieurs tant qu'il n'y a pas de serveur d'équipe ou de
+synchronisation ; plus d'intégrations entrantes (webhooks, événements) faute d'adresse publique ; la qualité de l'IA
+dépend du matériel ; signature de code (certificat Windows, compte Apple Developer) et mises à jour à distribuer ; app
+plus lourde qu'une app web.
+
+### Preuve
+
+Spécification : [[Specification_App_Desktop]]. Essai OSS-D.1 et ses critères chiffrés dans le
+[[Plan_Release_Open_Source]].
 
 ---
 

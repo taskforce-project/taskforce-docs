@@ -64,6 +64,7 @@ tags: [documentation, catalogue, livrables, senior, fullstack, soutenance, pdf]
 | Dictionnaire de données | 50 tables/483 colonnes/94 FK (généré d'information_schema) | ✅ | | `03-architecture/Dictionnaire_Donnees.md` (05/07) |
 | Architecture logicielle (modèle **C4** : contexte/conteneurs/composants) | 3 niveaux C4 formalisés (Mermaid) | ✅ | ⭐ | `03-architecture/Architecture_C4.md` (05/07) + `Architecture.md` |
 | Cartographie des modules | Découpage `shared/core/modules` | ✅ | | `03-architecture/Modules.md` |
+| **Spécification de l'app desktop** | Desktop local (ADR-021) : périmètre fonctionnel, limites, architecture, IA, agents, sécurité, paquets, essai | 🟡 | | `03-architecture/Specification_App_Desktop.md` (18/10) |
 | ADR (Architecture Decision Records) | 10 ADR fondateurs documentés (cf. §2 Gestion de projet) | ✅ | ⭐ | `12-decisions/Journal_Decisions_ADR.md` (05/07) |
 | Table de réconciliation UC ↔ entité ↔ migration | ~30 UC × entités × 56 migrations × 72 tests | ✅ | | `03-architecture/Table_Reconciliation.md` (05/07) |
 
@@ -83,6 +84,7 @@ tags: [documentation, catalogue, livrables, senior, fullstack, soutenance, pdf]
 | Doc | Sujet | Statut | ⭐ | Emplacement |
 | --- | --- | :--: | :--: | --- |
 | **Design system / charte graphique** | Tokens CSS light/dark, palette, Inter+SF Pro, shadcn/Radix, Lucide, a11y | ✅ | ⭐ | `14-design/Design_System.md` (05/07) |
+| Direction artistique 2026 | Alignement sur le portfolio : relevé, jetons, plan d'application, ressemblance avec Dust | 🟡 | | `14-design/Direction_Artistique_2026.md` (18/10) |
 | **Wireframes annotés** | 48 routes réelles frontend, layouts annotés UC + endpoints + rôles | ✅ | ⭐ | `14-design/Wireframes_Annotes.md` (05/07) |
 | Fiche domaine Frontend | Stores, services, vues, layouts | 🟡 | | `02-produit/Frontend.md` |
 | Conventions front / state | Zustand, api-routes, TS strict | ✅ | | `04-engineering/` |
