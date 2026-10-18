@@ -66,7 +66,8 @@ le frontend a besoin.
 - **Release open source (14/10/2026) :** décision du CEO après la soutenance : TaskForce devient un projet open source AGPL-3.0, lean et auto-hébergeable (Ollama par défaut), sans facturation, avec Claude Code et le vrai Copilot comme agents ; la prod ne change que le jour des résultats du diplôme (version 1.0.0, post LinkedIn). Audit complet du code et plan en 9 lots : [[Plan_Release_Open_Source]] ; décisions ADR-014 à ADR-020 ([journal](../12-decisions/Journal_Decisions_ADR.md)). Lot 0 fait sur la branche `feature/lean-oss` (licence, fichiers communautaires, ménage). La prépa bêta fermée et la recherche d'un pivot commercial sont abandonnées.
 - **Lot 1 fait (16/10/2026) :** les 9 correctifs de sécurité du [[Plan_Release_Open_Source]] (2FA exigée à la connexion GitHub/Google, garde anti-SSRF des URL MCP, actuator sur un port de gestion interne, réglage qui coupait l'authentification supprimé, écritures MCP réservées aux gestionnaires, recherche de membres limitée, réglages du dépôt ignorés par le runner, clés PostHog et logos Anthropic retirés). Décision du 16/10 : plus de serveur après les résultats, la 1.0 se télécharge (Docker), puis essai d'un mode desktop (ADR-014, mise à jour du 16/10).
 - **Release de sécurité livrée en prod (16/10/2026, produit v0.42.0)** : lots 0 et 1 (PR #335 puis #336), vérifiée sur le backend, l'app, le site et la supervision. Reste au CEO : `PUBLIC_POSTHOG_KEY` sur Vercel.
-- **▶ Prochaine action :** **lot 2 du plan open source** : retrait de la facturation et des limites de plan (OSS-2.1 à OSS-2.5), sur la branche `feature/lean-oss`, pour le jour des résultats.
+- **Lot 2 fait (18/10/2026, PR [#341](https://github.com/taskforce-project/taskforce-fullstack/pull/341) vers `dev`, pas en prod)** : facturation, module commercial et limites de plan retirés, quota IA réglé par l'instance, V90 (défaut de `users.plan_type`) ; 1304 tests backend et 864 tests front verts, validé en Docker local.
+- **▶ Prochaine action :** **lot 3 du plan open source** : coupes et anglais (routes mortes, étiquette Labs, faux fournisseurs d'agent, Brain OS réduit, interface et erreurs en anglais), sur la branche `feature/lean-oss`.
 - **Backlog « plus » :** hors chemin V1, cf. `.ai/backlog-post-v1.md` (Brain OS Phases 4/5, niveau Plane, RBAC granulaire, intégrations…).
 
 </div>
@@ -152,7 +153,7 @@ Sources Plane : [core concepts](https://docs.plane.so/introduction/core-concepts
 | Guests / accès externes | ✓ | ⬜ | rôle GUEST partiel |
 | IA (Smart Assign, Assistant, Insights) | (basique) | ➕ | au-delà de Plane |
 | Chat / Discussions / Teams | — | ➕❌ | extra TaskForce, mais cassés (P0) |
-| Billing (Stripe) | (cloud) | ➕ | extra ✅ webhooks faits (BE-BILLING-001, PC-005) |
+| Billing (Stripe) | (cloud) | ➖ | retiré le 18/10/2026 (ADR-016) |
 
 **Synthèse :** bases ✅, mais pour « gérer un projet complet » (niveau Plane / Linear / GitHub) il manque surtout
 **Modules, Views (+ layouts calendrier/tableur/gantt), Intake, Estimates, Templates, Import/Export**, et

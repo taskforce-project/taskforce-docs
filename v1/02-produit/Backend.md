@@ -30,7 +30,7 @@ Logo projet        : assets/images/logo_taskforce.png
 **Tags :** `#produit` `#suivi` `#backend`
 
 <p class="lead">
-Stack : Spring Boot 4 · Java 21 · PostgreSQL 18 + pgvector · Keycloak · Stripe · MinIO · RabbitMQ/STOMP ·
+Stack : Spring Boot 4 · Java 21 · PostgreSQL 18 + pgvector · Keycloak · MinIO · RabbitMQ/STOMP ·
 Groq. Les items <code>[demande-par:: frontend]</code> répondent à un <code>besoin-backend</code> de la
 <a href="./Frontend.md">fiche Frontend</a> (l'<code>id</code> doit correspondre).
 </p>
@@ -145,6 +145,10 @@ Groq. Les items <code>[demande-par:: frontend]</code> répondent à un <code>bes
 
 ## 6. IA / Facturation
 
+> **18/10/2026 : facturation et forfaits retirés** (ADR-016, lot 2 du [[Plan_Release_Open_Source]]). Les items de
+> facturation, de forfait et de vente ci-dessous sont historiques : le code a été supprimé.
+
+- [x] **Facturation et limites de plan retirées (18/10/2026)** : contrôleurs billing, stripe, webhook et sales supprimés, `/api/auth/select-plan` supprimé (inscription sans forfait), `PlanFeatureService` et plafonds supprimés, quota IA réglé par l'instance (`AI_MONTHLY_TOKENS_PER_ACCOUNT`, `AI_RATE_*`, 0 = illimité), V90 (défaut de `users.plan_type`), tables gardées [id:: OSS-2.3] [statut:: done] [ref:: d30a51b1, 1d4ed5bf, 881cb666, 1b1940f4]
 - [ ] Cache AI Insights (`ai_runs`/`insight_snapshots`) + garde quota/timeout Groq [id:: BE-IA-002] [statut:: todo] [parite:: extra] [prio:: P2] (PC-007)
 - [ ] Feature flags IA [id:: BE-IA-003] [statut:: todo] [prio:: P2] (PC-014)
 - [ ] Décision `ai-service` Python : supprimer ou documenter legacy [id:: BE-IA-004] [statut:: todo] [prio:: P3] (PC-012)

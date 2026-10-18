@@ -48,7 +48,7 @@ service → store → routes côté frontend. L'état « Santé » est réconcil
 | Domaine | Backend (contrôleur · service) | Frontend (service · store) | Santé |
 | ------- | ------------------------------ | -------------------------- | :---: |
 | Auth & Inscription | `AuthController` · `AuthService`,`KeycloakService`,`KeycloakAuthService`,`OtpService`,`EmailService` | `auth-service` · `auth-context` | ✅ (OIDC RS256 Keycloak ; refresh/logout natifs) |
-| Facturation | `Stripe*Controller` · `StripeService` | `stripe-service` | ⚠️ webhooks stubés |
+| Facturation | retirée le 18/10/2026 (ADR-016) : Stripe, paiement, forfaits, module `sales` | retirée | ➖ |
 | Profil utilisateur | `User`/`ProfileController` · `UserService`,`ProfileService` | `user`/`profile-service` · `user`/`profile-store` | ⚠️ import profile-service |
 | Workspace (tenant) | `WorkspaceController` · `WorkspaceService` | `workspace-service` · `workspace-store` | ✅ |
 | Projet | `ProjectController` · `ProjectService` | `project`/`label-service` · `project`/`label-store` | ✅ |
@@ -84,7 +84,7 @@ Les dépendances pointent vers le bas uniquement. <code>shared</code> ignore <co
 </blockquote>
 
 Couplages transverses notables dans `core` : `AnalyticsService`, `AssistantService`, `SmartAssignService`
-lisent les données Issue/Cycle/membres ; `AuthService` orchestre `KeycloakService` + `StripeService` +
+lisent les données Issue/Cycle/membres ; `AuthService` orchestre `KeycloakService` +
 `OtpService`/`EmailService` ; tous les services scopés workspace dépendent de `WorkspaceService` pour
 l'autorisation ; `AiGatewayClient` est le client du modèle auto-hébergé, partagé (Assistant, SmartAssign, Insights). Côté infra :
 `chat` → RabbitMQ/STOMP, `ged` → MinIO, `sales` → autonome.

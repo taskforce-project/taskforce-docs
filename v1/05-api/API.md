@@ -73,8 +73,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | RoadmapController | `/api/workspaces/{slug}/roadmap` | ✅ |
 | WebhookController | `/api/workspaces/{slug}/webhooks` | ✅ |
 | IntegrationController | `/api/workspaces/{slug}/integrations/...` (+ `/connectors/{key}` générique) + `/api/integrations/*/callback` ; `GET github/connect?returnTo=` (chemin applicatif où revenir après le consentement, validé, 21/09/2026) | ✅ |
-| StripeController / StripeWebhookController | `/api/stripe` · `/api/webhooks` | ✅ |
-| SalesController | `/api/sales` | ✅ |
+| ~~Billing, Stripe, StripeWebhook, Sales~~ | `/api/billing`, `/api/stripe`, `/api/webhooks/stripe`, `/api/sales`, `/api/auth/select-plan`, `/api/workspaces/{slug}/usage` : retirés le 18/10/2026 (ADR-016) | ➖ |
 | FileController / AttachmentController (ged) | `/api/files` · `/api/workspaces/{slug}/projects/{projectId}/issues/{issueId}/attachments` | ✅ |
 | CycleController | `/api/workspaces/{slug}/projects/{projectId}/cycles` | ✅ |
 | TeamController | `/api/workspaces/{slug}/teams` | ✅ |
@@ -116,8 +115,8 @@ Cortex (découverte `tools/list`, namespacing `<connecteur>__<outil>`, fusion da
 Les **écritures externes** sont **proposées** (toolCall `pending`) puis exécutées après validation via
 `POST /mcp/actions/execute` (`{toolRef, arguments}`). Gestion des serveurs : `GET /mcp/servers` (joignabilité
 + outils après allow-list `mcpAllow`), `POST /mcp/servers` (`{connectorKey, mcpUrl, mcpToken?, mcpAllow?}` →
-config **chiffrée**), `DELETE /mcp/servers/{connectorKey}`. **Gate BUSINESS+** (`PlanFeature.INTEGRATIONS` →
-409 sinon). Backend complet (cycle connect→execute→disconnect vérifié en HTTP) ; le front (dialog de connexion
+config **chiffrée**), `DELETE /mcp/servers/{connectorKey}`. Ouvert à tout workspace depuis le retrait des
+forfaits (ADR-016) ; outils en écriture réservés aux OWNER/ADMIN (OSS-1.5). Backend complet (cycle connect→execute→disconnect vérifié en HTTP) ; le front (dialog de connexion
 + bouton d'approbation des actions `pending`) reste à faire. Détail : [IA-MCP-002](../02-produit/IA.md).
 
 **OAuth MCP 1-clic ✅** (02/09/2026, `[TF-MCP-02]`) — connexion d'un serveur MCP **sans coller de token**, via OAuth 2.1 **générique** (valable pour tout serveur conforme, zéro code par service). `POST /mcp/servers/{key}/oauth/start` (`{mcpUrl}`, gaté BUSINESS+ + manager) : **découverte** (probe `401`/`WWW-Authenticate` → Protected Resource Metadata RFC 9728 → Authorization Server Metadata RFC 8414) + **Dynamic Client Registration** RFC 7591 + **PKCE S256**, renvoie l'URL d'autorisation (le front y redirige). `GET /api/mcp/oauth/callback` (**public** : résout le workspace via le `state` anti-CSRF, jamais l'URL) : échange le code, stocke les tokens **chiffrés** dans le `config` de la connexion (**refresh auto** avant expiration via `McpTokenService`), redirige **toujours** vers l'UI. Table éphémère `mcp_oauth_states` (V82). **`SsrfGuard`** sur chaque fetch de découverte/DCR/token. Prouvé en live contre Linear (découverte + DCR + URL d'autorisation OK). Le champ URL + token reste en fallback bring-your-own. **Déployé en prod le 02/09/2026** (#218, `--admin --squash`, auto-deploy VM1+VM2 ; V82 appliquée, backend sain, callback public vérifié `302` vers le front prod). Durcissement (#217) : `SsrfGuard` valide aussi l'`authorization_endpoint` (issu de metadata semi-fiable) avant la redirection navigateur.
@@ -158,10 +157,9 @@ Roadmap (`issue-service.getScheduledIssues`, `ROADMAP_ROUTES`) : constantes impo
 dans `api-routes.ts`. Les endpoints back des intégrations/pièces jointes/roadmap **existent** (avec `/api`) ;
 pour les messages, le back est en plus mal préfixé (cf. §4.1). Voir §4.2.
 
-**Dégradé ⚠️** — Profil (`profile-service` : chemin OK mais import cassé, §4.3), Refresh auth (§4.4),
-écritures Stripe (handlers de webhook stubés — cf. [Dette technique DT-005](../09-audits/Dette_Technique.md)).
+**Dégradé ⚠️** — Profil (`profile-service` : chemin OK mais import cassé, §4.3), Refresh auth (§4.4).
 
-Groupes de routes **présents** dans `frontend/lib/config/api-routes.ts` : `AUTH`, `STRIPE`, `USER`,
+Groupes de routes **présents** dans `frontend/lib/config/api-routes.ts` : `AUTH`, `USER`,
 `WORKSPACE`, `PROJECT`, `ISSUE`, `CYCLE`, `ANALYTICS`, `NOTIFICATION`, `PROFILE`, `PAGE`, `TEAM`,
 `DISCUSSION`. **Absents** (importés mais jamais déclarés) : `MESSAGE_ROUTES`, `INTEGRATION_ROUTES`,
 `ATTACHMENT_ROUTES`, `ROADMAP_ROUTES`.

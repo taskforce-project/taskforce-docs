@@ -135,6 +135,10 @@ Les items <code>[besoin-backend:: BE-xxx]</code> renvoient à une tâche de la <
 
 ## 2. Auth & compte
 
+> **18/10/2026 : facturation et forfaits retirés** (ADR-016, lot 2 du [[Plan_Release_Open_Source]]). Les items de
+> facturation, de forfait et de vente ci-dessous sont historiques : le code a été supprimé.
+
+- [x] **Plus de forfait ni de paiement (18/10/2026)** : inscription en deux étapes sans forfait, pages `/billing` et `/payment` supprimées, modal d'upgrade, badges, « View plans », upsell de la visite, gates Pro (Cortex, explorateur analytics) et quotas (espaces, membres) retirés ; usage IA affiché contre le plafond de l'instance [id:: OSS-2.4] [statut:: done] [ref:: 57a83a16, 0bee8e01]
 **Fait :**
 - [x] Inscription 3 étapes + OTP, login, forgot-password [id:: FE-AUTH-001] [statut:: done] [parite:: ok] [ref:: frontend/app/auth]
 - [x] Choix de plan + retour paiement Stripe [id:: FE-AUTH-002] [statut:: done] [parite:: extra] [ref:: frontend/app/payment]
