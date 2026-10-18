@@ -40,7 +40,7 @@ tags: [adr, decisions, architecture, backend, frontend, ia, securite, memoire, r
 | [[#ADR-014 - TaskForce 1.0 : projet open source lean et auto-hébergeable\|ADR-014]] | TaskForce 1.0 : projet open source lean et auto-hébergeable | ✅ Accepté | Oct 2026 |
 | [[#ADR-015 - Licence AGPL-3.0\|ADR-015]] | Licence AGPL-3.0 | ✅ Accepté, appliqué | Oct 2026 |
 | [[#ADR-016 - Retrait de la facturation et des limites de plan\|ADR-016]] | Retrait de la facturation et des limites de plan | ✅ Mis en œuvre (lot 2, 18/10) | Oct 2026 |
-| [[#ADR-017 - Brain OS réduit à son cœur\|ADR-017]] | Brain OS réduit à son cœur | ✅ Accepté (lot 3) | Oct 2026 |
+| [[#ADR-017 - Brain OS réduit à son cœur\|ADR-017]] | Brain OS réduit à son cœur | ✅ Accepté, mis en œuvre (lot 3) | Oct 2026 |
 | [[#ADR-018 - Agents de code : Claude Code et Copilot\|ADR-018]] | Agents de code : Claude Code et Copilot | ✅ Accepté (lot 5) | Oct 2026 |
 | [[#ADR-019 - Fournisseur d'IA générique, Ollama par défaut\|ADR-019]] | Fournisseur d'IA générique, Ollama par défaut | ✅ Accepté (lot 4) | Oct 2026 |
 | [[#ADR-020 - Connexion générale : MCP et webhooks sortants\|ADR-020]] | Connexion générale : MCP et webhooks sortants | ✅ Accepté (lot 6) | Oct 2026 |
@@ -1022,7 +1022,7 @@ lui rend son défaut `'FREE'`. La purge RGPD efface toujours les identifiants St
 
 ## ADR-017 - Brain OS réduit à son cœur
 
-**Date** : 14/10/2026 | **Décideur** : Pierre MICHEL | **Statut** : ✅ Accepté, à mettre en œuvre (lot 3)
+**Date** : 14/10/2026 | **Décideur** : Pierre MICHEL | **Statut** : ✅ Accepté, mis en œuvre le 18/10/2026 (lot 3)
 
 ### Contexte
 
@@ -1055,7 +1055,16 @@ projet, à consolider plus tard.
 
 ### Preuve
 
-À venir (lot 3 du [[Plan_Release_Open_Source]]).
+Lot 3 du [[Plan_Release_Open_Source]], branche `feature/lean-oss` (pas en prod) :
+
+- `d68c71c1` : vue graphe, galaxies et en-tête « planète » retirés, avec `react-force-graph-2d` ; gabarits
+  experts, préremplissage `demo` (`brain.demo-slugs`) et réamorçage retirés ; endpoints sans appelant retirés
+  (lecture des pages à l'unité, liens créés à la main) ; `metadata.projects` retiré ; V92 convertit le type
+  TEMPLATE en NOTE. Les liens viennent toujours des `#tags` et des `[[wikilinks]]`.
+- `8327b697` : étiquette Labs retirée de l'app.
+- `ddcd2b2f` : notes initiales (amorçage et ingestion) en anglais ; les relevés de cycle se raccrochent à la
+  note « Done & shipped » du projet.
+- `80b13ad8` : test d'ingestion aligné sur la fin de `metadata.projects`.
 
 ---
 
@@ -1111,7 +1120,10 @@ produit » reste à confirmer par écrit.
 
 ### Preuve
 
-À venir (lot 5 du [[Plan_Release_Open_Source]]).
+- Lot 3 (18/10/2026, `56ca4e0c`) : fournisseurs `stub`, `claude-api`, `github-copilot` (appel à GitHub Models)
+  et `cursor` retirés, avec leurs clés d'API ; V91 supprime les clés stockées et clôt les runs bloqués. Seul
+  `claude-code` reste.
+- Le reste (validations dans l'app, vrai Copilot) : lot 5 du [[Plan_Release_Open_Source]].
 
 ---
 
