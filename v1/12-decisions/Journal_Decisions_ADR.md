@@ -41,7 +41,7 @@ tags: [adr, decisions, architecture, backend, frontend, ia, securite, memoire, r
 | [[#ADR-015 - Licence AGPL-3.0\|ADR-015]] | Licence AGPL-3.0 | ✅ Accepté, appliqué | Oct 2026 |
 | [[#ADR-016 - Retrait de la facturation et des limites de plan\|ADR-016]] | Retrait de la facturation et des limites de plan | ✅ Mis en œuvre (lot 2, 18/10) | Oct 2026 |
 | [[#ADR-017 - Brain OS réduit à son cœur\|ADR-017]] | Brain OS réduit à son cœur | ✅ Accepté, mis en œuvre (lot 3) | Oct 2026 |
-| [[#ADR-018 - Agents de code : Claude Code et Copilot\|ADR-018]] | Agents de code : Claude Code et Copilot | ✅ Accepté (lot 5) | Oct 2026 |
+| [[#ADR-018 - Agents de code : Claude Code et Copilot\|ADR-018]] | Agents de code : Claude Code et Copilot | ✅ Accepté, mis en œuvre (lot 5) | Oct 2026 |
 | [[#ADR-019 - Fournisseur d'IA générique, Ollama par défaut\|ADR-019]] | Fournisseur d'IA générique, Ollama par défaut | ✅ Accepté, mis en œuvre (lot 4) | Oct 2026 |
 | [[#ADR-020 - Connexion générale : MCP et webhooks sortants\|ADR-020]] | Connexion générale : MCP et webhooks sortants | ✅ Accepté (lot 6) | Oct 2026 |
 | [[#ADR-021 - Application desktop locale, sur le modèle de Claude Desktop\|ADR-021]] | Application desktop locale, sur le modèle de Claude Desktop | ✅ Accepté (cap), essai à faire | Oct 2026 |
@@ -768,6 +768,11 @@ RunnerIdentityResolver, DeliverySessionScope, RunnerTokenService, LocalRunnerSet
 `shared/security/{SecurityConfig, PostAuthenticationFilter}.java` · `scripts/keycloak-runner.ps1` ·
 `taskforce-mcp` 0.3.0 (`taskforce_get_issue`, `taskforce_add_comment`, en-tête de session) · `taskforce-runner/`.
 
+**▶ MAJ 18/10/2026 (lot 5, ADR-018)** : `taskforce-mcp` est retiré ; l'agent d'un run joint le serveur MCP servi par
+le backend (`/api/workspaces/{slug}/mcp`) avec le même jeton de session et le même en-tête, et chaque outil y est
+rejugé par `DeliverySessionScope`. Le runner gagne le suivi en direct et les validations dans l'app ; son identité
+se crée en libre-service (Réglages > Agents).
+
 **Vérifié le 20/09/2026 sur la stack dev** : suite backend complète verte (1264 tests, 0 échec), dont 131 tests ciblés sur le runner (dont 57 cas de périmètre et 15 du
 filtre) et 59 tests du runner verts ; CI verte sur `dev` (tests backend, CodeQL, Semgrep) ; 34 sondes HTTP en direct, toutes conformes (proxy de jeton, runner
 hors session, session en cours, session d'un run terminé) ; un run complet
@@ -1123,7 +1128,23 @@ produit » reste à confirmer par écrit.
 - Lot 3 (18/10/2026, `56ca4e0c`) : fournisseurs `stub`, `claude-api`, `github-copilot` (appel à GitHub Models)
   et `cursor` retirés, avec leurs clés d'API ; V91 supprime les clés stockées et clôt les runs bloqués. Seul
   `claude-code` reste.
-- Le reste (validations dans l'app, vrai Copilot) : lot 5 du [[Plan_Release_Open_Source]].
+- Lot 5 (18/10/2026, branche `feature/lean-oss`, pas en prod) :
+  1. **Validations dans l'app** : le runner lance `claude -p --permission-mode manual --permission-prompts none` ; une
+     action hors du socle pré-autorisé appelle le hook `PermissionRequest` (type `http`, déclaré par `--settings`) d'un
+     serveur local du runner (127.0.0.1, port libre, jeton aléatoire passé par variable d'environnement), qui ouvre la
+     demande dans TaskForce et répond selon la décision. Vérifié en réel sur Claude Code 2.1.293 : Allow exécute,
+     Deny renvoie notre message à l'agent, un hook muet au-delà de son délai vaut refus. Seule la personne qui a
+     délégué décide ; 10 minutes sans réponse valent refus. `git push` et `gh` restent refusés d'office.
+  2. **Suivi en direct** : `--output-format stream-json`, chronologie sur l'issue (V96), notifications.
+  3. **Mode interactif** : jeton personnel (V95), serveur MCP servi par le backend en HTTP, plugin sans chemin
+     local ; `taskforce-mcp` (Node) retiré. Claude Code 2.1.293 s'y connecte en HTTP (12 outils).
+  4. **Copilot** : écart assumé sur le moyen, pas sur l'agent. La tâche part par l'API des tâches d'agent de GitHub
+     (`POST /agents/repos/{repo}/tasks`, préversion publique) plutôt que par l'assignation d'une issue GitHub : même
+     agent cloud, un état explicite à suivre (`queued`, `in_progress`, `completed`...) et pas d'issue en double sur
+     GitHub. Non testé faute d'abonnement : test du CEO.
+  5. Seuls les agents prêts pour la personne et le projet sont proposés (Smart Assign, menu Assignee, délégation).
+  Commits `1edf5345`, `9e787f2d`, `9303fe24`, `1c93b20d`, `5501346b`, `6ccec74f`, `2a49a48b`, `2592d8e9`,
+  `b33ef7cc`, `20196ef3`, `48fd096b`, `9de77e50`.
 
 ---
 
