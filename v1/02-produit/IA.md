@@ -3,30 +3,35 @@ id: produit-ia
 title: État Produit — IA
 doc_type: register
 statut: active
-version: 0.1
-date: "16/07/2026"
+version: 0.2
+date: "18/10/2026"
 auteur: Pierre MICHEL
 review_cycle: weekly
-tags: [produit, suivi, ia, groq]
+tags: [produit, suivi, ia, ollama, openai-compatible]
 related:
   - "./README.md"
   - "./Backend.md"
 ---
 <!-- Logo établissement : assets/images/logo_metz_numeric_school.svg | Logo projet : assets/images/logo_taskforce.png -->
 
-# État Produit — IA (`ai-service/` + Groq)
+# État Produit : IA (`ai-service/`, fournisseur compatible OpenAI)
 
-**Version :** 0.1 · **Date :** 16/07/2026 · **Auteur :** Pierre MICHEL
+**Version :** 0.2 · **Date :** 18/10/2026 · **Auteur :** Pierre MICHEL
 
 [![Type: Suivi Produit](https://img.shields.io/badge/Type-Suivi%20Produit-orange?style=for-the-badge)]() [![Répertoire: IA](https://img.shields.io/badge/R%C3%A9pertoire-IA-blue?style=for-the-badge)]()
 
 ## Liens rapides
 - [🚧 État Produit — Hub](./README.md) · [Fiche Backend](./Backend.md) · [🧠 Brain OS](../../Brain_OS.md)
 
-**Tags :** `#produit` `#ia` `#groq`
+**Tags :** `#produit` `#ia` `#ollama`
 
-> Prod : Groq direct depuis le backend Java (`GroqService`). `ai-service` Python = **vestigial**.
-> **▶ MAJ 16/08** : plus tout à fait exact — le chat passe par le gateway `ai-service` (Ollama local ⇆ Groq hébergé selon `GROQ_API_KEY`, cf. **IA-PROVIDER-001** ci-dessous), le backend Java l'appelant via `AiGatewayClient`. Ligne d'origine conservée pour trace.
+> **▶ Architecture au 18/10/2026 (lot 4, branche `feature/lean-oss`, pas en prod)** : le backend Java appelle
+> l'`ai-service` (Python, FastAPI) sur le réseau interne, avec le secret partagé `AI_SERVICE_TOKEN`. L'`ai-service`
+> parle à **tout fournisseur compatible OpenAI** (`AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL`, `AI_MODEL_FAST` ; embeddings
+> `AI_EMBED_*`), Ollama sur la machine hôte par défaut (`qwen3:8b` pour les deux tiers, `bge-m3`). Les variables
+> `GROQ_*` et `OLLAMA_*` restent lues en alias. Sans IA disponible, chaque fonction échoue tout de suite et passe à
+> son repli ; l'interface l'annonce (`GET /api/ai/status`). Détail : **IA-LOT4-001** ci-dessous, ADR-019.
+> Les lignes plus anciennes (Groq, plans, gating) sont gardées pour trace.
 > Légende : ✅ `done` · 🔄 `wip` · ⬜ `todo`. Atout différenciant (➕ au-delà du standard).
 
 ## Existant
@@ -60,6 +65,7 @@ related:
 - [x] **Prédictions pilotées par le modèle** : 3ᵉ capacité de `POST /analytics/chart` — `"predict": "SUCCESS"` → **score de succès 0-100 par projet** calculé sur **données réelles** (70 % taux de complétion + 30 % ponctualité, via `AnalyticsQueryService.predict`, un seul `IN (?)` lié → anti-injection). Déterministe et explicable (« pas de la voyance »), jamais inventé ; **le modèle décide quand l'utiliser** (retour user : « laisser le modèle décider »). Rendu comme une répartition (barres), instantané (donnée dans le spec). Preuve : « predictions de succès des projets » → « Chances de succès par projet », Infra 73 / Solo 69 / API 69 / Web 60 (= requête psql). `ChartSpecServiceTest` +6 cas. [id:: IA-CHART-002] [statut:: done] [parite:: extra] [ref:: core/service/agent/{ChartSpecService,AnalyticsQueryService}.java] (11/07/2026)
 
 - [x] **Bascule provider chat Ollama↔Groq (auto, détection `GROQ_API_KEY`)** : le CHAT (smart-assign, Cortex, orchestration/agents) tourne sur **Ollama local par défaut** et **bascule automatiquement sur Groq** (API hébergée, OpenAI-compatible) **dès qu'une `GROQ_API_KEY` est fournie** — même code, seuls changent l'URL, l'en-tête Bearer et les noms de modèles (`openai/gpt-oss-120b` / `openai/gpt-oss-20b`). But : **zéro compute local requis → l'app IA (chat) devient déployable sur une petite VM** (ex. 4 Go). Les **EMBEDDINGS restent TOUJOURS sur Ollama** (`bge-m3` ; Groq n'expose pas d'API d'embeddings) → sur une VM sans Ollama, le chat marche mais pas le knowledge-graph. Introspection : `GET /health` expose `chat_provider` (`groq`/`ollama`). ⚠️ Au test du 16/08 l'ancienne clé Groq renvoyait 403 (morte) → clé vidée, chat en repli Ollama local. **⚠️ 18/08 : les anciens modèles Groq `llama-3.3-70b-versatile`/`llama-3.1-8b-instant` ont été décommissionnés (403) → défauts basculés sur `openai/gpt-oss-120b` (standard/deep) / `openai/gpt-oss-20b` (fast), cf. `config.py`.** [id:: IA-PROVIDER-001] [statut:: done] [parite:: extra] [ref:: ai-service/app/config.py (`use_groq`) + ai-service/app/services/ollama_gateway.py + ai-service/app/routers/health.py] (16/08/2026, maj 28/08/2026)
+- [x] **IA locale d'abord (lot 4, 18/10/2026, pas en prod)** : (1) **ai-service** réécrit : configuration générique compatible OpenAI pour le chat ET les embeddings (alias `GROQ_*`/`OLLAMA_*`), `AI_PROVIDER=none` pour couper, `/no_think` envoyé aux seuls modèles Qwen3, bloc `<think>` retiré des réponses, secret partagé obligatoire (fermé par défaut) sur toutes les routes `/v1`, `/health` sans détail, `GET /v1/status` (fournisseur joignable, mis en cache 30 s) ; scoring Smart Assign Python mort et repli « lexical » des embeddings supprimés ; FastAPI 0.146 / Starlette 1.9 ; 60 tests pytest + workflow CI. (2) **Backend** : `AiStatusService` (état lu toutes les 30 s), échec immédiat sans IA, `GET /api/ai/status` ; `LlmClient` sans paramètre de modèle décoratif (le tier suffit) ; aucune transaction n'englobe plus un appel au modèle (spec d'issue, résumé de conversation, Smart Assign, recherche du Brain OS). (3) **Brain OS** : vecteurs liés à leur modèle (V94 `embedding_model`, vecteurs existants effacés), recherche plein texte PostgreSQL quand il n'y a pas d'embeddings, réindexation en tâche de fond (`BrainEmbeddingIndexer`, 30 s) au lieu d'un calcul pendant la requête. (4) **Cortex** : plus de routage par mots-clés, le modèle choisit ses outils à chaque message ; outils MCP externes proposés (12 au plus) ; une écriture externe est proposée puis validée dans la conversation (« Approve and run »). (5) Prompts, outils, étapes du workflow d'analyse et replis en **anglais**. [id:: IA-LOT4-001] [statut:: done] [parite:: extra] [ref:: ai-service/ + core/service/{AiStatusService,AiGatewayClient,EmbeddingClient}.java + core/service/brain/{BrainSearchService,BrainEmbeddingIndexer}.java + core/service/agent/AgentService.java + V94] (18/10/2026)
 - [x] **Smart Assign — seed curé, absents exclus, scoring rééquilibré (16/08)** : (1) **seed** (`dev_seed.sql`) — charge réaliste **par domaine** (PROD-1.8) + indisponibilités calendaires réelles (`member_leaves`, VACATION/SICK chevauchant aujourd'hui) pour une démo qui a du signal ; (2) **exclusion des absents** — les membres en congé/maladie du jour (`member_leaves` VACATION/SICK ; REMOTE = présent) sont **retirés du vivier** (on n'auto-assigne pas un absent) ; (3) **rééquilibrage du scoring** — le poids du **skill-match déterministe** (`labelScore`) passe de **0,08 à 0,22** dans le mix du bulk (un membre peu chargé mais non qualifié ne remonte plus à tort) → **best-match net** en recommandation simple et **bulk qui distribue** vraiment. Tests `SmartAssignServiceTest` **35/35**. [id:: IA-SA-002] [statut:: done] [parite:: extra] [ref:: core/service/SmartAssignService.java + backend/tf-api/seed/dev_seed.sql] (16/08/2026)
 - [x] ~~**Data flywheel : couche de capture HITL**~~ (`ai_generations`, migration V81). **Retirée le 18/10/2026** (OSS-3.6) : la capture ne tournait que pour un workspace avec `ai_learning_enabled` vrai, et rien ne pouvait le poser (ni endpoint, ni écran) ; la table restait vide et rien ne la lisait. Service, entité, enums et dépôt sont supprimés ; la table et la colonne `ai_learning_enabled` (défaut faux) restent, `ai_runs` est intact. Conception d'origine : à chaque point human-in-the-loop où l'IA propose et l'humain tranche (SPEC via `generateSpec`/`approveSpec`, DECISION via `AnalysisJobService.accept`/`dismiss`, SMART_ASSIGN via `recommend`/`updateIssue`), on capture le contexte Brain OS servi, le draft, le final retenu, le **signal** (ACCEPTED/EDITED/REJECTED) et l'`edit_distance`, **par workspace** (jamais cross-tenant). Corpus de préférences = observabilité aujourd'hui + carburant d'un LoRA/DPO plus tard (on ne fine-tune rien maintenant, on collecte le bon corpus ; cf. `road_to_v2/Data_Flywheel_et_Apprentissage.md`). **Opt-in RGPD** (`ai_learning_enabled`, défaut OFF), **best-effort** (transaction séparée `REQUIRES_NEW` + try/catch : ne casse jamais le flux métier), `kind`/`final` **extensibles V2** (outcome d'exécution d'agent plus tard, sans migration). Corpus DISTINCT d'`assignment_events`/`ai_runs` (historique opérationnel du scoring). Tests `AiGenerationServiceTest` + verify gate dans `SmartAssignServiceTest`. [id:: IA-FLYW-001] [statut:: done] [parite:: extra] [ref:: core/service/AiGenerationService.java] (02/09/2026)
 
@@ -67,9 +73,9 @@ related:
 - [ ] Abonner le front à `/topic/analysis.{workspaceId}` (STOMP) — le backend publie déjà, le dock retombe sur un polling 5 s [id:: IA-DEC-004] [statut:: todo] [prio:: P2] [besoin-backend:: néant] (10/07/2026)
 - [ ] Exploiter les priorités `DISMISSED` comme signal de feedback (mesurer les recommandations suivies vs écartées). La capture du data flywheel (`IA-FLYW-001`) est retirée le 18/10/2026 ; le statut `DISMISSED` reste stocké sur chaque priorité (`DecisionPriorityStatus`). Reste l'exploitation/mesure. [id:: IA-DEC-005] [statut:: todo] [prio:: P3]
 - [ ] Vrai streaming SSE de l'assistant [id:: IA-AS-002] [statut:: todo] [prio:: P2] [besoin-backend:: BE-IA-001] (PC-009)
-- [ ] Cache Insights (`ai_runs`/`insight_snapshots`) + garde quota/timeout Groq [id:: IA-IN-002] [statut:: todo] [prio:: P2] [besoin-backend:: BE-IA-002] (PC-007)
+- [ ] Cache Insights (`ai_runs`/`insight_snapshots`) + garde quota/timeout du fournisseur [id:: IA-IN-002] [statut:: todo] [prio:: P2] [besoin-backend:: BE-IA-002] (PC-007)
 - [ ] Feature flags IA [id:: IA-CFG-001] [statut:: todo] [prio:: P2] [besoin-backend:: BE-IA-003] (PC-014)
-- [ ] Décision `ai-service` Python : supprimer ou documenter legacy [id:: IA-LEG-001] [statut:: todo] [prio:: P3] [besoin-backend:: BE-IA-004] (PC-012)
+- [x] Décision `ai-service` Python : gardé et sécurisé (ADR-019 : réseau interne, secret partagé, tests) ; le portage en Java ne concerne que le profil desktop (ADR-021) [id:: IA-LEG-001] [statut:: done] [prio:: P3] (18/10/2026)
 - [ ] **Ingestion Brain OS au-delà du cycle** : les issues **hors cycle** (259 des 267 du seed), les **commentaires** et les **PR** ne laissent aucune trace dans le graphe. Choix assumé — le grain d'ingestion est le **lot** (le cycle), pas l'événement isolé : un node par événement ferait exploser le graphe (cf. estimation 25 M nodes, `brain-os-roadmap.md` §4). À rouvrir seulement avec un grain d'agrégation défini (rétro **de projet** ? digest **hebdomadaire** ?). [id:: IA-INGEST-002] [statut:: todo] [prio:: P2]
 
 ## ▶ Prochaine action
@@ -94,4 +100,4 @@ triplerait.
 sécurité plutôt que le mécanisme principal.
 
 ---
-**Dernière mise à jour :** 28/08/2026 · **Projet :** Taskforce — Metz Numeric School 2025-2026
+**Dernière mise à jour :** 18/10/2026 · **Projet :** Taskforce - Metz Numeric School 2025-2026

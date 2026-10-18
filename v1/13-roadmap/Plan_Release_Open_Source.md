@@ -122,12 +122,13 @@ des lots visibles (2, 3, 5, 7).
 
 ### Lot 4 : IA locale d'abord
 
-- [ ] Appels au modèle sortis des transactions de base [id:: OSS-4.1] [statut:: todo]
-- [ ] Config générique compatible OpenAI (chat et embeddings), alias `GROQ_*` conservés [id:: OSS-4.2] [statut:: todo]
-- [ ] Ollama par défaut avec de petits modèles ; `/no_think` seulement pour Qwen3 [id:: OSS-4.3] [statut:: todo]
-- [ ] Sans fournisseur : échec immédiat et état « IA non configurée » [id:: OSS-4.4] [statut:: todo]
-- [ ] Cortex : le modèle choisit ses outils, outils MCP avec confirmation ; prompts de Cortex et des services IA en anglais (reportés du lot 3) [id:: OSS-4.5] [statut:: todo]
-- [ ] `ai-service` : réseau interne, secret partagé, santé du fournisseur, tests [id:: OSS-4.6] [statut:: todo]
+- [x] Appels au modèle sortis des transactions de base : spec d'issue (génération et approbation), résumé de conversation, Smart Assign (recommandation, aperçu, lot), recherche du Brain OS ; lecture en transaction courte, appel au modèle, puis écriture [id:: OSS-4.1] [statut:: done] [ref:: b61c204b, 752b9f8b]
+- [x] Config générique compatible OpenAI pour le chat et les embeddings (`AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL`, `AI_MODEL_FAST`, `AI_EMBED_*`, `AI_TIMEOUT`), alias `GROQ_*` et `OLLAMA_*` conservés, `AI_PROVIDER=none` pour couper [id:: OSS-4.2] [statut:: done] [ref:: 30e0cad4, c540acbf]
+- [x] Ollama de la machine hôte par défaut, un seul modèle de chat (`qwen3:8b` pour les deux paliers, pas de rechargement) et `bge-m3` ; `/no_think` seulement pour Qwen3, sauf au palier `deep` ; bloc `<think>` retiré des réponses [id:: OSS-4.3] [statut:: done] [ref:: 30e0cad4]
+- [x] Sans fournisseur : échec immédiat (`AiStatusService`, `GET /api/ai/status`), avis « AI is not configured » dans Cortex, recherche du Brain OS en plein texte ; vecteurs liés à leur modèle (V94) et recalculés en tâche de fond [id:: OSS-4.4] [statut:: done] [ref:: b61c204b, 752b9f8b, af513ade]
+- [x] Cortex : plus de routage par mots-clés, le modèle choisit ses outils ; 12 outils MCP externes au plus ; écriture externe proposée puis lancée après validation (« Approve and run ») ; prompts, outils, étapes du workflow d'analyse et replis en anglais [id:: OSS-4.5] [statut:: done] [ref:: b61c204b, af513ade]
+- [x] `ai-service` : réseau interne sans port publié, secret partagé `AI_SERVICE_TOKEN` obligatoire sur `/v1` (tout est refusé sans secret configuré), `/health` sans détail, `GET /v1/status`, 60 tests pytest et workflow CI ; scoring Python mort et repli « lexical » des embeddings supprimés [id:: OSS-4.6] [statut:: done] [ref:: 30e0cad4, c540acbf]
+- [x] Suite backend complète verte (1284 tests), ai-service 60 tests, front 840 tests et seuils de couverture ; validation locale avec l'Ollama de la machine (vrai chat `qwen3:8b`, vrais embeddings `bge-m3`, 344 notes réindexées en tâche de fond, recherche réelle du Brain OS) ; PR [#344](https://github.com/taskforce-project/taskforce-fullstack/pull/344) vers `dev` [id:: OSS-4.7] [statut:: done] [ref:: 505d7df8]
 
 ### Lot 5 : Claude Code et Copilot
 
@@ -196,7 +197,7 @@ des lots visibles (2, 3, 5, 7).
 ### Jour J : résultats du diplôme
 
 - [ ] Release 1.0.0 sur `main` [id:: OSS-J.1] [statut:: todo]
-- [ ] Variables d'environnement de prod mises à jour (VM1, VM2), dont les plafonds IA de l'instance publique (Groq) : sans eux elle devient illimitée. Anciennes valeurs : `AI_RATE_GLOBAL_TPM=8000`, `AI_RATE_ACCOUNT_TPM=6000`, `AI_RATE_ACCOUNT_RPM=1` ; `AI_MONTHLY_TOKENS_PER_ACCOUNT` si la clé est payante [id:: OSS-J.2] [statut:: todo]
+- [ ] Variables d'environnement de prod mises à jour (VM1, VM2), dont les plafonds IA de l'instance publique (Groq) : sans eux elle devient illimitée. Anciennes valeurs : `AI_RATE_GLOBAL_TPM=8000`, `AI_RATE_ACCOUNT_TPM=6000`, `AI_RATE_ACCOUNT_RPM=1` ; `AI_MONTHLY_TOKENS_PER_ACCOUNT` si la clé est payante. **Nouveau depuis le lot 4 : `AI_SERVICE_TOKEN` obligatoire dans `.env.prod` de VM1** (secret partagé backend / ai-service, `openssl rand -hex 32`) : sans lui, le compose de prod refuse de démarrer [id:: OSS-J.2] [statut:: todo]
 - [ ] Images GHCR publiques, signalement privé de vulnérabilités activé, description du dépôt (CEO) [id:: OSS-J.3] [statut:: todo]
 - [ ] Branche `feature/lean-oss` de la doc fusionnée [id:: OSS-J.4] [statut:: todo]
 - [ ] Post LinkedIn (CEO) [id:: OSS-J.5] [statut:: todo]

@@ -66,6 +66,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | AnalyticsController | `/api/workspaces/{slug}/analytics` | ✅ |
 | AnalysisController | `/api/workspaces/{slug}` (→ `/analysis`, `/projects/{id}/brief`, `/priorities/{id}`) | ✅ |
 | AssistantController | `/api/workspaces/{slug}/assistant` | ✅ |
+| AiStatusController | `/api/ai/status` (→ `GET`) : état de l'IA de l'instance (configurée, chat et embeddings joignables, modèles), relu par le backend toutes les 30 s (lot 4, ADR-019) | ✅ |
 | McpActionController · McpOAuthCallbackController | `/api/workspaces/{slug}/mcp` (`/actions/execute`, `/servers`, `/servers/{key}/oauth/start`) · public `/api/mcp/oauth/callback` | ✅ |
 | ProfileController | `/api/workspaces/{slug}/profile` | ✅ |
 | NotificationController | `/api/workspaces/{slug}/notifications` | ✅ |
@@ -79,7 +80,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | CycleController | `/api/workspaces/{slug}/projects/{projectId}/cycles` | ✅ |
 | TeamController | `/api/workspaces/{slug}/teams` | ✅ |
 | PageController | `/api/workspaces/{slug}/projects/{projectId}/pages` | ✅ |
-| KnowledgeController (Brain OS) | `/api/workspaces/{slug}/brain` (→ `GET` vue d'ensemble, `POST /search`, `POST /nodes`, `PATCH /nodes/{id}`, `PATCH /nodes/{id}/move`, `DELETE /nodes/{id}` ; `POST /files` dans `BrainAttachmentController`) ; `POST /reseed`, `GET /nodes`, `GET /nodes/{id}`, `POST /edges` et `DELETE /edges/{id}` retirés le 18/10/2026 (lot 3, ADR-017) : les liens viennent des `#tags` et des `[[wikilinks]]` | ✅ |
+| KnowledgeController (Brain OS) | `/api/workspaces/{slug}/brain` (→ `GET` vue d'ensemble, `POST /search`, `POST /nodes`, `PATCH /nodes/{id}`, `PATCH /nodes/{id}/move`, `DELETE /nodes/{id}` ; `POST /files` dans `BrainAttachmentController`) ; `POST /reseed`, `GET /nodes`, `GET /nodes/{id}`, `POST /edges` et `DELETE /edges/{id}` retirés le 18/10/2026 (lot 3, ADR-017) : les liens viennent des `#tags` et des `[[wikilinks]]`. `POST /search` est sémantique au sein du modèle d'embeddings courant, en plein texte sans embeddings (lot 4, V94) | ✅ |
 | ProjectExportController | `/api/workspaces/{slug}/projects/{projectId}/export` | ✅ |
 | DeliveryController | `/api/workspaces/{slug}/delivery` (→ `GET /providers`, `POST /issues/{id}/delegate`, `GET /issues/{id}/run`, `GET /runs`) ; un run renvoie aussi `issueKey`, `issueTitle`, `projectId`, `projectName` (21/09/2026) ; seul fournisseur : `claude-code` (runner local) ; clés `GET/POST/DELETE /{anthropic\|cursor}` retirées le 18/10/2026 (lot 3) | ✅ |
 | DeliveryRunnerController | `/api/delivery/runner` (→ `POST /claim`, `POST /runs/{id}/heartbeat`, `POST /runs/{id}/result`) : endpoints **machine** du runner local (ADR-013), jeton de compte de service Keycloak, 403 pour un jeton utilisateur ; n'existent que si `delivery.local-runner.enabled=true` ; masqués de la doc Fern | ✅ |
@@ -216,6 +217,6 @@ pose le même cookie. Détail des contrats : `Spec_API_OpenAPI.md` §2.1–2.2.
 > ré-audité contrôleur par contrôleur le 28/08/2026 (préfixe `/api` généralisé, Chat/Discussions
 > retirés, flux refresh en cookie HttpOnly).
 
-**Dernière mise à jour :** 28/08/2026  
+**Dernière mise à jour :** 18/10/2026  
 **Version :** 1.0  
 **Projet :** Taskforce — Metz Numeric School 2025-2026
