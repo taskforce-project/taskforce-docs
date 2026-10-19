@@ -145,7 +145,7 @@ Inventaire du code du 18/10/2026 (backend, front et IA, en lecture seule).
 
 | Brique | Rôle aujourd'hui | Profil `desktop` | Effort |
 | ------ | ---------------- | ---------------- | ------ |
-| Keycloak | Connexion, inscription, jetons de l'API et du WebSocket, connexion GitHub ou Google, identité des runners. Le mot de passe, le prénom et le nom n'existent que chez lui (retirés de `users` en V2) : `/api/users/me` l'appelle à chaque lecture du profil | Connexion obligatoire au Keycloak hébergé, par le navigateur (code d'autorisation et PKCE, retour sur 127.0.0.1, RFC 8252), jetons dans le trousseau ; l'API locale garde le filtre du jeton de lancement (§5.7). L'identité (`KeycloakService`, `KeycloakAuthService`) passe derrière une interface. À trancher : usage hors ligne après la première connexion | Le plus gros chantier backend |
+| Keycloak | Connexion, inscription, jetons de l'API et du WebSocket, connexion GitHub ou Google, identité des runners. Le mot de passe, le prénom et le nom n'existent que chez lui (retirés de `users` en V2) : `/api/users/me` l'appelle à chaque lecture du profil | Connexion obligatoire au Keycloak hébergé, par le navigateur (code d'autorisation et PKCE, retour sur 127.0.0.1, RFC 8252), jetons dans le trousseau ; l'API locale garde le filtre du jeton de lancement (§5.7). L'identité (`KeycloakService`, `KeycloakAuthService`) passe derrière une interface. Après la première connexion, l'app marche aussi hors ligne (décision du 19/10) | Le plus gros chantier backend |
 | PostgreSQL + pgvector | Tout le stockage ; recherche de Brain OS | PostgreSQL embarqué (§5.3) | Moyen (empaquetage) |
 | RabbitMQ | Rien par défaut : le relais STOMP est facultatif, la prod tourne déjà avec le courtier en mémoire de Spring | Rien | Nul |
 | Redis | Limites de débit, cache des analytics, garde-débit IA (prod seulement) | Rien : chaque usage a déjà un repli local | Nul |
@@ -393,8 +393,9 @@ minimum (ADR-021).
 ## 10. Décisions attendues du CEO
 
 1. **Rôle de la webapp** (§7) : desktop seul, ou desktop + édition serveur en l'état (recommandé).
-   **Décision du CEO (19/10/2026)** : **compte TaskForce obligatoire et gratuit**. Keycloak et sa base restent hébergés
-   (à déplacer des VM de l'école avant leur fermeture) ; les comptes actuels de la webapp restent valables. Au premier
+   **Décision du CEO (19/10/2026)** : **compte TaskForce obligatoire et gratuit**. Keycloak et sa base restent hébergés,
+   sur le compte OVH du CEO en France (à y déplacer depuis les VM de l'école avant leur fermeture) ; les comptes actuels
+   de la webapp restent valables. Après la première connexion, l'app marche aussi hors ligne. Au premier
    lancement, l'app ouvre la connexion dans le navigateur ; si le compte a des projets sur la webapp, elle propose de les
    rapatrier. Les comptes existants reçoivent un e-mail (Brevo) avant la fermeture de la webapp. Les téléchargements sont
    comptés par GitHub (compteur de chaque fichier de release). Les projets restent sur la machine, aucune télémétrie.

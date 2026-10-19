@@ -163,7 +163,7 @@ des lots visibles (2, 3, 5, 7).
 
 ### Lot 8 : vitrine
 
-- [ ] Landing ramenée à une dizaine de pages, promesses fausses retirées, positionnement open source, direction artistique (OSS-DA.4) [id:: OSS-8.1] [statut:: todo]
+- [x] Site refait pour l'app desktop (LP-DESKTOP-001) : neuf pages, promesses fausses retirées, peintures de musées en fond, compte TaskForce gratuit, dépendances inutiles retirées ; sur `dev` (PR #349), la prod garde l'ancien site jusqu'à la sortie du desktop [id:: OSS-8.1] [statut:: done] [ref:: 3648dce0]
 - [x] README en anglais avec 5 captures (tableau de bord, board, menu Assignee avec Claude Code, Brain OS, catalogue d'intégrations) ; badges recalculés depuis le dépôt (version produit, versions du compose) [id:: OSS-8.2] [statut:: done] [ref:: 04c3aaa4, b311c424]
 - [x] Docs Fern en anglais et resserrées : 11 pages au lieu de 33 (accueil, auto-hébergement, concepts, agents de code, IA, intégrations ; API : introduction, authentification, conventions, webhooks avec vérification de signature, serveur MCP), anciennes adresses redirigées, chaque affirmation vérifiée dans le code ; référence API régénérée (182 chemins, 39 sections décrites en anglais), contact de la spec = le dépôt ; publication le jour J [id:: OSS-8.3] [statut:: done] [ref:: 0b251439, 152ab2bf, 63a77913]
 - [x] Un seul `AGENTS.md` (anglais) importé par `CLAUDE.md` ; règles Cursor, consignes Copilot et `AGENTS.md` du backend retirés ; notes périmées de `.ai/` (archive, cartes de juin, plan P0, dette, triage, backlog post-V1, feuille de route Brain OS, mapping des intégrations) et `docs/` retirées, liens du Brain OS repointés [id:: OSS-8.4] [statut:: done] [ref:: 0cd69063, 6e597946, 23856e3]
@@ -192,13 +192,19 @@ des lots visibles (2, 3, 5, 7).
 
 - [x] ADR-021 et spécification fonctionnelle et technique [[Specification_App_Desktop]] [id:: OSS-D.0] [statut:: done]
 - [ ] Essai de deux à trois jours, critères chiffrés (§8 de la spec) [id:: OSS-D.1] [statut:: todo]
-- [ ] Profil `desktop` du backend : API locale, utilisateur unique, stockage fichier, courtier en mémoire, caches locaux, sans SMTP, sans service Python [id:: OSS-D.2] [statut:: todo]
-- [ ] Base embarquée, emplacement des données, sauvegarde avant migration, export et import [id:: OSS-D.3] [statut:: todo]
+- [ ] Profil `desktop` du backend : API locale, connexion au compte hébergé (Keycloak sur l'OVH du CEO, par le navigateur), usage hors ligne après la première connexion, stockage fichier, courtier en mémoire, caches locaux, sans SMTP, sans service Python [id:: OSS-D.2] [statut:: todo]
+- [ ] Base embarquée, emplacement des données, sauvegarde avant migration, export, et rapatriement des projets web proposé à la première connexion [id:: OSS-D.3] [statut:: todo]
 - [ ] Coque Electron : processus, écran d'attente, trousseau, notifications système [id:: OSS-D.4] [statut:: todo]
 - [ ] Claude Code lancé par l'app (worktrees, MCP, autorisations, chronologie) [id:: OSS-D.5] [statut:: todo]
 - [ ] Copilot et GitHub par device flow et interrogation [id:: OSS-D.6] [statut:: todo]
 - [ ] Interface en profil `desktop` : écrans multi-utilisateurs retirés, onboarding local [id:: OSS-D.7] [statut:: todo]
 - [ ] Paquets, signature, mises à jour, page de téléchargement [id:: OSS-D.8] [statut:: todo]
+
+### Marketing
+
+- [ ] E-mail aux comptes de la webapp avant sa fermeture : la webapp hébergée ferme, le compte reste, l'app desktop
+  propose de rapatrier les projets à la première connexion, date de fermeture et lien vers `/migrate` ; envoi par Brevo
+  (demande du CEO du 19/10, à faire plus tard) [id:: OSS-MKT.1] [statut:: todo]
 
 ### Jour J : résultats du diplôme
 
