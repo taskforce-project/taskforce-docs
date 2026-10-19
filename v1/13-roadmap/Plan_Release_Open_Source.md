@@ -164,10 +164,13 @@ des lots visibles (2, 3, 5, 7).
 ### Lot 8 : vitrine
 
 - [ ] Landing ramenée à une dizaine de pages, promesses fausses retirées, positionnement open source, direction artistique (OSS-DA.4) [id:: OSS-8.1] [statut:: todo]
-- [ ] README en anglais avec captures [id:: OSS-8.2] [statut:: todo]
-- [ ] Docs Fern : auto-hébergement, API régénérée [id:: OSS-8.3] [statut:: todo]
-- [ ] Purge de `.ai/` et `docs/` ; fichiers d'instructions des assistants regroupés [id:: OSS-8.4] [statut:: todo]
-- [ ] Brouillon du post LinkedIn [id:: OSS-8.5] [statut:: todo]
+- [x] README en anglais avec 5 captures (tableau de bord, board, menu Assignee avec Claude Code, Brain OS, catalogue d'intégrations) ; badges recalculés depuis le dépôt (version produit, versions du compose) [id:: OSS-8.2] [statut:: done] [ref:: 04c3aaa4, b311c424]
+- [x] Docs Fern en anglais et resserrées : 11 pages au lieu de 33 (accueil, auto-hébergement, concepts, agents de code, IA, intégrations ; API : introduction, authentification, conventions, webhooks avec vérification de signature, serveur MCP), anciennes adresses redirigées, chaque affirmation vérifiée dans le code ; référence API régénérée (182 chemins, 39 sections décrites en anglais), contact de la spec = le dépôt ; publication le jour J [id:: OSS-8.3] [statut:: done] [ref:: 0b251439, 152ab2bf, 63a77913]
+- [x] Un seul `AGENTS.md` (anglais) importé par `CLAUDE.md` ; règles Cursor, consignes Copilot et `AGENTS.md` du backend retirés ; notes périmées de `.ai/` (archive, cartes de juin, plan P0, dette, triage, backlog post-V1, feuille de route Brain OS, mapping des intégrations) et `docs/` retirées, liens du Brain OS repointés [id:: OSS-8.4] [statut:: done] [ref:: 0cd69063, 6e597946, 23856e3]
+- [x] Brouillon du post LinkedIn, en français et en anglais, à compléter par le CEO (résultat, remerciements) : [[Brouillon_Post_LinkedIn]] [id:: OSS-8.5] [statut:: done]
+- [x] Migrations V90 à V99 répétées sur une copie de la sauvegarde de prod : 87 ms, schéma validé au démarrage, aucune ligne utile perdue ; effets : 21 vecteurs effacés (V94, recherche en texte simple sans modèle d'embeddings), couleurs de 5 projets et 3 équipes converties, connexions MCP Cloudflare et Linear gardées ; aucune migration corrective ; copies supprimées du poste [id:: OSS-8.6] [statut:: done]
+- [x] Auto-hébergement en http simple sur un réseau : `AUTH_REFRESH_COOKIE_SECURE` transmis et documenté (le cookie `Secure` était refusé par les navigateurs, sessions coupées au bout de 30 min) [id:: OSS-8.7] [statut:: done] [ref:: cef44bb1]
+- [ ] Suites vertes (front : 955 tests et seuils de couverture, `tsc`, ESLint sans erreur ; `fern check` sans erreur ; backend en CI) ; PR [#350](https://github.com/taskforce-project/taskforce-fullstack/pull/350) vers `dev` [id:: OSS-8.8] [statut:: in-progress]
 
 ### Release de sécurité (avant les résultats)
 
