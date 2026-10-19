@@ -203,6 +203,6 @@ Groq. Les items <code>[demande-par:: frontend]</code> répondent à un <code>bes
 
 > **Note Brain OS** — Vérifier la cohérence des `id` avec les `besoin-backend` de [Frontend.md](./Frontend.md)
 > (requête Dataview du [hub §4](./README.md)). Réparations P0 détaillées dans
-> [`.ai/P0-fix-plan.md`](../../../taskforce-fullstack/.ai/P0-fix-plan.md).
+> [`.ai/P0-fix-plan.md`](https://github.com/taskforce-project/taskforce-fullstack/blob/25598f83/.ai/P0-fix-plan.md) (retiré du dépôt au lot 8 du plan open source).
 
 **Dernière mise à jour :** 28/08/2026 · **Projet :** Taskforce — Metz Numeric School 2025-2026

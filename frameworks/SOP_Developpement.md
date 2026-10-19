@@ -32,7 +32,7 @@ Logo projet        : assets/images/logo_taskforce.png
 <p class="lead">
 Procédure standard pour toute intervention sur TaskForce (humain ou IA). Objectif : un travail traçable,
 sans régression, qui fait avancer le produit vers le niveau des outils de référence (Plane, Linear, GitHub…). C'est la version longue ; la version
-condensée vit dans <code>.github/copilot-instructions.md</code> (toujours chargée par Copilot).
+condensée vit dans <code>AGENTS.md</code>, à la racine du dépôt de l'app (lue par Claude Code, Copilot, Cursor et Codex).
 </p>
 
 > **Principes :** (1) le **Brain OS est la source de vérité** ; (2) on documente **la réalité du code**,
@@ -92,7 +92,7 @@ condensée vit dans <code>.github/copilot-instructions.md</code> (toujours charg
 
 ---
 
-> **Note Brain OS** — Version condensée dans `.github/copilot-instructions.md`. Mettre à jour les deux si
+> **Note Brain OS** — Version condensée dans `AGENTS.md` (racine du dépôt de l'app). Mettre à jour les deux si
 > le workflow change.
 
 **Dernière mise à jour :** 09/06/2026 · **Projet :** Taskforce — Metz Numeric School 2025-2026

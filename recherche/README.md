@@ -96,7 +96,7 @@ rien de la frontière ne se ground. → **[E1](./experiences/Experiences.md#e1--
 | [`IDEA.md`](../IDEA.md) | Vision « AI Delivery OS » | Produit |
 | [Moteur_IA_World_Model_OODA](../v1/road_to_v2/Moteur_IA_World_Model_OODA.md) | **Architecture décidée** (07/07) : world model mémoire/retrieval, sans gradient | ⚠️ Un simulateur mathématique la **contredit** → ADR requis |
 | [Data_Flywheel_et_Apprentissage](../v1/road_to_v2/Data_Flywheel_et_Apprentissage.md) | Le flywheel de préférence (F1) | Déjà speccé |
-| [`.ai/brain-os-roadmap.md`](../../taskforce-fullstack/.ai/brain-os-roadmap.md) | L'état **réel** du code Brain OS | Source de vérité technique |
+| [`.ai/brain-os-roadmap.md`](https://github.com/taskforce-project/taskforce-fullstack/blob/25598f83/.ai/brain-os-roadmap.md) | L'état **réel** du code Brain OS | Source de vérité technique |
 
 ---
 

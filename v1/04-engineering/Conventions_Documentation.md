@@ -138,7 +138,7 @@ sur GitHub (où les wikilinks ne fonctionnent pas) et sert de livrable. Obsidian
 - **Minor** (ajoute une section/note) : idem + mettre à jour le hub et `related`.
 - **Major** (restructure/contredit l'existant) : créer un `ADR-xxxx`, puis appliquer.
 - **Archivage** : ne pas supprimer — déplacer vers `archive/` avec suffixe `-AAAA-MM`.
-- **Commits** : `docs(scope): description` (cf. [copilot-instructions](../../../taskforce-fullstack/.github/copilot-instructions.md)).
+- **Commits** : `docs(scope): description` (cf. [AGENTS.md](../../../taskforce-fullstack/AGENTS.md)).
 - **Fraîcheur** : re-vérifier dans le code avant d'affirmer ; les notes sont datées.
 
 ## 7. Obsidian — config recommandée

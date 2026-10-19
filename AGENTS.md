@@ -39,7 +39,7 @@ Quand l'utilisateur dit « go », « on commence », « prochaine action ? » ou
 ## 1. Comment choisir la prochaine action
 
 Ordre de priorité, du plus prioritaire au moins :
-1. Items `[statut:: broken]` **P0** (réparations — débloquent des pans entiers). Réf : [`.ai/P0-fix-plan.md`](../taskforce-fullstack/.ai/P0-fix-plan.md).
+1. Items `[statut:: broken]` **P0** (réparations — débloquent des pans entiers). Réf : [Problemes_Connus](./v1/09-audits/Problemes_Connus.md).
 2. Items `P0` puis `P1`, `P2`, `P3` non terminés.
 3. Respecter les **dépendances** : un item front avec `[besoin-backend:: BE-xxx]` nécessite que `BE-xxx` soit fait d'abord (ou en parallèle).
 4. **Produit avant mémoire** : viser le niveau des outils de référence ([matrice](./v1/02-produit/README.md#2-matrice-de-couverture-fonctionnelle)) avant la rédaction RNCP.

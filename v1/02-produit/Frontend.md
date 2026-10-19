@@ -300,6 +300,6 @@ Les items <code>[besoin-backend:: BE-xxx]</code> renvoient à une tâche de la <
 ---
 
 > **Note Brain OS** — Les `[besoin-backend:: BE-xxx]` ci-dessus doivent exister dans [Backend.md](./Backend.md).
-> Items cassés = P0 du [Backlog](../13-roadmap/Roadmap_Backlog.md) / [`.ai/P0-fix-plan.md`](../../../taskforce-fullstack/.ai/P0-fix-plan.md).
+> Items cassés = P0 du [Backlog](../13-roadmap/Roadmap_Backlog.md) / [`.ai/P0-fix-plan.md`](https://github.com/taskforce-project/taskforce-fullstack/blob/25598f83/.ai/P0-fix-plan.md) (retiré du dépôt au lot 8 du plan open source).
 
 **Dernière mise à jour :** 11/09/2026 · **Projet :** Taskforce — Metz Numeric School 2025-2026
