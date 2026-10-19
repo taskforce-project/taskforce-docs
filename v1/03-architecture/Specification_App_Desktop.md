@@ -27,12 +27,13 @@ related:
 
 ## 0. En bref
 
-- Une app desktop pour Windows, macOS et Linux, sur le modèle de Claude Desktop : pas de compte, pas de serveur, données
-  sur le disque, IA locale (Ollama) ou par clé d'API.
+- Une app desktop pour Windows, macOS et Linux, sur le modèle de Claude Desktop : un compte TaskForce gratuit pour se
+  connecter (hébergé), aucun serveur pour les projets, données sur le disque, IA locale (Ollama) ou par clé d'API.
 - Même code que la webapp : un profil `desktop` remplace les briques serveur par des équivalents locaux.
 - Architecture visée : coque Electron, front Next.js et backend Spring Boot existants lancés en local, base PostgreSQL
   embarquée. Claude Code est lancé directement par l'app.
-- Ce qui disparaît : comptes, travail à plusieurs, e-mails, intégrations entrantes.
+- Ce qui disparaît : travail à plusieurs, notifications par e-mail, intégrations entrantes. Le compte reste, hébergé
+  (décision du CEO du 19/10/2026, §10).
 - La webapp peut rester, sans nouveaux développements, comme édition serveur pour les équipes (recommandé, §7).
 
 ## 1. Objectifs et principes
@@ -42,7 +43,8 @@ TaskForce desktop est un poste de pilotage personnel : on décrit le travail, on
 
 Principes :
 
-- **Comme Claude Desktop** : on installe, on ouvre, ça marche. Pas de compte, pas de serveur, pas de Docker.
+- **Comme Claude Desktop** : on installe, on se connecte, ça marche. Un compte gratuit, aucun serveur pour les projets,
+  pas de Docker.
 - **Local d'abord** : données, fichiers et mémoire sur le disque de l'utilisateur ; l'app marche hors ligne, sauf pour
   ce qui appelle un service distant (modèle par clé d'API, GitHub, Copilot).
 - **IA à la mesure de la machine** : modèle local par Ollama, ou clé d'API ; rien ne bloque sans IA.
@@ -70,7 +72,7 @@ une contrainte).
 
 | Domaine | Desktop | Ce qui change |
 | ------- | ------- | ------------- |
-| Compte, connexion, mot de passe, 2FA, connexion GitHub ou Google | Retiré | Pas de compte : l'app s'ouvre directement. Un seul utilisateur local, créé au premier lancement (nom, avatar). |
+| Compte, connexion, mot de passe, 2FA, connexion GitHub ou Google | Adapté | Compte TaskForce obligatoire et gratuit, sur le Keycloak hébergé : créé au premier lancement, ou compte existant de la webapp ; connexion par le navigateur. Les projets restent sur la machine. |
 | Onboarding | Adapté | Nom, choix du fournisseur d'IA (Ollama détecté ou clé), dossier de dépôt optionnel. Plus d'invitations. |
 | Workspaces et projets | Gardé | Plusieurs espaces et projets pour une même personne. |
 | Issues (tableau, liste, backlog, cycles, roadmap, sous-tâches, relations, checklists, commentaires, temps passé) | Gardé | |
@@ -81,7 +83,7 @@ une contrainte).
 | Smart Assign | Adapté | Voir §6 : plus de collègues à départager. |
 | Analytics (débit, burndown, capacité) | Gardé | Capacité et charge réduites à une personne et ses agents. |
 | Notifications dans l'app, « My work » | Gardé | Notifications du système (centre de notifications de l'OS) en plus. |
-| Notifications par e-mail | Retiré | Pas de serveur de courrier. |
+| Notifications par e-mail | Retiré | Pas de serveur de courrier dans l'app. Les e-mails de service (annonces, fermeture de la webapp) partent du côté hébergé (Brevo). |
 | Membres, équipes, invitations, rôles | Retiré | Mono-utilisateur. Revient avec l'édition serveur (§7). |
 | Temps réel (mises à jour poussées) | Gardé | Courtier en mémoire de Spring, déjà utilisé en prod ; il n'y a pas de présence. |
 | Délégation à Claude Code | Gardé, simplifié | Lancé directement par l'app (§5.5). |
@@ -91,7 +93,7 @@ une contrainte).
 | Intégration Plane, connecteurs à clé d'API | Gardé | Appels sortants seulement. |
 | Serveurs MCP (Cortex) | Adapté | Distants et, nouveau, locaux en stdio (§5.5). |
 | Webhooks sortants | Limité | Envoyés seulement quand l'app est ouverte. |
-| Export, import, RGPD | Adapté | Export complet (fichier), import depuis une instance serveur ; l'utilisateur est seul maître de ses données, les écrans RGPD de suppression de compte disparaissent. |
+| Export, import, RGPD | Adapté | Export complet (fichier) ; à la première connexion, si le compte a des projets sur la webapp, l'app propose de les rapatrier (« Bring them » ou « Not now »). Le compte se supprime côté hébergé. |
 | Journal d'audit | Retiré | Pertinent à plusieurs ; l'historique des issues reste. |
 | Palette de commandes, raccourcis, thèmes, accessibilité | Gardé | |
 | Retours (« Give feedback »), statistiques d'usage | Adapté | Lien vers les issues GitHub ; aucune télémétrie par défaut. |
@@ -101,7 +103,8 @@ une contrainte).
 - **Travailler à plusieurs** sur les mêmes données : impossible sans serveur d'équipe ou synchronisation (§7).
 - **Recevoir des événements** de l'extérieur (webhooks, retours OAuth sur une adresse publique) : l'app n'a pas
   d'adresse publique et n'est pas toujours allumée. On interroge à la place, quand l'app est ouverte.
-- **Envoyer des e-mails** : pas de serveur de courrier.
+- **Envoyer des e-mails depuis l'app** : pas de serveur de courrier local ; les e-mails de compte et de service partent du
+  côté hébergé.
 - **Ouvrir ses données depuis une autre machine ou un téléphone.**
 - **IA lourde sur une petite machine** : sans GPU ni 16 Go de RAM, Cortex avec outils est lent et peu fiable ; la
   parade est une clé d'API.
@@ -142,12 +145,12 @@ Inventaire du code du 18/10/2026 (backend, front et IA, en lecture seule).
 
 | Brique | Rôle aujourd'hui | Profil `desktop` | Effort |
 | ------ | ---------------- | ---------------- | ------ |
-| Keycloak | Connexion, inscription, jetons de l'API et du WebSocket, connexion GitHub ou Google, identité des runners. Le mot de passe, le prénom et le nom n'existent que chez lui (retirés de `users` en V2) : `/api/users/me` l'appelle à chaque lecture du profil | Plus de connexion : un utilisateur local unique et un filtre qui accepte le jeton de lancement (§5.7). L'identité (`KeycloakService`, `KeycloakAuthService`) passe derrière une interface, avec une implémentation locale qui lit `users` (nom stocké en base) | Le plus gros chantier backend |
+| Keycloak | Connexion, inscription, jetons de l'API et du WebSocket, connexion GitHub ou Google, identité des runners. Le mot de passe, le prénom et le nom n'existent que chez lui (retirés de `users` en V2) : `/api/users/me` l'appelle à chaque lecture du profil | Connexion obligatoire au Keycloak hébergé, par le navigateur (code d'autorisation et PKCE, retour sur 127.0.0.1, RFC 8252), jetons dans le trousseau ; l'API locale garde le filtre du jeton de lancement (§5.7). L'identité (`KeycloakService`, `KeycloakAuthService`) passe derrière une interface. À trancher : usage hors ligne après la première connexion | Le plus gros chantier backend |
 | PostgreSQL + pgvector | Tout le stockage ; recherche de Brain OS | PostgreSQL embarqué (§5.3) | Moyen (empaquetage) |
 | RabbitMQ | Rien par défaut : le relais STOMP est facultatif, la prod tourne déjà avec le courtier en mémoire de Spring | Rien | Nul |
 | Redis | Limites de débit, cache des analytics, garde-débit IA (prod seulement) | Rien : chaque usage a déjà un repli local | Nul |
 | MinIO | Pièces jointes des issues (liens présignés), avatars et fichiers Brain (servis par le backend) | Dossier local derrière `MinioService`, pièces jointes servies par une route du backend | Faible |
-| SMTP | Codes d'inscription et de réinitialisation, bienvenue, invitations, notifications, demandes RGPD, retours | Coupé : les parcours qui l'utilisent disparaissent | Faible |
+| SMTP | Codes d'inscription et de réinitialisation, bienvenue, invitations, notifications, demandes RGPD, retours | Coupé dans l'app ; inscription, réinitialisation et e-mails de service restent côté hébergé (Keycloak, Brevo) | Faible |
 | Service Python (`ai-service`) | Simple relais : `POST /v1/chat` (compatible OpenAI, paliers, `/no_think` pour Qwen) et `POST /v1/embeddings` (même fournisseur ou un autre, Ollama par défaut ; plus de repli lexical depuis le lot 4) ; aucune dépendance de ML | Porté en Java : le backend appelle Ollama ou l'API directement | Faible |
 | Tâches planifiées (4) | Purge des comptes (4 h), nettoyage (3 h 30), alertes d'échéance (8 h) et de surcharge (8 h 30) | Rattrapage au démarrage pour les échéances ; purge et surcharge sans objet pour une personne | Faible |
 | Retours OAuth (GitHub, Slack, MCP, fournisseurs Keycloak) | Retour après consentement, sur une adresse publique | Device flow pour GitHub, retour sur 127.0.0.1 pour le MCP ; un secret d'application ne reste pas secret dans une app installée | Moyen |
@@ -376,8 +379,8 @@ L'ordre tient compte de ce qui sert les deux éditions :
 | DA | Direction artistique du portfolio ([[Direction_Artistique_2026]]) | Les deux |
 | 4 | IA générique compatible OpenAI, Ollama par défaut, état « IA non configurée » | Les deux, indispensable au desktop |
 | D.1 | Essai (§8) | Desktop |
-| D.2 | Profil `desktop` du backend : filtre d'API locale, utilisateur unique, stockage fichier, courtier en mémoire, caches locaux, pas de SMTP ; service Python remplacé par des appels Java directs | Desktop |
-| D.3 | Base embarquée, emplacement des données, sauvegarde avant migration, export et import | Desktop |
+| D.2 | Profil `desktop` du backend : filtre d'API locale, identité du compte hébergé (connexion par le navigateur), stockage fichier, courtier en mémoire, caches locaux, pas de SMTP ; service Python remplacé par des appels Java directs | Desktop |
+| D.3 | Base embarquée, emplacement des données, sauvegarde avant migration, export, et rapatriement des projets web proposé à la première connexion | Desktop |
 | D.4 | Coque Electron : démarrage et arrêt des processus, écran d'attente, trousseau, notifications système | Desktop |
 | D.5 | Claude Code lancé par l'app : worktrees, MCP passé par `--mcp-config`, autorisations dans l'app, chronologie en direct (reprend le lot 5) | Desktop |
 | D.6 | Copilot et GitHub par device flow et interrogation | Les deux |
@@ -390,10 +393,13 @@ minimum (ADR-021).
 ## 10. Décisions attendues du CEO
 
 1. **Rôle de la webapp** (§7) : desktop seul, ou desktop + édition serveur en l'état (recommandé).
-   **Orientation du CEO (19/10/2026)** : garder les comptes (Keycloak) côté serveur, pour pouvoir rouvrir une version
-   hébergée quand il y aura les moyens ; l'app desktop reste sans compte obligatoire et pourra plus tard se connecter à
-   cette version, sur le modèle Claude Desktop et claude.ai (option 3 du §7). D'où l'identité derrière une interface
-   (§5.2) plutôt qu'un retrait de Keycloak du code.
+   **Décision du CEO (19/10/2026)** : **compte TaskForce obligatoire et gratuit**. Keycloak et sa base restent hébergés
+   (à déplacer des VM de l'école avant leur fermeture) ; les comptes actuels de la webapp restent valables. Au premier
+   lancement, l'app ouvre la connexion dans le navigateur ; si le compte a des projets sur la webapp, elle propose de les
+   rapatrier. Les comptes existants reçoivent un e-mail (Brevo) avant la fermeture de la webapp. Les téléchargements sont
+   comptés par GitHub (compteur de chaque fichier de release). Les projets restent sur la machine, aucune télémétrie.
+   Raison : compter les téléchargements, pouvoir écrire aux utilisateurs, garder les comptes actuels et rouvrir un jour
+   une version hébergée (modèle Claude Desktop et claude.ai). Le site est à jour (LP-DESKTOP-001).
 2. **Smart Assign** (§6) : retiré du desktop (recommandé) ou recentré sur le choix d'agent.
 3. **Signature de code** : compte Apple Developer et signature Windows, ou distribution non signée au début.
 4. **Calendrier du jour J** : sortir la 1.0 web open source le jour des résultats puis le desktop en préversion, ou
