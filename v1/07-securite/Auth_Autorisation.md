@@ -107,8 +107,14 @@ return decoder;
 ```
 
 **Algorithme** : RS256 (signature asymétrique ; la clé privée ne quitte jamais Keycloak).
-**Vérifications** : signature via le JWK Set public de Keycloak + `issuer` + expiration.
+**Vérifications** : signature via le JWK Set public de Keycloak + `issuer` + expiration + **client émetteur**.
 Aucun secret partagé côté backend.
+
+**Client émetteur (`azp`, 19/10/2026).** `AuthorizedPartyValidator` n'accepte qu'un jeton délivré au client du
+backend (`keycloak.client-id`, `taskforce-api`) ou à un runner (`tf-runner-*`), lu dans `azp` (à défaut
+`client_id`). Avant, tout jeton du realm passait : une connexion sur les pages de Keycloak, par un autre client,
+contournait la double authentification de l'app. ⚠️ En prod, `KEYCLOAK_CLIENT_ID` doit valoir le client des jetons,
+sinon plus personne n'entre.
 
 ### 2.3 Claims exploités & résolution d'identité
 
@@ -171,6 +177,40 @@ externe. Deux endpoints publics (`OAuthLoginController`, préfixe `/api/auth/oau
 `shared/security/OAuthLoginService.java` (état signé, échange, `userinfo`).
 
 ---
+
+### 2.6 Passkeys (WebAuthn, 19/10/2026)
+
+Une personne ajoute une passkey dans Réglages > Sécurité (Windows Hello, Touch ID, téléphone, clé de sécurité), puis
+se connecte avec, sans mot de passe et sans écran Keycloak.
+
+- **Vérification** : Spring Security (`spring-security-webauthn`, au-dessus de webauthn4j) ; relying party = l'hôte
+  de `app.frontend-url`, origines = cette adresse (+ `security.passkeys.extra-origins` en dev) ; clé résidente et
+  vérification de l'utilisateur exigées (`PasskeyConfig`).
+- **Stockage** : `user_credentials` (schéma de Spring, V101) ; `users.passkey_handle` = identifiant WebAuthn tiré au
+  hasard à la première passkey (rien sur la personne, stable si l'adresse change) ; `PasskeyUserEntities`.
+- **Défis** : en mémoire, 5 min, à usage unique ; ceux de connexion (route publique) plafonnés à 10 000.
+- **Session** : la passkey vérifiée, `KeycloakAuthService.impersonate` demande les jetons de la personne à Keycloak
+  par échange de jetons (`requested_subject`, « direct naked impersonation »), réservé au client confidentiel du
+  backend qui porte la permission `impersonate` sur les utilisateurs (`keycloak/scripts/passkey-sessions.sh`, une
+  fois par realm ; fonctionnalités `token-exchange` et `admin-fine-grained-authz`, `:v1` sur Keycloak 26). Les
+  jetons ont `azp = taskforce-api` et se renouvellent comme ceux du mot de passe. Keycloak qui refuse → message
+  « passkeys indisponibles, utilisez votre mot de passe ».
+- **2FA** : une passkey vaut les deux facteurs (possession + vérification de l'utilisateur) : le code TOTP n'est pas
+  demandé.
+- **Routes** : `POST /api/auth/passkey/options` (30/min/IP, la page de connexion le demande à chaque affichage pour
+  suggérer les passkeys dans le champ e-mail) et `POST /api/auth/passkey/login` (10/min/IP) ; `/api/users/me/passkeys`
+  (options, ajout, liste, retrait).
+
+### 2.7 Sessions de l'app desktop (19/10/2026)
+
+L'app desktop ne montre aucune page Keycloak : elle ouvre `/auth/desktop` de la webapp avec un défi PKCE (S256) et
+une adresse de retour `http://127.0.0.1:47812-47815/callback` (RFC 8252). La personne s'y connecte comme d'habitude
+(mot de passe et code, GitHub, Google ou passkey), accepte, et la webapp obtient de l'API un code à usage unique
+(2 min, en mémoire) renvoyé à l'app. L'app l'échange (`POST /api/auth/desktop/token`, vérificateur PKCE) contre un
+jeton de session `tfa_` (haché en SHA-256 dans `desktop_sessions`, V100 ; 90 jours glissants ; 20 par compte au
+plus, la moins récente fermée), qu'elle vérifie au lancement (`/session`, 401 = fermée) et révoque à la déconnexion.
+Réglages > Sécurité liste les ordinateurs et les déconnecte. `/account` donne la page du compte (sécurité comprise)
+à un compte sans espace en ligne.
 
 ## 3. Rôle de Keycloak
 

@@ -72,7 +72,7 @@ une contrainte).
 
 | Domaine | Desktop | Ce qui change |
 | ------- | ------- | ------------- |
-| Compte, connexion, mot de passe, 2FA, connexion GitHub ou Google | Adapté | Compte TaskForce obligatoire et gratuit, sur le Keycloak hébergé : créé au premier lancement, ou compte existant de la webapp ; connexion par le navigateur. Les projets restent sur la machine. |
+| Compte, connexion, mot de passe, 2FA, connexion GitHub ou Google | Adapté | Compte TaskForce obligatoire et gratuit, hébergé : créé au premier lancement, ou compte existant de la webapp ; connexion par les pages de la webapp dans le navigateur (`/auth/desktop`), jamais par une page Keycloak ; mot de passe, 2FA, GitHub, Google ou passkey. Les projets restent sur la machine. |
 | Onboarding | Adapté | Nom, choix du fournisseur d'IA (Ollama détecté ou clé), dossier de dépôt optionnel. Plus d'invitations. |
 | Workspaces et projets | Gardé | Plusieurs espaces et projets pour une même personne. |
 | Issues (tableau, liste, backlog, cycles, roadmap, sous-tâches, relations, checklists, commentaires, temps passé) | Gardé | |
@@ -145,7 +145,7 @@ Inventaire du code du 18/10/2026 (backend, front et IA, en lecture seule).
 
 | Brique | Rôle aujourd'hui | Profil `desktop` | Effort |
 | ------ | ---------------- | ---------------- | ------ |
-| Keycloak | Connexion, inscription, jetons de l'API et du WebSocket, connexion GitHub ou Google, identité des runners. Le mot de passe, le prénom et le nom n'existent que chez lui (retirés de `users` en V2) : `/api/users/me` l'appelle à chaque lecture du profil | Connexion obligatoire au Keycloak hébergé, par le navigateur (code d'autorisation et PKCE, retour sur 127.0.0.1, RFC 8252), jetons dans le trousseau ; l'API locale garde le filtre du jeton de lancement (§5.7). L'identité (`KeycloakService`, `KeycloakAuthService`) passe derrière une interface. Après la première connexion, l'app marche aussi hors ligne (décision du 19/10) | Le plus gros chantier backend |
+| Keycloak | Connexion, inscription, jetons de l'API et du WebSocket, connexion GitHub ou Google, identité des runners. Le mot de passe, le prénom et le nom n'existent que chez lui (retirés de `users` en V2) : `/api/users/me` l'appelle à chaque lecture du profil | Connexion obligatoire au compte hébergé, par les pages de la webapp (`/auth/desktop` : accord, code à usage unique et PKCE, retour sur 127.0.0.1, RFC 8252), session de l'app (`tfa_`, 90 jours glissants, V100) dans le trousseau ; l'API locale garde le filtre du jeton de lancement (§5.7). L'identité (`KeycloakService`, `KeycloakAuthService`) passe derrière une interface. Après la première connexion, l'app marche aussi hors ligne (décision du 19/10) | Le plus gros chantier backend |
 | PostgreSQL + pgvector | Tout le stockage ; recherche de Brain OS | PostgreSQL embarqué (§5.3) | Moyen (empaquetage) |
 | RabbitMQ | Rien par défaut : le relais STOMP est facultatif, la prod tourne déjà avec le courtier en mémoire de Spring | Rien | Nul |
 | Redis | Limites de débit, cache des analytics, garde-débit IA (prod seulement) | Rien : chaque usage a déjà un repli local | Nul |
@@ -428,7 +428,7 @@ Branche `feature/desktop`, pas encore fusionnée dans `dev`.
 | --- | ---- | ----------------------------- |
 | D.2 | Fait | Profil `desktop` : jeton de lancement, compte local, stockage fichier et liens signés, contrôle de l'hôte, jetons du runner émis par l'app, pas de limiteur de débit sur l'API locale. **Écart à §5.2** : l'IA ne passe pas par des appels Java directs ; la coque sert le protocole de l'ai-service et relaie vers le fournisseur choisi, sans modifier le backend, la clé d'API restant dans le trousseau |
 | D.3 | En partie | Une base par compte dans le dossier de l'app, mot de passe et clé de chiffrement dans le trousseau. Reste : sauvegarde avant migration, export, rapatriement des projets web |
-| D.4 | Fait | Connexion par le navigateur (PKCE, retour sur 127.0.0.1, session hors ligne chiffrée par le système), pile locale, relais d'origine, écran d'attente, arrêt propre, mises à jour. Reste : notifications du système |
+| D.4 | Fait | Connexion par les pages de la webapp (PKCE, retour sur 127.0.0.1, session de l'app chiffrée par le système ; vérifiée le 19/10 avec la vraie app : « Create an account » → inscription → connexion → accord → app ouverte sur l'onboarding du compte), pile locale, relais d'origine, écran d'attente, arrêt propre, mises à jour. Reste : notifications du système |
 | D.5 | Fait | La coque lance le runner existant. Un projet sans dépôt reçoit la réponse en commentaire ; un projet avec dépôt reçoit une pull request (clone, push et PR par `gh`). Autorisations dans l'app ; état des outils et branchement de Claude Code en un clic dans Réglages > Agents |
 | D.6 | En partie | GitHub par le GitHub CLI de la personne : connexion dans l'app, liste, création et vérification des dépôts, lien au projet (carte « Code repository » et nouveau projet). Reste : Copilot, liens entre issue et PR, issue terminée quand la PR est fusionnée |
 | D.7 | Fait | Build desktop de l'interface (`NEXT_PUBLIC_DESKTOP`) : ni membres, ni équipes, ni invitations, ni sécurité locale ; compte géré en ligne ; onboarding en trois étapes ; réglages « AI » (Ollama, API compatible OpenAI ou aucune IA) et « Agents » adaptés |
@@ -436,19 +436,19 @@ Branche `feature/desktop`, pas encore fusionnée dans `dev`.
 
 Points ouverts relevés pendant le travail :
 
-- **Client Keycloak hébergé.** Réglé le 19/10 : client public `taskforce-desktop` créé sur le Keycloak de prod. La
-  session hors ligne exige le rôle `offline_access` : les comptes créés par l'API ou l'inscription l'ont par les rôles
-  par défaut, les utilisateurs importés du realm de dev ne l'avaient pas (corrigé).
-- **Création de compte depuis l'app.** Réglé le 19/10 : « Create an account » ouvre l'inscription de Keycloak
-  (`prompt=create`), ouverte sur le realm de prod avec vérification de l'e-mail (SMTP Brevo du realm). Comme Claude
-  Desktop : le compte se crée sur la page web du compte, l'app reprend la main une fois connecté.
-- **Double authentification.** Réglé le 19/10 : le code de l'application d'authentification se règle sur la page du
-  compte (TOTP de Keycloak) et se demande sur toutes les voies (flux `tf-browser` et `tf-post-broker`,
-  `keycloak/scripts/two-step-flows.sh`) ; la connexion de la webapp le transmet à Keycloak. Le TOTP de l'app (V79)
-  reste vérifié pour les comptes qui l'avaient activé.
-- **Pages de connexion.** Thème `keycloak/themes/taskforce` (marque, couleurs et boutons de l'app, clair ou sombre),
-  vérifié sur un Keycloak 26 jetable. À poser en prod avec la release : montage dans `docker-compose.prod.yml` (le
-  conteneur Keycloak redémarre) puis `loginTheme=taskforce` sur le realm avec `kcadm`, le realm étant déjà importé.
+- **Aucune page Keycloak (décision du CEO, 19/10 au soir).** La première version (client public `taskforce-desktop`,
+  inscription et TOTP de Keycloak, flux `tf-browser`) est remplacée : l'app ouvre `/auth/desktop` de la webapp, la
+  personne s'y connecte ou crée son compte comme sur le web (« Create an account » mène à l'inscription de la webapp),
+  accepte, et l'app reçoit un code à usage unique qu'elle échange contre sa session (Auth_Autorisation §2.7). Le client
+  `taskforce-desktop` ne sert plus : à désactiver en prod une fois la nouvelle version publiée.
+- **Double authentification.** Celle de l'app (TOTP, V79), réglée dans Réglages > Sécurité (ou `/account` pour un
+  compte sans espace en ligne), demandée à la connexion de la webapp, donc aussi avant d'accepter l'app. Les flux et le
+  script `two-step-flows.sh` sont retirés. L'API n'accepte plus que les jetons de son propre client (`azp`).
+- **Passkeys.** Ajoutées dans Réglages > Sécurité, proposées sur la page de connexion (bouton et champ e-mail) :
+  utilisables aussi pour connecter l'app. Session ouverte par échange de jetons Keycloak (`passkey-sessions.sh`).
+- **Pages de Keycloak restantes.** Le thème `keycloak/themes/taskforce` reste un filet : seules les pages qu'un lien
+  d'e-mail de Keycloak ouvrirait encore. À poser en prod avec la release (montage dans `docker-compose.prod.yml`,
+  redémarrage de Keycloak, `loginTheme=taskforce` par `kcadm`).
 
 ## 10. Décisions attendues du CEO
 
@@ -473,4 +473,6 @@ Points ouverts relevés pendant le travail :
 5. **Keycloak hébergé pour le desktop** (§9, points ouverts) : créer le client `taskforce-desktop` sur le Keycloak de
    prod, ouvrir l'inscription (avec vérification de l'e-mail) ou envoyer « Create an account » vers l'inscription de la
    webapp, et passer la 2FA sur le TOTP de Keycloak. **Décision du CEO (19/10/2026)** : feu vert ; fait le jour même
-   (client, inscription avec vérification de l'e-mail, TOTP de Keycloak sur toutes les voies).
+   (client, inscription avec vérification de l'e-mail, TOTP de Keycloak sur toutes les voies). **Révisée le soir même** :
+   « je veux pas d'interface keycloak » : connexion et inscription par les pages de la webapp, 2FA de l'app, passkeys
+   si l'ordinateur en a (voir §9, points ouverts).
