@@ -144,10 +144,11 @@ des lots visibles (2, 3, 5, 7).
 
 ### Lot 6 : intégrations
 
-- [ ] « Connecter un serveur MCP » + 25 préréglages officiels ; 104 tuiles retirées [id:: OSS-6.1] [statut:: todo]
-- [ ] Webhooks sortants envoyés, signés HMAC, avec nouvelles tentatives [id:: OSS-6.2] [statut:: todo]
-- [ ] GitHub : statut des PR rafraîchi, dépôt modifiable après création, « Disconnect » réparé [id:: OSS-6.3] [statut:: todo]
-- [ ] Slack : messages en anglais, variables branchées en prod [id:: OSS-6.4] [statut:: todo]
+- [x] « Connecter un serveur MCP » + 25 préréglages officiels ; 104 tuiles retirées. Serveur personnalisé nommé (clé `custom-<slug>`), jeton en Bearer ou dans un en-tête choisi, OAuth en un clic ; écritures externes toujours validées par un propriétaire ou un admin ; outil approuvé retrouvé par son nom assaini ; identifiants du formulaire générique purgés [id:: OSS-6.1] [statut:: done] [ref:: 3d1e0b3d, 779ef18b, 410cc553, c70d0c3c, 005bb162, 7d275767, edb46adf]
+- [x] Webhooks sortants envoyés, signés HMAC, avec nouvelles tentatives : file d'envoi écrite dans la transaction (V98), envoi hors transaction, 6 tentatives sur 9 h environ, secret généré et montré une fois, test, historique ; la liste des webhooks n'avait aucun contrôle d'accès [id:: OSS-6.2] [statut:: done] [ref:: e53ece2e, 1caa1edc, 24ef5cd6, bc6e3ffb, 4d889de5, edf969d0]
+- [x] GitHub : noms de dépôt et liens validés avant tout appel (règle `GitHubRepoNames` partagée avec Copilot, liens limités à github.com) ; erreurs de GitHub dites clairement (reconnecter, introuvable, quota, injoignable, nom déjà pris) ; statut des PR relu chez GitHub quand on ouvre les liens d'une issue (5 min par lien au plus, V99) ; retour OAuth refusé ou expiré ramené dans l'app (`github=error`) au lieu d'un 500 ; jeton révoqué chez GitHub à la déconnexion ; dépôt d'un projet lié, créé, changé ou délié depuis ses réglages ; déconnexion confirmée, catalogue relu, section GitHub de la fiche d'issue réparée ; routes de connexion relatives (une instance configurée par `NEXT_PUBLIC_BASE_DOMAIN` seul appelait localhost) [id:: OSS-6.3] [statut:: done] [ref:: aba26ae6, 8f924b4e, 7dcbb5ba, fe606ca9, c0a9ef79, 9863eb61, f6838b35]
+- [x] Slack : portées de bot demandées (`channels:history` manquait : l'ingestion d'un canal dans le Brain OS échouait), **à déclarer dans l'application Slack par le CEO** ; canal choisi à l'installation ajouté aux notifications ; retour OAuth refusé ou expiré ramené dans l'app ; canal vérifié (identifiant, événements, doublon) ; refus de Slack expliqués ; déconnexion qui retire les canaux et révoque le jeton ; variables branchées en prod, événements choisis par canal, messages en anglais [id:: OSS-6.4] [statut:: done] [ref:: 2dce92cb, 888f971d, 667be245, 91dce28d, 715e4cd7]
+- [x] Suites vertes (backend complet avec les portes de la CI : 1548 tests ; front : 948 tests et seuils de couverture) ; PR [#347](https://github.com/taskforce-project/taskforce-fullstack/pull/347) vers `dev` [id:: OSS-6.5] [statut:: done] [ref:: 0bda7c8b]
 
 ### Lot 7 : auto-hébergement (gelé au minimum, ADR-021)
 
