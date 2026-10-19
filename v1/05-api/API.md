@@ -149,6 +149,10 @@ d'un coup en fin de fenêtre — l'attente réelle va donc de **0 à 60 s**, ind
 sans cette déclaration, le navigateur les masque au JavaScript en cross-origin et le contrat reste inutilisable.
 Les préflights `OPTIONS` sont par ailleurs **exclus du comptage** (`shouldNotFilter`) — ils consommaient un
 jeton chacun, divisant le quota réel par deux. Cf. [PC-033](../09-audits/Problemes_Connus.md).
+**Lisible par le navigateur depuis le 19/10/2026** ([PC-053](../09-audits/Problemes_Connus.md)) : le 429 partait
+sans en-têtes CORS, le limiteur passant avant le filtre CORS ; le navigateur le bloquait et l'app affichait une
+panne réseau. `CorsConfig` enregistre désormais le `CorsFilter` en tête de la chaîne servlet : un 429 porte
+`Access-Control-Allow-Origin`, `Access-Control-Allow-Credentials` et `Retry-After` (exposé).
 
 **Cycles / Pages / Teams — alignés ✅** (vérifié 28/08/2026) — `CycleController` (`CycleController.java:33`),
 `PageController` (`PageController.java:39`) et `TeamController` (`TeamController.java:33`) portent tous
