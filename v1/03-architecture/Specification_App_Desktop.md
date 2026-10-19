@@ -390,6 +390,10 @@ minimum (ADR-021).
 ## 10. Décisions attendues du CEO
 
 1. **Rôle de la webapp** (§7) : desktop seul, ou desktop + édition serveur en l'état (recommandé).
+   **Orientation du CEO (19/10/2026)** : garder les comptes (Keycloak) côté serveur, pour pouvoir rouvrir une version
+   hébergée quand il y aura les moyens ; l'app desktop reste sans compte obligatoire et pourra plus tard se connecter à
+   cette version, sur le modèle Claude Desktop et claude.ai (option 3 du §7). D'où l'identité derrière une interface
+   (§5.2) plutôt qu'un retrait de Keycloak du code.
 2. **Smart Assign** (§6) : retiré du desktop (recommandé) ou recentré sur le choix d'agent.
 3. **Signature de code** : compte Apple Developer et signature Windows, ou distribution non signée au début.
 4. **Calendrier du jour J** : sortir la 1.0 web open source le jour des résultats puis le desktop en préversion, ou
