@@ -2,9 +2,9 @@
 id: specification-app-desktop
 title: Spécification de l'application desktop
 doc_type: specification
-statut: propose
-version: 0.1
-date: "18/10/2026"
+statut: en-cours
+version: 0.2
+date: "19/10/2026"
 auteur: Pierre MICHEL
 review_cycle: on-change
 tags: [desktop, electron, local-first, architecture, ia, agents, specification]
@@ -16,8 +16,8 @@ related:
 
 # Spécification de l'application desktop
 
-**Version :** 0.1 (proposition, avant l'essai OSS-D.1)
-**Date :** 18/10/2026
+**Version :** 0.2 (essai OSS-D.1 fait, lots D.2 à D.8 en cours)
+**Date :** 19/10/2026
 **Auteur(s) :** Pierre MICHEL
 
 > Décision de cap : [[Journal_Decisions_ADR#ADR-021 - Application desktop locale, sur le modèle de Claude Desktop|ADR-021]].
@@ -369,6 +369,22 @@ Questions à trancher, avec un critère chiffré pour chacune :
 
 Résultat attendu : un rapport court (mesures, problèmes, décision « on continue » ou non) ajouté à ce document.
 
+### Rapport de l'essai (19/10/2026)
+
+Mesures sur le poste de dev (Windows 11), sur la branche `feature/desktop`.
+
+| Question | Résultat |
+| -------- | -------- |
+| Backend hors Docker, JRE et base embarqués | Oui. JRE réduit par `jlink` : 52 Mo. Spring démarre en 10,5 s dans le profil `desktop` ; dans l'app, le backend est prêt en 17 à 23 s, 95 migrations comprises au premier lancement |
+| pgvector avec la base embarquée | Oui pour Windows et Linux : PostgreSQL 18.4 et pgvector 0.8.7 compilés par la CI (`desktop-postgres.yml`), 68 Mo sous Windows, 20 Mo sous Linux. Les 95 migrations passent sans variante. macOS reste à faire |
+| Requêtes natives | Oui : suite backend complète verte contre la base embarquée (1617 tests) |
+| Serveur Next dans Electron | Oui, lancé par le Node d'Electron, prêt en 2,2 à 2,6 s. Vérifiés : onboarding, tableau de bord, projets, issues, Brain OS, Cortex, réglages, temps réel |
+| Poids et mémoire | Installateur Windows de 276 Mo, sous les 450 Mo visés. App ouverte après une délégation : environ 0,5 Go pour la coque et sa fenêtre, 0,42 Go pour le backend, 0,12 Go pour le serveur Next, 0,1 Go pour le runner, plus la base. Au-dessus du 1 Go visé ; pistes : tas Java plafonné plus bas, serveur Next dans le processus principal |
+| Claude Code lancé par l'app | Oui : une issue déléguée depuis le menu Assignee, réclamée en quelques secondes, Claude Code 2.1.293 a lu l'issue et le Brain OS par le serveur MCP local et répondu en commentaire ; run DONE, notification en temps réel. Les autorisations (accordée, refusée) ne sont pas encore exercées dans l'app desktop |
+
+Démarrage : base en 3 s (création du cluster en 3 s au premier lancement), interface en 2,5 s, backend en 17 à 23 s,
+soit 20 à 25 s entre le lancement et la fenêtre de l'app. Décision : on continue.
+
 ## 9. Découpage en lots
 
 L'ordre tient compte de ce qui sert les deux éditions :
@@ -390,6 +406,32 @@ L'ordre tient compte de ce qui sert les deux éditions :
 Le lot 6 (intégrations) est réduit à ce qui marche sans adresse publique ; le lot 7 (Docker multi-OS) est gelé au
 minimum (ADR-021).
 
+### Avancement au 19/10/2026
+
+Branche `feature/desktop`, pas encore fusionnée dans `dev`.
+
+| Lot | État | Ce qui est fait, ce qui reste |
+| --- | ---- | ----------------------------- |
+| D.2 | Fait | Profil `desktop` : jeton de lancement, compte local, stockage fichier et liens signés, contrôle de l'hôte, jetons du runner émis par l'app, pas de limiteur de débit sur l'API locale. **Écart à §5.2** : l'IA ne passe pas par des appels Java directs ; la coque sert le protocole de l'ai-service et relaie vers le fournisseur choisi, sans modifier le backend, la clé d'API restant dans le trousseau |
+| D.3 | En partie | Une base par compte dans le dossier de l'app, mot de passe et clé de chiffrement dans le trousseau. Reste : sauvegarde avant migration, export, rapatriement des projets web |
+| D.4 | Fait | Connexion par le navigateur (PKCE, retour sur 127.0.0.1, session hors ligne chiffrée par le système), pile locale, relais d'origine, écran d'attente, arrêt propre, mises à jour. Reste : notifications du système |
+| D.5 | Fait, version simple | La coque lance le runner existant. Un projet sans dépôt reçoit la réponse en commentaire ; travailler sur un dépôt demande un dépôt lié au projet, donc l'intégration GitHub (D.6) |
+| D.6 | À faire | |
+| D.7 | Fait | Build desktop de l'interface (`NEXT_PUBLIC_DESKTOP`) : ni membres, ni équipes, ni invitations, ni sécurité locale ; compte géré en ligne ; onboarding en trois étapes ; réglages « AI » (Ollama, API compatible OpenAI ou aucune IA) et « Agents » adaptés |
+| D.8 | En partie | Installateur Windows (NSIS, par utilisateur), `.deb` et AppImage, icône, workflow `Desktop - Release` (release versionnée pour le site, release roulante `desktop-latest` pour les mises à jour). Reste : première release, signature, macOS |
+
+Points ouverts relevés pendant le travail :
+
+- **Client Keycloak hébergé.** Le client public `taskforce-desktop` est dans les trois fichiers de realm, mais un Keycloak
+  qui tourne ne les relit pas : il faut le créer sur le Keycloak de prod (ou celui du VPS). La session hors ligne exige
+  le rôle `offline_access` : les comptes créés par l'API ou l'inscription l'ont par les rôles par défaut, les
+  utilisateurs importés du realm de dev ne l'avaient pas (corrigé).
+- **Création de compte depuis l'app.** Le bouton « Create an account » ouvre l'inscription de Keycloak
+  (`prompt=create`), fermée aujourd'hui sur le realm de prod.
+- **Double authentification.** La 2FA de la webapp (TOTP gardé en base, V79) est vérifiée par l'API de connexion de la
+  webapp, pas par Keycloak : un compte qui l'a activée se connecte à l'app desktop avec son seul mot de passe. Piste :
+  le TOTP natif de Keycloak, réglé sur la page du compte, pour tous les comptes.
+
 ## 10. Décisions attendues du CEO
 
 1. **Rôle de la webapp** (§7) : desktop seul, ou desktop + édition serveur en l'état (recommandé).
@@ -405,3 +447,6 @@ minimum (ADR-021).
 3. **Signature de code** : compte Apple Developer et signature Windows, ou distribution non signée au début.
 4. **Calendrier du jour J** : sortir la 1.0 web open source le jour des résultats puis le desktop en préversion, ou
    attendre le desktop.
+5. **Keycloak hébergé pour le desktop** (§9, points ouverts) : créer le client `taskforce-desktop` sur le Keycloak de
+   prod, ouvrir l'inscription (avec vérification de l'e-mail) ou envoyer « Create an account » vers l'inscription de la
+   webapp, et passer la 2FA sur le TOTP de Keycloak. Changement de prod : décision du CEO.
