@@ -3,7 +3,7 @@ id: specification-app-desktop
 title: Spécification de l'application desktop
 doc_type: specification
 statut: en-cours
-version: 0.2
+version: 0.3
 date: "19/10/2026"
 auteur: Pierre MICHEL
 review_cycle: on-change
@@ -16,7 +16,7 @@ related:
 
 # Spécification de l'application desktop
 
-**Version :** 0.2 (essai OSS-D.1 fait, lots D.2 à D.8 en cours)
+**Version :** 0.3 (essai OSS-D.1 fait ; Claude Code et GitHub de bout en bout ; lots D.3, D.6 et D.8 en cours)
 **Date :** 19/10/2026
 **Auteur(s) :** Pierre MICHEL
 
@@ -249,17 +249,31 @@ touche jamais aux identifiants Anthropic. Options de la CLI vérifiées sur la v
   ouvre la demande dans TaskForce ; l'utilisateur clique Allow ou Deny sur l'issue ; sans réponse, refus (OSS-5.4,
   vérifié sur la CLI 2.1.293). Le desktop garde ce mécanisme, la demande restant dans l'app.
 
-Le dépôt est un dossier choisi par l'utilisateur ; chaque run travaille dans un worktree git dédié, comme le runner
-actuel. Le mode « sans dépôt » du runner (réponse en commentaire) est conservé.
+Le dépôt est celui lié au projet sur GitHub (§5.6). Le runner le clone à la première tâche avec le GitHub CLI de la
+personne (`gh`), dans le dossier de données du compte, puis chaque run travaille dans un worktree git dédié. Pour ce
+clone, `fetch` et `push` passent par les identifiants de `gh`, le temps de la commande, sans toucher la configuration
+git de la personne ; un dépôt déclaré dans la configuration du runner garde la sienne. La pull request s'ouvre avec
+`gh`, rien n'est fusionné. Le mode « sans dépôt » du runner (réponse en commentaire) est conservé.
 
-**Copilot (agent cloud de GitHub).** Marche aussi depuis le desktop : il suffit d'un accès sortant à GitHub.
-Connexion par le *device flow* d'OAuth GitHub (aucune adresse de retour à exposer), assignation de l'issue à l'agent,
-suivi de la PR par interrogation périodique de l'API (pas de webhook entrant possible).
+**Ce qu'il faut sur le poste.** Claude Code installé et connecté une fois à son compte Claude, git, et GitHub CLI
+connecté pour les projets qui ont un dépôt. Réglages > Agents le vérifie en direct (`desktop/src/tools.ts` :
+`claude --version` et `claude auth status`, `git --version`, `gh auth token` sans réseau puis `gh api user`) et mène à
+ce qui manque : commande d'installation, lien de téléchargement, connexion à GitHub dans l'app.
+
+**Copilot (agent cloud de GitHub).** Pas dans l'app pour l'instant : le fournisseur passe par l'intégration GitHub de
+l'espace (jeton OAuth gardé par le serveur), absente du desktop ; il est masqué dans Réglages > Agents. Piste : le
+*device flow* d'OAuth GitHub (aucune adresse de retour à exposer), assignation de l'issue à l'agent, suivi de la PR par
+interrogation de l'API (pas de webhook entrant possible).
 
 **MCP.** Deux sens, comme dans Claude Desktop :
 
 - TaskForce **expose** son serveur MCP aux agents qu'il lance : servi par le backend en HTTP depuis le lot 5
   (`/api/workspaces/{slug}/mcp`), sur 127.0.0.1 en desktop, passé par `--mcp-config` ;
+- le Claude Code de la personne (terminal, éditeur) **s'y branche** en un clic, Réglages > Agents > « Connect Claude
+  Code » : l'app crée un jeton personnel (`tfp_`, lot 5) et la coque ajoute le serveur `taskforce-<espace>` à Claude
+  Code, à la portée « user », à l'adresse stable de la fenêtre (`claude mcp add --transport http`, `desktop/src/claude.ts`).
+  Le jeton va de la page à `claude` sans être affiché ; « Disconnect » retire le serveur et révoque le jeton ; l'écran dit
+  quand Claude Code vise une ancienne adresse de l'app. Le serveur ne répond que pendant que l'app est ouverte ;
 - Cortex **utilise** des serveurs MCP : distants en HTTP (existant), et locaux en stdio (à ajouter : lancer un
   processus déclaré dans les réglages, comme `claude_desktop_config.json`). Sur le desktop, la garde anti-SSRF du lot 1
   doit autoriser 127.0.0.1 (`MCP_ALLOW_PRIVATE_NETWORK`), puisque les serveurs locaux sont le cas normal.
@@ -268,8 +282,8 @@ suivi de la PR par interrogation périodique de l'API (pas de webhook entrant po
 
 | Intégration | Desktop | Comment |
 | ----------- | ------- | ------- |
-| GitHub (dépôts, issues, PR) | Gardé | Device flow d'OAuth : pas d'adresse de retour ni de secret d'application à cacher. Rafraîchissement par interrogation de l'API quand l'app est ouverte. |
-| Copilot (agent de code) | Gardé | Même jeton GitHub ; le vrai agent cloud remplace le fournisseur actuel, qui n'est qu'un appel à GitHub Models (OSS-5.6). |
+| GitHub (dépôts, PR) | Adapté | Par le GitHub CLI de la personne (`desktop/src/github.ts`) : connexion par un code à usage unique montré dans l'app (`gh auth login --web` sans terminal), dépôts où elle peut pousser, création avec un premier commit, vérification avant de lier. Le backend desktop lie par nom (`DesktopProjectRepoHost`), la webapp garde l'intégration de l'espace (`ProjectRepoHost`). Le jeton GitHub reste dans le trousseau du système. Pas de liens entre issue et PR ni d'import d'issues GitHub (section masquée sur l'issue) ; la PR d'un agent reste sur son run. |
+| Copilot (agent de code) | Pas encore | Demande l'intégration GitHub de l'espace ; masqué dans l'app (§5.5). |
 | Plane, connecteurs à clé d'API | Gardé | Appels sortants seulement. |
 | Serveurs MCP distants | Gardé | Connexion OAuth avec retour sur 127.0.0.1. |
 | Serveurs MCP locaux (stdio) | Nouveau | Voir §5.5. |
@@ -379,8 +393,8 @@ Mesures sur le poste de dev (Windows 11), sur la branche `feature/desktop`.
 | pgvector avec la base embarquée | Oui pour Windows et Linux : PostgreSQL 18.4 et pgvector 0.8.7 compilés par la CI (`desktop-postgres.yml`), 68 Mo sous Windows, 20 Mo sous Linux. Les 95 migrations passent sans variante. macOS reste à faire |
 | Requêtes natives | Oui : suite backend complète verte contre la base embarquée (1617 tests) |
 | Serveur Next dans Electron | Oui, lancé par le Node d'Electron, prêt en 2,2 à 2,6 s. Vérifiés : onboarding, tableau de bord, projets, issues, Brain OS, Cortex, réglages, temps réel |
-| Poids et mémoire | Installateur Windows de 276 Mo, sous les 450 Mo visés. App ouverte après une délégation : environ 0,5 Go pour la coque et sa fenêtre, 0,42 Go pour le backend, 0,12 Go pour le serveur Next, 0,1 Go pour le runner, plus la base. Au-dessus du 1 Go visé ; pistes : tas Java plafonné plus bas, serveur Next dans le processus principal |
-| Claude Code lancé par l'app | Oui : une issue déléguée depuis le menu Assignee, réclamée en quelques secondes, Claude Code 2.1.293 a lu l'issue et le Brain OS par le serveur MCP local et répondu en commentaire ; run DONE, notification en temps réel. Les autorisations (accordée, refusée) ne sont pas encore exercées dans l'app desktop |
+| Poids et mémoire | Installateur Windows de 276 Mo, sous les 450 Mo visés. Premier relevé (somme des working sets, mémoire partagée comptée plusieurs fois) : environ 1,2 Go. Mesure refaite le 19/10 au soir, une minute après un démarrage, réglages mémoire appliqués (tas Java initial de 32 Mo rendu au système après une collecte au démarrage, pas de client Redis, deux threads Tomcat au repos) : **615 Mo** de mémoire privée en cours d'utilisation pour toute l'app, la mesure du Gestionnaire des tâches (backend 361, processus GPU 64, fenêtre 57, serveur Next 38, base 35, coque 34, runner 18). En octets privés engagés : 819 Mo, dont 372 pour le backend (875 et 453 avant les réglages). Sous le 1 Go visé. Reste dans le backend : environ 140 Mo de classes chargées ; piste suivante, l'archive CDS de la JVM |
+| Claude Code lancé par l'app | Oui : une issue déléguée depuis le menu Assignee, réclamée en quelques secondes, Claude Code 2.1.293 a lu l'issue et le Brain OS par le serveur MCP local et répondu en commentaire ; run DONE, notification en temps réel. Le 19/10 au soir, sur un vrai dépôt lié depuis l'app (`Miche1-Pierre/runner-sandbox`) : clone par `gh`, DESK-4 traité en 9 tours, pull request #2 ouverte, issue passée en « In review by AI » ; DESK-5 a demandé `node -e ...`, la demande est apparue sur l'issue (Allow, Deny, 10 min), accordée, pull request #3. Le refus n'est pas rejoué dans l'app desktop. Claude Code branché en un clic a lu le projet par le serveur MCP (`claude -p`), puis débranché |
 
 Démarrage : base en 3 s (création du cluster en 3 s au premier lancement), interface en 2,5 s, backend en 17 à 23 s,
 soit 20 à 25 s entre le lancement et la fenêtre de l'app. Décision : on continue.
@@ -415,22 +429,26 @@ Branche `feature/desktop`, pas encore fusionnée dans `dev`.
 | D.2 | Fait | Profil `desktop` : jeton de lancement, compte local, stockage fichier et liens signés, contrôle de l'hôte, jetons du runner émis par l'app, pas de limiteur de débit sur l'API locale. **Écart à §5.2** : l'IA ne passe pas par des appels Java directs ; la coque sert le protocole de l'ai-service et relaie vers le fournisseur choisi, sans modifier le backend, la clé d'API restant dans le trousseau |
 | D.3 | En partie | Une base par compte dans le dossier de l'app, mot de passe et clé de chiffrement dans le trousseau. Reste : sauvegarde avant migration, export, rapatriement des projets web |
 | D.4 | Fait | Connexion par le navigateur (PKCE, retour sur 127.0.0.1, session hors ligne chiffrée par le système), pile locale, relais d'origine, écran d'attente, arrêt propre, mises à jour. Reste : notifications du système |
-| D.5 | Fait, version simple | La coque lance le runner existant. Un projet sans dépôt reçoit la réponse en commentaire ; travailler sur un dépôt demande un dépôt lié au projet, donc l'intégration GitHub (D.6) |
-| D.6 | À faire | |
+| D.5 | Fait | La coque lance le runner existant. Un projet sans dépôt reçoit la réponse en commentaire ; un projet avec dépôt reçoit une pull request (clone, push et PR par `gh`). Autorisations dans l'app ; état des outils et branchement de Claude Code en un clic dans Réglages > Agents |
+| D.6 | En partie | GitHub par le GitHub CLI de la personne : connexion dans l'app, liste, création et vérification des dépôts, lien au projet (carte « Code repository » et nouveau projet). Reste : Copilot, liens entre issue et PR, issue terminée quand la PR est fusionnée |
 | D.7 | Fait | Build desktop de l'interface (`NEXT_PUBLIC_DESKTOP`) : ni membres, ni équipes, ni invitations, ni sécurité locale ; compte géré en ligne ; onboarding en trois étapes ; réglages « AI » (Ollama, API compatible OpenAI ou aucune IA) et « Agents » adaptés |
 | D.8 | En partie | Installateur Windows (NSIS, par utilisateur), `.deb` et AppImage, icône, workflow `Desktop - Release` (release versionnée pour le site, release roulante `desktop-latest` pour les mises à jour). Reste : première release, signature, macOS |
 
 Points ouverts relevés pendant le travail :
 
-- **Client Keycloak hébergé.** Le client public `taskforce-desktop` est dans les trois fichiers de realm, mais un Keycloak
-  qui tourne ne les relit pas : il faut le créer sur le Keycloak de prod (ou celui du VPS). La session hors ligne exige
-  le rôle `offline_access` : les comptes créés par l'API ou l'inscription l'ont par les rôles par défaut, les
-  utilisateurs importés du realm de dev ne l'avaient pas (corrigé).
-- **Création de compte depuis l'app.** Le bouton « Create an account » ouvre l'inscription de Keycloak
-  (`prompt=create`), fermée aujourd'hui sur le realm de prod.
-- **Double authentification.** La 2FA de la webapp (TOTP gardé en base, V79) est vérifiée par l'API de connexion de la
-  webapp, pas par Keycloak : un compte qui l'a activée se connecte à l'app desktop avec son seul mot de passe. Piste :
-  le TOTP natif de Keycloak, réglé sur la page du compte, pour tous les comptes.
+- **Client Keycloak hébergé.** Réglé le 19/10 : client public `taskforce-desktop` créé sur le Keycloak de prod. La
+  session hors ligne exige le rôle `offline_access` : les comptes créés par l'API ou l'inscription l'ont par les rôles
+  par défaut, les utilisateurs importés du realm de dev ne l'avaient pas (corrigé).
+- **Création de compte depuis l'app.** Réglé le 19/10 : « Create an account » ouvre l'inscription de Keycloak
+  (`prompt=create`), ouverte sur le realm de prod avec vérification de l'e-mail (SMTP Brevo du realm). Comme Claude
+  Desktop : le compte se crée sur la page web du compte, l'app reprend la main une fois connecté.
+- **Double authentification.** Réglé le 19/10 : le code de l'application d'authentification se règle sur la page du
+  compte (TOTP de Keycloak) et se demande sur toutes les voies (flux `tf-browser` et `tf-post-broker`,
+  `keycloak/scripts/two-step-flows.sh`) ; la connexion de la webapp le transmet à Keycloak. Le TOTP de l'app (V79)
+  reste vérifié pour les comptes qui l'avaient activé.
+- **Pages de connexion.** Thème `keycloak/themes/taskforce` (marque, couleurs et boutons de l'app, clair ou sombre),
+  vérifié sur un Keycloak 26 jetable. À poser en prod avec la release : montage dans `docker-compose.prod.yml` (le
+  conteneur Keycloak redémarre) puis `loginTheme=taskforce` sur le realm avec `kcadm`, le realm étant déjà importé.
 
 ## 10. Décisions attendues du CEO
 
@@ -445,8 +463,14 @@ Points ouverts relevés pendant le travail :
    une version hébergée (modèle Claude Desktop et claude.ai). Le site est à jour (LP-DESKTOP-001).
 2. **Smart Assign** (§6) : retiré du desktop (recommandé) ou recentré sur le choix d'agent.
 3. **Signature de code** : compte Apple Developer et signature Windows, ou distribution non signée au début.
+   Options Windows : SignPath Foundation (gratuit pour les projets open source, sur dossier ; signature dans la CI),
+   Azure Artifact Signing (abonnement mensuel, validation d'identité ; pris en charge par electron-builder), ou un
+   certificat d'un éditeur (clé sur matériel ou dans un service, plus dur à brancher sur la CI). Signée ou non, l'app
+   gagne sa réputation SmartScreen avec les téléchargements. macOS : compte Apple Developer payant pour la
+   notarisation. Recommandation : demander SignPath Foundation, Azure en repli.
 4. **Calendrier du jour J** : sortir la 1.0 web open source le jour des résultats puis le desktop en préversion, ou
    attendre le desktop.
 5. **Keycloak hébergé pour le desktop** (§9, points ouverts) : créer le client `taskforce-desktop` sur le Keycloak de
    prod, ouvrir l'inscription (avec vérification de l'e-mail) ou envoyer « Create an account » vers l'inscription de la
-   webapp, et passer la 2FA sur le TOTP de Keycloak. Changement de prod : décision du CEO.
+   webapp, et passer la 2FA sur le TOTP de Keycloak. **Décision du CEO (19/10/2026)** : feu vert ; fait le jour même
+   (client, inscription avec vérification de l'e-mail, TOTP de Keycloak sur toutes les voies).
