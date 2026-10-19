@@ -159,6 +159,7 @@ des lots visibles (2, 3, 5, 7).
 - [x] SELF_HOSTING.md et CONTRIBUTING.md ; pages légales neutres et pas de bandeau cookies sur une instance qui ne mesure rien [id:: OSS-7.5] [statut:: done] [ref:: 1c069199, 69493900, 2516b6b8]
 - [x] Installation à neuf depuis une copie du dépôt, de la génération des secrets à la première issue, IA comprise (Docker Desktop, conteneurs Linux ; pas encore rejouée sur un Linux natif) [id:: OSS-7.6] [statut:: done]
 - [x] Prod du CEO compatible par construction : `docker-compose.prod.yml` intact, vérification d'e-mail active par défaut, l'auto-deploy appelle toujours ses fichiers par `-f` [id:: OSS-7.7] [statut:: done]
+- [x] Suites vertes (backend complet avec les portes de la CI : 1551 tests ; front : 955 tests et seuils de couverture) ; PR [#348](https://github.com/taskforce-project/taskforce-fullstack/pull/348) vers `dev` [id:: OSS-7.8] [statut:: done] [ref:: 4bed63fb]
 
 ### Lot 8 : vitrine
 
