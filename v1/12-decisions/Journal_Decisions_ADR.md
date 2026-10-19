@@ -1250,7 +1250,23 @@ réservées) ; les webhooks demandent une file de nouvelles tentatives.
 
 ### Preuve
 
-À venir (lot 6 du [[Plan_Release_Open_Source]]).
+Lot 6 du [[Plan_Release_Open_Source]], branche `feature/lean-oss` (pas en prod).
+
+- **MCP** : le catalogue compte 28 entrées (3 natives, 25 préréglages dont l'URL officielle est préremplie). Un
+  serveur personnalisé se connecte avec un nom et son URL, par OAuth en un clic ou un jeton envoyé en Bearer ou dans
+  un en-tête choisi ; sa clé `custom-<slug>` dérive du nom. Vérifié dans le navigateur contre un vrai serveur MCP
+  public (3 outils listés, console d'actions, déconnexion). Une écriture proposée par Cortex n'est offerte qu'à un
+  propriétaire ou un admin, sans réglage pour lever la validation.
+- **Webhooks** : les envois sont écrits dans la transaction du changement (V98), puis envoyés hors transaction et
+  signés `HMAC-SHA256(secret, timestamp.corps)`, avec 6 tentatives sur 9 h environ. Test d'envoi réel contre un
+  serveur HTTP local : en-têtes et signature vérifiés côté destinataire. Écran vérifié dans le navigateur (secret
+  montré une fois, test, historique, pause, suppression).
+- **GitHub et Slack** gardent leur code natif : il fait ce qu'un serveur MCP ne fait pas (statut des PR relu chez
+  GitHub, dépôt d'un projet pour les agents, notifications Slack filtrées par événement). Les erreurs des deux services
+  sont traduites, les retours OAuth en échec ramènent dans l'app, la déconnexion révoque le jeton. Contrats vérifiés
+  contre des réponses enregistrées de GitHub et de Slack (`MockRestServiceServer`) ; parcours sans connexion vérifiés
+  dans le navigateur. Les états connectés n'ont pas été rejoués en réel : le seul GitHub connecté en local est le
+  compte du CEO, et l'application Slack doit d'abord déclarer ses portées.
 
 ---
 
