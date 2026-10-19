@@ -101,6 +101,10 @@ secrets réels.** Catégories principales :
 
 ## 4. Déploiement de production
 
+**Auto-hébergement sur une machine (19/10/2026)** : `./scripts/selfhost-init.sh` (Windows : `.\scripts\selfhost-init.ps1`)
+puis `docker compose up -d --build`, détail dans `SELF_HOSTING.md` à la racine du dépôt de code (IA, e-mail, réseau,
+mise à jour, sauvegarde). Ce qui suit décrit la prod hébergée (deux VM).
+
 L'environnement de production utilise `docker-compose.prod.yml` (PostgreSQL, Keycloak, backend, frontend,
 **Nginx** reverse proxy + SSL). Images publiées sur **GHCR** ([GHCR_USAGE](../06-infra/docker/GHCR_USAGE.md)).
 

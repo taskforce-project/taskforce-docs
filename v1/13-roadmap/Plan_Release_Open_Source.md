@@ -152,13 +152,13 @@ des lots visibles (2, 3, 5, 7).
 
 ### Lot 7 : auto-hébergement (gelé au minimum, ADR-021)
 
-- [ ] Compose d'auto-hébergement multi-OS, Ollama en option, point d'entrée unique [id:: OSS-7.1] [statut:: todo]
-- [ ] `.env.example` minimal et script de génération des secrets (bash et PowerShell) [id:: OSS-7.2] [statut:: todo]
-- [ ] Inscription possible sans SMTP [id:: OSS-7.3] [statut:: todo]
-- [ ] Keycloak 26 partout, realm configuré par variables (dont `frontendUrl`) [id:: OSS-7.4] [statut:: todo]
-- [ ] SELF_HOSTING.md et CONTRIBUTING.md [id:: OSS-7.5] [statut:: todo]
-- [ ] Test d'une installation à neuf (Linux) [id:: OSS-7.6] [statut:: todo]
-- [ ] Déploiement de la prod du CEO compatible (VM1, VM2) [id:: OSS-7.7] [statut:: todo]
+- [x] `docker-compose.yml` à la racine : toute la pile sur une machine, construite depuis le dépôt, ports sur 127.0.0.1 par défaut, Ollama de la machine par défaut (`host-gateway` pour Linux) ou en profil `ollama` ; l'ancien fichier racine (3 services) ne démarrait rien [id:: OSS-7.1] [statut:: done] [ref:: 73a9eb80, 22fdb2e9]
+- [x] `.env.selfhost.example` (adresses, secrets, IA, e-mail et intégrations facultatifs) et `scripts/selfhost-init.{sh,ps1}` (7 secrets de 32 octets, jamais d'écrasement d'un `.env` existant) [id:: OSS-7.2] [statut:: done] [ref:: 73a9eb80, 9539129c]
+- [x] Inscription sans SMTP : `SIGNUP_EMAIL_VERIFICATION=false` (vrai par défaut, prod inchangée), compte prêt dès l'inscription, mot de passe oublié sans SMTP expliqué [id:: OSS-7.3] [statut:: done] [ref:: e4e4d8ea, c3b3ec61]
+- [x] Keycloak 26.5.2 en dev et en auto-hébergement (realm `keycloak/realms/selfhost`, secret et URL par l'environnement, adresse publique fixe par `KC_HOSTNAME`) ; la prod hébergée reste en 23 jusqu'à l'arrêt des serveurs après les résultats (rien à gagner à la migrer avant) [id:: OSS-7.4] [statut:: done] [ref:: 73a9eb80]
+- [x] SELF_HOSTING.md et CONTRIBUTING.md ; pages légales neutres et pas de bandeau cookies sur une instance qui ne mesure rien [id:: OSS-7.5] [statut:: done] [ref:: 1c069199, 69493900, 2516b6b8]
+- [x] Installation à neuf depuis une copie du dépôt, de la génération des secrets à la première issue, IA comprise (Docker Desktop, conteneurs Linux ; pas encore rejouée sur un Linux natif) [id:: OSS-7.6] [statut:: done]
+- [x] Prod du CEO compatible par construction : `docker-compose.prod.yml` intact, vérification d'e-mail active par défaut, l'auto-deploy appelle toujours ses fichiers par `-f` [id:: OSS-7.7] [statut:: done]
 
 ### Lot 8 : vitrine
 

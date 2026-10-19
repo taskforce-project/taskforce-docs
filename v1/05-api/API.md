@@ -58,7 +58,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 
 | Contrôleur | `@RequestMapping` | `/api` ? |
 | ---------- | ----------------- | :------: |
-| AuthController | `/api/auth` | ✅ |
+| AuthController | `/api/auth` (inscription : `otpSent=false` quand l'instance ne vérifie pas les adresses, `SIGNUP_EMAIL_VERIFICATION=false`, compte prêt ; mot de passe oublié sans SMTP : 400, 19/10/2026) | ✅ |
 | UserController | `/api/users` | ✅ |
 | WorkspaceController | `/api/workspaces` | ✅ |
 | ProjectController | `/api/workspaces/{slug}/projects` | ✅ |
