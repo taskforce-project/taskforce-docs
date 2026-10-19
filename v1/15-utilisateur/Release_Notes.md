@@ -23,6 +23,13 @@ tags: [utilisateur, release-notes, changelog, versions, e29, rncp, soutenance]
 
 ---
 
+## produit v1.1.0 (19/10/2026) : TaskForce Desktop, passkeys, connexion sans page Keycloak
+
+- **TaskForce Desktop (préversion, Windows et Linux)** : l'app se télécharge sur le site. Elle demande un compte TaskForce gratuit, créé ou utilisé sur les pages habituelles de la webapp (aucune page Keycloak), puis garde projets, Brain OS, IA (Ollama ou une API compatible OpenAI) et Claude Code sur l'ordinateur, hors ligne compris. Installeurs non signés : Windows avertit au premier lancement, la page de téléchargement explique quoi faire.
+- **Passkeys** : on en ajoute une dans Réglages > Sécurité (Windows Hello, Touch ID, un téléphone, une clé de sécurité), puis on se connecte sans mot de passe depuis la page de connexion, ou en la choisissant dans le champ e-mail. Une passkey vaut aussi la double authentification.
+- **Ordinateurs connectés** : Réglages > Sécurité liste les ordinateurs connectés à l'app desktop et permet de les déconnecter.
+- **Sécurité** : l'API n'accepte plus que les jetons obtenus par TaskForce (une connexion par les pages de Keycloak contournait la double authentification) ; les connexions par passkey et par l'app desktop sont limitées en débit comme la connexion par mot de passe.
+
 ## produit v0.42.0 (16/10/2026) : release de sécurité, licence AGPL-3.0
 
 - **Connexion GitHub ou Google** : quand la double authentification est activée, l'application demande maintenant le code à six chiffres après le retour du fournisseur. Auparavant, ce mode de connexion la contournait.
