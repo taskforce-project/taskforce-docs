@@ -74,8 +74,8 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | NotificationController | `/api/workspaces/{slug}/notifications` | ✅ |
 | MyWorkController | `/api/workspaces/{slug}` (→ `/my-issues`, `/my-cycles`, `/my-pages`) | ✅ |
 | RoadmapController | `/api/workspaces/{slug}/roadmap` | ✅ |
-| WebhookController | `/api/workspaces/{slug}/webhooks` | ✅ |
-| IntegrationController | `/api/workspaces/{slug}/integrations/...` (+ `/connectors/{key}` générique) + `/api/integrations/*/callback` ; `GET github/connect?returnTo=` (chemin applicatif où revenir après le consentement, validé, 21/09/2026) | ✅ |
+| WebhookController | `/api/workspaces/{slug}/webhooks` (+ `/{id}/secret`, `/{id}/test`, `/{id}/deliveries`), propriétaires et admins seulement | ✅ |
+| IntegrationController | `/api/workspaces/{slug}/integrations/...` + `/api/integrations/*/callback` (`code`, `state`, `error` facultatifs : toujours une redirection vers l'app, `github=` ou `slack=connected` ou `error`, 19/10/2026) ; `GET github/connect?returnTo=` (chemin applicatif où revenir après le consentement, validé, 21/09/2026) | ✅ |
 | ~~Billing, Stripe, StripeWebhook, Sales~~ | `/api/billing`, `/api/stripe`, `/api/webhooks/stripe`, `/api/sales`, `/api/auth/select-plan`, `/api/workspaces/{slug}/usage` : retirés le 18/10/2026 (ADR-016) | ➖ |
 | ~~Feedback et endpoints sans appelant~~ | `POST /api/feedback` ; `POST /api/users/me/password/reset`, `POST /api/users/me/data-request`, `GET /api/workspaces/current` ; sous `/api/workspaces/{slug}` : `POST /ai/conversations`, variante `text/event-stream` de `POST /assistant`, `GET /analysis/{jobId}`, `GET /notifications/unread-count`, `GET /projects/{id}/activity` (remplacé par `GET /projects/activity`) : retirés le 18/10/2026 (lot 3) | ➖ |
 | FileController / AttachmentController (ged) | `/api/files` · `/api/workspaces/{slug}/projects/{projectId}/issues/{issueId}/attachments` | ✅ |
@@ -119,13 +119,38 @@ retombe sur un polling 5 s tant qu'un workflow est actif.
 serveurs MCP externes : un connecteur du workspace portant un `mcpUrl` (config chiffrée) expose ses outils à
 Cortex (découverte `tools/list`, namespacing `<connecteur>__<outil>`, fusion dans la boucle de tool-calling).
 Les **écritures externes** sont **proposées** (toolCall `pending`) puis exécutées après validation via
-`POST /mcp/actions/execute` (`{toolRef, arguments}`). Gestion des serveurs : `GET /mcp/servers` (joignabilité
-+ outils après allow-list `mcpAllow`), `POST /mcp/servers` (`{connectorKey, mcpUrl, mcpToken?, mcpAllow?}` →
-config **chiffrée**), `DELETE /mcp/servers/{connectorKey}`. Ouvert à tout workspace depuis le retrait des
-forfaits (ADR-016) ; outils en écriture réservés aux OWNER/ADMIN (OSS-1.5). Backend complet (cycle connect→execute→disconnect vérifié en HTTP) ; le front (dialog de connexion
-+ bouton d'approbation des actions `pending`) reste à faire. Détail : [IA-MCP-002](../02-produit/IA.md).
+`POST /mcp/actions/execute` (`{toolRef, arguments}` ; `toolRef` sous le nom exposé à Cortex ou d'origine). Gestion
+des serveurs : `GET /mcp/servers` (joignabilité, nom, outils après allow-list `mcpAllow`), `POST /mcp/servers`
+(`{connectorKey, name?, mcpUrl, mcpToken?, headerName?, mcpAllow?}`, config **chiffrée**), `DELETE
+/mcp/servers/{connectorKey}`. Clé : un préréglage du catalogue, `custom` pour un nouveau serveur personnalisé (nom
+obligatoire, clé `custom-<slug>` tirée du nom), ou la clé `custom-…` d'un serveur existant ; les natives et les clés
+inconnues sont refusées (lot 6). Le jeton part en `Authorization: Bearer`, ou tel quel dans `headerName`. Ouvert à tout
+workspace (ADR-016) ; une écriture proposée par Cortex n'est offerte qu'à un propriétaire ou un admin, et toujours
+validée. Catalogue : `GET /integrations/catalog` (3 natives, 25 préréglages, serveurs du workspace) ; les routes
+`/integrations/connectors/{key}` sont retirées (lot 6). Détail : [IA-MCP-002](../02-produit/IA.md).
 
-**OAuth MCP 1-clic ✅** (02/09/2026, `[TF-MCP-02]`) — connexion d'un serveur MCP **sans coller de token**, via OAuth 2.1 **générique** (valable pour tout serveur conforme, zéro code par service). `POST /mcp/servers/{key}/oauth/start` (`{mcpUrl}`, gaté BUSINESS+ + manager) : **découverte** (probe `401`/`WWW-Authenticate` → Protected Resource Metadata RFC 9728 → Authorization Server Metadata RFC 8414) + **Dynamic Client Registration** RFC 7591 + **PKCE S256**, renvoie l'URL d'autorisation (le front y redirige). `GET /api/mcp/oauth/callback` (**public** : résout le workspace via le `state` anti-CSRF, jamais l'URL) : échange le code, stocke les tokens **chiffrés** dans le `config` de la connexion (**refresh auto** avant expiration via `McpTokenService`), redirige **toujours** vers l'UI. Table éphémère `mcp_oauth_states` (V82). **`SsrfGuard`** sur chaque fetch de découverte/DCR/token. Prouvé en live contre Linear (découverte + DCR + URL d'autorisation OK). Le champ URL + token reste en fallback bring-your-own. **Déployé en prod le 02/09/2026** (#218, `--admin --squash`, auto-deploy VM1+VM2 ; V82 appliquée, backend sain, callback public vérifié `302` vers le front prod). Durcissement (#217) : `SsrfGuard` valide aussi l'`authorization_endpoint` (issu de metadata semi-fiable) avant la redirection navigateur.
+**OAuth MCP 1-clic ✅** (02/09/2026, `[TF-MCP-02]`) : connexion d'un serveur MCP **sans coller de token**, via OAuth 2.1 **générique** (valable pour tout serveur conforme, zéro code par service). `POST /mcp/servers/{key}/oauth/start` (`{mcpUrl, name?, returnTo?}`, propriétaire ou admin ; `name` gardé jusqu'au callback, V97) : **découverte** (probe `401`/`WWW-Authenticate` → Protected Resource Metadata RFC 9728 → Authorization Server Metadata RFC 8414) + **Dynamic Client Registration** RFC 7591 + **PKCE S256**, renvoie l'URL d'autorisation (le front y redirige). `GET /api/mcp/oauth/callback` (**public** : résout le workspace via le `state` anti-CSRF, jamais l'URL) : échange le code, stocke les tokens **chiffrés** dans le `config` de la connexion (**refresh auto** avant expiration via `McpTokenService`), redirige **toujours** vers l'UI. Table éphémère `mcp_oauth_states` (V82). **`SsrfGuard`** sur chaque fetch de découverte/DCR/token. Prouvé en live contre Linear (découverte + DCR + URL d'autorisation OK). Le champ URL + token reste en fallback bring-your-own. **Déployé en prod le 02/09/2026** (#218, `--admin --squash`, auto-deploy VM1+VM2 ; V82 appliquée, backend sain, callback public vérifié `302` vers le front prod). Durcissement (#217) : `SsrfGuard` valide aussi l'`authorization_endpoint` (issu de metadata semi-fiable) avant la redirection navigateur.
+
+**Webhooks sortants ✅** (18/10/2026, lot 6, ADR-020) : `WebhookController` (`/api/workspaces/{slug}/webhooks`),
+propriétaires et admins seulement, lecture comprise. `POST` (`{url, eventTypes, active?}`) renvoie `{webhook, secret}`,
+le secret n'étant montré qu'une fois ; `PUT /{id}` (URL, événements, pause) ; `POST /{id}/secret` (nouveau secret) ;
+`POST /{id}/test` (envoie `ping` et renvoie le résultat) ; `GET /{id}/deliveries` (20 derniers envois) ; `DELETE /{id}`.
+Événements : `issue.created`, `issue.updated`, `issue.deleted`, `comment.created`, `cycle.completed` (liste vide = tous).
+Chaque envoi est un POST JSON `{id, type, createdAt, url, workspace, actor, data}` avec `X-TaskForce-Event`,
+`X-TaskForce-Delivery`, `X-TaskForce-Timestamp` et `X-TaskForce-Signature: sha256=HMAC-SHA256(secret, timestamp + "." +
+corps)` ; sans réponse 2xx, nouvelles tentatives après 1 min, 5 min, 30 min, 2 h et 6 h.
+
+**GitHub et Slack ✅** (19/10/2026, lot 6, ADR-020) : `POST /integrations/github/issues/{issueId}/links` vérifie
+`repoFullName` (owner/name), `prNumber` (positif), `commitSha` (hash) et des liens `prUrl`, `commitUrl` limités à
+`https://github.com/` (400 sinon) ; une PR demande son numéro, un commit son hash. `GET .../links` relit chez GitHub le
+statut des PR non fusionnées (au plus toutes les 5 minutes par lien, 5 liens par appel) et l'enregistre. Une erreur de
+GitHub devient un message lisible (reconnecter GitHub, dépôt introuvable, quota atteint, GitHub injoignable, nom déjà
+pris à la création d'un dépôt). `DELETE /integrations/github` et `DELETE /integrations/slack` révoquent le jeton chez
+le service (au mieux) ; Slack retire aussi les canaux. Slack demande les portées `chat:write`, `chat:write.public`,
+`channels:read`, `channels:history`, `users:read` et `incoming-webhook` ; `POST /integrations/slack/channels` refuse un
+identifiant mal formé, un événement inconnu ou un canal déjà configuré. Dépôt d'un projet : `PUT /projects/{id}/repo`
+(`{mode: "LINK", repoFullName}` ou `{mode: "CREATE", repoName, privateRepo}`) et `DELETE /projects/{id}/repo`, appelés
+par la création du projet et par ses réglages.
 
 **« Ma file » — endpoints agrégés ✅** (20/07/2026) — `MyWorkController` (`/api/workspaces/{slug}`). La vue est
 **cross-projets** : elle affichait ses cycles et ses documents en rappelant l'API **projet par projet**, soit
