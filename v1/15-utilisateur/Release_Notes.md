@@ -23,6 +23,40 @@ tags: [utilisateur, release-notes, changelog, versions, e29, rncp, soutenance]
 
 ---
 
+## produit v1.3.0 (20/10/2026) : tout le travail entre la webapp et l'app desktop
+
+- **Espaces entiers, Brain OS compris, dans les deux sens** : un fichier d'espace (.zip) porte l'espace, son Brain OS (pages, liens, fichiers) et tous les projets que la personne voit. Dans l'app, Operations > From the web app > Copy everything copie chaque espace de la webapp ; Réglages > General > Copy to the web app renvoie un espace entier. La webapp a la même carte (télécharger le fichier, l'importer). Chaque import crée un nouvel espace, sans rien fusionner.
+- **Messages clairs** quand un envoi vers la webapp est trop gros ou que la réponse tarde.
+- **Site** : la page de migration promet tout le travail ; l'installation sous Windows explique Smart App Control, qui bloque une app non signée.
+- **TaskForce Desktop 1.2.0**.
+
+## produit v1.2.0 (20/10/2026) : projets entre la webapp et l'app desktop
+
+- **Projets dans les deux sens** : fichier de projet (menu Export, New project > From a file) et copie directe par l'app, avec tickets, historique, pages et pièces jointes.
+- **App desktop** : photo du compte reprise, copie de la base avant chaque mise à jour, notifications du système, Copilot avec le compte GitHub de la personne, pull request liée à son ticket et ticket terminé à la fusion.
+- **API** : un paramètre de requête absent ou mal typé répond 400 (plus 500).
+- **Site** : une fenêtre accompagne chaque téléchargement (avertissements de Windows, rapport VirusTotal, quarantaine) ; macOS annoncé pour plus tard. **TaskForce Desktop 1.1.0**.
+
+## produit v1.1.5 (20/10/2026) : guide d'installation sur le site
+
+- Section « Install » de la page de téléchargement (Windows, Linux), SHA-256 et rapport VirusTotal sous chaque fichier.
+
+## produit v1.1.4 (20/10/2026) : page « merci » à la désinstallation
+
+- Le désinstalleur Windows ouvre la page `/goodbye` du site. **TaskForce Desktop 1.0.3**.
+
+## produit v1.1.3 (20/10/2026) : corrections d'API et de sécurité
+
+- Un corps de requête absent ou illisible répond 400 (plus 500) ; les 88 alertes CodeQL ouvertes sont corrigées ou justifiées.
+
+## produit v1.1.2 (20/10/2026) : récupération du compte dans l'app desktop
+
+- L'app reprend les réglages du compte en ligne (rôle, onboarding, compétences, notifications) ; page « Code signing policy » sur le site. **TaskForce Desktop 1.0.2**.
+
+## produit v1.1.1 (20/10/2026) : fenêtre façon Claude Desktop
+
+- Fenêtre sans barre de titre du système, haut dessiné par l'interface ; peinture de l'accueil du site sur les pages de connexion. **TaskForce Desktop 1.0.1**.
+
 ## produit v1.1.0 (19/10/2026) : TaskForce Desktop, passkeys, connexion sans page Keycloak
 
 - **TaskForce Desktop (préversion, Windows et Linux)** : l'app se télécharge sur le site. Elle demande un compte TaskForce gratuit, créé ou utilisé sur les pages habituelles de la webapp (aucune page Keycloak), puis garde projets, Brain OS, IA (Ollama ou une API compatible OpenAI) et Claude Code sur l'ordinateur, hors ligne compris. Installeurs non signés : Windows avertit au premier lancement, la page de téléchargement explique quoi faire.
