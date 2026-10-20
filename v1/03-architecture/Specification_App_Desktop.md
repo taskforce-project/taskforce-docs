@@ -169,7 +169,11 @@ l'exécution (script injecté par le layout racine, ou relais same-origin par la
 
 **Emplacement** : le dossier de données de l'app (`app.getPath('userData')` d'Electron : `%APPDATA%\TaskForce` sous
 Windows, `~/Library/Application Support/TaskForce` sous macOS, `~/.local/share/TaskForce` sous Linux). Il contient la
-base, les fichiers (pièces jointes, avatars, Brain OS), les journaux et les réglages.
+base, les fichiers (pièces jointes, avatars, Brain OS), les journaux et les réglages. Version du Microsoft Store :
+`%LOCALAPPDATA%\Packages\<famille du paquet>\LocalState`, écrit directement (`desktop/src/paths.ts`, `storeDataDir`) ;
+dans `%APPDATA%`, Windows redirigerait les écritures d'une app empaquetée vers ce dossier, hors de la vue de
+l'Explorateur, et mêlerait la base à celle de la version du site si les deux sont installées. Windows l'efface quand on
+désinstalle l'app.
 
 **Base : PostgreSQL embarqué**, lancé par l'app comme un processus enfant. C'est le choix qui change le moins de code :
 les 86 migrations, les 7 types enum natifs, le JSONB (y compris les requêtes `->>` des intégrations), les tableaux
@@ -379,14 +383,18 @@ son jeton, `gh agent-task`).
 ### 5.8 Paquets, mises à jour, signature
 
 - **Paquets** : installateur Windows (NSIS), image macOS (DMG, Apple Silicon et Intel), Linux (AppImage et `.deb`),
-  produits par `electron-builder` dans la CI, publiés en GitHub Releases.
+  produits par `electron-builder` dans la CI, publiés en GitHub Releases. Paquet AppX du Microsoft Store (21/10, 1.2.2),
+  à l'identité réservée dans le Partner Center : artefact `store-package` du workflow, téléversé à la main, jamais
+  publié sur GitHub ; fiche et réponses du Partner Center dans `marketing/store/` du dépôt.
 - **Mises à jour** : `electron-updater` depuis GitHub Releases. Les migrations Flyway s'appliquent au démarrage, comme
-  aujourd'hui ; une sauvegarde de la base précède chaque migration.
+  aujourd'hui ; une sauvegarde de la base précède chaque migration. La version du Store est mise à jour par le Store :
+  l'app n'en cherche pas (`process.windowsStore`), les réglages le disent.
 - **Signature** : sans signature, Windows affiche l'avertissement SmartScreen (contournable) et macOS bloque l'app non
   notarisée (contournable à la main, rédhibitoire pour le grand public). La notarisation Apple exige un compte Apple
   Developer payant ; Windows demande un certificat de signature ou un service de signature. Choix et coût : décision du
   CEO (§10). Windows : SignPath Foundation retenue le 20/10, page de politique de signature publiée et étapes prêtes dans
-  la CI ; procédure et dossier dans [[Signature_Code_SignPath]].
+  la CI ; procédure et dossier dans [[Signature_Code_SignPath]]. Refusée le 20/10 ; le Microsoft Store, qui signe son
+  paquet, est la voie gratuite retenue le 21/10, à côté de l'installeur du site.
 
 ### 5.9 Budget de ressources (à mesurer pendant l'essai)
 
@@ -505,7 +513,7 @@ Branche `feature/desktop`, fusionnée dans `dev` à chaque version : 1.0.0 le 19
 | D.5 | Fait | La coque lance le runner existant. Un projet sans dépôt reçoit la réponse en commentaire ; un projet avec dépôt reçoit une pull request (clone, push et PR par `gh`). Autorisations dans l'app ; état des outils et branchement de Claude Code en un clic dans Réglages > Agents |
 | D.6 | Fait | GitHub par le GitHub CLI de la personne : connexion dans l'app, liste, création et vérification des dépôts, lien au projet (carte « Code repository » et nouveau projet). 20/10 : Copilot avec le compte GitHub de la personne (relais du jeton par la coque), PR d'un agent liée seule à son ticket, statuts relus toutes les cinq minutes, ticket terminé quand sa PR est fusionnée. Vérifié par les tests ; Copilot pas essayé faute d'abonnement |
 | D.7 | Fait | Build desktop de l'interface (`NEXT_PUBLIC_DESKTOP`) : ni membres, ni équipes, ni invitations, ni sécurité locale ; compte géré en ligne ; onboarding en trois étapes ; réglages « AI » (Ollama, API compatible OpenAI ou aucune IA) et « Agents » adaptés |
-| D.8 | En partie | Installateur Windows (NSIS, par utilisateur), `.deb` et AppImage, icône, workflow `Desktop - Release` (release versionnée pour le site, release roulante `desktop-latest` pour les mises à jour). Versions 1.0.0 à 1.0.3 publiées, non signées. Désinstallation (1.0.3) : le désinstalleur Windows ouvre la page « merci » du site (`/goodbye`, peinture des pages de connexion), sauf pendant une mise à jour ou en silencieux ; les données restent sur le poste. Signature : la SignPath Foundation a refusé le 20/10 (projet trop récent pour son programme) ; en attendant, guide d'installation, SHA-256 et rapports VirusTotal sur le site ([[Signature_Code_SignPath]] §8). Versions 1.1.0 et 1.2.0 publiées le 20/10, avec les rapports VirusTotal dans leurs notes de release. Mise à jour dans l'app vérifiée le 20/10 sur le poste du CEO (1.1.0 vers 1.2.0 : téléchargement complet en ~5 min, « Restart now », base copiée avant, relance en 1.2.0). Version 1.2.1 : téléchargement complet direct (la tentative différentielle échouait toujours : carte de blocs précédente absente de `desktop-latest`, plages multiples refusées par GitHub) et notification « TaskForce X is installed » au premier lancement d'une nouvelle version. Smart App Control (vu le 20/10 sur le poste du CEO) : sur un Windows 11 où il est actif, l'app non signée est bloquée sans « Run anyway » ni exception par app ; le site dit où le couper. Piste gratuite : le Microsoft Store (compte développeur individuel gratuit depuis 09/2025 ; un paquet MSIX y est re-signé par Microsoft, ce qui lève SmartScreen et Smart App Control, mises à jour par le Store), à mener avec le compte Partner Center du CEO. Reste : Store (ou signature), macOS, essai sur un vrai Linux |
+| D.8 | En partie | Installateur Windows (NSIS, par utilisateur), `.deb` et AppImage, icône, workflow `Desktop - Release` (release versionnée pour le site, release roulante `desktop-latest` pour les mises à jour). Versions 1.0.0 à 1.0.3 publiées, non signées. Désinstallation (1.0.3) : le désinstalleur Windows ouvre la page « merci » du site (`/goodbye`, peinture des pages de connexion), sauf pendant une mise à jour ou en silencieux ; les données restent sur le poste. Signature : la SignPath Foundation a refusé le 20/10 (projet trop récent pour son programme) ; en attendant, guide d'installation, SHA-256 et rapports VirusTotal sur le site ([[Signature_Code_SignPath]] §8). Versions 1.1.0 et 1.2.0 publiées le 20/10, avec les rapports VirusTotal dans leurs notes de release. Mise à jour dans l'app vérifiée le 20/10 sur le poste du CEO (1.1.0 vers 1.2.0 : téléchargement complet en ~5 min, « Restart now », base copiée avant, relance en 1.2.0). Version 1.2.1 : téléchargement complet direct (la tentative différentielle échouait toujours : carte de blocs précédente absente de `desktop-latest`, plages multiples refusées par GitHub) et notification « TaskForce X is installed » au premier lancement d'une nouvelle version. Smart App Control (vu le 20/10 sur le poste du CEO) : sur un Windows 11 où il est actif, l'app non signée est bloquée sans « Run anyway » ni exception par app ; le site dit où le couper. Piste gratuite : le Microsoft Store (compte développeur individuel gratuit depuis 09/2025 ; un paquet MSIX y est re-signé par Microsoft, ce qui lève SmartScreen et Smart App Control, mises à jour par le Store), à mener avec le compte Partner Center du CEO. Version Store (21/10, 1.2.2) : paquet AppX construit par la CI (artefact `store-package`) à l'identité du Partner Center (`TaskForceProject.TaskForceProject`, Store ID `9P2V1XQVPXKZ`), validé en local (manifeste, logos indexés, non signé, chemin le plus long 185 caractères dans le paquet) ; mises à jour par le Store, données dans le LocalState du paquet, identité du paquet gardée pour les notifications ; fiche FR/EN et réponses dans `marketing/store/`. Reste : soumission et certification par le CEO, signature du .exe, macOS, essai sur un vrai Linux |
 
 Points ouverts relevés pendant le travail :
 
