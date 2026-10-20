@@ -65,7 +65,7 @@ indésirable sur le poste du CEO (fichier non signé, jamais vu par VirusTotal).
 | Build automatisé depuis le dépôt | Fait (workflow `Desktop - Release`) |
 | Page « Code signing policy », liée depuis l'accueil et le téléchargement | Faite le 20/10 (`/code-signing-policy`, pied de page et page de téléchargement) |
 | Politique de confidentialité | Faite (`/legal/privacy`, décrit ce que l'app envoie) |
-| Double authentification GitHub pour chaque membre | **À vérifier** : l'organisation ne l'exige pas encore (membres : Miche1-Pierre, spykernv, Alizee-Huot) |
+| Double authentification GitHub pour chaque membre | Faite le 20/10 : exigée dans l'organisation (Miche1-Pierre, spykernv et Alizee-Huot l'avaient déjà). L'option « Only allow secure two-factor methods » reste désactivée : elle demande de retirer le SMS du compte du CEO, ce que SignPath n'exige pas |
 | Réputation du projet | **Point faible** : dépôt public depuis octobre 2026, 1 étoile, app tout juste publiée |
 
 Avant d'exiger la double authentification dans l'organisation (Settings, Authentication security, « Require
@@ -74,7 +74,7 @@ l'ont pas.
 
 ## 4. Le formulaire (`signpath.org/apply`)
 
-Formulaire en anglais, avec un CAPTCHA : à remplir par toi. Réponses préparées :
+Formulaire en anglais, avec un CAPTCHA : rempli par le CEO, **dossier déposé le 20/10, en revue** (mail de SignPath reçu). Réponses préparées :
 
 | Champ | Réponse |
 | --- | --- |

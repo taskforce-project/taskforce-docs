@@ -424,7 +424,7 @@ minimum (ADR-021).
 
 ### Avancement au 20/10/2026
 
-Branche `feature/desktop`, fusionnée dans `dev` à chaque version : 1.0.0 le 19/10, 1.0.1 et 1.0.2 le 20/10.
+Branche `feature/desktop`, fusionnée dans `dev` à chaque version : 1.0.0 le 19/10, 1.0.1 à 1.0.3 le 20/10.
 
 | Lot | État | Ce qui est fait, ce qui reste |
 | --- | ---- | ----------------------------- |
@@ -434,7 +434,7 @@ Branche `feature/desktop`, fusionnée dans `dev` à chaque version : 1.0.0 le 19
 | D.5 | Fait | La coque lance le runner existant. Un projet sans dépôt reçoit la réponse en commentaire ; un projet avec dépôt reçoit une pull request (clone, push et PR par `gh`). Autorisations dans l'app ; état des outils et branchement de Claude Code en un clic dans Réglages > Agents |
 | D.6 | En partie | GitHub par le GitHub CLI de la personne : connexion dans l'app, liste, création et vérification des dépôts, lien au projet (carte « Code repository » et nouveau projet). Reste : Copilot, liens entre issue et PR, issue terminée quand la PR est fusionnée |
 | D.7 | Fait | Build desktop de l'interface (`NEXT_PUBLIC_DESKTOP`) : ni membres, ni équipes, ni invitations, ni sécurité locale ; compte géré en ligne ; onboarding en trois étapes ; réglages « AI » (Ollama, API compatible OpenAI ou aucune IA) et « Agents » adaptés |
-| D.8 | En partie | Installateur Windows (NSIS, par utilisateur), `.deb` et AppImage, icône, workflow `Desktop - Release` (release versionnée pour le site, release roulante `desktop-latest` pour les mises à jour). Versions 1.0.0, 1.0.1 et 1.0.2 publiées, non signées. Reste : signature (dossier SignPath prêt, à déposer par le CEO), macOS |
+| D.8 | En partie | Installateur Windows (NSIS, par utilisateur), `.deb` et AppImage, icône, workflow `Desktop - Release` (release versionnée pour le site, release roulante `desktop-latest` pour les mises à jour). Versions 1.0.0 à 1.0.3 publiées, non signées. Désinstallation (1.0.3) : le désinstalleur Windows ouvre la page « merci » du site (`/goodbye`, peinture des pages de connexion), sauf pendant une mise à jour ou en silencieux ; les données restent sur le poste. Reste : signature (dossier SignPath déposé le 20/10, en revue), macOS |
 
 Points ouverts relevés pendant le travail :
 
