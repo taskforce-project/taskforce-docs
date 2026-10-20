@@ -15,6 +15,13 @@ related:
 
 # Signature de l'app desktop (SignPath Foundation)
 
+> **Refusé le 20/10/2026.** La SignPath Foundation réserve son programme aux projets déjà visibles publiquement
+> (étoiles, forks et contributeurs GitHub, articles, discussions sur Reddit, Stack Overflow ou YouTube, soutien
+> institutionnel, activité durable) ; TaskForce, public depuis octobre 2026, n'en montre pas encore assez. Ce n'est pas
+> un jugement sur le code. Nouvelle demande possible quand le projet sera plus connu ; SignPath propose aussi un
+> abonnement payant. En attendant (§8) : installeurs non signés, guide d'installation et vérification sur le site,
+> rapports VirusTotal automatiques.
+
 **Version :** 1.0
 **Date :** 20/10/2026
 **Auteur(s) :** Pierre MICHEL
@@ -74,7 +81,7 @@ l'ont pas.
 
 ## 4. Le formulaire (`signpath.org/apply`)
 
-Formulaire en anglais, avec un CAPTCHA : rempli par le CEO, **dossier déposé le 20/10, en revue** (mail de SignPath reçu). Réponses préparées :
+Formulaire en anglais, avec un CAPTCHA : rempli par le CEO, **dossier déposé le 20/10, refusé le jour même** (voir en tête). Réponses préparées, à reprendre pour une nouvelle demande :
 
 | Champ | Réponse |
 | --- | --- |
@@ -130,3 +137,18 @@ SignPath et sa double authentification, approuver chaque signature. Tout le rest
   de `TaskForce-Setup-1.0.2.exe` : `67d6e77e27ffa7e6909ab066d493833b5d9f86c6f5c9568e8b2d853841ccc6c0`.
 - McAfee : un fichier de plus de 50 Mo ne passe pas par l'e-mail de signalement ; la voie connue est de publier le
   lien VirusTotal sur leur forum communautaire (compte McAfee requis) en demandant le retrait du faux positif.
+
+## 8. Sans signature, en attendant (20/10/2026)
+
+- **Site** : la page de téléchargement explique l'installation (Windows : SmartScreen et antivirus ; Linux : `apt`
+  pour le `.deb`, `chmod +x` et `libfuse2` pour l'AppImage) et montre, sous chaque fichier, son SHA-256 (digest
+  calculé par GitHub) et son rapport VirusTotal. La page « Code signing policy » dit que les installeurs ne sont pas
+  encore signés.
+- **VirusTotal** : le workflow `Desktop - VirusTotal` envoie chaque release (installeur, `.deb`, AppImage) et liste
+  les rapports dans les notes de la release, que le site lit. Il faut la clé d'API du compte VirusTotal du CEO dans le
+  secret GitHub `VIRUSTOTAL_API_KEY`. L'API publique est limitée (4 appels par minute) et ses conditions la
+  réservent à un usage non commercial : à vérifier par le CEO.
+- **Voies de signature restantes** : nouvelle demande à la SignPath Foundation plus tard ; abonnement SignPath ;
+  certificat Certum « Open Source Developer » (à son nom, peu coûteux, à vérifier) ; Azure Artifact Signing (réservé
+  aux entreprises en Europe). Signée ou non, la réputation SmartScreen d'un installeur se construit aussi avec les
+  téléchargements.
