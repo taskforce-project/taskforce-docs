@@ -111,6 +111,14 @@ corrigés** ; il ne reste que des points documentaires (STRIDE/PSSI à actualise
   total contre les archives qui se décompressent à l'infini. Personnes : sur le serveur, jamais de compte créé, une
   adresse inconnue devient la personne qui importe. Tests : `ProjectBundleServiceIntegrationTest` (clé étrangère et
   nom de colonne piégés, fichiers refusés, lecture bornée).
+- **Fichier d'espace importé (20/10/2026)** : mêmes protections, appliquées à chaque projet du fichier
+  (`modules/transfer/service/WorkspaceBundleService.java`). L'import crée toujours un nouvel espace dont la personne est
+  propriétaire : un fichier ne peut rien écrire dans un espace existant. Les pages du Brain OS ne peuvent viser qu'un
+  projet, un ticket ou un cycle importé avec elles (sinon la référence est retirée) ; leur `uuid` est tiré à neuf. Les
+  fichiers des pages ne sont lus que sous `brain-files/`, avec un nom limité à `[A-Za-z0-9._-]`, bornés comme les
+  pièces jointes, rangés sous le préfixe du nouvel espace et effacés si l'import échoue. L'export n'emporte ni les
+  projets que la personne ne voit pas, ni les pages qui les décrivent. Tests : `WorkspaceBundleServiceIntegrationTest`
+  (espace d'un autre, fichier refusé, références et adresses réécrites).
 
 ### 2.7 Dépendances & secrets
 - **Durcissement** : overrides Trivy dans le `pom.xml` (tomcat, netty, thymeleaf, bouncycastle, postgresql,

@@ -214,6 +214,13 @@ Le callback pose le refresh token dans le même cookie `tf_refresh` HttpOnly que
 | `GET` | `/api/workspaces/{slug}/projects/{projectId}/bundle` | Fichier de projet TaskForce (zip : `project.json` et `files/<id>`), le projet entier | Qui voit le projet |
 | `POST` | `/api/workspaces/{slug}/projects/import` | Crée le projet d'un fichier de projet (corps `application/zip`, 512 Mo au plus) ; 201 + projet | Membre de l'espace |
 
+**Contrôleur** : `WorkspaceBundleController` (`modules/transfer/api`, 20/10/2026)
+
+| Méthode | Chemin | Description | Rôle |
+|---|---|---|:---:|
+| `GET` | `/api/workspaces/{slug}/bundle` | Fichier d'espace TaskForce (zip : `workspace.json`, `projects/<id>/`, `brain-files/<nom>`) : l'espace, son Brain OS et les projets que la personne voit | Membre de l'espace |
+| `POST` | `/api/workspaces/import` | Crée un nouvel espace, dont la personne est propriétaire, à partir d'un fichier d'espace (corps `application/zip`, 512 Mo au plus) ; 201 + espace | Personne connectée |
+
 **Contrôleur** : `DesktopTransferController` (`modules/transfer/api`, profil `!desktop`, 20/10/2026)
 
 | Méthode | Chemin | Description | Accès |
@@ -221,6 +228,8 @@ Le callback pose le refresh token dans le même cookie `tf_refresh` HttpOnly que
 | `POST` | `/api/auth/desktop/transfer/projects` | Espaces de la personne et projets qu'elle y voit (`{token}`) | Session `tfa_` |
 | `POST` | `/api/auth/desktop/transfer/bundle` | Fichier d'un projet (`{token, workspace, projectId}`) | Session `tfa_` |
 | `POST` | `/api/auth/desktop/transfer/import?workspace=` | Crée le projet envoyé par l'app (session dans `X-TaskForce-Session`) | Session `tfa_` |
+| `POST` | `/api/auth/desktop/transfer/workspace` | Fichier d'un espace entier (`{token, workspace}`) | Session `tfa_` |
+| `POST` | `/api/auth/desktop/transfer/workspace-import` | Crée dans la webapp l'espace envoyé par l'app (session dans `X-TaskForce-Session`) ; 201 + espace | Session `tfa_` |
 
 ---
 

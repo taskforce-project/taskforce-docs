@@ -194,8 +194,9 @@ chiffrement du disque de l'OS ; les secrets, eux, sont dans le trousseau (§5.7)
 (`row_to_json`), les personnes qu'elles citent, le format (`taskforce-project`, version 1) et la version du schéma ;
 `files/<id>` porte le contenu de chaque pièce jointe. Voyagent le projet, ses statuts, types, labels, cycles et pages,
 et tous ses tickets (sous-tickets et archivés compris) avec labels, commentaires, historique, checklist, temps passé,
-liens entre tickets, cycles, pièces jointes et liens GitHub. Restent : membres et équipes de l'espace, Brain OS (propre
-à l'espace), connexions et clés (chiffrées pour une seule instance), historique des agents.
+liens entre tickets, cycles, pièces jointes et liens GitHub. Restent : membres et équipes de l'espace, Brain OS (il
+voyage avec le fichier d'espace, ci-dessous), connexions et clés (chiffrées pour une seule instance), historique des
+agents.
 
 - **Import.** Chaque ligne est recréée par `json_populate_record`, qui convertit chaque valeur dans le type de sa colonne
   (énumérations, dates, tableaux) : dates et numéros de tickets gardés, sans passer par les services (ni notification, ni
@@ -220,6 +221,32 @@ liens entre tickets, cycles, pièces jointes et liens GitHub. Restent : membres 
 - **Limites connues.** Un lien vers une pièce jointe écrit dans une description garde l'ancien identifiant ; les valeurs
   de l'historique restent du texte ; un projet copié deux fois donne deux projets (pas d'identifiant stable entre
   instances).
+
+**Portabilité : le fichier d'espace (20/10/2026).** Tout le travail d'une personne passe d'un côté à l'autre espace par
+espace (`WorkspaceBundleService`). Le zip porte `workspace.json` (la ligne de l'espace, son Brain OS : `brain_workspaces`,
+`knowledge_nodes` sans `embedding` ni `embedding_model`, `knowledge_edges` entre pages exportées ; les personnes citées,
+la liste des projets et des fichiers des pages), un fichier de projet par projet sous `projects/<id>/` (le format
+ci-dessus) et les fichiers que montrent les pages sous `brain-files/<nom>`.
+
+- **Export.** Réservé aux membres de l'espace. Seuls voyagent les projets que la personne voit, et les pages qui
+  décrivent un projet, un ticket ou un cycle d'un projet qu'elle ne voit pas restent de côté.
+- **Import.** Crée toujours un **nouvel** espace : nom, description et activité du fichier, adresse rendue unique, la
+  personne en propriétaire. Chaque projet est recréé comme un fichier de projet, sans `ProjectCreatedEvent` : la fiche
+  du projet vient avec le Brain OS du fichier, l'écouteur la réécrirait. Puis le Brain OS : pages avec un `uuid` neuf,
+  parents reposés après coup, références (projet, ticket, cycle) passées par la correspondance des projets importés
+  (une référence sans correspondance est retirée), même chose pour `projectId`, `issueId` et `cycleId` du `metadata`,
+  auteurs par `ImportedPeople`, adresses `/api/files/brain/<espace>/<nom>` réécrites vers le nouvel espace, liens
+  entre pages importées. Les vecteurs de recherche sont recalculés en tâche de fond (`BrainEmbeddingIndexer`). Mêmes
+  bornes que le fichier de projet, tout ou rien, fichiers rangés effacés si l'import échoue.
+- **API.** `GET /api/workspaces/{slug}/bundle` (membre) et `POST /api/workspaces/import` (corps `application/zip`). Pour
+  l'app : `POST /api/auth/desktop/transfer/workspace` (`{token, workspace}`) et
+  `POST /api/auth/desktop/transfer/workspace-import` (session dans `X-TaskForce-Session`).
+- **Interface.** Réglages > General, carte « Move or back up this workspace » : « Workspace file » (téléchargement),
+  « Import a workspace file » et, dans l'app, « Copy to the web app ». Dans l'app, Projects > « From the web app » :
+  « Copy everything » copie chaque espace pas encore copié, l'un après l'autre ; « Copy the whole workspace » en copie
+  un seul. La coque fait le trajet (`bringWorkspace`, `sendWorkspace` dans `desktop/src/transfer.ts`).
+- **Ne voyagent pas.** Membres, équipes et invitations ; connexions, intégrations, webhooks et clés ; conversations
+  avec l'assistant, graphiques enregistrés, cartes du tableau de bord et historique des analyses IA.
 
 ### 5.4 IA sur la machine de l'utilisateur
 
@@ -468,7 +495,7 @@ Branche `feature/desktop`, fusionnée dans `dev` à chaque version : 1.0.0 le 19
 | Lot | État | Ce qui est fait, ce qui reste |
 | --- | ---- | ----------------------------- |
 | D.2 | Fait | Profil `desktop` : jeton de lancement, compte local, stockage fichier et liens signés, contrôle de l'hôte, jetons du runner émis par l'app, pas de limiteur de débit sur l'API locale. **Écart à §5.2** : l'IA ne passe pas par des appels Java directs ; la coque sert le protocole de l'ai-service et relaie vers le fournisseur choisi, sans modifier le backend, la clé d'API restant dans le trousseau |
-| D.3 | Fait | Une base par compte dans le dossier de l'app, mot de passe et clé de chiffrement dans le trousseau. Récupération du compte (20/10) : la session de l'app rend les réglages du compte en ligne (rôle, onboarding fait, dernier profil de compétences, préférences de notification), que l'app reprend une fois par poste, là où elle n'a encore rien (rôle vide, onboarding pas fait, pas de profil de compétences, notifications par défaut), sans rien écraser ; vérifiée de bout en bout sur une pile isolée et sur le backend de l'app (nouveau poste, poste installé par une version précédente). Une base restée ouverte après un arrêt forcé (plantage, fin de tâche) est arrêtée au lancement suivant. Fait le 20/10 : photo de profil du compte en ligne (téléchargée par la coque, reprise une fois par poste si l'app n'en a pas), copie de la base avant chaque migration, fichier de projet et déplacement des projets à la demande dans les deux sens (§5.3). Vérifié par les tests (intégration Postgres de l'export et de l'import, coque, interface), pas encore à l'écran avec la vraie app |
+| D.3 | Fait | Une base par compte dans le dossier de l'app, mot de passe et clé de chiffrement dans le trousseau. Récupération du compte (20/10) : la session de l'app rend les réglages du compte en ligne (rôle, onboarding fait, dernier profil de compétences, préférences de notification), que l'app reprend une fois par poste, là où elle n'a encore rien (rôle vide, onboarding pas fait, pas de profil de compétences, notifications par défaut), sans rien écraser ; vérifiée de bout en bout sur une pile isolée et sur le backend de l'app (nouveau poste, poste installé par une version précédente). Une base restée ouverte après un arrêt forcé (plantage, fin de tâche) est arrêtée au lancement suivant. Fait le 20/10 : photo de profil du compte en ligne (téléchargée par la coque, reprise une fois par poste si l'app n'en a pas), copie de la base avant chaque migration, fichier de projet et déplacement des projets à la demande dans les deux sens, puis fichier d'espace : un espace entier, Brain OS compris, d'un clic dans les deux sens, et « Copy everything » pour tous les espaces (§5.3). Vérifié par les tests (intégration Postgres de l'export et de l'import, coque, interface), pas encore à l'écran avec la vraie app |
 | D.4 | Fait | Connexion par les pages de la webapp (PKCE, retour sur 127.0.0.1, session de l'app chiffrée par le système ; vérifiée le 19/10 avec la vraie app : « Create an account » → inscription → connexion → accord → app ouverte sur l'onboarding du compte), pile locale, relais d'origine, écran d'attente, arrêt propre, mises à jour. Notifications du système (20/10, `desktop/src/notify.ts`) : un événement reçu pendant que la fenêtre n'est pas au premier plan s'affiche au nom de l'app (identifiant `fr.taskforce-project.desktop` sous Windows), et un clic ramène sur sa page |
 | D.5 | Fait | La coque lance le runner existant. Un projet sans dépôt reçoit la réponse en commentaire ; un projet avec dépôt reçoit une pull request (clone, push et PR par `gh`). Autorisations dans l'app ; état des outils et branchement de Claude Code en un clic dans Réglages > Agents |
 | D.6 | Fait | GitHub par le GitHub CLI de la personne : connexion dans l'app, liste, création et vérification des dépôts, lien au projet (carte « Code repository » et nouveau projet). 20/10 : Copilot avec le compte GitHub de la personne (relais du jeton par la coque), PR d'un agent liée seule à son ticket, statuts relus toutes les cinq minutes, ticket terminé quand sa PR est fusionnée. Vérifié par les tests ; Copilot pas essayé faute d'abonnement |
