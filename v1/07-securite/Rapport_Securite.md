@@ -164,6 +164,20 @@ relève de la bonne pratique, pas de la vulnérabilité.
   tourne en CI planifiée/manuelle (`zap-dast.yml`, cf. §6) et reste lançable en local (`security-scan.ps1 -Dast`). Clôt TF-SEC-002/003.
 - **Ajouté (28/08)** : `codeql.yml` — **CodeQL** (code scanning natif GitHub, requêtes `security-extended`,
   suivi de flux/taint) sur push/PR (`main`, `dev`) + hebdo, en complément de Semgrep/Trivy ; alertes dans l'onglet Security.
+- **Traité (20/10/2026)** : les **88 alertes CodeQL** ouvertes sur `main` (PR #370, en prod avec la 1.1.3). **82 fermées
+  par l'analyse de `main` après correction** :
+  68 « log injection » (`LogSafe.of` remplace les sauts de ligne des valeurs venues de l'extérieur et borne leur
+  longueur) ; 9 expressions régulières polynomiales, dont un vrai déni de service (l'aperçu des pages, quadratique sur
+  un contenu de « < » sans « > », construit désormais en une passe) ; une vraie faille côté webapp (le jeton
+  d'invitation pris dans l'adresse pouvait changer le chemin d'une requête authentifiée, il est validé avant tout
+  appel) ; une somme de longueurs non vérifiée (chiffrement au repos) ; deux scripts de développement (logos,
+  générateurs de docs). **6 fermées par l'API avec leur raison** : CSRF désactivé dans les trois chaînes de sécurité
+  (authentification par l'en-tête `Authorization` seulement ; seul cookie, le refresh token, HttpOnly, SameSite=Lax,
+  limité à `/api/auth` sur l'hôte de l'API ; raisonnement écrit dans `SecurityConfig`) et deux de l'app desktop
+  (outil trouvé dans le PATH de la personne, arguments protégés pour `cmd.exe` ; journal de la coque, un message
+  par ligne), plus le script des logos (lancé à la main ; il refuse désormais un SVG à contenu actif, filtre que
+  CodeQL ne reconnaît pas). Plus aucune alerte ouverte au 20/10. Sur une PR, CodeQL n'analyse que les lignes
+  modifiées : une correction ne se confirme qu'à l'analyse de `main`.
 - **Corrigé (16/08)** : les **artefacts sont désormais archivés** et horodatés dans `security-reports/` (avant : seul un plan ZAP).
 
 ## 6. Risques résiduels & plan de traitement
