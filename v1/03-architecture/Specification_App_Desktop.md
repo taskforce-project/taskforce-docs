@@ -247,6 +247,11 @@ ci-dessus) et les fichiers que montrent les pages sous `brain-files/<nom>`.
   un seul. La coque fait le trajet (`bringWorkspace`, `sendWorkspace` dans `desktop/src/transfer.ts`).
 - **Ne voyagent pas.** Membres, équipes et invitations ; connexions, intégrations, webhooks et clés ; conversations
   avec l'assistant, graphiques enregistrés, cartes du tableau de bord et historique des analyses IA.
+- **Instance hébergée.** L'API de prod passe par un tunnel Cloudflare : un envoi vers la webapp au-delà de sa limite
+  (100 Mo sur les offres Free et Pro) est refusé en 413, une réponse trop lente coupée en 524, sans message de l'API.
+  La coque traduit ces deux cas (envoyer les projets un par un ; vérifier la webapp avant de réessayer, l'import peut
+  finir), le front dit d'un 413 que le fichier est trop gros. Le sens webapp vers app (téléchargement) n'a pas cette
+  limite.
 
 ### 5.4 IA sur la machine de l'utilisateur
 
