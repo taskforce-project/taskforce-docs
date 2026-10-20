@@ -182,10 +182,44 @@ l'extension est créée par les migrations V32, V33, V52 et V59 : **sans pgvecto
 échouent**. Deux sorties : livrer l'extension compilée pour les trois OS, ou une variante desktop de ces migrations, la
 recherche restant alors en plein texte (lot 4). C'est la première question de l'essai (§8).
 
-**Sauvegarde et portabilité** : copie de la base avant chaque migration (donc avant chaque mise à jour) ; export
-complet en un fichier (base et fichiers) ; import depuis une instance serveur, à partir de l'export de projet JSON
-existant (`GET …/projects/{id}/export`). La base n'est pas chiffrée sur le disque : on recommande le chiffrement du
-disque de l'OS ; les secrets, eux, sont dans le trousseau (§5.7).
+**Sauvegarde.** Quand la version de l'app change, la coque copie la base (`pg_dump -Fc`) dans
+`<dossier du compte>/backups` avant que le backend ne la migre (Flyway), et garde les trois copies les plus récentes
+(`desktop/src/backup.ts`, version notée dans `app-version`). Une copie impossible n'empêche pas le démarrage : la
+version n'est pas notée, la copie est retentée au lancement suivant. Réglages > Privacy & Data ouvre le dossier. La
+restauration se fait à la main (`pg_restore`, app fermée). La base n'est pas chiffrée sur le disque : on recommande le
+chiffrement du disque de l'OS ; les secrets, eux, sont dans le trousseau (§5.7).
+
+**Portabilité : le fichier de projet (20/10/2026).** Un projet entier tient dans un zip (`modules/transfer`,
+`ProjectBundle`) : `project.json` porte ses lignes table par table, telles que PostgreSQL les rend
+(`row_to_json`), les personnes qu'elles citent, le format (`taskforce-project`, version 1) et la version du schéma ;
+`files/<id>` porte le contenu de chaque pièce jointe. Voyagent le projet, ses statuts, types, labels, cycles et pages,
+et tous ses tickets (sous-tickets et archivés compris) avec labels, commentaires, historique, checklist, temps passé,
+liens entre tickets, cycles, pièces jointes et liens GitHub. Restent : membres et équipes de l'espace, Brain OS (propre
+à l'espace), connexions et clés (chiffrées pour une seule instance), historique des agents.
+
+- **Import.** Chaque ligne est recréée par `json_populate_record`, qui convertit chaque valeur dans le type de sa colonne
+  (énumérations, dates, tableaux) : dates et numéros de tickets gardés, sans passer par les services (ni notification, ni
+  webhook, ni historique en plus). Le fichier n'est jamais cru sur parole : identifiants renumérotés, clés étrangères
+  passées par la table de correspondance (une ligne qui cite ce qui n'est pas venu reste de côté, une clé étrangère
+  inconnue du format prend sa valeur par défaut), seules les colonnes qui existent dans la base cible sont écrites,
+  archive bornée entrée par entrée (`project.json` 128 Mo, pièce jointe 100 Mo, total 2 Go, 50 000 entrées, envoi
+  512 Mo). Tout ou rien : un échec annule l'import et efface les pièces jointes déjà rangées. La personne qui importe
+  mène le projet (LEAD), l'identifiant est rendu unique dans l'espace (APO → APO2), le compteur de tickets repart après
+  le plus grand numéro, et `ProjectCreatedEvent` écrit la fiche du projet dans le Brain OS.
+- **Personnes** (`ImportedPeople`). Sur le serveur : le membre de l'espace qui a la même adresse, sinon la personne
+  qui importe ; aucun compte n'est créé (un compte inactif bloquerait l'inscription de cette adresse). Dans l'app : la
+  personne locale qui a la même adresse, sinon un utilisateur inactif `imported:<uuid>` qui garde son nom, que rien ne
+  peut connecter.
+- **API.** `GET /api/workspaces/{slug}/projects/{id}/bundle` (qui voit le projet) et
+  `POST /api/workspaces/{slug}/projects/import` (membre de l'espace, corps `application/zip`). Pour l'app, avec sa
+  seule session (`tfa_`, profil `!desktop`) : `POST /api/auth/desktop/transfer/projects` (espaces et projets visibles),
+  `/bundle` et `/import?workspace=` (session dans l'en-tête `X-TaskForce-Session`) ; 401 si la session est finie.
+- **Interface.** Menu Export d'un projet : « TaskForce project file (.zip) » ; New project > « From a file ». Dans l'app :
+  Projects > « From the web app » (un espace encore vide le propose de lui-même), et Export > « Copy to the web app ».
+  La coque fait le trajet (`desktop/src/transfer.ts`) : la session ne passe jamais par la page, 10 minutes par étape.
+- **Limites connues.** Un lien vers une pièce jointe écrit dans une description garde l'ancien identifiant ; les valeurs
+  de l'historique restent du texte ; un projet copié deux fois donne deux projets (pas d'identifiant stable entre
+  instances).
 
 ### 5.4 IA sur la machine de l'utilisateur
 
@@ -429,8 +463,8 @@ Branche `feature/desktop`, fusionnée dans `dev` à chaque version : 1.0.0 le 19
 | Lot | État | Ce qui est fait, ce qui reste |
 | --- | ---- | ----------------------------- |
 | D.2 | Fait | Profil `desktop` : jeton de lancement, compte local, stockage fichier et liens signés, contrôle de l'hôte, jetons du runner émis par l'app, pas de limiteur de débit sur l'API locale. **Écart à §5.2** : l'IA ne passe pas par des appels Java directs ; la coque sert le protocole de l'ai-service et relaie vers le fournisseur choisi, sans modifier le backend, la clé d'API restant dans le trousseau |
-| D.3 | En partie | Une base par compte dans le dossier de l'app, mot de passe et clé de chiffrement dans le trousseau. Récupération du compte (20/10) : la session de l'app rend les réglages du compte en ligne (rôle, onboarding fait, dernier profil de compétences, préférences de notification), que l'app reprend une fois par poste, là où elle n'a encore rien (rôle vide, onboarding pas fait, pas de profil de compétences, notifications par défaut), sans rien écraser ; vérifiée de bout en bout sur une pile isolée et sur le backend de l'app (nouveau poste, poste installé par une version précédente). Une base restée ouverte après un arrêt forcé (plantage, fin de tâche) est arrêtée au lancement suivant. Reste : sauvegarde avant migration, export, migration des projets à la demande dans les deux sens, photo de profil |
-| D.4 | Fait | Connexion par les pages de la webapp (PKCE, retour sur 127.0.0.1, session de l'app chiffrée par le système ; vérifiée le 19/10 avec la vraie app : « Create an account » → inscription → connexion → accord → app ouverte sur l'onboarding du compte), pile locale, relais d'origine, écran d'attente, arrêt propre, mises à jour. Reste : notifications du système |
+| D.3 | Fait | Une base par compte dans le dossier de l'app, mot de passe et clé de chiffrement dans le trousseau. Récupération du compte (20/10) : la session de l'app rend les réglages du compte en ligne (rôle, onboarding fait, dernier profil de compétences, préférences de notification), que l'app reprend une fois par poste, là où elle n'a encore rien (rôle vide, onboarding pas fait, pas de profil de compétences, notifications par défaut), sans rien écraser ; vérifiée de bout en bout sur une pile isolée et sur le backend de l'app (nouveau poste, poste installé par une version précédente). Une base restée ouverte après un arrêt forcé (plantage, fin de tâche) est arrêtée au lancement suivant. Fait le 20/10 : photo de profil du compte en ligne (téléchargée par la coque, reprise une fois par poste si l'app n'en a pas), copie de la base avant chaque migration, fichier de projet et déplacement des projets à la demande dans les deux sens (§5.3). Vérifié par les tests (intégration Postgres de l'export et de l'import, coque, interface), pas encore à l'écran avec la vraie app |
+| D.4 | Fait | Connexion par les pages de la webapp (PKCE, retour sur 127.0.0.1, session de l'app chiffrée par le système ; vérifiée le 19/10 avec la vraie app : « Create an account » → inscription → connexion → accord → app ouverte sur l'onboarding du compte), pile locale, relais d'origine, écran d'attente, arrêt propre, mises à jour. Notifications du système (20/10, `desktop/src/notify.ts`) : un événement reçu pendant que la fenêtre n'est pas au premier plan s'affiche au nom de l'app (identifiant `fr.taskforce-project.desktop` sous Windows), et un clic ramène sur sa page |
 | D.5 | Fait | La coque lance le runner existant. Un projet sans dépôt reçoit la réponse en commentaire ; un projet avec dépôt reçoit une pull request (clone, push et PR par `gh`). Autorisations dans l'app ; état des outils et branchement de Claude Code en un clic dans Réglages > Agents |
 | D.6 | En partie | GitHub par le GitHub CLI de la personne : connexion dans l'app, liste, création et vérification des dépôts, lien au projet (carte « Code repository » et nouveau projet). Reste : Copilot, liens entre issue et PR, issue terminée quand la PR est fusionnée |
 | D.7 | Fait | Build desktop de l'interface (`NEXT_PUBLIC_DESKTOP`) : ni membres, ni équipes, ni invitations, ni sécurité locale ; compte géré en ligne ; onboarding en trois étapes ; réglages « AI » (Ollama, API compatible OpenAI ou aucune IA) et « Agents » adaptés |
@@ -467,7 +501,7 @@ Points ouverts relevés pendant le travail :
    restent chacune de leur côté. À la première connexion, l'app reprend la configuration du compte (rôle, onboarding
    fait, compétences, préférences de notification) et ne remontre ni l'onboarding ni la visite guidée ; elle ne reprend
    ni les espaces, ni les projets, ni les conversations. La migration des projets, à la demande et dans les deux sens,
-   reste à faire (D.3).
+   est faite depuis le 20/10 (D.3, §5.3).
 2. **Smart Assign** (§6) : retiré du desktop (recommandé) ou recentré sur le choix d'agent.
 3. **Signature de code** : compte Apple Developer et signature Windows, ou distribution non signée au début.
    Options Windows : SignPath Foundation (gratuit pour les projets open source, sur dossier ; signature dans la CI),

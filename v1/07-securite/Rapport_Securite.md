@@ -97,6 +97,16 @@ corrigés** ; il ne reste que des points documentaires (STRIDE/PSSI à actualise
 - **URL sortantes (anti-SSRF)** : `SsrfGuard` valide toute URL de webhook fournie par l'utilisateur (http(s)
   public, DNS résolu, IP interne rejetée) **à la configuration et à l'envoi**.
   → `shared/security/SsrfGuard.java`, `core/service/WebhookService.java` (tests `SsrfGuardTest`).
+- **Fichier de projet importé (20/10/2026)** : un zip fourni par la personne, recréé en lignes SQL
+  (`modules/transfer/service/ProjectBundleService.java`). Les noms de table viennent d'une liste fixe, jamais du
+  fichier ; les noms de colonne sont croisés avec `information_schema` (une clé inventée est ignorée, aucune injection
+  par un nom) ; les valeurs passent en paramètre de `json_populate_record`. Chaque identifiant est renuméroté et chaque
+  clé étrangère passe par la table de correspondance : une ligne ne peut pas viser un projet, un ticket ou une personne
+  d'une autre instance, et une clé étrangère inconnue du format est retirée. Archive : seules `project.json` et
+  `files/<n>` sont lues, rien n'est écrit sur le disque sous un nom venu du zip ; lecture bornée par entrée et au
+  total contre les archives qui se décompressent à l'infini. Personnes : sur le serveur, jamais de compte créé, une
+  adresse inconnue devient la personne qui importe. Tests : `ProjectBundleServiceIntegrationTest` (clé étrangère et
+  nom de colonne piégés, fichiers refusés, lecture bornée).
 
 ### 2.7 Dépendances & secrets
 - **Durcissement** : overrides Trivy dans le `pom.xml` (tomcat, netty, thymeleaf, bouncycastle, postgresql,
