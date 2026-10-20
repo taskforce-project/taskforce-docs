@@ -4,7 +4,7 @@ title: Dictionnaire de données
 doc_type: reference
 statut: active
 version: 2.0
-date: "24/07/2026"
+date: "20/10/2026"
 auteur: Pierre MICHEL
 tags: [architecture, donnees, dictionnaire, postgresql, e8]
 ---
@@ -14,8 +14,8 @@ tags: [architecture, donnees, dictionnaire, postgresql, e8]
 > **Document GÉNÉRÉ**, il ne se modifie pas à la main. Régénération :
 > `node scripts/generate-schema-docs.mjs`.
 >
-> Périmètre : **55 tables** métier, **545 colonnes**, **104 clés étrangères**,
-> **72 migrations Flyway** appliquées. Introspection d'`information_schema` sur la base réelle.
+> Périmètre : **67 tables** métier, **705 colonnes**, **121 clés étrangères**,
+> **101 migrations Flyway** appliquées. Introspection d'`information_schema` sur la base réelle.
 
 La colonne **ON DELETE** n'est renseignée que lorsqu'elle diffère du comportement par défaut.
 C'est une information de conception, pas un détail : elle dit si la suppression d'un parent
@@ -27,7 +27,7 @@ Le socle multi-tenant. Toute donnée métier est rattachée à un workspace, et 
 
 ### `users`
 
-19 colonnes · 1 clé(s) étrangère(s).
+25 colonnes · 1 clé(s) étrangère(s).
 
 | Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
 |---|---|:--:|---|---|---|
@@ -40,7 +40,7 @@ Le socle multi-tenant. Toute donnée métier est rattachée à un workspace, et 
 | `updated_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
 | `created_by` | varchar(255) | oui |  |  |  |
 | `updated_by` | varchar(255) | oui |  |  |  |
-| `plan_type` | varchar(20) | non |  |  |  |
+| `plan_type` | varchar(20) | non |  | `'FREE'::character varying` |  |
 | `plan_status` | vector | oui |  |  |  |
 | `stripe_customer_id` | varchar(255) | oui | UK |  |  |
 | `stripe_subscription_id` | varchar(255) | oui | UK |  |  |
@@ -50,10 +50,16 @@ Le socle multi-tenant. Toute donnée métier est rattachée à un workspace, et 
 | `enterprise_interest` | bool | oui |  | `false` |  |
 | `display_name` | varchar(150) | oui |  |  |  |
 | `avatar_url` | varchar(500) | oui |  |  |  |
+| `onboarding_completed` | bool | non |  | `false` |  |
+| `job_title` | varchar(150) | oui |  |  |  |
+| `beta_cohort` | varchar(50) | oui |  |  |  |
+| `beta_context` | varchar(20) | oui |  |  |  |
+| `deletion_scheduled_at` | timestamp | oui |  |  |  |
+| `passkey_handle` | varchar(128) | oui | UK |  |  |
 
 ### `workspaces`
 
-9 colonnes · 1 clé(s) étrangère(s).
+11 colonnes · 1 clé(s) étrangère(s).
 
 | Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
 |---|---|:--:|---|---|---|
@@ -66,6 +72,8 @@ Le socle multi-tenant. Toute donnée métier est rattachée à un workspace, et 
 | `created_at` | timestamp | non |  | `now()` |  |
 | `updated_at` | timestamp | non |  | `now()` |  |
 | `uuid` | uuid | non | UK | `uuid_generate_v4()` |  |
+| `ai_learning_enabled` | bool | non |  | `false` |  |
+| `activity` | varchar(500) | oui |  |  |  |
 
 ### `workspace_members`
 
@@ -82,7 +90,7 @@ Le socle multi-tenant. Toute donnée métier est rattachée à un workspace, et 
 
 ### `workspace_invitations`
 
-13 colonnes · 2 clé(s) étrangère(s).
+15 colonnes · 3 clé(s) étrangère(s).
 
 | Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
 |---|---|:--:|---|---|---|
@@ -99,6 +107,8 @@ Le socle multi-tenant. Toute donnée métier est rattachée à un workspace, et 
 | `updated_at` | timestamp | non |  | `now()` |  |
 | `created_by` | varchar(255) | oui |  |  |  |
 | `updated_by` | varchar(255) | oui |  |  |  |
+| `project_id` | int8 | oui | FK → `projects.id` |  | CASCADE |
+| `project_role` | varchar(20) | oui |  |  |  |
 
 ### `teams`
 
@@ -150,7 +160,7 @@ Le domaine que le cahier des charges décrit : les tâches, leur affectation, la
 
 ### `projects`
 
-13 colonnes · 2 clé(s) étrangère(s).
+15 colonnes · 2 clé(s) étrangère(s).
 
 | Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
 |---|---|:--:|---|---|---|
@@ -167,6 +177,8 @@ Le domaine que le cahier des charges décrit : les tâches, leur affectation, la
 | `icon_url` | text | oui |  |  |  |
 | `color` | varchar(50) | non |  | `'bg-primary'::character varying` |  |
 | `growth_mode` | bool | non |  | `false` |  |
+| `repo_provider` | varchar(30) | oui |  |  |  |
+| `repo_full_name` | varchar(255) | oui |  |  |  |
 
 ### `project_members`
 
@@ -218,7 +230,7 @@ Le domaine que le cahier des charges décrit : les tâches, leur affectation, la
 
 ### `issues`
 
-20 colonnes · 6 clé(s) étrangère(s).
+22 colonnes · 7 clé(s) étrangère(s).
 
 | Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
 |---|---|:--:|---|---|---|
@@ -242,6 +254,8 @@ Le domaine que le cahier des charges décrit : les tâches, leur affectation, la
 | `story_points` | int4 | oui |  |  |  |
 | `archived_at` | timestamp | oui |  |  |  |
 | `pinned` | bool | non |  | `false` |  |
+| `assignment_status` | varchar(20) | oui |  |  |  |
+| `assignment_assigned_by_id` | int8 | oui | FK → `users.id` |  | SET NULL |
 
 ### `issue_statuses`
 
@@ -531,6 +545,28 @@ Le moteur d'affectation et sa mémoire. `knowledge_nodes` porte les vecteurs d'e
 | `created_at` | timestamp | non |  | `now()` |  |
 | `expires_at` | timestamp | non |  | `(now() + '90 days'::interval)` |  |
 
+### `ai_generations`
+
+15 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('ai_generations_id_seq'::regclas` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `kind` | varchar(32) | non |  |  |  |
+| `request_ref` | varchar(128) | oui |  |  |  |
+| `context_refs` | jsonb | non |  | `'[]'::jsonb` |  |
+| `draft` | jsonb | non |  | `'{}'::jsonb` |  |
+| `final` | jsonb | oui |  |  |  |
+| `signal` | varchar(16) | oui |  |  |  |
+| `edit_distance` | int4 | oui |  |  |  |
+| `model` | varchar(64) | oui |  |  |  |
+| `latency_ms` | int4 | oui |  |  |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `updated_at` | timestamp | non |  | `now()` |  |
+
 ### `ai_token_usage`
 
 11 colonnes · 1 clé(s) étrangère(s).
@@ -582,7 +618,7 @@ Le moteur d'affectation et sa mémoire. `knowledge_nodes` porte les vecteurs d'e
 
 ### `knowledge_nodes`
 
-20 colonnes · 3 clé(s) étrangère(s).
+21 colonnes · 3 clé(s) étrangère(s).
 
 | Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
 |---|---|:--:|---|---|---|
@@ -606,6 +642,7 @@ Le moteur d'affectation et sa mémoire. `knowledge_nodes` porte les vecteurs d'e
 | `updated_by` | varchar(255) | oui |  |  |  |
 | `embedding` | vector | oui |  |  |  |
 | `parent_node_id` | int8 | oui | FK → `knowledge_nodes.id` |  | SET NULL |
+| `embedding_model` | varchar(120) | oui |  |  |  |
 
 ### `knowledge_edges`
 
@@ -706,7 +743,7 @@ Le moteur d'affectation et sa mémoire. `knowledge_nodes` porte les vecteurs d'e
 
 ## 4.4 Authentification et sécurité
 
-L'identité est déléguée à Keycloak. Ne subsistent ici que les données propres à l'application : codes à usage unique, jetons anti-CSRF, journal d'audit.
+Les comptes et les mots de passe sont délégués à Keycloak. L'application garde ce qu'elle gère elle-même : double authentification (TOTP), clés d'accès (passkeys), jetons d'accès personnels, sessions de l'app desktop, codes à usage unique, jetons anti-CSRF et journal d'audit.
 
 ### `otp_verification`
 
@@ -734,7 +771,7 @@ L'identité est déléguée à Keycloak. Ne subsistent ici que les données prop
 
 ### `oauth_states`
 
-6 colonnes · 2 clé(s) étrangère(s).
+7 colonnes · 2 clé(s) étrangère(s).
 
 | Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
 |---|---|:--:|---|---|---|
@@ -744,6 +781,7 @@ L'identité est déléguée à Keycloak. Ne subsistent ici que les données prop
 | `user_id` | int8 | oui | FK → `users.id` |  | SET NULL |
 | `created_at` | timestamp | non |  | `now()` |  |
 | `expires_at` | timestamp | non |  |  |  |
+| `return_to` | varchar(500) | oui |  |  |  |
 
 ### `audit_logs`
 
@@ -760,6 +798,77 @@ L'identité est déléguée à Keycloak. Ne subsistent ici que les données prop
 | `details` | text | oui |  |  |  |
 | `ip_address` | varchar(45) | oui |  |  |  |
 | `created_at` | timestamp | non |  | `now()` |  |
+
+### `user_two_factor`
+
+6 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('user_two_factor_id_seq'::regcla` |  |
+| `user_id` | int8 | non | FK → `users.id`, UK |  | CASCADE |
+| `secret` | varchar(64) | non |  |  |  |
+| `enabled` | bool | non |  | `false` |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `confirmed_at` | timestamp | oui |  |  |  |
+
+### `user_credentials`
+
+14 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `credential_id` | varchar(1000) | non | PK |  |  |
+| `user_entity_user_id` | varchar(128) | non | FK → `users.passkey_handle` |  | CASCADE |
+| `public_key` | bytea | non |  |  |  |
+| `signature_count` | int8 | oui |  |  |  |
+| `uv_initialized` | bool | oui |  |  |  |
+| `backup_eligible` | bool | non |  |  |  |
+| `authenticator_transports` | varchar(1000) | oui |  |  |  |
+| `public_key_credential_type` | varchar(100) | oui |  |  |  |
+| `backup_state` | bool | non |  |  |  |
+| `attestation_object` | bytea | oui |  |  |  |
+| `attestation_client_data_json` | bytea | oui |  |  |  |
+| `created` | timestamp | oui |  |  |  |
+| `last_used` | timestamp | oui |  |  |  |
+| `label` | varchar(1000) | non |  |  |  |
+
+### `personal_access_tokens`
+
+12 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('personal_access_tokens_id_seq':` |  |
+| `user_id` | int8 | non | FK → `users.id` |  | CASCADE |
+| `name` | varchar(80) | non |  |  |  |
+| `token_hash` | varchar(64) | non | UK |  |  |
+| `token_hint` | varchar(16) | non |  |  |  |
+| `expires_at` | timestamp | oui |  |  |  |
+| `last_used_at` | timestamp | oui |  |  |  |
+| `revoked_at` | timestamp | oui |  |  |  |
+| `created_at` | timestamp | non |  |  |  |
+| `updated_at` | timestamp | non |  |  |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
+
+### `desktop_sessions`
+
+11 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('desktop_sessions_id_seq'::regcl` |  |
+| `user_id` | int8 | non | FK → `users.id` |  | CASCADE |
+| `name` | varchar(80) | non |  |  |  |
+| `token_hash` | varchar(64) | non | UK |  |  |
+| `expires_at` | timestamp | non |  |  |  |
+| `last_used_at` | timestamp | oui |  |  |  |
+| `revoked_at` | timestamp | oui |  |  |  |
+| `created_at` | timestamp | non |  |  |  |
+| `updated_at` | timestamp | non |  |  |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
 
 ## 4.5 Facturation
 
@@ -814,7 +923,7 @@ Abonnements et historique. Aucune donnée de carte n'est stockée : la facturati
 
 ## 4.6 Intégrations et communications
 
-Connecteurs externes et notifications. Les identifiants de connecteurs sont chiffrés en base (AES-256-GCM).
+Connecteurs externes, webhooks et leurs envois, notifications et leurs préférences. Les identifiants de connecteurs sont chiffrés en base (AES-256-GCM).
 
 ### `integrations`
 
@@ -846,6 +955,29 @@ Connecteurs externes et notifications. Les identifiants de connecteurs sont chif
 | `created_by` | varchar(255) | oui |  |  |  |
 | `updated_by` | varchar(255) | oui |  |  |  |
 
+### `mcp_oauth_states`
+
+16 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `state` | varchar(64) | non | PK |  |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `user_id` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `connector_key` | varchar(64) | non |  |  |  |
+| `mcp_url` | text | non |  |  |  |
+| `code_verifier` | text | non |  |  |  |
+| `token_endpoint` | text | non |  |  |  |
+| `client_id` | varchar(255) | non |  |  |  |
+| `client_secret` | text | oui |  |  |  |
+| `redirect_uri` | text | non |  |  |  |
+| `scope` | text | oui |  |  |  |
+| `issuer` | text | oui |  |  |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `expires_at` | timestamp | non |  |  |  |
+| `return_to` | varchar(500) | oui |  |  |  |
+| `mcp_name` | varchar(60) | oui |  |  |  |
+
 ### `webhooks`
 
 10 colonnes · 2 clé(s) étrangère(s).
@@ -855,13 +987,35 @@ Connecteurs externes et notifications. Les identifiants de connecteurs sont chif
 | `id` | int8 | non | PK | `nextval('webhooks_id_seq'::regclass)` |  |
 | `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
 | `url` | varchar(512) | non |  |  |  |
-| `secret` | varchar(128) | oui |  |  |  |
+| `secret` | text | oui |  |  |  |
 | `event_types` | ARRAY | non |  | `'{}'::text[]` |  |
 | `active` | bool | non |  | `true` |  |
 | `last_fired_at` | timestamp | oui |  |  |  |
 | `last_status` | int4 | oui |  |  |  |
 | `created_by` | int8 | oui | FK → `users.id` |  | SET NULL |
 | `created_at` | timestamp | non |  | `now()` |  |
+
+### `webhook_deliveries`
+
+15 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('webhook_deliveries_id_seq'::reg` |  |
+| `webhook_id` | int8 | non | FK → `webhooks.id` |  | CASCADE |
+| `delivery_id` | uuid | non | UK |  |  |
+| `event_type` | varchar(64) | non |  |  |  |
+| `payload` | text | non |  |  |  |
+| `status` | varchar(16) | non |  | `'PENDING'::character varying` |  |
+| `attempts` | int4 | non |  | `0` |  |
+| `next_attempt_at` | timestamp | non |  | `now()` |  |
+| `last_status` | int4 | oui |  |  |  |
+| `last_error` | varchar(500) | oui |  |  |  |
+| `delivered_at` | timestamp | oui |  |  |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `updated_at` | timestamp | non |  | `now()` |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
 
 ### `slack_channels`
 
@@ -879,7 +1033,7 @@ Connecteurs externes et notifications. Les identifiants de connecteurs sont chif
 
 ### `issue_github_links`
 
-12 colonnes · 2 clé(s) étrangère(s).
+13 colonnes · 2 clé(s) étrangère(s).
 
 | Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
 |---|---|:--:|---|---|---|
@@ -895,6 +1049,7 @@ Connecteurs externes et notifications. Les identifiants de connecteurs sont chif
 | `status` | varchar(16) | non |  | `'OPEN'::character varying` |  |
 | `linked_by` | int8 | oui | FK → `users.id` |  | SET NULL |
 | `linked_at` | timestamp | non |  | `now()` |  |
+| `status_checked_at` | timestamp | oui |  |  |  |
 
 ### `notifications`
 
@@ -918,9 +1073,25 @@ Connecteurs externes et notifications. Les identifiants de connecteurs sont chif
 | `project_url` | varchar(512) | oui |  |  |  |
 | `created_at` | timestamp | non |  | `now()` |  |
 
-## 4.7 Documentation, tableaux de bord et prospects
+### `notification_preferences`
 
-Pages de documentation collaborative, composition du tableau de bord par utilisateur, et demandes commerciales.
+9 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('notification_preferences_id_seq` |  |
+| `user_id` | int8 | non | FK → `users.id`, UK |  | CASCADE |
+| `event_key` | varchar(50) | non | UK |  |  |
+| `in_app` | bool | non |  | `true` |  |
+| `email` | bool | non |  | `false` |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+| `updated_at` | timestamp | non |  | `now()` |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
+
+## 4.7 Documentation, tableaux de bord, prospects et retours
+
+Pages de documentation collaborative, composition du tableau de bord par utilisateur, demandes commerciales, et retours envoyés depuis l'app.
 
 ### `pages`
 
@@ -976,6 +1147,83 @@ Pages de documentation collaborative, composition du tableau de bord par utilisa
 | `updated_at` | timestamp | non |  | `CURRENT_TIMESTAMP` |  |
 | `contacted_at` | timestamp | oui |  |  |  |
 | `converted_at` | timestamp | oui |  |  |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
+
+### `feedback`
+
+6 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('feedback_id_seq'::regclass)` |  |
+| `user_id` | int8 | non | FK → `users.id` |  | CASCADE |
+| `category` | varchar(20) | non |  |  |  |
+| `message` | text | non |  |  |  |
+| `context` | varchar(255) | oui |  |  |  |
+| `created_at` | timestamp | non |  | `now()` |  |
+
+## 4.8 Délégation aux agents de code
+
+Les tickets confiés à un agent de code (Claude Code par le runner local, ou GitHub Copilot) : chaque exécution, sa chronologie, et les actions de l'agent qui attendent la décision de la personne qui a délégué.
+
+### `delivery_runs`
+
+17 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('delivery_runs_id_seq'::regclass` |  |
+| `issue_id` | int8 | non | FK → `issues.id` |  | CASCADE |
+| `provider_key` | varchar(40) | non |  |  |  |
+| `model` | varchar(80) | oui |  |  |  |
+| `status` | varchar(16) | non |  | `'QUEUED'::character varying` |  |
+| `external_ref` | varchar(200) | oui |  |  |  |
+| `summary` | text | oui |  |  |  |
+| `result_url` | varchar(1000) | oui |  |  |  |
+| `error` | text | oui |  |  |  |
+| `started_by` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `created_at` | timestamp | non |  |  |  |
+| `updated_at` | timestamp | non |  |  |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
+| `claimed_by` | varchar(120) | oui |  |  |  |
+| `claimed_at` | timestamp | oui |  |  |  |
+| `heartbeat_at` | timestamp | oui |  |  |  |
+
+### `delivery_run_events`
+
+10 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('delivery_run_events_id_seq'::re` |  |
+| `run_id` | int8 | non | FK → `delivery_runs.id`, UK |  | CASCADE |
+| `seq` | int4 | non | UK |  |  |
+| `kind` | varchar(16) | non |  |  |  |
+| `tool` | varchar(120) | oui |  |  |  |
+| `text` | varchar(2000) | non |  |  |  |
+| `created_at` | timestamp | non |  |  |  |
+| `updated_at` | timestamp | non |  |  |  |
+| `created_by` | varchar(255) | oui |  |  |  |
+| `updated_by` | varchar(255) | oui |  |  |  |
+
+### `delivery_run_approvals`
+
+12 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('delivery_run_approvals_id_seq':` |  |
+| `run_id` | int8 | non | FK → `delivery_runs.id` |  | CASCADE |
+| `tool` | varchar(120) | non |  |  |  |
+| `summary` | varchar(2000) | non |  |  |  |
+| `status` | varchar(16) | non |  | `'PENDING'::character varying` |  |
+| `expires_at` | timestamp | non |  |  |  |
+| `decided_by` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `decided_at` | timestamp | oui |  |  |  |
+| `created_at` | timestamp | non |  |  |  |
+| `updated_at` | timestamp | non |  |  |  |
 | `created_by` | varchar(255) | oui |  |  |  |
 | `updated_by` | varchar(255) | oui |  |  |  |
 

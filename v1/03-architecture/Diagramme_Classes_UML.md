@@ -4,7 +4,7 @@ title: Diagramme de classes UML
 doc_type: reference
 statut: active
 version: 2.0
-date: "24/07/2026"
+date: "20/10/2026"
 auteur: Pierre MICHEL
 tags: [architecture, uml, classes, jpa, e8]
 ---
@@ -20,15 +20,15 @@ tags: [architecture, uml, classes, jpa, e8]
 
 ## 1. Méthode et périmètre
 
-- **48 entités JPA**, **13 héritant** de `AuditableEntity`, **84 associations** entre entités.
-- **21 références par identifiant nu** (voir §4), qui ne sont pas des associations JPA.
+- **54 entités JPA**, **19 héritant** de `AuditableEntity`, **95 associations** entre entités.
+- **22 références par identifiant nu** (voir §4), qui ne sont pas des associations JPA.
 - Extraction par analyse des annotations, commentaires et chaînes retirés au préalable.
 - Les entités vivent majoritairement dans `core/model`, mais **pas exclusivement** : les modules
   métier portent les leurs. Restreindre l'extraction à `core/model` en oublierait.
 
 > **Piège de comptage à connaître.** `@EntityListeners` contient la chaîne `@Entity` : un
 > décompte par recherche textuelle simple inclut donc `AuditableEntity`, qui est un
-> `@MappedSuperclass` et non une entité. Le compte exact est **48**, pas 49.
+> `@MappedSuperclass` et non une entité. Le compte exact est **54**, pas 55.
 
 ## 2. Vue par domaine
 
@@ -72,6 +72,7 @@ classDiagram
   Workspace "1" --> "*" WorkspaceMember : members
   WorkspaceInvitation "*" --> "1" Workspace : workspace
   WorkspaceInvitation "*" --> "1" User : invitedBy
+  WorkspaceInvitation "*" --> "1" Project : project
   WorkspaceMember "*" --> "1" Workspace : workspace
   WorkspaceMember "*" --> "1" User : user
   WorkspaceMember "*" --> "1" User : invitedBy
@@ -158,6 +159,7 @@ classDiagram
   Issue "*" --> "1" IssueStatus : status
   Issue "*" --> "1" IssueType : type
   Issue "*" --> "1" User : assignee
+  Issue "*" --> "1" User : assignedBy
   Issue "*" --> "1" User : reporter
   Issue "*" --> "1" Issue : parent
   Issue "1" --> "*" Issue : children
@@ -261,9 +263,9 @@ classDiagram
 
 ### 4.4 Authentification et sécurité
 
-L'identité est déléguée à Keycloak. Ne subsistent ici que les données propres à l'application : codes à usage unique, jetons anti-CSRF, journal d'audit.
+Les comptes et les mots de passe sont délégués à Keycloak. L'application garde ce qu'elle gère elle-même : double authentification (TOTP), clés d'accès (passkeys), jetons d'accès personnels, sessions de l'app desktop, codes à usage unique, jetons anti-CSRF et journal d'audit.
 
-**3 entités** : `AuditLog`, `OAuthState`, `OtpVerification`.
+**6 entités** : `AuditLog`, `DesktopSession`, `OAuthState`, `OtpVerification`, `PersonalAccessToken`, `UserTwoFactor`.
 
 ```mermaid
 classDiagram
@@ -272,6 +274,10 @@ classDiagram
     +Long workspaceId
     +Long actorUserId
   }
+  class DesktopSession {
+    <<desktop_sessions>>
+  }
+  AuditableEntity <|-- DesktopSession
   class OAuthState {
     <<oauth_states>>
   }
@@ -279,33 +285,25 @@ classDiagram
     <<otp_verification>>
     +Long userId
   }
+  class PersonalAccessToken {
+    <<personal_access_tokens>>
+  }
+  AuditableEntity <|-- PersonalAccessToken
+  class UserTwoFactor {
+    <<user_two_factor>>
+    +Long userId
+  }
+  DesktopSession "*" --> "1" User : user
   OAuthState "*" --> "1" Workspace : workspace
   OAuthState "*" --> "1" User : user
-```
-
-### 4.5 Facturation
-
-Abonnements et historique. Aucune donnée de carte n'est stockée : la facturation est déléguée au prestataire de paiement.
-
-**2 entités** : `Subscription`, `SubscriptionHistory`.
-
-```mermaid
-classDiagram
-  class Subscription {
-    <<subscriptions>>
-    +Long userId
-  }
-  class SubscriptionHistory {
-    <<subscription_history>>
-    +Long userId
-  }
+  PersonalAccessToken "*" --> "1" User : user
 ```
 
 ### 4.6 Intégrations et communications
 
-Connecteurs externes et notifications. Les identifiants de connecteurs sont chiffrés en base (AES-256-GCM).
+Connecteurs externes, webhooks et leurs envois, notifications et leurs préférences. Les identifiants de connecteurs sont chiffrés en base (AES-256-GCM).
 
-**6 entités** : `ConnectorConnection`, `Integration`, `IssueGitHubLink`, `Notification`, `SlackChannel`, `Webhook`.
+**9 entités** : `ConnectorConnection`, `Integration`, `IssueGitHubLink`, `McpOAuthState`, `Notification`, `NotificationPreference`, `SlackChannel`, `Webhook`, `WebhookDelivery`.
 
 ```mermaid
 classDiagram
@@ -319,15 +317,29 @@ classDiagram
   class IssueGitHubLink {
     <<issue_github_links>>
   }
+  class McpOAuthState {
+    <<mcp_oauth_states>>
+    +Long workspaceId
+    +Long userId
+  }
   class Notification {
     <<notifications>>
   }
+  class NotificationPreference {
+    <<notification_preferences>>
+  }
+  AuditableEntity <|-- NotificationPreference
   class SlackChannel {
     <<slack_channels>>
   }
   class Webhook {
     <<webhooks>>
   }
+  class WebhookDelivery {
+    <<webhook_deliveries>>
+    +Long deliveryId
+  }
+  AuditableEntity <|-- WebhookDelivery
   ConnectorConnection "*" --> "1" Workspace : workspace
   ConnectorConnection "*" --> "1" User : connectedBy
   Integration "*" --> "1" Workspace : workspace
@@ -337,16 +349,18 @@ classDiagram
   Notification "*" --> "1" User : recipient
   Notification "*" --> "1" Workspace : workspace
   Notification "*" --> "1" User : actor
+  NotificationPreference "*" --> "1" User : user
   SlackChannel "*" --> "1" Workspace : workspace
   Webhook "*" --> "1" Workspace : workspace
   Webhook "*" --> "1" User : createdBy
+  WebhookDelivery "*" --> "1" Webhook : webhook
 ```
 
-### 4.7 Documentation, tableaux de bord et prospects
+### 4.7 Documentation, tableaux de bord, prospects et retours
 
-Pages de documentation collaborative, composition du tableau de bord par utilisateur, et demandes commerciales.
+Pages de documentation collaborative, composition du tableau de bord par utilisateur, demandes commerciales, et retours envoyés depuis l'app.
 
-**3 entités** : `DashboardCard`, `EnterpriseInquiry`, `Page`.
+**2 entités** : `DashboardCard`, `Page`.
 
 ```mermaid
 classDiagram
@@ -354,11 +368,6 @@ classDiagram
     <<dashboard_cards>>
   }
   AuditableEntity <|-- DashboardCard
-  class EnterpriseInquiry {
-    <<enterprise_inquiries>>
-    +Long userId
-  }
-  AuditableEntity <|-- EnterpriseInquiry
   class Page {
     <<pages>>
   }
@@ -368,13 +377,40 @@ classDiagram
   Page "*" --> "1" User : createdBy
 ```
 
+### 4.8 Délégation aux agents de code
+
+Les tickets confiés à un agent de code (Claude Code par le runner local, ou GitHub Copilot) : chaque exécution, sa chronologie, et les actions de l'agent qui attendent la décision de la personne qui a délégué.
+
+**3 entités** : `DeliveryRun`, `DeliveryRunApproval`, `DeliveryRunEvent`.
+
+```mermaid
+classDiagram
+  class DeliveryRun {
+    <<delivery_runs>>
+  }
+  AuditableEntity <|-- DeliveryRun
+  class DeliveryRunApproval {
+    <<delivery_run_approvals>>
+  }
+  AuditableEntity <|-- DeliveryRunApproval
+  class DeliveryRunEvent {
+    <<delivery_run_events>>
+  }
+  AuditableEntity <|-- DeliveryRunEvent
+  DeliveryRun "*" --> "1" Issue : issue
+  DeliveryRun "*" --> "1" User : startedBy
+  DeliveryRunApproval "*" --> "1" DeliveryRun : run
+  DeliveryRunApproval "*" --> "1" User : decidedBy
+  DeliveryRunEvent "*" --> "1" DeliveryRun : run
+```
+
 ## 3. Héritage
 
 `AuditableEntity` est un **`@MappedSuperclass`**, pas une entité : elle n'a pas de table propre,
 ses colonnes sont recopiées dans chaque table fille. C'est ce qui explique qu'on retrouve
 `created_at` et `updated_at` répétés au dictionnaire de données plutôt que dans une table commune.
 
-**13 entités sur 48** en héritent :
+**19 entités sur 54** en héritent :
 
 - `AiConversation` (`ai_conversation`)
 - `AiTokenUsage` (`ai_token_usage`)
@@ -384,10 +420,16 @@ ses colonnes sont recopiées dans chaque table fille. C'est ce qui explique qu'o
 - `DashboardCard` (`dashboard_cards`)
 - `DecisionBriefEntity` (`decision_brief`)
 - `DecisionPriority` (`decision_priority`)
-- `EnterpriseInquiry` (`enterprise_inquiries`)
+- `DeliveryRun` (`delivery_runs`)
+- `DeliveryRunApproval` (`delivery_run_approvals`)
+- `DeliveryRunEvent` (`delivery_run_events`)
+- `DesktopSession` (`desktop_sessions`)
 - `KnowledgeNode` (`knowledge_nodes`)
 - `MemberLeave` (`member_leaves`)
+- `NotificationPreference` (`notification_preferences`)
+- `PersonalAccessToken` (`personal_access_tokens`)
 - `SavedChart` (`saved_chart`)
+- `WebhookDelivery` (`webhook_deliveries`)
 - `WorkspaceInvitation` (`workspace_invitations`)
 
 Les 35 autres portent leur horodatage elles-mêmes, ou n'en ont pas besoin
@@ -404,7 +446,7 @@ Le cas emblématique est le journal d'audit : conserver un identifiant nu permet
 **survivre à l'anonymisation** du compte qu'elle référence, ce qu'une association avec cascade
 aurait empêché. Une contrainte `ON DELETE SET NULL` complète le dispositif côté base.
 
-**21 références de ce type** sont recensées :
+**22 références de ce type** sont recensées :
 
 | Entité | Références par identifiant |
 |---|---|
@@ -412,17 +454,17 @@ aurait empêché. Une contrainte `ON DELETE SET NULL` complète le dispositif c�
 | `AiMessage` | `conversationId` |
 | `AiTokenUsage` | `accountId` |
 | `AuditLog` | `workspaceId`, `actorUserId` |
-| `EnterpriseInquiry` | `userId` |
 | `IssueChecklistItem` | `issueId` |
 | `IssueSequenceCounter` | `projectId` |
 | `IssueWorklog` | `issueId` |
 | `KnowledgeNode` | `refId`, `parentNodeId` |
+| `McpOAuthState` | `workspaceId`, `userId` |
 | `MemberLeave` | `workspaceId`, `userId` |
 | `OtpVerification` | `userId` |
 | `ProjectFavorite` | `userId`, `projectId` |
-| `Subscription` | `userId` |
-| `SubscriptionHistory` | `userId` |
 | `User` | `companyId` |
+| `UserTwoFactor` | `userId` |
+| `WebhookDelivery` | `deliveryId` |
 
 ## 5. Régénération
 
