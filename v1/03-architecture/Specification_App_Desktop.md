@@ -3,8 +3,8 @@ id: specification-app-desktop
 title: Spécification de l'application desktop
 doc_type: specification
 statut: en-cours
-version: 0.3
-date: "19/10/2026"
+version: 0.4
+date: "20/10/2026"
 auteur: Pierre MICHEL
 review_cycle: on-change
 tags: [desktop, electron, local-first, architecture, ia, agents, specification]
@@ -16,8 +16,9 @@ related:
 
 # Spécification de l'application desktop
 
-**Version :** 0.3 (essai OSS-D.1 fait ; Claude Code et GitHub de bout en bout ; lots D.3, D.6 et D.8 en cours)
-**Date :** 19/10/2026
+**Version :** 0.4 (essai OSS-D.1 fait ; Claude Code et GitHub de bout en bout ; versions 1.0.0 à 1.0.2 publiées ;
+récupération du compte ; lots D.3, D.6 et D.8 en cours)
+**Date :** 20/10/2026
 **Auteur(s) :** Pierre MICHEL
 
 > Décision de cap : [[Journal_Decisions_ADR#ADR-021 - Application desktop locale, sur le modèle de Claude Desktop|ADR-021]].
@@ -73,7 +74,7 @@ une contrainte).
 | Domaine | Desktop | Ce qui change |
 | ------- | ------- | ------------- |
 | Compte, connexion, mot de passe, 2FA, connexion GitHub ou Google | Adapté | Compte TaskForce obligatoire et gratuit, hébergé : créé au premier lancement, ou compte existant de la webapp ; connexion par les pages de la webapp dans le navigateur (`/auth/desktop`), jamais par une page Keycloak ; mot de passe, 2FA, GitHub, Google ou passkey. Les projets restent sur la machine. |
-| Onboarding | Adapté | Nom, choix du fournisseur d'IA (Ollama détecté ou clé), dossier de dépôt optionnel. Plus d'invitations. |
+| Onboarding | Adapté | Nom, choix du fournisseur d'IA (Ollama détecté ou clé), dossier de dépôt optionnel. Plus d'invitations. Sauté pour un compte déjà configuré sur la webapp, dont l'app reprend les réglages, sans visite guidée (§10, précision du 20/10). |
 | Workspaces et projets | Gardé | Plusieurs espaces et projets pour une même personne. |
 | Issues (tableau, liste, backlog, cycles, roadmap, sous-tâches, relations, checklists, commentaires, temps passé) | Gardé | |
 | Pièces jointes | Adapté | Fichiers dans un dossier de l'app au lieu de MinIO. |
@@ -93,7 +94,7 @@ une contrainte).
 | Intégration Plane, connecteurs à clé d'API | Gardé | Appels sortants seulement. |
 | Serveurs MCP (Cortex) | Adapté | Distants et, nouveau, locaux en stdio (§5.5). |
 | Webhooks sortants | Limité | Envoyés seulement quand l'app est ouverte. |
-| Export, import, RGPD | Adapté | Export complet (fichier) ; à la première connexion, si le compte a des projets sur la webapp, l'app propose de les rapatrier (« Bring them » ou « Not now »). Le compte se supprime côté hébergé. |
+| Export, import, RGPD | Adapté | Export complet (fichier). De la webapp, l'app ne reprend que la configuration du compte ; les projets passeront d'un côté à l'autre à la demande, dans les deux sens (§10, précision du 20/10). Le compte se supprime côté hébergé. |
 | Journal d'audit | Retiré | Pertinent à plusieurs ; l'historique des issues reste. |
 | Palette de commandes, raccourcis, thèmes, accessibilité | Gardé | |
 | Retours (« Give feedback »), statistiques d'usage | Adapté | Lien vers les issues GitHub ; aucune télémétrie par défaut. |
@@ -313,7 +314,8 @@ interrogation de l'API (pas de webhook entrant possible).
 - **Signature** : sans signature, Windows affiche l'avertissement SmartScreen (contournable) et macOS bloque l'app non
   notarisée (contournable à la main, rédhibitoire pour le grand public). La notarisation Apple exige un compte Apple
   Developer payant ; Windows demande un certificat de signature ou un service de signature. Choix et coût : décision du
-  CEO (§10).
+  CEO (§10). Windows : SignPath Foundation retenue le 20/10, page de politique de signature publiée et étapes prêtes dans
+  la CI ; procédure et dossier dans [[Signature_Code_SignPath]].
 
 ### 5.9 Budget de ressources (à mesurer pendant l'essai)
 
@@ -420,19 +422,19 @@ L'ordre tient compte de ce qui sert les deux éditions :
 Le lot 6 (intégrations) est réduit à ce qui marche sans adresse publique ; le lot 7 (Docker multi-OS) est gelé au
 minimum (ADR-021).
 
-### Avancement au 19/10/2026
+### Avancement au 20/10/2026
 
-Branche `feature/desktop`, pas encore fusionnée dans `dev`.
+Branche `feature/desktop`, fusionnée dans `dev` à chaque version : 1.0.0 le 19/10, 1.0.1 et 1.0.2 le 20/10.
 
 | Lot | État | Ce qui est fait, ce qui reste |
 | --- | ---- | ----------------------------- |
 | D.2 | Fait | Profil `desktop` : jeton de lancement, compte local, stockage fichier et liens signés, contrôle de l'hôte, jetons du runner émis par l'app, pas de limiteur de débit sur l'API locale. **Écart à §5.2** : l'IA ne passe pas par des appels Java directs ; la coque sert le protocole de l'ai-service et relaie vers le fournisseur choisi, sans modifier le backend, la clé d'API restant dans le trousseau |
-| D.3 | En partie | Une base par compte dans le dossier de l'app, mot de passe et clé de chiffrement dans le trousseau. Reste : sauvegarde avant migration, export, rapatriement des projets web |
+| D.3 | En partie | Une base par compte dans le dossier de l'app, mot de passe et clé de chiffrement dans le trousseau. Récupération du compte (20/10) : la session de l'app rend les réglages du compte en ligne (rôle, onboarding fait, dernier profil de compétences, préférences de notification), que l'app reprend une fois par poste, là où elle n'a encore rien (rôle vide, onboarding pas fait, pas de profil de compétences, notifications par défaut), sans rien écraser ; vérifiée de bout en bout sur une pile isolée et sur le backend de l'app (nouveau poste, poste installé par une version précédente). Une base restée ouverte après un arrêt forcé (plantage, fin de tâche) est arrêtée au lancement suivant. Reste : sauvegarde avant migration, export, migration des projets à la demande dans les deux sens, photo de profil |
 | D.4 | Fait | Connexion par les pages de la webapp (PKCE, retour sur 127.0.0.1, session de l'app chiffrée par le système ; vérifiée le 19/10 avec la vraie app : « Create an account » → inscription → connexion → accord → app ouverte sur l'onboarding du compte), pile locale, relais d'origine, écran d'attente, arrêt propre, mises à jour. Reste : notifications du système |
 | D.5 | Fait | La coque lance le runner existant. Un projet sans dépôt reçoit la réponse en commentaire ; un projet avec dépôt reçoit une pull request (clone, push et PR par `gh`). Autorisations dans l'app ; état des outils et branchement de Claude Code en un clic dans Réglages > Agents |
 | D.6 | En partie | GitHub par le GitHub CLI de la personne : connexion dans l'app, liste, création et vérification des dépôts, lien au projet (carte « Code repository » et nouveau projet). Reste : Copilot, liens entre issue et PR, issue terminée quand la PR est fusionnée |
 | D.7 | Fait | Build desktop de l'interface (`NEXT_PUBLIC_DESKTOP`) : ni membres, ni équipes, ni invitations, ni sécurité locale ; compte géré en ligne ; onboarding en trois étapes ; réglages « AI » (Ollama, API compatible OpenAI ou aucune IA) et « Agents » adaptés |
-| D.8 | En partie | Installateur Windows (NSIS, par utilisateur), `.deb` et AppImage, icône, workflow `Desktop - Release` (release versionnée pour le site, release roulante `desktop-latest` pour les mises à jour). Reste : première release, signature, macOS |
+| D.8 | En partie | Installateur Windows (NSIS, par utilisateur), `.deb` et AppImage, icône, workflow `Desktop - Release` (release versionnée pour le site, release roulante `desktop-latest` pour les mises à jour). Versions 1.0.0, 1.0.1 et 1.0.2 publiées, non signées. Reste : signature (dossier SignPath prêt, à déposer par le CEO), macOS |
 
 Points ouverts relevés pendant le travail :
 
@@ -461,6 +463,11 @@ Points ouverts relevés pendant le travail :
    comptés par GitHub (compteur de chaque fichier de release). Les projets restent sur la machine, aucune télémétrie.
    Raison : compter les téléchargements, pouvoir écrire aux utilisateurs, garder les comptes actuels et rouvrir un jour
    une version hébergée (modèle Claude Desktop et claude.ai). Le site est à jour (LP-DESKTOP-001).
+   **Précision du CEO (20/10/2026)** : comme entre Claude Desktop et claude.ai, le compte est le même mais les données
+   restent chacune de leur côté. À la première connexion, l'app reprend la configuration du compte (rôle, onboarding
+   fait, compétences, préférences de notification) et ne remontre ni l'onboarding ni la visite guidée ; elle ne reprend
+   ni les espaces, ni les projets, ni les conversations. La migration des projets, à la demande et dans les deux sens,
+   reste à faire (D.3).
 2. **Smart Assign** (§6) : retiré du desktop (recommandé) ou recentré sur le choix d'agent.
 3. **Signature de code** : compte Apple Developer et signature Windows, ou distribution non signée au début.
    Options Windows : SignPath Foundation (gratuit pour les projets open source, sur dossier ; signature dans la CI),
@@ -468,6 +475,8 @@ Points ouverts relevés pendant le travail :
    certificat d'un éditeur (clé sur matériel ou dans un service, plus dur à brancher sur la CI). Signée ou non, l'app
    gagne sa réputation SmartScreen avec les téléchargements. macOS : compte Apple Developer payant pour la
    notarisation. Recommandation : demander SignPath Foundation, Azure en repli.
+   **Décision du CEO (20/10/2026)** : SignPath Foundation, sans engagement (on peut en sortir à tout moment). Le dossier
+   est à son nom ; procédure, réponses préparées et conditions : [[Signature_Code_SignPath]].
 4. **Calendrier du jour J** : sortir la 1.0 web open source le jour des résultats puis le desktop en préversion, ou
    attendre le desktop.
 5. **Keycloak hébergé pour le desktop** (§9, points ouverts) : créer le client `taskforce-desktop` sur le Keycloak de

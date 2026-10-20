@@ -212,6 +212,11 @@ plus, la moins récente fermée), qu'elle vérifie au lancement (`/session`, 401
 Réglages > Sécurité liste les ordinateurs et les déconnecte. `/account` donne la page du compte (sécurité comprise)
 à un compte sans espace en ligne.
 
+Depuis le 20/10, `/token` et `/session` rendent aussi les réglages du compte (`profile` : rôle, onboarding fait,
+dernier profil de compétences, préférences de notification), que l'app reprend une fois par poste, là où elle n'a
+encore rien, sans écraser ce qui a été réglé dans l'app. Rien d'autre ne sort du compte en ligne (ni espace, ni projet, ni conversation) ; une erreur de lecture
+rend la session sans eux, sans bloquer la connexion.
+
 ## 3. Rôle de Keycloak
 
 Keycloak est à la fois **référentiel d'identité** (Admin REST API) **et émetteur des tokens** (OIDC) :
