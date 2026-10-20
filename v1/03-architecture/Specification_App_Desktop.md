@@ -295,10 +295,15 @@ connecté pour les projets qui ont un dépôt. Réglages > Agents le vérifie en
 `claude --version` et `claude auth status`, `git --version`, `gh auth token` sans réseau puis `gh api user`) et mène à
 ce qui manque : commande d'installation, lien de téléchargement, connexion à GitHub dans l'app.
 
-**Copilot (agent cloud de GitHub).** Pas dans l'app pour l'instant : le fournisseur passe par l'intégration GitHub de
-l'espace (jeton OAuth gardé par le serveur), absente du desktop ; il est masqué dans Réglages > Agents. Piste : le
-*device flow* d'OAuth GitHub (aucune adresse de retour à exposer), assignation de l'issue à l'agent, suivi de la PR par
-interrogation de l'API (pas de webhook entrant possible).
+**Copilot (agent cloud de GitHub), 20/10/2026.** Le jeton GitHub passe par `GitHubTokenSource` : sur le serveur, la
+connexion GitHub de l'espace (`WorkspaceGitHubTokenSource`) ; dans l'app, le compte GitHub de la personne, connecté par
+son GitHub CLI (`DesktopGitHubTokenSource`, `@Primary` en profil `desktop`). La coque lit ce jeton à la demande
+(`gh auth token`) et le sert au seul backend local, sur 127.0.0.1, avec un jeton de service tiré à chaque lancement
+(`desktop/src/github-relay.ts`, comme le relais d'IA) ; un jeton lu reste une minute, une connexion faite dans l'app
+vaut tout de suite. Copilot apparaît donc dans Réglages > Agents, avec la connexion à GitHub s'il en manque une, et
+démarre par la même API des tâches d'agent que sur le serveur. **Non essayé** : faute d'abonnement Copilot sous la main,
+l'acceptation par cette API d'un jeton du GitHub CLI n'est pas vérifiée (le GitHub CLI pilote lui-même cette API avec
+son jeton, `gh agent-task`).
 
 **MCP.** Deux sens, comme dans Claude Desktop :
 
@@ -317,8 +322,8 @@ interrogation de l'API (pas de webhook entrant possible).
 
 | Intégration | Desktop | Comment |
 | ----------- | ------- | ------- |
-| GitHub (dépôts, PR) | Adapté | Par le GitHub CLI de la personne (`desktop/src/github.ts`) : connexion par un code à usage unique montré dans l'app (`gh auth login --web` sans terminal), dépôts où elle peut pousser, création avec un premier commit, vérification avant de lier. Le backend desktop lie par nom (`DesktopProjectRepoHost`), la webapp garde l'intégration de l'espace (`ProjectRepoHost`). Le jeton GitHub reste dans le trousseau du système. Pas de liens entre issue et PR ni d'import d'issues GitHub (section masquée sur l'issue) ; la PR d'un agent reste sur son run. |
-| Copilot (agent de code) | Pas encore | Demande l'intégration GitHub de l'espace ; masqué dans l'app (§5.5). |
+| GitHub (dépôts, PR) | Adapté | Par le GitHub CLI de la personne (`desktop/src/github.ts`) : connexion par un code à usage unique montré dans l'app (`gh auth login --web` sans terminal), dépôts où elle peut pousser, création avec un premier commit, vérification avant de lier. Le backend desktop lie par nom (`DesktopProjectRepoHost`), la webapp garde l'intégration de l'espace (`ProjectRepoHost`). Le jeton GitHub reste dans le trousseau du système ; le backend le reçoit de la coque à la demande (§5.5). Liens entre ticket et PR (20/10) : la PR d'un agent se lie seule à son ticket (`DeliveryRunner`, aussi sur le serveur), la section GitHub du ticket est là, et l'app relit toutes les cinq minutes les PR ouvertes liées (`DesktopPullRequestWatch`, pas de webhook entrant possible) ; une PR fusionnée termine son ticket (`MergedPullRequests`, aussi sur le serveur à la relecture). Pas d'import d'issues GitHub. |
+| Copilot (agent de code) | Adapté | Avec le compte GitHub de la personne, par le relais de la coque (§5.5). Non essayé sans abonnement Copilot. |
 | Plane, connecteurs à clé d'API | Gardé | Appels sortants seulement. |
 | Serveurs MCP distants | Gardé | Connexion OAuth avec retour sur 127.0.0.1. |
 | Serveurs MCP locaux (stdio) | Nouveau | Voir §5.5. |
@@ -466,7 +471,7 @@ Branche `feature/desktop`, fusionnée dans `dev` à chaque version : 1.0.0 le 19
 | D.3 | Fait | Une base par compte dans le dossier de l'app, mot de passe et clé de chiffrement dans le trousseau. Récupération du compte (20/10) : la session de l'app rend les réglages du compte en ligne (rôle, onboarding fait, dernier profil de compétences, préférences de notification), que l'app reprend une fois par poste, là où elle n'a encore rien (rôle vide, onboarding pas fait, pas de profil de compétences, notifications par défaut), sans rien écraser ; vérifiée de bout en bout sur une pile isolée et sur le backend de l'app (nouveau poste, poste installé par une version précédente). Une base restée ouverte après un arrêt forcé (plantage, fin de tâche) est arrêtée au lancement suivant. Fait le 20/10 : photo de profil du compte en ligne (téléchargée par la coque, reprise une fois par poste si l'app n'en a pas), copie de la base avant chaque migration, fichier de projet et déplacement des projets à la demande dans les deux sens (§5.3). Vérifié par les tests (intégration Postgres de l'export et de l'import, coque, interface), pas encore à l'écran avec la vraie app |
 | D.4 | Fait | Connexion par les pages de la webapp (PKCE, retour sur 127.0.0.1, session de l'app chiffrée par le système ; vérifiée le 19/10 avec la vraie app : « Create an account » → inscription → connexion → accord → app ouverte sur l'onboarding du compte), pile locale, relais d'origine, écran d'attente, arrêt propre, mises à jour. Notifications du système (20/10, `desktop/src/notify.ts`) : un événement reçu pendant que la fenêtre n'est pas au premier plan s'affiche au nom de l'app (identifiant `fr.taskforce-project.desktop` sous Windows), et un clic ramène sur sa page |
 | D.5 | Fait | La coque lance le runner existant. Un projet sans dépôt reçoit la réponse en commentaire ; un projet avec dépôt reçoit une pull request (clone, push et PR par `gh`). Autorisations dans l'app ; état des outils et branchement de Claude Code en un clic dans Réglages > Agents |
-| D.6 | En partie | GitHub par le GitHub CLI de la personne : connexion dans l'app, liste, création et vérification des dépôts, lien au projet (carte « Code repository » et nouveau projet). Reste : Copilot, liens entre issue et PR, issue terminée quand la PR est fusionnée |
+| D.6 | Fait | GitHub par le GitHub CLI de la personne : connexion dans l'app, liste, création et vérification des dépôts, lien au projet (carte « Code repository » et nouveau projet). 20/10 : Copilot avec le compte GitHub de la personne (relais du jeton par la coque), PR d'un agent liée seule à son ticket, statuts relus toutes les cinq minutes, ticket terminé quand sa PR est fusionnée. Vérifié par les tests ; Copilot pas essayé faute d'abonnement |
 | D.7 | Fait | Build desktop de l'interface (`NEXT_PUBLIC_DESKTOP`) : ni membres, ni équipes, ni invitations, ni sécurité locale ; compte géré en ligne ; onboarding en trois étapes ; réglages « AI » (Ollama, API compatible OpenAI ou aucune IA) et « Agents » adaptés |
 | D.8 | En partie | Installateur Windows (NSIS, par utilisateur), `.deb` et AppImage, icône, workflow `Desktop - Release` (release versionnée pour le site, release roulante `desktop-latest` pour les mises à jour). Versions 1.0.0 à 1.0.3 publiées, non signées. Désinstallation (1.0.3) : le désinstalleur Windows ouvre la page « merci » du site (`/goodbye`, peinture des pages de connexion), sauf pendant une mise à jour ou en silencieux ; les données restent sur le poste. Signature : la SignPath Foundation a refusé le 20/10 (projet trop récent pour son programme) ; en attendant, guide d'installation, SHA-256 et rapports VirusTotal sur le site ([[Signature_Code_SignPath]] §8). Reste : signature, macOS, essai sur un vrai Linux |
 

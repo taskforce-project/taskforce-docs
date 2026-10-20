@@ -97,6 +97,10 @@ corrigés** ; il ne reste que des points documentaires (STRIDE/PSSI à actualise
 - **URL sortantes (anti-SSRF)** : `SsrfGuard` valide toute URL de webhook fournie par l'utilisateur (http(s)
   public, DNS résolu, IP interne rejetée) **à la configuration et à l'envoi**.
   → `shared/security/SsrfGuard.java`, `core/service/WebhookService.java` (tests `SsrfGuardTest`).
+- **Jeton GitHub dans l'app desktop (20/10/2026)** : le jeton du GitHub CLI de la personne ne quitte pas sa machine. La
+  coque le lit à la demande (`gh auth token`) et le sert au seul backend local sur 127.0.0.1, derrière un jeton de
+  service tiré à chaque lancement et comparé en temps constant (`desktop/src/github-relay.ts`) ; rien n'est écrit sur le
+  disque ni rendu à la page. Le backend le garde 30 s en mémoire au plus (`DesktopGitHubTokenSource`).
 - **Fichier de projet importé (20/10/2026)** : un zip fourni par la personne, recréé en lignes SQL
   (`modules/transfer/service/ProjectBundleService.java`). Les noms de table viennent d'une liste fixe, jamais du
   fichier ; les noms de colonne sont croisés avec `information_schema` (une clé inventée est ignorée, aucune injection
