@@ -24,6 +24,33 @@ related:
 
 ---
 
+## 2026-10-21 : création du Conseil d'Avenir
+
+**Fait** : le Conseil d'Avenir est créé à la demande de Pierre, pour faire émerger les versions futures de TaskForce.
+Charte et règlement [`conseil/README.md`](./conseil/README.md) (présidence, secrétariat, composition, formations,
+déroulé d'une séance, règles du débat et d'honnêteté, mise à jour des fiches, traçabilité, règle zéro, registre) ;
+20 fiches sourcées dans [`conseil/membres/`](./conseil/membres/) ; gabarits §7 (fiche membre) et §8 (procès-verbal)
+dans [`Gabarits.md`](./Gabarits.md) ; protocole [`CLAUDE.md`](./CLAUDE.md) v1.2 (§7 : le Conseil siège à chaque
+session) ; carte du labo v2.1. Poussé le 25/10, après le correctif de la version Store de l'app desktop.
+
+**Trouvé**
+- `[ÉTABLI]` La proposition de départ, venue de ChatGPT, réunissait surtout des dirigeants de la tech, sans
+  scientifique. Pierre a demandé des femmes, des conseillères scientifiques et Yoshua Bengio. Composition retenue :
+  20 membres, 10 femmes et 10 hommes, en quatre pôles (Impulsion, Pont, Harmonie, Science).
+- `[ÉTABLI]` Chaque position `[ÉTABLI]` d'une fiche porte sa source ; 151 liens sur 158 répondent, les 7 autres sont
+  des refus de robot ou des murs payants, aucun lien mort. Sept fiches gardent des points « à vérifier », dont la
+  fonction actuelle d'Arati Prabhakar.
+- `[DÉDUIT]` Le risque du dispositif est la fausse citation et l'aval implicite : d'où la règle « rien ne sort du labo
+  sous le nom d'un membre » (charte §8).
+
+**Décidé** : Pierre préside sans prendre part aux débats ; le Conseil siège à chaque session du labo ; l'agent tient
+le secrétariat. En attente de ratification : la règle zéro « On vise dix ans, on prouve en dix jours ».
+
+**Prochain coup** : première séance, avec le retour de ChatGPT que Pierre apporte. Saisine candidate : « quelle est
+la première règle non négociable de TaskForce ? ». Aucun passage en mode dev.
+
+---
+
 ## 2026-07-31 (quinquies) — A6 (Φ) + A7 (causalité) : clôture de la frontière
 
 **Fait** — A6 et A7 traités **ensemble** → fiche commune [`theorie/A6-A7-frontiere.md`](./theorie/A6-A7-frontiere.md).

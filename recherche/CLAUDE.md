@@ -3,14 +3,15 @@ id: recherche-mode-contract
 title: Mode Recherche — Contrat d'agent R&D
 doc_type: sop
 statut: active
-version: 1.1
-date: "31/07/2026"
+version: 1.2
+date: "21/10/2026"
 auteur: Pierre MICHEL
 review_cycle: quarterly
 tags: [recherche, brain-os, world-model, sop, agents]
 related:
   - "./README.md"
   - "./Journal.md"
+  - "./conseil/README.md"
   - "./references/Bibliotheque.md"
   - "../AGENTS.md"
   - "../v1/road_to_v2/Moteur_IA_World_Model_OODA.md"
@@ -28,6 +29,9 @@ related:
 > **Carte du labo** (les stations, où va quoi) : [`README.md`](./README.md). **Cahier de bord daté** :
 > [`Journal.md`](./Journal.md) — l'ouvrir en début de session, le remplir en fin (§10). Gabarits de
 > fiches : [`Gabarits.md`](./Gabarits.md).
+>
+> **Le Conseil d'Avenir siège à chaque session du labo** (§7, [charte](./conseil/README.md)). Autres
+> déclencheurs : « on va au labo », « convoque le Conseil ».
 
 ## Table des matières
 
@@ -37,7 +41,7 @@ related:
 4. [Méthode](#4-méthode--pour-chaque-idée)
 5. [Règles de brainstorming](#5-règles-de-brainstorming--anti-complaisance)
 6. [Les cinq altitudes](#6-les-cinq-altitudes--à-traverser-explicitement)
-7. [Le comité](#7-le-comité--divergence-forcée)
+7. [Le comité](#7-le-comité--divergence-forcée) · [le Conseil d'Avenir](#le-conseil-davenir-à-chaque-session-du-labo)
 8. [Contexte Brain OS](#8-contexte-brain-os--létat-réel-pas-la-vision)
 9. [Garde-fous](#9-garde-fous)
 10. [Rituel de fin de session](#10-rituel-de-fin-de-session)
@@ -172,6 +176,22 @@ délibérer **5 rôles**, chacun avec un angle d'attaque *incompatible* avec les
 Variante ciblée : « analyse ça comme *X* », puis « maintenant démonte-le comme *Y* ».
 **La divergence est le produit.** Si les 5 sont d'accord, c'est le prompt qui a échoué.
 
+### Le Conseil d'Avenir, à chaque session du labo
+
+Le comité juge une idée ; le **Conseil d'Avenir** cherche ce qu'il faut construire ensuite. Vingt
+personnalités, simulées à partir de leurs positions publiques sourcées, en quatre pôles (Impulsion,
+Pont, Harmonie, Science). Règlement complet : [`conseil/README.md`](./conseil/README.md).
+
+- **Il siège à chaque session** : en ouverture si la session pose une question d'avenir, sinon en
+  clôture, pour juger ce que la session a produit. Formation restreinte par défaut (5 à 7 membres, un
+  par pôle au moins, un contradicteur).
+- **Pierre préside** : il saisit, écoute, tranche, et ne débat pas. **L'agent tient le secrétariat** :
+  dossier sourcé, parole, PV. Il n'a pas d'avis pendant la séance.
+- **Avant la séance** : rafraîchir la fiche de chaque membre présent en vie dont la mise à jour a plus de
+  30 jours (nouvelles fonctions, décisions, prises de position, datées et sourcées).
+- **Jamais de citation inventée, jamais d'aval implicite** : un membre simulé n'est pas la personne, et
+  rien de ce qu'il dit ne sort du labo sous son nom.
+
 ## 8. Contexte Brain OS — l'état réel, pas la vision
 
 **L'hypothèse de travail** `[HYPOTHÈSE]` :
@@ -234,6 +254,8 @@ Avant de conclure, **écrire ce qui a bougé** — sinon la session est perdue :
 | Une lecture, un papier, un cadre | [`references/Bibliotheque.md`](./references/Bibliotheque.md) |
 | Une critique d'un artefact entrant (dump, brainstorm) | [`revues/`](./revues/) |
 | Un ADR en gestation | [`decisions/`](./decisions/) |
+| Le procès-verbal d'une séance du Conseil | [`conseil/seances/`](./conseil/seances/), et une ligne au registre de la [charte](./conseil/README.md) §12 |
+| Une fiche de membre rafraîchie | [`conseil/membres/`](./conseil/membres/) |
 | Une décision **tranchée** | ❌ pas ici → **ADR** promu dans [`v1/12-decisions/`](../v1/12-decisions/Journal_Decisions_ADR.md) |
 
 Les **gabarits** de ces fiches sont dans [`Gabarits.md`](./Gabarits.md) — copier, ne pas improviser le format.
@@ -243,6 +265,6 @@ au merge.
 
 ---
 
-**Points d'entrée :** [🔬 Labo](./README.md) · [📓 Journal](./Journal.md) · [🧠 Brain OS](../Brain_OS.md) · [🤖 AGENTS — mode dev](../AGENTS.md) · [🚀 road_to_v2](../v1/road_to_v2/README.md)
+**Points d'entrée :** [🔬 Labo](./README.md) · [📓 Journal](./Journal.md) · [🏛️ Conseil](./conseil/README.md) · [🧠 Brain OS](../Brain_OS.md) · [🤖 AGENTS — mode dev](../AGENTS.md) · [🚀 road_to_v2](../v1/road_to_v2/README.md)
 
-**Dernière mise à jour :** 31/07/2026 · **v1.1** · Projet Taskforce — Metz Numeric School 2025-2026
+**Dernière mise à jour :** 21/10/2026 · **v1.2** · Projet Taskforce — Metz Numeric School 2025-2026

@@ -3,21 +3,22 @@ id: recherche-index
 title: Laboratoire R&D — Brain OS
 doc_type: moc
 statut: active
-version: 2.0
-date: "31/07/2026"
+version: 2.1
+date: "21/10/2026"
 auteur: Pierre MICHEL
 review_cycle: quarterly
 tags: [recherche, moc, brain-os, world-model, laboratoire]
 related:
   - "./CLAUDE.md"
   - "./Journal.md"
+  - "./conseil/README.md"
   - "../Brain_OS.md"
   - "../v1/road_to_v2/Moteur_IA_World_Model_OODA.md"
 ---
 
 # 🔬 Laboratoire R&D — Brain OS
 
-**Version :** 2.0 · **Date :** 31/07/2026 · **Auteur :** Pierre MICHEL
+**Version :** 2.1 · **Date :** 21/10/2026 · **Auteur :** Pierre MICHEL
 
 [![Type: Laboratoire R&D](https://img.shields.io/badge/Type-Laboratoire%20R%26D-purple?style=for-the-badge)]() [![Statut: Actif](https://img.shields.io/badge/Statut-Actif-brightgreen?style=for-the-badge)]() [![Nature: Spéculatif](https://img.shields.io/badge/Nature-Sp%C3%A9culatif-orange?style=for-the-badge)]()
 
@@ -39,8 +40,10 @@ l'on écrit ce qui <strong>n'est pas encore démontré</strong> — sous discipl
 
 1. Dire « **mode recherche** ». L'agent lit le protocole [`CLAUDE.md`](./CLAUDE.md) et l'applique.
 2. Ouvrir le cahier de bord [`Journal.md`](./Journal.md) : où on en était, quel était le prochain coup.
-3. Travailler à la bonne **station** (ci-dessous), au format des [`Gabarits.md`](./Gabarits.md).
-4. En fin de session : **remplir le Journal** (fait · trouvé · décidé · prochain coup) — sinon la
+3. **Le Conseil d'Avenir siège** ([charte](./conseil/README.md)) : en ouverture si la session pose une
+   question d'avenir, sinon en clôture. Pierre préside, l'agent tient le secrétariat.
+4. Travailler à la bonne **station** (ci-dessous), au format des [`Gabarits.md`](./Gabarits.md).
+5. En fin de session : **remplir le Journal** (fait · trouvé · décidé · prochain coup), sinon la
    session est perdue ([`CLAUDE.md`](./CLAUDE.md) §10).
 
 ## La paillasse (racine) — les 5 références toujours ouvertes
@@ -62,10 +65,12 @@ l'on écrit ce qui <strong>n'est pas encore démontré</strong> — sous discipl
 | [📖 `revues/`](./revues/) | La **critique** des idées entrantes | [`World-Model.md`](./revues/World-Model.md) · [`Ecosysteme.md`](./revues/Ecosysteme.md) | une revue par dump/brainstorm |
 | [📚 `references/`](./references/) | La **bibliothèque** | [`Bibliotheque.md`](./references/Bibliotheque.md) | une note de lecture par papier |
 | [⚖️ `decisions/`](./decisions/) | Les **ADR en gestation** (avant promotion en `v1/`) | [`ADR-012-DRAFT`](./decisions/ADR-012-DRAFT-brain-os-exposition.md) | un brouillon par décision |
+| [🏛️ `conseil/`](./conseil/) | Le **Conseil d'Avenir** : vingt membres simulés, leurs fiches sourcées, les procès-verbaux | [`README.md`](./conseil/README.md) (charte et règlement) | une fiche par membre, un PV par séance |
 
 > **Où va quoi, en un mot** : un **axiome** → `theorie/` · un **test** → `experiences/` · un **dump à
 > critiquer** → `revues/` · un **papier** → `references/` · une **décision** → `decisions/` · une
-> **question** → `Questions-ouvertes.md` · le **récit de la session** → `Journal.md`.
+> **question** → `Questions-ouvertes.md` · une **séance du Conseil** → `conseil/seances/` · le **récit
+> de la session** → `Journal.md`.
 
 ## Tableau de bord
 
@@ -100,6 +105,6 @@ rien de la frontière ne se ground. → **[E1](./experiences/Experiences.md#e1--
 
 ---
 
-**Points d'entrée :** [📋 Protocole](./CLAUDE.md) · [📓 Journal](./Journal.md) · [🧠 Brain OS](../Brain_OS.md) · [🤖 AGENTS — mode dev](../AGENTS.md) · [🚀 road_to_v2](../v1/road_to_v2/README.md)
+**Points d'entrée :** [📋 Protocole](./CLAUDE.md) · [📓 Journal](./Journal.md) · [🏛️ Conseil](./conseil/README.md) · [🧠 Brain OS](../Brain_OS.md) · [🤖 AGENTS — mode dev](../AGENTS.md) · [🚀 road_to_v2](../v1/road_to_v2/README.md)
 
-**Dernière mise à jour :** 31/07/2026 · **v2.0** · Projet Taskforce — Metz Numeric School 2025-2026
+**Dernière mise à jour :** 21/10/2026 · **v2.1** · Projet Taskforce — Metz Numeric School 2025-2026
