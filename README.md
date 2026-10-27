@@ -1,66 +1,100 @@
-# ⚡ TaskForce - la couche d'exécution IA pour les équipes qui livrent
-
-**TaskForce** se pose au-dessus des outils qu'une équipe utilise déjà (Linear, Notion, GitHub, Claude) et
-transforme une intention en résultat livré. Les outils de gestion de projet *suivent* le travail ; TaskForce
-le *comprend* : il concentre le contexte de chaque projet dans un modèle unique, le **Brain OS**, qu'un humain
-et un agent parcourent de la même façon - jusqu'à anticiper le coût d'une décision avant qu'elle ne soit prise.
-
 <p align="center">
-  <a href="https://taskforce-project.fr"><b>🌐 Site</b></a> ·
-  <a href="https://app.taskforce-project.fr"><b>🚀 Application</b></a> ·
-  <a href="https://docs.taskforce-project.fr"><b>📖 Référence API</b></a> ·
-  <a href="https://github.com/taskforce-project"><b>🏛️ Organisation</b></a>
+  <a href="./Brain_OS.md">
+    <img src="./assets/readme/hero.jpg" alt="Brain OS: every decision, written down. The engineering vault behind TaskForce." width="100%" />
+  </a>
 </p>
 
-> 📁 **Ce dépôt est le vault de documentation - le « Brain OS ».** La base de connaissance versionnée *derrière*
-> TaskForce : architecture, ADR, contrats d'API, modèle de données, runbooks, sécurité, R&D. Navigable par un
-> **humain** (comme un vault Obsidian) et par une **IA** (qui lit d'abord **[AGENTS.md](./AGENTS.md)**). Pour
-> découvrir le produit, suis les liens ci-dessus ; pour la doc, le hub est **[Brain OS](./Brain_OS.md)**.
+<p align="center">
+  <b>Brain OS is the engineering knowledge base behind <a href="https://github.com/taskforce-project/taskforce-fullstack">TaskForce</a>, the open source desktop app for working with AI coding agents.</b><br />
+  Architecture, decision records, API contracts, security and runbooks, versioned like the code they describe.
+</p>
 
----
+<p align="center">
+  <a href="./Brain_OS.md"><b>Start here</b></a>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/taskforce-project/taskforce-fullstack"><b>Product</b></a>
+  &nbsp;·&nbsp;
+  <a href="https://taskforce-project.fr"><b>Website</b></a>
+  &nbsp;·&nbsp;
+  <a href="https://docs.taskforce-project.fr"><b>User documentation</b></a>
+</p>
 
-## 🗂️ Structure du vault
+<p align="center">
+  <a href="https://github.com/taskforce-project/taskforce-fullstack"><img src="https://img.shields.io/badge/Star%20on%20GitHub-191715?logo=github&logoColor=white" alt="Star TaskForce on GitHub" /></a>
+  <img src="https://img.shields.io/badge/format-Obsidian%20vault-2f6bf6" alt="Format: Obsidian vault" />
+</p>
 
-```
+> The notes are written in French. Coding assistants start with [AGENTS.md](./AGENTS.md), people with the
+> [Brain OS hub](./Brain_OS.md).
+
+<br />
+
+## Why a vault
+
+Most projects document after the fact, and the documents drift away from the code. Brain OS works the other way
+round: it is where decisions are made and kept.
+
+- **Decisions before code.** Structural choices are recorded as architecture decision records: the context, the
+  options, the choice and its consequences.
+- **Claims traced to the code.** Technical statements point to the files that prove them, and a gap between the notes
+  and the code is flagged instead of being hidden.
+- **Read by people and by agents.** People open it as an Obsidian vault. AI agents follow [AGENTS.md](./AGENTS.md),
+  a contract that tells them where to look, how to pick the next action and how to keep the notes up to date.
+
+## What is inside
+
+| Area | Start with |
+| --- | --- |
+| Product state | [Product status by area](./v1/02-produit/README.md): what ships, what is in progress, what is next |
+| Architecture | [Architecture](./v1/03-architecture/Architecture.md), [modules](./v1/03-architecture/Modules.md) and the [desktop app specification](./v1/03-architecture/Specification_App_Desktop.md) |
+| API | [API contracts](./v1/05-api/API.md) |
+| Security | [Security](./v1/07-securite/): STRIDE threat model, security policy, data protection impact assessment, GDPR register, secure development plan |
+| Operations | [Runbooks](./v1/10-runbooks/README.md), [business continuity and recovery](./v1/11-pca-pra/) |
+| Decisions | [Decision journal](./v1/12-decisions/Journal_Decisions_ADR.md): 21 architecture decision records |
+| Roadmap | [Open source release plan](./v1/13-roadmap/Plan_Release_Open_Source.md) and the [backlog](./v1/13-roadmap/Roadmap_Backlog.md) |
+| Known issues | [Known problems](./v1/09-audits/Problemes_Connus.md), with their cause and their fix |
+| Research | [Research lab](./recherche/README.md): experiments, references, reviews and draft decisions |
+| Everything | [Documentation catalog](./v1/Catalogue_Documentation.md) |
+
+## Structure
+
+```text
 taskforce-docs/
-├─ Brain_OS.md          ← hub central (carte de contenu)
-├─ AGENTS.md            ← contrat d'agent (kernel : orientation + auto-entretien)
-├─ v1/                  ← ÉTAT ACTUEL du produit (16 domaines numérotés)  →  v1/README.md
-├─ v2/                  ← cible future (vide pour l'instant)
-├─ frameworks/          ← SOP & procédures transverses (hors version)
-├─ templates/           ← templates de documents (Templater)
-└─ assets/             ← images, maquettes, diagrammes, schémas HTML
+├── Brain_OS.md      the hub: a map of every document
+├── AGENTS.md        the contract for AI agents: orientation and upkeep
+├── v1/              the product as it is today, in 18 numbered areas
+├── v2/              the future target, kept apart from v1
+├── recherche/       the research lab
+├── frameworks/      procedures shared across versions
+├── templates/       document templates
+└── assets/          diagrams, mockups and images
 ```
 
-**Versioning :** `v1/` = ce qui existe aujourd'hui ; `v2/` = cible future. On ne mélange jamais les deux
-dans un document (cf. [Conventions](./v1/04-engineering/Conventions_Documentation.md)).
+`v1/` describes what exists, `v2/` what is planned. A document never mixes the two, as set out in the
+[documentation conventions](./v1/04-engineering/Conventions_Documentation.md).
 
-## 📖 Accès rapide
+## Use it
 
-- 🧠 **[Brain OS - Hub](./Brain_OS.md)** · 🤖 **[AGENTS.md](./AGENTS.md)** · ⚙️ **[SOP](./frameworks/SOP_Developpement.md)**
-- 📦 **[Index v1 - tous les domaines](./v1/README.md)**
-- 🏛️ [Architecture](./v1/03-architecture/Architecture.md) · 🔌 [API](./v1/05-api/API.md) · 🧩 [Modules](./v1/03-architecture/Modules.md)
-- 🚧 [État Produit](./v1/02-produit/README.md) · 📋 [Backlog](./v1/13-roadmap/Roadmap_Backlog.md) · 🔥 [Problèmes connus](./v1/09-audits/Problemes_Connus.md)
-- 🎓 [Mémoire RNCP](./v1/16-memoire-rncp/README.md) · 👥 [Doc utilisateur](./v1/15-utilisateur/Manuel_Utilisateur.md)
-- 📚 **[Catalogue EXHAUSTIF de la documentation](./v1/Catalogue_Documentation.md)** (~97 docs · 12 domaines · ⭐ = bundle PDF soutenance) · 🗺️ **[Roadmap Documentation](./v1/16-memoire-rncp/Roadmap_Documentation.md)** (production 1 par 1)
-- 🗺️ Schémas (PFR) : [flux complet](./assets/brain-os-flow.html) · [architecture technique](./assets/architecture-technique.html) · [boîte à outils infra/sécurité](./assets/infra-toolchain.html) · [système Brain OS](./assets/brain-os-systeme.html)
-- 🧰 [Catalogue d'outils infra & sécurité (gratuit/OSS)](./v1/06-infra/Outils_Infra_Securite.md)
+- **Read.** Open this folder as a vault in [Obsidian](https://obsidian.md): the configuration is included, and the
+  graph view colors the notes by area. Every note is also plain Markdown, readable here on GitHub.
+- **Contribute.** Start from a [template](./templates/), keep the front matter, and follow the
+  [development procedure](./frameworks/SOP_Developpement.md). Commits read `docs(scope): description`. A document is
+  never deleted: it moves to the [archive](./v1/20-archive/README.md).
 
-## 🚀 Comment l'utiliser
+## Support the project
 
-**Obsidian** : ouvrir ce dossier comme vault (config `.obsidian/` fournie ; plugins recommandés dans
-[Conventions §7](./v1/04-engineering/Conventions_Documentation.md)). La vue Graphe colore les notes par domaine.
+<p align="center">
+  <a href="https://github.com/taskforce-project/taskforce-fullstack/stargazers">
+    <img src="./assets/readme/support.jpg" alt="Star TaskForce on GitHub" width="100%" />
+  </a>
+</p>
 
-**Contribuer** : dupliquer un [template](./templates/Template_Doc_Technique.md), respecter le front-matter et
-le [SOP](./frameworks/SOP_Developpement.md). Commits `docs(scope): …`. Ne jamais supprimer un doc → l'archiver
-dans [`v1/20-archive/`](./v1/20-archive/README.md).
-
-## 🔗 Liens utiles
-
-- Produit : [Site](https://taskforce-project.fr) · [Application](https://app.taskforce-project.fr) · [Référence API publique](https://docs.taskforce-project.fr)
-- Code source : [`../taskforce-fullstack`](../taskforce-fullstack) · version compacte IA : `../taskforce-fullstack/.ai/`
-- Dev local : Swagger `http://localhost:8080/api/swagger-ui.html` · Keycloak `http://localhost:8180`
+If these notes help you build or understand TaskForce, star
+[taskforce-fullstack](https://github.com/taskforce-project/taskforce-fullstack) and this repository, and watch the
+releases (Watch, then Custom, then Releases) to follow the project.
 
 ---
 
-**Dernière mise à jour :** 15/09/2026 · **Brain OS v1** · Projet TaskForce · Metz Numeric School 2025-2026
+<p align="center">
+  <sub>Written by <a href="https://github.com/Miche1-Pierre">Pierre Michel</a> · final project of a level 6 RNCP degree, Metz Numeric School · 2025-2026</sub>
+</p>
