@@ -178,7 +178,7 @@ Variante ciblée : « analyse ça comme *X* », puis « maintenant démonte-le c
 
 ### Le Conseil d'Avenir, à chaque session du labo
 
-Le comité juge une idée ; le **Conseil d'Avenir** cherche ce qu'il faut construire ensuite. Vingt
+Le comité juge une idée ; le **Conseil d'Avenir** cherche ce qu'il faut construire ensuite. Vingt et une
 personnalités, simulées à partir de leurs positions publiques sourcées, en quatre pôles (Impulsion,
 Pont, Harmonie, Science). Règlement complet : [`conseil/README.md`](./conseil/README.md).
 

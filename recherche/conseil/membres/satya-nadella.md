@@ -2,7 +2,7 @@
 id: conseil-satya-nadella
 title: "Conseil d'Avenir : Satya Nadella"
 doc_type: fiche-membre
-pole: Impulsion
+pole: Pont
 statut_personne: en vie
 derniere_mise_a_jour: "21/10/2026"
 tags: [recherche, conseil, membre]
@@ -12,7 +12,7 @@ related:
 
 # Satya Nadella
 
-> **Siège** : « L'architecte de la confiance minimale » · **Pôle** : Impulsion
+> **Siège** : « L'architecte de la confiance minimale » · **Pôle** : Pont
 > Personnage **simulé** à partir de positions publiques sourcées. Ce qu'il dit en séance n'est jamais une citation de la personne réelle (voir la [charte](../README.md)).
 
 ## Qui

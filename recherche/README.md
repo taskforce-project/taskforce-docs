@@ -65,7 +65,7 @@ l'on écrit ce qui <strong>n'est pas encore démontré</strong> — sous discipl
 | [📖 `revues/`](./revues/) | La **critique** des idées entrantes | [`World-Model.md`](./revues/World-Model.md) · [`Ecosysteme.md`](./revues/Ecosysteme.md) | une revue par dump/brainstorm |
 | [📚 `references/`](./references/) | La **bibliothèque** | [`Bibliotheque.md`](./references/Bibliotheque.md) | une note de lecture par papier |
 | [⚖️ `decisions/`](./decisions/) | Les **ADR en gestation** (avant promotion en `v1/`) | [`ADR-012-DRAFT`](./decisions/ADR-012-DRAFT-brain-os-exposition.md) | un brouillon par décision |
-| [🏛️ `conseil/`](./conseil/) | Le **Conseil d'Avenir** : vingt membres simulés, leurs fiches sourcées, les procès-verbaux | [`README.md`](./conseil/README.md) (charte et règlement) | une fiche par membre, un PV par séance |
+| [🏛️ `conseil/`](./conseil/) | Le **Conseil d'Avenir** : vingt et un membres simulés, leurs fiches sourcées, les procès-verbaux | [`README.md`](./conseil/README.md) (charte et règlement) | une fiche par membre, un PV par séance |
 
 > **Où va quoi, en un mot** : un **axiome** → `theorie/` · un **test** → `experiences/` · un **dump à
 > critiquer** → `revues/` · un **papier** → `references/` · une **décision** → `decisions/` · une

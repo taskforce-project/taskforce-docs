@@ -45,6 +45,10 @@ related:
 | [E4](#e4--un-llm-peut-il-produire-une-dynamique-non-triviale-) | Un LLM sait-il faire de la dynamique ? | ~1 j | oui | proposée |
 | [E5](#e5--un-llm-est-il-une-fonction-stable-) | Un LLM est-il une fonction stable ? | ~0,5 j | oui | proposée |
 | [E6](#e6--le-front-de-pareto-des-cycles-passés-est-il-informatif-) | Le front de Pareto passé informe-t-il ? | ~0,5 j | non | proposée |
+| [E7](#e7--quelle-part-de-lattente-humaine-porte-sur-du-réversible-) | Part de l'attente humaine sur du réversible (Conseil, R1) | ~0,5 j + 10 j d'usage | non | proposée |
+| [E8](#e8--des-règles-écrites-comme-du-code-sont-elles-relues-) | Règles d'agent écrites comme du code (Conseil, R2) | ~1 j | non | proposée |
+| [E9](#e9--le-temps-dattention-par-résultat-accepté-se-mesure-t-il-) | Attention humaine par résultat accepté (Conseil, R3) | ~1 j | non | proposée |
+| [E10](#e10--un-relecteur-dédié-trouve-t-il-de-vrais-défauts-) | Relecteur dédié des pull requests (Conseil, R4) | ~0,5 j | oui | proposée |
 
 > **L'ordre compte.** E1 avant tout le reste : sans mesure de calibration, **aucune** des autres n'est
 > interprétable. C'est l'inversion proposée dans [`World_Model_Notes.md`](../revues/World-Model.md) §10 —
@@ -275,6 +279,112 @@ vérité (C3). Seed **synthétique**.
 
 ---
 
+## E7 : Quelle part de l'attente humaine porte sur du réversible ?
+
+`[statut:: proposée]` · Ouverte le 27/10/2026 · issue du [Conseil, séance n°1](../conseil/seances/2026-10-26-premiere-regle.md), R1
+
+**Hypothèse** `[HYPOTHÈSE]` : au moins 30 % du temps où un agent attend une décision humaine porte sur des actions
+réversibles, celles qui restent dans la branche de travail (lecture, écriture, commit local, tests).
+
+**Falsification** : moins de 30 % de l'attente porte sur du réversible. R1 ne libère alors presque rien ; elle reste un
+principe, pas un levier produit.
+
+**Schéma réel** `[ÉTABLI]` : les demandes de validation passent par le hook `PermissionRequest` du runner, servi en
+local (`taskforce-runner/src/agent.ts`) ; chaque délégation a sa chronologie dans l'app. À vérifier en mode
+développement : ce que la chronologie garde de chaque demande (outil, arguments, heure de la demande, heure de la
+décision).
+
+**Protocole** : écrire d'avance la table de réversibilité (réversible : tout ce qui reste dans la branche de travail ;
+irréversible : push, fusion, migration d'une base partagée, envoi externe, secret) ; classer chaque demande des
+délégations réelles de Pierre pendant 10 jours ; mesurer la part du temps d'attente par classe.
+
+**Métrique** : part du temps d'attente, et du nombre de demandes, qui porte sur du réversible.
+
+**Limite** : une seule personne (C1), peu de délégations en 10 jours ; la table elle-même est un choix, à revoir.
+
+**Coût** : ~0,5 j de développement (horodater les demandes, si ce n'est pas déjà fait) et 10 jours d'usage.
+
+---
+
+## E8 : Des règles écrites comme du code sont-elles relues ?
+
+`[statut:: proposée]` · Ouverte le 27/10/2026 · issue du [Conseil, séance n°1](../conseil/seances/2026-10-26-premiere-regle.md), R2
+
+**Hypothèse** `[HYPOTHÈSE]` : les règles qui encadrent un agent, écrites dans un fichier (qui l'a décidée, pourquoi,
+quand la revoir) et comptées, sont relues et ajustées ; dispersées dans le code, elles ne le sont pas.
+
+**Falsification** : en 10 jours, le fichier n'est ni relu ni modifié, ou les compteurs ne changent aucune décision.
+C'est alors de la conformité de papier.
+
+**Schéma réel** `[ÉTABLI]` : les règles du runner sont aujourd'hui dans le code : outils autorisés d'avance
+(`allowedTools`), outils refusés (`DENIED_TOOLS`), mode de permission manuel et hook de validation
+(`taskforce-runner/src/agent.ts`).
+
+**Protocole** : transcrire ces règles dans un fichier daté que le runner lit ; compter, pour chaque règle, les blocages,
+les demandes de validation et les autorisations ; revue au dixième jour.
+
+**Métrique** : relectures et modifications du fichier ; part des règles qui ont servi.
+
+**Limite** : 10 jours ne jugent pas une règle rare. Aucune suppression sur cette seule base (charte du Conseil,
+décision R2).
+
+**Coût** : ~1 j de développement.
+
+---
+
+## E9 : Le temps d'attention par résultat accepté se mesure-t-il ?
+
+`[statut:: proposée]` · Ouverte le 27/10/2026 · issue du [Conseil, séance n°1](../conseil/seances/2026-10-26-premiere-regle.md), R3
+
+**Hypothèse** `[HYPOTHÈSE]` : le temps d'attention humaine par résultat accepté (attente d'une décision, puis relecture,
+par pull request acceptée) se mesure sur l'ordinateur, sans rien envoyer, et bouge quand le harnais change. Le temps de
+cycle d'une mission se mesure à côté.
+
+**Falsification** : les données locales ne séparent pas le temps d'attention du temps d'absence (la personne est
+partie), ou la mesure ne bouge pas quand R1 libère le réversible.
+
+**Schéma réel** `[ÉTABLI]` : l'app n'envoie aucune donnée d'usage (site, `llms.txt`) ; délégations et demandes vivent
+dans la base locale du compte.
+
+**Protocole** : sur 10 jours de délégations de Pierre, horodater demande, décision, ouverture et fusion de la pull
+request ; calculer les minutes d'attention par résultat accepté, le temps de cycle et les décisions regrettées
+(approbations annulées, retours arrière).
+
+**Métrique** : médiane et dispersion des trois mesures.
+
+**Limite** : N ≈ 1 (C1) ; l'attention réelle n'est qu'approchée. L'envoi de données est hors de cette expérience
+([Q10](../Questions-ouvertes.md)).
+
+**Coût** : ~1 j de développement.
+
+---
+
+## E10 : Un relecteur dédié trouve-t-il de vrais défauts ?
+
+`[statut:: proposée]` · Ouverte le 27/10/2026 · issue du [Conseil, séance n°1](../conseil/seances/2026-10-26-premiere-regle.md), R4
+
+**Hypothèse** `[HYPOTHÈSE]` : un relecteur dédié, d'un autre fournisseur que l'agent qui a codé, avec une liste de
+points à vérifier et une partie libre, trouve de vrais défauts que l'agent n'a pas vus.
+
+**Falsification** : moins d'un défaut utile, confirmé par Pierre, sur 10 pull requests d'agent. Le coût dépasse alors le
+gain à ce stade.
+
+**Schéma réel** `[ÉTABLI]` : TaskForce délègue déjà à Claude Code et à GitHub Copilot, qui ouvrent des pull requests
+liées aux issues.
+
+**Protocole** : choisir un modèle existant reconnu en analyse (pas d'entraînement, C4) ; liste : sécurité, tests, actions
+irréversibles, respect des règles du runner, données personnelles, plus une partie libre ; relecture avant celle de
+Pierre sur 10 pull requests ; Pierre classe chaque remarque (vrai défaut ou bruit).
+
+**Métrique** : vrais défauts trouvés, bruit, minutes de relecture humaine gagnées ou perdues.
+
+**Limite** : 10 pull requests ; le jugement de Pierre sert de référence. Entraîner un relecteur maison viendra après,
+si le modèle existant montre la valeur.
+
+**Coût** : ~0,5 j de développement, plus les appels au modèle relecteur.
+
+---
+
 **Points d'entrée :** [🔬 R&D](../README.md) · [🤖 Mode recherche](../CLAUDE.md) · [❓ Questions](../Questions-ouvertes.md) · [📖 Notes critiques](../revues/World-Model.md)
 
-**Dernière mise à jour :** 17/07/2026 · **v1.0** · Projet Taskforce — Metz Numeric School 2025-2026
+**Dernière mise à jour :** 27/10/2026 · **v1.1** · Projet Taskforce — Metz Numeric School 2025-2026

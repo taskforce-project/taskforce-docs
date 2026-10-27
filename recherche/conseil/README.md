@@ -20,7 +20,7 @@ related:
 **Version :** 1.0 · **Date :** 21/10/2026 · **Président :** Pierre MICHEL
 
 <p class="lead">
-Le conseil du laboratoire : vingt personnalités, simulées à partir de leurs positions publiques sourcées,
+Le conseil du laboratoire : vingt et une personnalités, simulées à partir de leurs positions publiques sourcées,
 qui débattent des versions futures de TaskForce. Il siège <strong>à chaque session du labo</strong>.
 Pierre préside sans prendre part aux débats ; l'agent tient le secrétariat et donne voix aux membres.
 </p>
@@ -64,7 +64,7 @@ flowchart TB
   S["Secrétariat<br/>l'agent<br/>dossier · parole · PV"]
   subgraph T["La table"]
     I["Impulsion<br/>Jobs · Musk · Bezos · Shotwell"]
-    B["Pont<br/>Nadella · Mazzucato · Prabhakar"]
+    B["Pont<br/>Nadella · Mazzucato · Prabhakar · Ait Si Abbou"]
     H["Harmonie<br/>Vestager · Azoulay · Nilekani · Harris · Harari"]
     C["Science<br/>Bengio · LeCun · Li · Hamilton · Rus · Doudna · Duflo · Gawande"]
   end
@@ -109,7 +109,7 @@ flowchart TB
 
 ## 4. Composition
 
-Vingt membres, dix femmes et dix hommes, en quatre pôles. Chaque pôle porte une tension, et la table
+Vingt et un membres, onze femmes et dix hommes, en quatre pôles. Chaque pôle porte une tension, et la table
 est composée pour que ces tensions se rencontrent.
 
 | Pôle | Ce qu'il pousse | Ce qu'il craint |
@@ -128,6 +128,7 @@ est composée pour que ces tensions se rencontrent.
 | Pont | Satya Nadella | en vie | Les plateformes, les agents en entreprise, l'adoption à grande échelle | [fiche](./membres/satya-nadella.md) |
 | Pont | Mariana Mazzucato | en vie | L'innovation orientée mission, le rôle de l'État, le partage de la valeur | [fiche](./membres/mariana-mazzucato.md) |
 | Pont | Arati Prabhakar | en vie | La recherche à haut risque (DARPA) et la politique scientifique | [fiche](./membres/arati-prabhakar.md) |
+| Pont | Kenza Ait Si Abbou | en vie | L'IA expliquée à tous et déployée dans l'industrie (ancienne CTO du logisticien FIEGE) | [fiche](./membres/kenza-ait-si-abbou.md) |
 | Harmonie | Margrethe Vestager | en vie | La concurrence et les règles européennes du numérique | [fiche](./membres/margrethe-vestager.md) |
 | Harmonie | Audrey Azoulay | en vie | L'éthique de l'IA à l'échelle mondiale, l'éducation, la culture | [fiche](./membres/audrey-azoulay.md) |
 | Harmonie | Nandan Nilekani | en vie | Les infrastructures publiques numériques à l'échelle d'un pays | [fiche](./membres/nandan-nilekani.md) |
@@ -136,7 +137,7 @@ est composée pour que ces tensions se rencontrent.
 | Science | Yoshua Bengio | en vie | La sûreté des systèmes d'IA, les garde-fous des agents | [fiche](./membres/yoshua-bengio.md) |
 | Science | Yann LeCun | en vie | Les modèles du monde, l'open source, les limites des LLM | [fiche](./membres/yann-lecun.md) |
 | Science | Fei-Fei Li | en vie | L'IA centrée sur l'humain, l'intelligence spatiale | [fiche](./membres/fei-fei-li.md) |
-| Science | Margaret Hamilton | en vie | Le logiciel de vol d'Apollo : priorités, erreurs, fiabilité | [fiche](./membres/margaret-hamilton.md) |
+| Science | Margaret Hamilton | siège historique, décédée en 2026 | Le logiciel de vol d'Apollo : priorités, erreurs, fiabilité | [fiche](./membres/margaret-hamilton.md) |
 | Science | Daniela Rus | en vie | Les robots dans le monde physique | [fiche](./membres/daniela-rus.md) |
 | Science | Jennifer Doudna | en vie | Gouverner une technologie puissante, de la paillasse à la société | [fiche](./membres/jennifer-doudna.md) |
 | Science | Esther Duflo | en vie | La preuve par l'expérience de terrain | [fiche](./membres/esther-duflo.md) |
@@ -154,7 +155,7 @@ devenu après sa mort, il ne le sait que par le dossier : le secrétariat signal
 | Formation | Qui | Quand |
 | --- | --- | --- |
 | **Restreinte** (par défaut) | 5 à 7 membres, au moins un par pôle, dont un **contradicteur** désigné | Toute question de version future, d'usage ou de marché |
-| **Plénière** | Les vingt, une intervention courte chacun, puis la confrontation entre les positions les plus éloignées | Vision, positionnement, règle zéro, choix structurant |
+| **Plénière** | Les vingt et un, une intervention courte chacun, puis la confrontation entre les positions les plus éloignées | Vision, positionnement, règle zéro, choix structurant |
 | **Duel** | Deux membres aux positions opposées | Une question précise, quand deux thèses documentées s'affrontent |
 | **Audition** | Un membre, questionné par la Présidence | Approfondir un domaine avant une décision |
 
@@ -242,21 +243,22 @@ migre vers le produit qu'en tâche ou en ADR, jamais par copier-coller.
 
 ## 11. La règle zéro
 
-> **« On vise dix ans, on prouve en dix jours. »**
-> `[statut:: proposée par le secrétariat, en attente de ratification par la Présidence]`
+> **« On vise dix ans, on justifie en dix jours. »**
+> `[statut:: ratifiée par la Présidence le 27/10/2026, dans sa formulation]`
 
 Le Conseil a le droit de voir très loin, à une condition : chaque recommandation dit **ce qu'on
 pourrait montrer dans dix jours** pour savoir si la piste vaut la suite, et **quel signal ferait
 arrêter**. Une vision sans preuve proche reste au registre des questions ouvertes.
 
-La règle zéro est une règle de méthode du Conseil. Elle ne répond pas à une autre question, qui
-reste à poser en séance : quelle est la première règle non négociable de TaskForce ?
+La règle zéro est une règle de méthode du Conseil. La première règle non négociable de TaskForce,
+elle, a été tranchée à la séance n°1 : « Aucun agent ne décide seul d'une action irréversible, ni de
+ce qui est irréversible » ([PV](./seances/2026-10-26-premiere-regle.md)).
 
 ## 12. Registre des séances
 
 | Date | Saisine | Formation | Décision | PV |
 | --- | --- | --- | --- | --- |
-| | *Aucune séance pour l'instant.* | | | |
+| 26/10/2026 | Quelle est la première règle non négociable de TaskForce ? | Restreinte (7) | R1 à R4 retenues, règle zéro ratifiée | [PV](./seances/2026-10-26-premiere-regle.md) |
 
 ---
 

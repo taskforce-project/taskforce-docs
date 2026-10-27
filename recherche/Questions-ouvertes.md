@@ -213,6 +213,21 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 
 ---
 
+## Q10 : Mesurer l'attention humaine : sur l'ordinateur seulement, ou avec des données envoyées ?
+
+`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 27/10/2026 · issue du [Conseil, séance n°1](./conseil/seances/2026-10-26-premiere-regle.md), R3
+
+- **La question** : la mesure nord retenue (temps d'attention humaine par résultat accepté, temps de cycle) peut se
+  calculer sur l'ordinateur de chaque personne, ou à partir de données envoyées à TaskForce.
+- **Pourquoi ça compte** : `[ÉTABLI]` l'app promet aujourd'hui de n'envoyer aucune donnée d'usage (site, `llms.txt`).
+  La Présidence indique qu'un envoi serait possible techniquement. Comparer les équipes et améliorer le produit
+  demanderait des données agrégées ; la promesse locale est un argument de confiance.
+- **Position actuelle** : `[HYPOTHÈSE]` mesurer d'abord sur l'ordinateur (E9) ; un envoi éventuel serait opt-in, avec
+  consentement explicite, données agrégées, et mise à jour de la politique de confidentialité et du site.
+- **Ce qu'il faut pour trancher** : le résultat d'E9, puis une décision de la Présidence (ADR si l'envoi est retenu).
+
+---
+
 **Points d'entrée :** [🔬 R&D](./README.md) · [🤖 Mode recherche](./CLAUDE.md) · [🧪 Expériences](./experiences/Experiences.md) · [📖 Notes critiques](./revues/World-Model.md)
 
-**Dernière mise à jour :** 17/07/2026 · **v1.0** · Projet Taskforce — Metz Numeric School 2025-2026
+**Dernière mise à jour :** 27/10/2026 · **v1.1** · Projet Taskforce — Metz Numeric School 2025-2026

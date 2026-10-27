@@ -24,6 +24,32 @@ related:
 
 ---
 
+## 2026-10-27 : séance n°1 du Conseil, la première règle non négociable
+
+**Fait** : première séance du Conseil d'Avenir, en formation restreinte (7 membres, contradicteur : Elon Musk), sur
+la saisine « quelle est la première règle non négociable de TaskForce ? »
+([PV](./conseil/seances/2026-10-26-premiere-regle.md)). Expériences E7 à E10 déclarées
+([`Experiences.md`](./experiences/Experiences.md)), question Q10 ouverte. Kenza Ait Si Abbou entre au pôle Pont, à la
+demande de Pierre (fiche sourcée) : le Conseil compte 21 membres, dont 11 femmes. Margaret Hamilton, morte le
+30/09/2026, passe en siège historique. La fiche de Satya Nadella le rangeait par erreur dans Impulsion : corrigée (Pont).
+
+**Trouvé**
+- `[ÉTABLI]` Le dossier tient sur des sources primaires : le rapport d'Anthropic du 16/10/2026 (environ 80 % des
+  sessions interactives à attendre un humain, chez ses employés), le billet d'OpenAI sur le harness engineering, le
+  rapport de la NASA sur les règles de mission d'Apollo, la checklist de l'OMS.
+- `[DÉDUIT]` Les sept membres convergent sur un point : la règle doit vivre hors de l'agent, écrite avant la mission.
+  Ils divergent sur la vitesse (Musk, Bezos) et sur ce qu'on mesure (Harris).
+
+**Décidé** (Présidence, 27/10/2026) : R1 « Aucun agent ne décide seul d'une action irréversible, ni de ce qui est
+irréversible » retenue (une branche de travail rend réversible ce qui reste local) ; R2 retenue, à mieux expliquer ;
+R3 retenue, avec le temps de cycle en plus ; R4 retenue (un relecteur dédié, avec une liste et une partie libre). Règle
+zéro ratifiée : « On vise dix ans, on justifie en dix jours. »
+
+**Prochain coup** : séance n°2 sur la vision de la Présidence, pas encore présentée au Conseil. E7 à E10 demandent un
+passage en mode développement, après arbitrage de priorité.
+
+---
+
 ## 2026-10-21 : création du Conseil d'Avenir
 
 **Fait** : le Conseil d'Avenir est créé à la demande de Pierre, pour faire émerger les versions futures de TaskForce.
