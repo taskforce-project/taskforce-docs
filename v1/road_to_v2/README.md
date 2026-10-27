@@ -19,10 +19,14 @@ related:
 > C'est de l'**évolution du code v1 existant** (on *allume* le Brain OS Java + un LLM local Ollama, on finit la **Phase 4** du Brain OS), **pas** une réécriture v2 from-scratch.
 > **Pivot** : l'IA gère le projet, l'humain **exécute (Claude Code) + supervise (human-in-the-loop)**. Le moat = l'**orchestration** ([[Brain_OS]]), pas le modèle.
 
+> **Depuis le 27/10/2026**, le cap de la v2 est le harnais : [[Specification_V2_Harnais]] (brouillon, à valider par la
+> Présidence). Une fois validée, elle prime sur les documents ci-dessous, qui restent l'historique de conception.
+
 ## Documents
 
 | Doc | Contenu |
 |---|---|
+| [[Specification_V2_Harnais]] | **Spécification de la v2 (27/10/2026)** : le harnais (contexte, règles, porte unique, bac à sable, dossier de preuve), l'architecture scalable et robuste, le premier cas d'usage, le sprint de trois jours |
 | [[IDEA]] | **Vision** — « AI Delivery OS », pipeline Vision→…→Deploy en checkpoints validés |
 | [[Guide_Ollama]] | **Guide setup Ollama** (install + pull modèles + vérif GPU/API) — à faire sur réseau propre |
 | [[Moteur_IA_World_Model_OODA]] | **Moteur IA** — retrieval-first, boucle **World Model × OODA**, **Brain OS invisible** |

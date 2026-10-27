@@ -1,5 +1,8 @@
 # Thèse produit — V1 → V2 (clarifiée)
 
+> **27/10/2026** : le cap de la v2 est désormais fixé par [[Specification_V2_Harnais]] (brouillon, à valider par la
+> Présidence). Une fois validée, elle prime sur ce document.
+
 > **Source de vérité de la thèse produit.** Réconcilie le brainstorm de juillet
 > (les autres fichiers `road_to_v2/`, désormais contexte historique) avec l'état
 > réel du code et le cadrage produit du 02/09/2026. Règle d'or de ce document :
