@@ -24,6 +24,29 @@ related:
 
 ---
 
+## 2026-10-27 (bis) : séance n°2 du Conseil, la vision de la Présidence
+
+**Fait** : plénière des 21 membres sur la vision de Pierre (le harnais comme principe fondamental de tout outil avec
+IA), tour de table, confrontation, second tour à sa demande, dernier mot du Conseil
+([PV](./conseil/seances/2026-10-27-vision.md)). Question ouverte Q11 (harnais embarqué). La règle zéro garde « prouve ».
+
+**Trouvé**
+- `[DÉDUIT]` Le Conseil converge : miser sur l'entreprise, jamais sur les défauts des modèles ; vendre un résultat, le
+  harnais invisible pour l'utilisateur et lisible pour l'auditeur ; un plan de contrôle neutre et local plutôt qu'une
+  interface générique.
+- `[ÉTABLI]` L'écart principal avec la vision : pendant une délégation, l'agent ne voit que le serveur MCP de
+  TaskForce, pas encore les outils externes de l'entreprise (`taskforce-runner/src/agent.ts`).
+
+**Décidé** (Présidence) : vision validée à dix ans ; R5' (la promesse), R6, R7' (tout tracé, seul l'irréversible
+attend), R8, R9' retenues ; I1 (assurable) et I2 (embarqué) gardées ; niches A puis B ; premier cas d'usage : un
+standard de communication de vingt-cinq ans qui évolue ; le bac à sable plutôt que la branche ; « libre mais
+encadré » ; les outils de Microsoft se branchent sur TaskForce, pas l'inverse. Séance close.
+
+**Prochain coup** : résumé pour la Présidence, état des lieux d'un jour de la v1, spécification de la v2 relue par la
+Présidence, puis sprint de trois jours avec la banque de tests (passage en mode développement).
+
+---
+
 ## 2026-10-27 : séance n°1 du Conseil, la première règle non négociable
 
 **Fait** : première séance du Conseil d'Avenir, en formation restreinte (7 membres, contradicteur : Elon Musk), sur
@@ -43,7 +66,7 @@ demande de Pierre (fiche sourcée) : le Conseil compte 21 membres, dont 11 femme
 **Décidé** (Présidence, 27/10/2026) : R1 « Aucun agent ne décide seul d'une action irréversible, ni de ce qui est
 irréversible » retenue (une branche de travail rend réversible ce qui reste local) ; R2 retenue, à mieux expliquer ;
 R3 retenue, avec le temps de cycle en plus ; R4 retenue (un relecteur dédié, avec une liste et une partie libre). Règle
-zéro ratifiée : « On vise dix ans, on justifie en dix jours. »
+zéro ratifiée : « On vise dix ans, on prouve en dix jours. »
 
 **Prochain coup** : séance n°2 sur la vision de la Présidence, pas encore présentée au Conseil. E7 à E10 demandent un
 passage en mode développement, après arbitrage de priorité.

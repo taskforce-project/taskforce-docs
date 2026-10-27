@@ -105,7 +105,7 @@ le réversible n'attend jamais ; Harris refuse toute mesure de débit.
 | R2 | **Retenue** | « Attention à mieux expliquer, parce que ça peut porter à confusion. » |
 | R3 | **Retenue** | Le temps de cycle doit aussi être mesuré, il pourra servir. L'envoi de données n'est pas impossible : la Présidence peut le mettre en place. |
 | R4 | **Retenue** | « On pourrait même entraîner un agent exprès, ou trouver un agent très bon en pratique sur l'analyse, et lui dire aussi quoi analyser, avec une partie libre. » |
-| Règle zéro | **Ratifiée** | Formulation de la Présidence : « On vise dix ans, on justifie en dix jours. » |
+| Règle zéro | **Ratifiée** | « On vise dix ans, on prouve en dix jours. » |
 
 **R2, dit plus simplement** (demande de la Présidence) : chaque règle qui encadre un agent (ce qu'il fait seul, ce qui
 lui est interdit, ce qui demande ton accord) est écrite dans un fichier, avec qui l'a décidée, pourquoi et quand la

@@ -228,6 +228,21 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 
 ---
 
+## Q11 : Un harnais embarqué pour le monde physique ?
+
+`[statut:: ouverte]` · `[prio:: P3]` · Ouverte le 27/10/2026 · issue du [Conseil, séance n°2](./conseil/seances/2026-10-27-vision.md), I2
+
+- **La question** : les trois pièces du harnais (règles, preuve, décision humaine) peuvent-elles vivre dans une machine
+  ou un robot, sans réseau, avec des décisions en millisecondes ?
+- **Pourquoi ça compte** : le premier cas d'usage (un standard de communication embarqué) touche déjà des systèmes qui,
+  demain, exécuteront ces protocoles eux-mêmes. La Présidence y voit une piste « très intéressante » : un TaskForce
+  embarqué.
+- **Position actuelle** : `[HYPOTHÈSE]` horizon, pas chantier ; rien à construire avant que la v2 tienne sur le
+  logiciel.
+- **Ce qu'il faut pour trancher** : des clients de la niche B qui le demandent, et une contrainte de temps réel chiffrée.
+
+---
+
 **Points d'entrée :** [🔬 R&D](./README.md) · [🤖 Mode recherche](./CLAUDE.md) · [🧪 Expériences](./experiences/Experiences.md) · [📖 Notes critiques](./revues/World-Model.md)
 
 **Dernière mise à jour :** 27/10/2026 · **v1.1** · Projet Taskforce — Metz Numeric School 2025-2026

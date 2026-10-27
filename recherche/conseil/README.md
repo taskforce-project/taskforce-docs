@@ -243,8 +243,8 @@ migre vers le produit qu'en tâche ou en ADR, jamais par copier-coller.
 
 ## 11. La règle zéro
 
-> **« On vise dix ans, on justifie en dix jours. »**
-> `[statut:: ratifiée par la Présidence le 27/10/2026, dans sa formulation]`
+> **« On vise dix ans, on prouve en dix jours. »**
+> `[statut:: ratifiée par la Présidence le 27/10/2026]`
 
 Le Conseil a le droit de voir très loin, à une condition : chaque recommandation dit **ce qu'on
 pourrait montrer dans dix jours** pour savoir si la piste vaut la suite, et **quel signal ferait
@@ -259,6 +259,7 @@ ce qui est irréversible » ([PV](./seances/2026-10-26-premiere-regle.md)).
 | Date | Saisine | Formation | Décision | PV |
 | --- | --- | --- | --- | --- |
 | 26/10/2026 | Quelle est la première règle non négociable de TaskForce ? | Restreinte (7) | R1 à R4 retenues, règle zéro ratifiée | [PV](./seances/2026-10-26-premiere-regle.md) |
+| 27/10/2026 | La vision de la Présidence : le harnais comme principe de tout outil avec IA | Plénière (21) | Vision validée à dix ans ; R5' à R9', I1 et I2 retenues ; niches A puis B | [PV](./seances/2026-10-27-vision.md) |
 
 ---
 
