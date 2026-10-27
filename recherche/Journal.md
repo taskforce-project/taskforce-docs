@@ -24,6 +24,31 @@ related:
 
 ---
 
+## 2026-10-27 (ter) : état des lieux de la v1, séance n°3 du Conseil, spécification de la v2
+
+**Fait** : état des lieux d'un jour de la v1, tiré du code et du journal daté
+([état des lieux](../v1/09-audits/Etat_des_lieux_v1_avant_v2.md), PC-059 à PC-062) ; ménage tranché par la Présidence ;
+spécification de la v2, version 0.1 ([spécification](../v1/road_to_v2/Specification_V2_Harnais.md)) ; séance n°3 en
+formation restreinte, Jobs et Musk, sur le ménage et la spécification ([PV](./conseil/seances/2026-10-27-menage-spec-v2.md)).
+
+**Trouvé**
+- `[ÉTABLI]` La délégation de code marche de bout en bout dans l'app desktop (19/10) ; ce qui fera le harnais manque :
+  documents et versions, règles en données, preuve exportable.
+- `[ÉTABLI]` Pour le premier cas d'usage, deux étapes sur six sont absentes à la base : importer un document, le chercher
+  par version.
+- `[DÉDUIT]` L'architecture de la v1 a déjà la bonne forme : un serveur qui garde, un runner qui exécute ; la v2 la
+  généralise au lieu de la remplacer.
+
+**Décidé** (Présidence) : le .exe d'abord, le Store et la webapp ensuite ; l'équipe gardée, comme contexte ; Mentions
+gardé ; Assignments à retravailler ; GitHub et Slack à faire marcher ; Public et Private gardés ; Status retiré de la
+vue ; Pages supprimées au profit du Brain OS ; Copilot gardé, à essayer ; code mort supprimé ; dans le doute, masquer
+plutôt que supprimer. Priorité de la v2 : le harnais et l'architecture, scalables et robustes.
+
+**Prochain coup** : la Présidence relit la spécification et tranche son §20 (dont R10 à R15) ; puis le sprint de trois
+jours avec la banque de tests, en mode développement.
+
+---
+
 ## 2026-10-27 (bis) : séance n°2 du Conseil, la vision de la Présidence
 
 **Fait** : plénière des 21 membres sur la vision de Pierre (le harnais comme principe fondamental de tout outil avec
