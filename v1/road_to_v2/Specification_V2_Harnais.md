@@ -3,7 +3,7 @@ id: specification-v2-harnais
 title: "Spécification de la v2 : le harnais"
 doc_type: spec
 statut: draft
-version: 0.2
+version: 0.3
 date: "28/10/2026"
 auteur: Pierre MICHEL
 tags: [road-to-v2, spec, harnais, architecture, scalabilite, robustesse, bac-a-sable, preuve, desktop]
@@ -19,8 +19,11 @@ related:
 
 # Spécification de la v2 : le harnais
 
-**Version :** 0.2 · **Date :** 28/10/2026 · **Auteur(s) :** Pierre MICHEL · **Statut :** brouillon, relu par la
-Présidence le 28/10, en revue par le Conseil
+**Version :** 0.3 · **Date :** 28/10/2026 · **Auteur(s) :** Pierre MICHEL · **Statut :** validée par la Présidence
+le 28/10/2026 ; base du ménage et du sprint
+
+> **Ce qui change en 0.3** : R16 à R26 retenues (§20) ; les produits n'ont pas les mêmes fonctions (§4.2) ; le
+> harnais pourra servir dans d'autres outils (§4.6) ; une hiérarchie d'agents et de modèles, choisie par tâche (§10.4).
 
 > **Ce qui change en 0.2** (décisions de la Présidence du 28/10/2026) : la webapp d'abord, en local, puis le .exe ; un
 > seul code source pour trois produits ; un petit modèle local doit suffire ; le front du Brain OS est supprimé au
@@ -203,6 +206,11 @@ et les validations. La v2 la généralise.
 - **Un seul code source** : le même backend tourne sous deux profils, hébergé pour la webapp et embarqué dans l'app
   desktop (`application-desktop.yml`, Postgres local) ; le même front sert les deux (`IS_DESKTOP` pour les
   différences).
+- **Pas les mêmes fonctions partout** (Présidence, 28/10/2026) : comme entre claude.ai et l'app Claude, certaines
+  choses ne se font que dans l'app desktop (les agents et les modèles locaux), d'autres que dans la webapp. On ne
+  mélange pas tout. Les résultats obtenus en local peuvent se voir dans la webapp, ce qui incite à télécharger l'app
+  desktop. La webapp doit marcher : elle porte le référencement, et sert ceux qui utilisent TaskForce comme un outil de
+  gestion de projet ou un chat d'IA classiques.
 - **Deux places pour un espace** : un espace local, sur l'ordinateur, privé et utilisable sans réseau ; un espace
   d'équipe, sur le serveur d'équipe (§12).
 - Le runner et le harnais sont les mêmes partout : le runner parle à un serveur TaskForce, local ou d'équipe.
@@ -282,6 +290,14 @@ Proposition, en revue par le Conseil (séance n°4). Faits vérifiés le 28/10/2
 - Spring AI 2.0 appelle des outils avec Ollama. Embabel (Apache 2.0, Spring Boot 4.1) planifie les étapes d'un agent
   par un algorithme, le modèle ne faisant que remplir les étapes : c'est l'hypothèse « la décision vit dans
   l'architecture ». À comparer avec la boucle de Cortex avant de choisir.
+
+### 4.6 Le harnais au-delà de TaskForce
+
+Les outils de gestion de projet déjà très répandus (Linear, Jira, Asana...) sont des concurrents pour la gestion de
+projet, pas pour le harnais. Un jour, le harnais de TaskForce pourrait se brancher dans leur workflow : leurs agents
+passeraient par la porte, les règles et le dossier de preuve de TaskForce (Présidence, 28/10/2026). Le contrat de
+l'adaptateur (§10.1) et les formats exportables (R9') le préparent. Le branchement et le modèle économique restent à
+voir.
 
 ## 5. Le contexte : ce que l'agent sait
 
@@ -641,8 +657,14 @@ les défauts des modèles.
 - **Trouver les modèles** : dans l'app desktop, TaskForce trouve Ollama sur l'ordinateur, liste les modèles installés
   (`/api/tags`) et leurs capacités (`/api/show` rend un champ `capabilities` depuis Ollama 0.6.4 : outils, vecteurs,
   raisonnement, vision).
-- **Choisir par tâche** : vecteurs, lecture, analyse, relecture. Le choix vient des résultats de la banque de tests sur
-  cet ordinateur ; la personne peut changer à tout moment.
+- **Une hiérarchie d'agents et de modèles** (Présidence, 28/10/2026 ; R20) : les petits modèles locaux font les petites
+  choses (une recherche sur le web et sa réponse en deux secondes, un résumé, un classement) ; les grosses tâches vont
+  à Claude Code ou à un grand modèle. Un curseur automatique choisit le modèle et sa puissance selon la tâche, ce qui
+  tient aussi les coûts : on ne demande plus à un grand modèle ce qu'un petit fait aussi bien. La personne peut forcer
+  son choix à tout moment.
+- **Choisir par tâche** : vecteurs, lecture, analyse, relecture, code. Le curseur part des résultats de la banque de
+  tests sur cet ordinateur (famille 7) et des capacités déclarées par Ollama ; il monte d'un cran quand un modèle
+  échoue à un contrôle, et il trace son choix dans le dossier.
 - **Faire travailler un modèle local** : la boucle interne de TaskForce (la boucle d'outils de Cortex, étendue aux
   missions), qui garde le harnais complet. Ollama sait aussi faire tourner Claude Code sur un modèle local (API
   compatible avec celle d'Anthropic depuis Ollama 0.14.0), mais Anthropic ne prend pas en charge Claude Code sur un
@@ -941,9 +963,9 @@ version de l'app desktop est publiée, et la Présidence l'essaie avec ses petit
 
 | Jour | Livre | Fini quand |
 | --- | --- | --- |
-| 1 : règles, porte, preuve | Les règles en base, versionnées, avec propriétaire, raison, revue et compteurs, et la table par défaut ; le runner construit `--allowedTools` et juge `PermissionRequest` depuis le paquet, sur place ; le journal chaîné, sans troncature silencieuse ; l'export `dossier.json` et `dossier.md` ; le temps de cycle mesuré | Familles 1 et 2 vertes ; un dossier exporté, vérifié par recalcul des empreintes |
+| 1 : règles, porte, preuve | D'abord les contrats (R16) : paquet de règles, format de preuve, adaptateur d'agent, avec leurs tests de contrat. Puis les règles en base, versionnées, avec propriétaire, raison, revue et compteurs, et la table par défaut ; le runner juge chaque action par `PreToolUse`, garde fermé (`onFailure: "block"`, Claude Code 2.1.295 au moins, R17), et `PermissionRequest` pour « demander » ; le journal chaîné, sans troncature silencieuse ; l'export `dossier.json` et `dossier.md` ; le temps de cycle mesuré | Familles 1 et 2 vertes ; un dossier exporté, vérifié par recalcul des empreintes |
 | 2 : documents et versions | L'import (PDF, Word, Markdown) dans le Brain OS, avec versions et passages ; le plein texte indexé et les vecteurs par passage ; la recherche hybride avec sources ; `brain_search` rend des passages sourcés ; l'écart entre deux versions | Famille 3 mesurée sur le corpus public |
-| 3 : bac à sable, carte, mesure | Les tests de cas d'usage après le travail de l'agent (S1) ; les sorties selon les règles ; la carte de résultat sur l'issue ; une première série d'essais, avec et sans harnais | Familles 4, 5 et 6 passées au moins une fois ; mesures du §16.1 relevées ; rapport du sprint |
+| 3 : bac à sable, agent interne, mesure | Les tests de cas d'usage après le travail de l'agent (S1) ; les sorties selon les règles ; l'agent interne (la boucle de Cortex) avec un petit modèle local sur le parcours, et le curseur qui choisit le modèle par tâche (R20) ; la carte de résultat codée au plus simple, d'après son dessin ; une première série d'essais, avec et sans harnais, petit modèle et grand modèle | Familles 4 à 7 passées au moins une fois ; mesures du §16.1 relevées ; rapport du sprint |
 
 La définition de fini du dépôt s'applique : suite de tests complète, documentation à jour, trace dans
 `.ai/roadmap.md`, version desktop publiée pour l'essai du .exe.
@@ -972,15 +994,22 @@ d'un autre fournisseur que l'agent (R15) ; Assignments fondu dans My Work ; Publ
 réécrits pour l'app ; l'approche A pour les équipes, le VPS dès que possible ; un fil de l'équipe plutôt qu'une
 messagerie, à repenser. Recommandations : [PV n°3](../../recherche/conseil/seances/2026-10-27-menage-spec-v2.md).
 
+**Décidé après la revue du Conseil, le 28/10/2026** ([PV n°4](../../recherche/conseil/seances/2026-10-28-revue-spec-v2.md)) :
+R16 à R26 retenues ; l'amendement de R1 (R18) confié à Bengio, Zhuo, Bezos et Musk ; l'aperçu des effets (R19) à
+LeCun ; R20 élargie à une hiérarchie d'agents et de modèles (§10.4), confiée à LeCun ; Jobs mène R22 ; R23 retenue
+après un second tour (Jobs, Bengio, Bezos) ; R26 avec l'avis de Jobs et du pôle Design ; le monolithe modulaire
+(§4.5) ; des produits aux fonctions différentes (§4.2) ; le harnais au-delà de TaskForce (§4.6).
+
 **Reste à trancher**
 
-1. **L'amendement de R1** pour les actions que les règles ne classent pas (§6.2), après la revue du Conseil.
-2. **Les choix d'architecture** (§4.5), après la revue du Conseil.
-3. **La table par défaut** (§6.2), en particulier : pousser la branche de l'agent vers un dépôt privé sans attendre.
-4. **Le corpus public** de la banque de tests (§16.2).
-5. **Les Pages** : exporter ce que des utilisateurs y ont écrit avant de retirer leurs tables (§1).
-6. **Les libellés** de Public et Private (proposés : « Workspace », « Collaborators only »).
-7. **Les recommandations R16 à R26 de la revue du Conseil**
+1. **La table par défaut** (§6.2), en particulier : pousser la branche de l'agent vers un dépôt privé sans attendre.
+2. **Le corpus public** de la banque de tests (§16.2).
+3. **Les Pages** : exporter ce que des utilisateurs y ont écrit avant de retirer leurs tables (§1).
+4. **Les libellés** de Public et Private (proposés : « Workspace », « Collaborators only »).
+
+**Recommandations retenues, pour mémoire**
+
+- **R16 à R26, revue du Conseil**
    ([PV n°4](../../recherche/conseil/seances/2026-10-28-revue-spec-v2.md)) : les contrats d'abord (R16) ; un garde
    fermé par défaut (R17) ; l'amendement de R1 par paliers, avec un juge non agentique dont l'erreur est mesurée avant
    qu'il décide (R18) ; un aperçu des effets avant toute décision (R19) ; l'agent interne avec un petit modèle local sur
