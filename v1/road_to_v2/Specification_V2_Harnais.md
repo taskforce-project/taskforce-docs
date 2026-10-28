@@ -3,8 +3,8 @@ id: specification-v2-harnais
 title: "Spécification de la v2 : le harnais"
 doc_type: spec
 statut: draft
-version: 0.1
-date: "27/10/2026"
+version: 0.2
+date: "28/10/2026"
 auteur: Pierre MICHEL
 tags: [road-to-v2, spec, harnais, architecture, scalabilite, robustesse, bac-a-sable, preuve, desktop]
 related:
@@ -14,12 +14,18 @@ related:
   - "../03-architecture/Specification_App_Desktop.md"
   - "../../recherche/conseil/seances/2026-10-27-vision.md"
   - "../../recherche/conseil/seances/2026-10-27-menage-spec-v2.md"
+  - "../../recherche/conseil/seances/2026-10-28-revue-spec-v2.md"
 ---
 
 # Spécification de la v2 : le harnais
 
-**Version :** 0.1 · **Date :** 27/10/2026 · **Auteur(s) :** Pierre MICHEL · **Statut :** brouillon, à relire par la
-Présidence
+**Version :** 0.2 · **Date :** 28/10/2026 · **Auteur(s) :** Pierre MICHEL · **Statut :** brouillon, relu par la
+Présidence le 28/10, en revue par le Conseil
+
+> **Ce qui change en 0.2** (décisions de la Présidence du 28/10/2026) : la webapp d'abord, en local, puis le .exe ; un
+> seul code source pour trois produits ; un petit modèle local doit suffire ; le front du Brain OS est supprimé au
+> profit d'un panneau de contexte ; l'équipe comme matrice des rôles ; les secrets dans un coffre ; l'agent peut
+> proposer des mises à jour, avec leur source ; R10 à R15 retenues ; l'approche A pour les équipes.
 
 > **Pourquoi** : la séance n°2 du Conseil d'Avenir a fixé le cap à dix ans, « partout où une IA agit, un harnais réglé
 > par ceux qui en répondent », et le premier cas d'usage
@@ -32,13 +38,14 @@ Présidence
 > l'historique de conception.
 >
 > **Marquage** : ce qui existe dans le code porte son fichier ; ce qui n'est pas vérifié porte « à vérifier ». Rien
-> n'est construit avant la validation de la Présidence. Revue du Conseil : [PV de la séance
-> n°3](../../recherche/conseil/seances/2026-10-27-menage-spec-v2.md).
+> n'est construit avant la validation de la Présidence. Revues du Conseil :
+> [séance n°3](../../recherche/conseil/seances/2026-10-27-menage-spec-v2.md) et
+> [séance n°4](../../recherche/conseil/seances/2026-10-28-revue-spec-v2.md).
 
 ## Table des matières
 
 - [En une page](#en-une-page)
-- [1. Le ménage de l'app desktop](#1-le-ménage-de-lapp-desktop)
+- [1. Le ménage](#1-le-ménage)
 - [2. Les invariants](#2-les-invariants)
 - [3. Vocabulaire](#3-vocabulaire)
 - [4. L'architecture d'ensemble](#4-larchitecture-densemble)
@@ -49,7 +56,7 @@ Présidence
 - [9. Le dossier de preuve](#9-le-dossier-de-preuve)
 - [10. Les agents](#10-les-agents--celui-de-votre-choix)
 - [11. Les connecteurs](#11-les-connecteurs)
-- [12. Les équipes dans l'app desktop](#12-les-équipes-dans-lapp-desktop)
+- [12. Les équipes](#12-les-équipes)
 - [13. Scalabilité et robustesse](#13-scalabilité-et-robustesse)
 - [14. Le harnais apprend](#14-le-harnais-apprend)
 - [15. Ce que voit l'utilisateur](#15-ce-que-voit-lutilisateur)
@@ -57,7 +64,7 @@ Présidence
 - [17. Le premier cas d'usage, de bout en bout](#17-le-premier-cas-dusage-de-bout-en-bout)
 - [18. Le sprint de trois jours](#18-le-sprint-de-trois-jours)
 - [19. Après le sprint](#19-après-le-sprint)
-- [20. À trancher par la Présidence](#20-à-trancher-par-la-présidence)
+- [20. Décisions et points ouverts](#20-décisions-et-points-ouverts)
 - [21. Limites](#21-limites)
 
 ## En une page
@@ -76,8 +83,11 @@ outils et vos règles, et vous montre qu'il est bon. »
    décision, sauf le réversible autorisé.
 5. Le dossier de preuve : tout est tracé, chaîné, exportable.
 6. La carte de résultat : le résultat, trois à cinq contrôles, une décision.
-7. Les outils de l'entreprise pour l'agent délégué, à travers la porte.
-8. Les équipes dans l'app desktop, avec un serveur d'équipe.
+7. Les outils de l'entreprise pour l'agent délégué, à travers la porte, connectés à la demande.
+8. Les équipes : qui a quel rôle, quel périmètre, qui décide de quoi ; et le fil partagé de ce que chacun fait.
+9. Un panneau de contexte, à la manière de Claude, à la place de la navigation dans le Brain OS.
+10. Le bon modèle pour chaque tâche : l'app trouve les modèles Ollama installés ; un petit modèle local doit suffire à
+    tout ou partie des tâches, parce que la décision vit dans l'architecture, pas dans le modèle.
 
 **L'architecture en une phrase** : un plan de contrôle, le serveur TaskForce (local ou d'équipe), garde les règles, les
 sources et les preuves ; des exécutants, les runners sur l'ordinateur de chacun, font travailler les agents et
@@ -87,64 +97,72 @@ appliquent les règles sur place ; toute action d'agent passe par une seule port
 d'agir ; rien ne sort du bac à sable sans décision ; l'agent ne voit jamais un secret ; le contexte n'est jamais une
 instruction.
 
-**Le sprint de trois jours** (§18) : un seul parcours, celui du premier cas d'usage. Jour 1 : les règles, la porte et
-la preuve. Jour 2 : les documents et leurs versions. Jour 3 : le bac à sable, la carte de résultat et la banque de
-tests.
+**Le sprint de trois jours** (§18) : une demi-journée de ménage d'abord (R10), puis un seul parcours, celui du premier
+cas d'usage. Jour 1 : les règles, la porte et la preuve. Jour 2 : les documents et leurs versions. Jour 3 : le bac à
+sable, la carte de résultat et la banque de tests.
 
-**Ordre de livraison** : l'app desktop (le .exe) d'abord ; la version du Store et la webapp reçoivent les mêmes
-changements plus tard (décision du 27/10/2026).
+**Un seul code source, trois produits** : la webapp, l'app desktop (le .exe) et la version du Microsoft Store, comme
+claude.ai et l'app Claude. Celui qui installe l'app desktop l'a ; celui qui reste sur la webapp aussi, peut-être avec
+moins de fonctions. La webapp porte aussi l'API.
+
+**Ordre de livraison** (décision du 28/10/2026) : la webapp d'abord, en local dans Docker, même si elle n'est plus en
+ligne (les machines virtuelles de l'école s'arrêtent) ; puis l'app desktop, sur laquelle la Présidence teste, avec ses
+petits modèles locaux, ce qui éprouve aussi la mise à jour dans l'app ; la version du Store ensuite.
 
 **À trancher** : §20.
 
-## 1. Le ménage de l'app desktop
+## 1. Le ménage
 
-Décidé par la Présidence le 27/10/2026, à partir de l'[état des lieux](../09-audits/Etat_des_lieux_v1_avant_v2.md) §3.
+Décidé par la Présidence les 27 et 28/10/2026, à partir de l'[état des lieux](../09-audits/Etat_des_lieux_v1_avant_v2.md)
+§3. Il vaut pour la webapp et l'app desktop (un seul code source) et passe avant le sprint, en une demi-journée (R10).
 
-| Élément | Décision | Ce qu'on fait | Quand |
-| --- | --- | --- | --- |
-| Équipe : membres, équipes, invitations, charge, compétences | **Gardé** : c'est du contexte, qui sait faire quoi | Rien n'est retiré ; ce qui est déjà masqué dans l'app desktop le reste jusqu'au serveur d'équipe (§12) | Phase 3 |
-| Inbox : Mentions | **Gardé** | Devient l'endroit où un agent appelle un humain : une vérification, une question, une décision (§7.4) | Phase 2 |
-| Inbox : Assignments | **À retravailler** | Options au §20 | À trancher |
-| GitHub et Slack | **Gardés, à faire marcher** | PC-060 se corrige en les rendant utilisables, pas en les cachant (§11.3) | Phase 2 |
-| Public et Private | **Gardés** | Voir plus bas | À trancher (§20) |
-| Panneau Status | **Retiré de la vue** | Masqué dans l'app desktop, code gardé | Lot ménage |
-| Textes écrits pour le web | **Expliqué plus bas** | Proposition : les adapter, pas les retirer | À trancher (§20) |
-| Pages des projets | **Supprimées** : tout sera dans le Brain OS | Les Pages existantes deviennent des notes du Brain OS, puis la fonction est retirée | Lot ménage |
-| Copilot | **Gardé**, à essayer | Rien n'est retiré | Phase 2 |
-| Code mort | **Supprimé** | La liste « Restes » de l'état des lieux | Lot ménage |
+| Élément | Décision | Ce qu'on fait |
+| --- | --- | --- |
+| Équipe : membres, équipes, invitations, charge, compétences | **Gardé, et élargi** : qui a quel rôle, quel périmètre, qui décide de quoi (§12.2) | Rien n'est retiré ; dans l'app desktop, ce qui ne marche pas encore reste masqué jusqu'au serveur d'équipe, avec une date de revue (R12) |
+| Inbox : Mentions | **Gardé** | Devient l'endroit où un agent appelle un humain : une vérification, une question, une décision (§7.4) |
+| Inbox : Assignments | **Fondu dans My Work** | Ce qui m'est assigné vit dans My Work |
+| GitHub et Slack | **Gardés, à faire marcher** | PC-060 se corrige en les rendant utilisables (§11.3) ; d'ici là, masqués dans l'app desktop avec une date de revue (R12) |
+| Public et Private | **Gardés, renommés** | C'est la visibilité dans l'espace, pas sur internet ; libellés proposés pour l'interface, en anglais : « Workspace » et « Collaborators only » |
+| Panneau Status | **Supprimé** | |
+| Textes écrits pour le web | **Réécrits pour l'app** | Confidentialité et mentions légales propres à l'app desktop, où les données restent sur l'ordinateur (`frontend/app/privacy-policy/page.tsx` n'a pas de version desktop) |
+| Pages des projets | **Supprimées** | Écrans, API, tables ; tout ira dans le Brain OS |
+| Front du Brain OS : navigation, arbre de pages, éditeur de notes, graphe | **Supprimé**, et le Brain OS sort du menu | Le moteur reste (sources, recherche, liens, notes) ; l'utilisateur ne navigue plus dedans et n'édite plus de note à la main ; il voit ce qui compte dans le panneau de contexte (§15) |
+| Copilot | **Gardé**, à essayer | |
+| Code mort | **Supprimé** | La liste « Restes » de l'état des lieux |
 
-**La règle du ménage** (Présidence) : on supprime ce qui est sûr, les Pages et le code mort. Dans le doute, on masque et
-on garde le squelette. Rien de ce qui peut servir la v2 n'est supprimé : interface, partage du travail, onboarding.
+**La règle du ménage** : on supprime ce qui est sûr. Ce qui attend une condition est masqué, avec une date de revue ;
+un élément masqué sans date de revue est candidat à la suppression (R12). Rien de ce qui peut servir la v2 n'est
+supprimé : partage du travail, onboarding, équipe.
 
-**Public et Private, ce que c'est aujourd'hui** : un projet Public est visible par tous les membres de l'espace ; un
-projet Private, par ses seuls collaborateurs. Ce n'est pas la visibilité sur internet d'un dépôt GitHub public. Dans
-l'app desktop, à une seule personne, le réglage n'a pas d'effet ; avec le serveur d'équipe, il en aura. Proposition :
-garder les deux, les nommer pour éviter la confusion avec GitHub (« Tout l'espace », « Collaborateurs seulement »), et,
-quand le projet est lié à un dépôt, afficher la visibilité du dépôt et s'en servir dans les règles : pousser vers un
-dépôt public expose le code, c'est irréversible (§6.2).
-
-**Les textes écrits pour le web, ce que c'est** : la politique de confidentialité et les mentions légales affichées
-dans l'app desktop sont celles de la webapp hébergée. Elles parlent du stockage des fichiers sur nos serveurs, de la
-mesure d'audience et des cookies, alors que dans l'app desktop les données restent sur l'ordinateur
-(`frontend/app/privacy-policy/page.tsx` n'a pas de version desktop). Proposition : écrire la version desktop de ces
-textes. Les textes d'équipe de la visite guidée et des agents restent, puisque l'équipe reste.
+**Une seule suppression de données** : retirer les tables des Pages efface ce que des utilisateurs y ont écrit, ce qui
+est irréversible. La migration qui les retire passe après une version qui les exporte dans le fichier d'espace, sauf
+décision contraire de la Présidence. Les notes du Brain OS restent : seul leur éditeur part.
 
 ## 2. Les invariants
 
 Ce qui ne se négocie pas, dans aucune règle, aucun réglage, aucune version.
 
-1. **L'autorité ne vit jamais dans l'agent.** Les règles sont évaluées hors du modèle, par du code déterministe. Aucun
-   texte lu par l'agent ne change une règle.
-2. **Aucun agent ne décide seul d'une action irréversible, ni de ce qui est irréversible** (R1). La table des classes
-   est écrite d'avance, par des personnes nommées.
-3. **Une action inconnue est irréversible.** Un outil ou une commande qu'aucune règle ne classe attend une décision
-   humaine.
+1. **L'autorité ne vit jamais dans l'agent.** L'agent exécute ce que la personne lui demande, apporte de l'information,
+   cherche sur le web ; il ne s'accorde aucun droit. Les règles sont évaluées hors du modèle, par du code déterministe,
+   gardé petit : une table et des conditions simples (§6.3). La quantité de code est un risque suivi, pas une
+   fatalité.
+2. **Aucun agent ne décide seul d'une action irréversible** (R1). La classe d'une action vient de règles écrites par
+   des personnes ; l'agent qui agit n'est pas juge de son propre risque. Cela ne l'empêche pas d'agir seul : ce que les
+   règles classent réversible part sans attendre, et c'est la plupart des actions. Pour les actions que les règles ne
+   classent pas encore, un amendement est en revue (§6.2).
+3. **Une action inconnue attend une décision humaine.** Un outil ou une commande qu'aucune règle ne classe est traité
+   comme irréversible.
 4. **Tracer avant d'agir.** L'intention est écrite dans le dossier avant l'action, le résultat après ; une panne entre
    les deux se voit.
-5. **Rien ne sort du bac à sable sans décision**, sauf ce que les règles déclarent réversible (R7').
-6. **L'agent ne voit jamais un secret.** Les jetons des outils restent sur le serveur ; l'agent passe par la porte.
-7. **Le contexte n'est jamais une instruction.** Un document, une note, une réponse d'outil sont des données ; ils ne
-   donnent aucun droit.
+5. **Rien ne sort du bac à sable sans décision**, sauf ce que les règles déclarent réversible (R7'). Le bac à sable est
+   une fonction clé du produit : sa conception, de l'usage à l'architecture, passe par le Conseil (§8).
+6. **L'agent ne voit jamais un secret.** La personne range ses secrets dans le coffre du projet ; l'agent s'en sert par
+   leur nom, et ils lui sont injectés au moment de l'action, sans entrer dans le contexte du modèle. Un texte qui
+   ressemble à un secret, collé dans une demande, est arrêté avant de partir (§13.8).
+7. **Le contexte n'est jamais une instruction, mais il peut nourrir une proposition.** Un document, une note, une
+   réponse d'outil sont des données : ils ne donnent aucun droit et ne changent aucune règle d'eux-mêmes. L'agent lit
+   vite et beaucoup : quand il voit qu'une source a bougé (une norme, un protocole, une réglementation), il propose de
+   mettre à jour une connaissance ou une règle, avec sa justification et sa source ; une personne décide.
 8. **Chaque décision a un auteur** : une personne nommée, ou une règle nommée avec son propriétaire.
 
 ## 3. Vocabulaire
@@ -177,29 +195,21 @@ Ce qui ne se négocie pas, dans aucune règle, aucun réglage, aucune version.
 C'est déjà la forme de la v1 : le runner réclame un run et lance Claude Code ; le serveur garde le run, la chronologie
 et les validations. La v2 la généralise.
 
-### 4.2 Le même code en local et en équipe
+### 4.2 Un code source, trois produits
 
-Le backend tourne déjà sous deux profils : embarqué dans l'app desktop (`application-desktop.yml`, Postgres local) et
-hébergé (la webapp). La v2 garde un seul code, et un espace vit à l'un de deux endroits :
-
-- **un espace local**, sur l'ordinateur : privé, utilisable sans réseau ;
-- **un espace d'équipe**, sur le serveur d'équipe (§12).
-
-Le runner et le harnais sont les mêmes dans les deux cas : le runner parle à un serveur TaskForce, local ou d'équipe.
+- **Trois produits**, comme claude.ai et l'app Claude : la webapp, l'app desktop (le .exe) et la version du Microsoft
+  Store. La webapp porte aussi l'API ; elle peut avoir moins de fonctions que l'app desktop, par exemple les agents
+  qui tournent sur l'ordinateur.
+- **Un seul code source** : le même backend tourne sous deux profils, hébergé pour la webapp et embarqué dans l'app
+  desktop (`application-desktop.yml`, Postgres local) ; le même front sert les deux (`IS_DESKTOP` pour les
+  différences).
+- **Deux places pour un espace** : un espace local, sur l'ordinateur, privé et utilisable sans réseau ; un espace
+  d'équipe, sur le serveur d'équipe (§12).
+- Le runner et le harnais sont les mêmes partout : le runner parle à un serveur TaskForce, local ou d'équipe.
 
 ### 4.3 Schéma
 
-```mermaid
-flowchart LR
-  P["Personne"] --> UI["App desktop"]
-  UI --> S["Serveur TaskForce<br/>local ou d'équipe<br/>règles, sources, preuves"]
-  R["Runner<br/>sur l'ordinateur"] -- "réclame une mission,<br/>reçoit les règles,<br/>envoie la trace" --> S
-  R -- "lance" --> A["Agent<br/>Claude Code, Codex..."]
-  A -- "travaille dans" --> B["Bac à sable"]
-  A -- "outils TaskForce et<br/>outils de l'entreprise" --> S
-  S -- "jetons gardés" --> T["Outils de l'entreprise<br/>MCP, API"]
-  A -- "envoie le contexte" --> M["Modèle<br/>cloud ou local"]
-```
+![Architecture de la v2 : le harnais](../../assets/diagrammes/architecture-v2-harnais.svg)
 
 La porte a deux gardes qui appliquent la même table : le runner pour les actions locales (fichiers, commandes), le
 serveur pour les outils (§7).
@@ -217,6 +227,62 @@ serveur pour les outils (§7).
 | `DeliverySessionScope` | Reste la garde du serveur ; les règles s'y ajoutent sans la remplacer |
 | Brain OS : une note, un vecteur, 4 000 caractères | Documents, versions, passages ; recherche hybride avec sources (§5) |
 
+### 4.5 Les choix d'architecture
+
+Proposition, en revue par le Conseil (séance n°4). Faits vérifiés le 28/10/2026 aux sources citées.
+
+**Un monolithe modulaire, pas des microservices.**
+
+- Un seul exécutable Spring Boot, découpé en modules dont les frontières sont vérifiées par des tests (Spring Modulith :
+  pas de cycle, accès aux seules interfaces publiques des modules). Les modules : identité et équipes, projets et
+  missions, contexte, règles, porte, preuve, connecteurs, fil.
+- Pourquoi : le même backend doit tenir dans l'app desktop, où chaque processus en plus coûte de la mémoire et du
+  temps de démarrage ; une seule équipe ; des transactions qui traversent les modules (une décision et sa trace).
+  Sources : M. Fowler, « MonolithFirst » et « MicroservicePremium » (2015) ; Segment, qui a refusionné ses services
+  (2018) ; Shopify et son monolithe modulaire (2019).
+- Ce qui sort du processus, seulement quand la mesure le justifie : l'extraction des documents (déjà dans un processus
+  enfant, §5.2) et le calcul des vecteurs (déjà hors du backend, par Ollama ou l'ai-service).
+
+**Java et Spring, à jour.**
+
+- Aujourd'hui : Java 21 et Spring Boot 4.0.6. Au 28/10/2026 : Spring Boot 4.1.2 et 4.0.9 (22/10), 4.2 attendue en
+  novembre ; Java 25 est la LTS en cours (16/09/2025), Java 27 la dernière version (15/09/2026).
+- Proposition : Spring Boot 4.0.9 tout de suite (correctifs), puis 4.1, puis 4.2 à sa sortie ; Java 25 LTS ensuite,
+  sans passer par 26 ni 27.
+- Démarrage de l'app desktop : elle lance un JDK 21 réduit, avec le JAR complet et sans archive de classes
+  (`desktop/src/backend.ts`). Dès Java 21 : une archive de classes (CDS) et le JAR extrait. En Java 25 : le cache AOT,
+  que Spring Boot ne documente qu'à partir de Java 25 ; il dépend de la machine et du chemin d'installation, donc il
+  se génère à l'installation ou au premier lancement. Gain à mesurer avant et après.
+- Ce que Java et Spring offrent déjà au harnais : les threads virtuels (Java 21), sans l'épinglage par
+  `synchronized` depuis Java 24 ; les valeurs à portée (Java 25), pour porter l'identité de la mission le long d'un
+  appel ; la résilience dans le cœur de Spring 7 (`@Retryable`, `@ConcurrencyLimit`) ; les clients HTTP déclaratifs
+  (`@HttpExchange`) pour le connecteur OpenAPI ; le versionnement d'API, pour la webapp qui porte l'API ; Jackson 3,
+  Jackson 2 étant déprécié alors que le code en utilise encore.
+
+**L'outbox et les tâches.**
+
+- Le registre de publication d'événements de Spring Modulith écrit chaque événement dans la transaction métier et le
+  rejoue s'il n'a pas abouti : c'est « tracer avant d'agir » à l'intérieur du serveur. La livraison est au moins une
+  fois, donc chaque consommateur est idempotent.
+- Les missions et les sorties : nos tables PostgreSQL, réclamées par `SKIP LOCKED`, avec bail et clé d'idempotence
+  (§13.2), ou db-scheduler (Apache 2.0, compatible Spring Boot 4) s'il couvre le besoin. Pas JobRunr dans sa version
+  libre : la mise en file dans la transaction y est payante.
+
+**MCP.**
+
+- Le serveur et le client MCP sont écrits à la main (`McpServerController`, `McpServerService`, `McpClient`).
+  Proposition : le SDK Java officiel (2.1.0, révision 2025-11-25 du protocole), par Spring AI 2.0, pour le protocole ;
+  l'autorisation et la politique de la porte restent les nôtres, le SDK n'en fournit pas. Suivre le SDK 2.2 pour la
+  révision du 28/07/2026.
+- Le projet MCP classe le SDK Java au deuxième niveau de maturité, derrière ceux de TypeScript et de Python : nos tests
+  de conformité restent de notre côté.
+
+**L'agent interne.**
+
+- Spring AI 2.0 appelle des outils avec Ollama. Embabel (Apache 2.0, Spring Boot 4.1) planifie les étapes d'un agent
+  par un algorithme, le modèle ne faisant que remplir les étapes : c'est l'hypothèse « la décision vit dans
+  l'architecture ». À comparer avec la boucle de Cortex avant de choisir.
+
 ## 5. Le contexte : ce que l'agent sait
 
 ### 5.1 Documents et versions
@@ -229,14 +295,18 @@ ses passages vivent dans leurs propres tables (migrations V102 et suivantes, la 
 - `document_passages` : la version, l'ordre, le chemin de section (« 3.1.2.4 Keep Alive »), les pages de début et de
   fin, le texte, son vecteur (`vector(1024)` et `embedding_model`, comme V94), son `tsvector` indexé.
 
-Une version ne se modifie jamais : on en importe une nouvelle.
+Une version ne se modifie jamais : chaque import en crée une nouvelle (la version, c'est l'upload). Le fichier va dans
+le stockage d'objets déjà en place : MinIO pour la webapp, le dossier de l'app pour l'app desktop (`ObjectStorage`,
+`LocalObjectStorage` sous `<données de l'app>/files`).
 
 ### 5.2 L'import
 
 - Formats d'abord : PDF avec du texte, Word (.docx), Markdown, texte, HTML ; un dossier entier ; un coffre Obsidian,
   qui est déjà le format du Brain OS.
-- Extraction en Java, avec Apache Tika (licence Apache 2.0), dans le backend : pas de nouveau service. Les PDF scannés
-  (images) attendent : pas de reconnaissance de texte en v2.0.
+- Extraction en Java avec Apache Tika (licence Apache 2.0 ; la 3.3.3 demande Java 11, la 4.1.0 Java 17) : PDF par
+  PDFBox, Word par POI. L'extraction tourne dans un processus enfant, relancé s'il manque de mémoire ou dépasse son
+  délai, et le backend réessaie : un fichier piégé ne fait pas tomber le serveur. Les PDF scannés (images) attendent :
+  pas de reconnaissance de texte en v2.0.
 - Bornes : taille, nombre de pages, durée et mémoire de l'extraction. Un fichier qui dépasse est refusé avec un message
   qui dit pourquoi.
 - L'extraction tourne en tâche de fond et reprend après un redémarrage : son état est en base.
@@ -249,12 +319,14 @@ Une version ne se modifie jamais : on en importe une nouvelle.
 - Chaque passage garde son chemin de section et ses pages : c'est ce qui rend une source citable.
 - Les vecteurs se calculent en tâche de fond, comme aujourd'hui (`BrainEmbeddingIndexer`), mais par passage. La limite
   de 4 000 caractères par note disparaît : les notes longues se découpent aussi.
-- Le plein texte a un `tsvector` stocké et un index GIN ; aujourd'hui, il n'est qu'un repli sans index.
+- Le plein texte a une colonne `tsvector` générée et stockée, avec un index GIN, comme dans l'exemple de la
+  documentation de PostgreSQL ; aujourd'hui, il n'est qu'un repli sans index.
+- pgvector 0.8.7 indexe en HNSW jusqu'à 2 000 dimensions ; nos vecteurs en ont 1 024.
 
 ### 5.4 Recherche hybride et sources
 
 - Deux recherches en parallèle, par le sens (pgvector) et par le texte exact (termes, numéros de clause), fusionnées
-  par rang (Reciprocal Rank Fusion), après filtrage par les droits (§5.6).
+  par rang (Reciprocal Rank Fusion : Cormack, Clarke et Büttcher, SIGIR 2009), après filtrage par les droits (§5.6).
 - Chaque résultat porte sa source : document, version, chemin de section, pages, extrait. Le format est le même dans
   l'interface, dans `brain_search` et dans le dossier de preuve.
 - `brain_search` rend des passages sourcés, plus des notes entières.
@@ -278,6 +350,9 @@ Pour le premier cas d'usage, l'agent ne relit pas deux fois des centaines de pag
 - Chaque document a un niveau de sensibilité, « interne » par défaut. Une règle dit vers quels modèles il peut partir :
   par exemple, « confidentiel » ne part que vers un modèle local. Quand l'agent délégué utilise un modèle dans le
   cloud, `brain_search` ne lui rend pas ces passages, et la trace le dit.
+- Pour les domaines les plus sensibles (la défense, par exemple), un espace peut tout verrouiller : modèles locaux
+  seulement, aucun connecteur sortant, documents sous la sensibilité la plus haute. Le détail se conçoit avec un
+  client du domaine.
 - Le contexte n'est jamais une instruction (invariant 7) : un document qui contient « ignore tes règles » ne change
   aucun droit. La banque de tests le vérifie (§16).
 
@@ -330,6 +405,14 @@ rules:
 Le défaut est permissif pour le réversible et strict pour l'irréversible : « tout est vert, ça passe » (séance n°2).
 L'entreprise change la table ; chaque changement a son auteur.
 
+**Amendement en revue : les actions que la table ne classe pas.** Aujourd'hui, une action inconnue attend un humain
+(invariant 3). La Présidence craint qu'au début un agent n'agisse alors presque jamais seul. Proposition : un
+classificateur indépendant de l'agent qui agit (un autre modèle, d'un autre fournisseur quand c'est possible) propose
+une classe, avec un niveau de confiance. Au-dessus d'un seuil réglé par l'entreprise, une action jugée réversible, dont
+l'action inverse est connue, part et se trace, et sa classe devient une règle proposée à son propriétaire. En dessous,
+on demande. Cet amendement touche la seconde moitié de R1 telle qu'elle a été ratifiée : il passe par le Conseil, puis
+par la Présidence.
+
 ### 6.3 Combiner les règles
 
 - L'espace pose les règles de l'entreprise. Un projet peut les resserrer, pas les desserrer, sauf par le propriétaire
@@ -373,20 +456,30 @@ table.
 
 ### 7.1 Les actions locales de l'agent
 
-- Pour Claude Code, la liste des outils autorisés d'avance (`--allowedTools`) se construit depuis le paquet de règles
-  (lecture, écriture dans le bac à sable) au lieu d'être codée en dur.
-- Le reste arrive au hook `PermissionRequest`, déjà servi par le runner. Le runner juge la règle sur place : il
-  autorise ou refuse seul, et ne transmet à l'humain que « demander ».
-- Chaque action, autorisée d'avance ou non, est tracée depuis le flux `stream-json`, déjà relayé par le runner.
-- Un mode strict, pour les espaces qui le demandent : un hook `PreToolUse` juge aussi les actions autorisées d'avance.
-  À vérifier sur Claude Code 2.1.293 et suivants : l'enchaînement avec `PermissionRequest` et le temps ajouté.
+- Pour la personne, tout reste simple : elle appelle un agent, un outil, une source ou une règle par `/` et `@`, depuis
+  sa demande (§15). La porte travaille en dessous, sans se montrer.
+- Pour Claude Code, un hook `PreToolUse` juge chaque action : il passe avant tout appel d'outil, y compris ceux qui
+  sont autorisés d'avance (documentation des hooks, consultée le 28/10/2026). Le runner le sert en local et juge la
+  règle sur place : autoriser ou refuser.
+- « Demander » ne passe pas par `PreToolUse` : en mode sans interface, un « ask » y finit en refus. L'action à demander
+  n'est pas autorisée d'avance, ce qui l'envoie au hook `PermissionRequest`, déjà servi par le runner : c'est là que
+  l'humain décide, comme en v1. L'enchaînement exact est à tester.
+- Un hook HTTP injoignable laisse passer l'appel, sauf avec `onFailure: "block"`, qui demande Claude Code 2.1.295. La
+  version minimale passe donc de 2.1.293 à 2.1.295 au moins (la dernière est la 2.1.312, du 27/10/2026), et l'app le
+  vérifie avant chaque mission, plus seulement par `--check`.
+- Claude Code tourne avec une configuration à lui : un module installé par la personne peut, d'après la
+  documentation, lever un blocage de hook quand il n'y a pas de réglages gérés. Le moyen d'isoler cette configuration
+  est à vérifier.
+- `--allowedTools` se construit depuis le paquet de règles, au lieu d'être codé en dur.
+- Chaque action est aussi tracée depuis le flux `stream-json`, déjà relayé par le runner.
 - Une commande se juge sur sa forme analysée (programme, sous-commande, arguments), pas sur son texte : `npm test` n'est
   pas `npm publish`. Une commande composée (`&&`, `|`, `;`) se juge morceau par morceau. Ce qui ne s'analyse pas est
   inconnu, donc demandé.
 
 ### 7.2 Les outils de TaskForce
 
-Le serveur MCP de l'espace (`POST /api/workspaces/{slug}/mcp`) juge chaque appel avec la même table.
+Le serveur MCP de l'espace (`POST /api/workspaces/{slug}/mcp`) juge chaque appel avec la même table. Il est refait sur
+le SDK officiel (§4.5).
 `DeliverySessionScope` reste la garde du serveur : l'agent n'écrit que dans le projet de sa mission et ne supprime rien.
 
 ### 7.3 Les outils de l'entreprise
@@ -401,6 +494,9 @@ Le serveur MCP de l'espace (`POST /api/workspaces/{slug}/mcp`) juge chaque appel
 - Pour classer l'outil d'un serveur MCP, son nom, sa description et ses annotations (lecture seule, destructeur)
   aident à proposer une classe ; une personne la confirme. Une annotation venue du serveur n'est jamais crue seule
   (invariant 7).
+- **Connecter à la demande**, sur le modèle de Claude : selon la tâche, l'agent ou TaskForce propose les outils utiles
+  (prendre un rendez-vous avec un client : un agenda, un outil de prise de rendez-vous, une visio) ; un clic lance la
+  connexion, et l'outil passe ensuite par la porte comme les autres.
 
 ### 7.4 La décision humaine
 
@@ -409,8 +505,9 @@ Le serveur MCP de l'espace (`POST /api/workspaces/{slug}/mcp`) juge chaque appel
 - Elle arrive dans Mentions (« un agent vous appelle »), sur l'issue, et en notification du système.
 - Une seule durée d'attente, réglée par espace et appliquée par le serveur ; aujourd'hui, le runner et le serveur ont
   chacun la leur. Sans décision à l'échéance, c'est un refus.
-- Décide la personne qui a délégué, ou le propriétaire désigné par la règle (pour un paiement, la personne qui en
-  répond).
+- Décide la personne que la matrice des rôles désigne pour ce domaine (§12.2) ; à défaut, la personne qui a délégué.
+  Pour un paiement, la personne qui en répond.
+- C'est la partie la plus importante du harnais : sa conception passe par le Conseil avant le code (séance n°4).
 - La décision est tracée : qui, quand, sur quelle preuve, sous quelle version des règles.
 
 ### 7.5 L'action inverse
@@ -426,6 +523,8 @@ Le serveur MCP de l'espace (`POST /api/workspaces/{slug}/mcp`) juge chaque appel
 - Un relecteur automatique, distinct de l'agent qui a produit : un autre modèle, d'un autre fournisseur quand c'est
   possible. Il suit une liste de points à vérifier et garde une partie libre (décision de la Présidence sur R4).
 - Son avis entre au dossier ; il ne décide pas à la place de l'humain.
+- Son avis doit donner envie d'être lu : court, en langage clair, l'essentiel d'abord. Sa forme se dessine avec
+  l'atelier design avant d'être codée (R13).
 
 ## 8. Le bac à sable
 
@@ -433,6 +532,9 @@ Le serveur MCP de l'espace (`POST /api/workspaces/{slug}/mcp`) juge chaque appel
 
 L'agent travaille sur une copie, librement (« libre mais encadré »). Il rejoue le workflow complet avec ses tests, pour
 voir comment ça réagit. Rien n'en sort sans décision, sauf le réversible autorisé par les règles.
+
+C'est une fonction clé du produit, peut-être la plus visible : à quoi il sert pour la personne, ce qu'elle en voit,
+comment il est construit. Il se conçoit avec le Conseil et l'atelier design avant le code (séance n°4).
 
 ### 8.2 Les niveaux
 
@@ -443,9 +545,10 @@ voir comment ça réagit. Rien n'en sort sans décision, sauf le réversible aut
 | S2 | Les outils : les écritures vers l'extérieur deviennent des actions proposées, ou vont vers un environnement de test (mode test d'un service de paiement, préproduction) | Phase 2 |
 | S3 | La machine : processus isolé, réseau filtré (seulement les dépôts de paquets et le serveur TaskForce) | À étudier |
 
-**S3 sous Windows** : pas de solution simple pour tout le monde. Windows Sandbox n'existe pas sur l'édition Famille, et
-Docker n'est pas installé partout. Pistes à vérifier : l'isolation proposée par l'agent lui-même, WSL, un conteneur
-quand il existe.
+**S3 sous Windows** : pas de solution simple pour tout le monde. Windows Sandbox n'existe pas sur l'édition Famille
+(documentation Microsoft, 08/10/2026) ; Docker n'est pas installé partout ; le bac à sable de Claude Code couvre macOS,
+Linux et WSL2, pas Windows natif. Pistes : WSL2 quand il est installé ; l'isolation native de Codex sous Windows 11
+24H2 et suivants ; un conteneur quand il existe.
 
 ### 8.3 Les tests de cas d'usage
 
@@ -517,16 +620,35 @@ suivre ses événements, l'arrêter, dire ce que l'agent permet (hooks, MCP, flu
 
 | Niveau | Agents | Ce que le harnais tient |
 | --- | --- | --- |
-| Complet | Agents en ligne de commande, avec hooks et MCP, lancés par le runner : Claude Code (fait) ; Codex et l'agent en ligne de commande de Cursor (à vérifier) | Chaque action, le bac à sable, les sources |
-| Aux frontières | Agents qui travaillent dans le cloud d'un fournisseur : GitHub Copilot (branché, jamais essayé) | La demande, la pull request, les règles du dépôt ; pas les actions intermédiaires |
-| Interne | Un modèle local ou une API compatible OpenAI, piloté par une boucle d'agent de TaskForce | Tout : TaskForce tient la boucle |
+| Complet | Claude Code (fait) : hooks avant chaque action, décision humaine par `PermissionRequest` | Chaque action, le bac à sable, les sources, la décision humaine |
+| Interne | Un modèle local (Ollama) ou une API compatible OpenAI, piloté par une boucle d'agent de TaskForce | Tout : TaskForce tient la boucle |
+| Partiel | Codex, l'agent en ligne de commande de Cursor, Gemini CLI : MCP et règles autoriser ou refuser, mais pas de « demander » en mode sans interface ; la documentation de Codex dit elle-même que ses hooks ne sont pas une frontière complète | Autoriser et refuser ; ce qui devrait être demandé est refusé, ou la mission s'arrête et reprend après la décision |
+| Aux frontières | GitHub Copilot, qui travaille dans le cloud de GitHub (branché, jamais essayé) | La demande, la pull request, les règles du dépôt ; pas les actions intermédiaires |
 
-L'interface dit à la personne ce que le harnais voit de l'agent qu'elle choisit.
+L'interface dit à la personne ce que le harnais voit de l'agent qu'elle choisit. Faits vérifiés le 28/10/2026 dans la
+documentation de chaque outil ; ils changent vite et se revérifient à chaque version.
 
 ### 10.3 L'ordre
 
-Claude Code (fait) ; Copilot (gardé, à essayer) ; puis par usage : Codex, Cursor, un modèle local par la boucle interne
-(Ollama). Les modèles passent, l'adaptateur reste : on mise sur l'entreprise, pas sur les défauts des modèles.
+Claude Code (fait) ; la boucle interne avec un modèle local, pour les essais de la Présidence ; Copilot (gardé, à
+essayer) ; puis par usage : Codex, Cursor. Les modèles passent, l'adaptateur reste : on mise sur l'entreprise, pas sur
+les défauts des modèles.
+
+### 10.4 Les modèles locaux
+
+- **L'hypothèse** (rappel de la Présidence, séance n°2) : quand la décision vit dans l'architecture (règles, sources,
+  étapes, tests), un petit modèle local doit suffire à tout ou partie des tâches. Elle se mesure (§16.2, famille 7).
+- **Trouver les modèles** : dans l'app desktop, TaskForce trouve Ollama sur l'ordinateur, liste les modèles installés
+  (`/api/tags`) et leurs capacités (`/api/show` rend un champ `capabilities` depuis Ollama 0.6.4 : outils, vecteurs,
+  raisonnement, vision).
+- **Choisir par tâche** : vecteurs, lecture, analyse, relecture. Le choix vient des résultats de la banque de tests sur
+  cet ordinateur ; la personne peut changer à tout moment.
+- **Faire travailler un modèle local** : la boucle interne de TaskForce (la boucle d'outils de Cortex, étendue aux
+  missions), qui garde le harnais complet. Ollama sait aussi faire tourner Claude Code sur un modèle local (API
+  compatible avec celle d'Anthropic depuis Ollama 0.14.0), mais Anthropic ne prend pas en charge Claude Code sur un
+  autre modèle que les siens : ce n'est pas le chemin par défaut. Codex sait passer par Ollama (`--oss`), avec le
+  niveau partiel du §10.2.
+- **Le relecteur** (R15), avec des modèles locaux : un modèle d'une autre famille que celui qui a produit.
 
 ## 11. Les connecteurs
 
@@ -549,20 +671,40 @@ part, avant la phase 4.
 ### 11.3 Dans l'app desktop
 
 - **PC-059** : la connexion MCP en un clic doit revenir vers le backend de l'app, dont le port change à chaque
-  lancement. Piste : une adresse de retour en boucle locale (`127.0.0.1`), que la RFC 8252 prévoit pour les
-  applications natives ; à vérifier avec les fournisseurs du catalogue.
+  lancement. La RFC 8252 (§7.3) demande d'accepter n'importe quel port pour une adresse de retour en boucle locale
+  (`127.0.0.1`). La spécification MCP (révision du 28/07/2026) veut des adresses de retour « localhost ou HTTPS »,
+  comparées exactement, et préfère désormais les documents de métadonnées de client à l'enregistrement dynamique,
+  déclaré obsolète. Un port qui change est donc à tester fournisseur par fournisseur. Repli : l'adresse de retour
+  passe par le serveur d'équipe, en HTTPS, quand il existe.
 - **PC-060** : GitHub et Slack doivent marcher dans l'app (décision du 27/10/2026). GitHub par le `gh` de la personne,
-  déjà utilisé pour Copilot et les pull requests ; Slack par son OAuth, avec la même adresse de retour locale (à
-  vérifier : Slack l'accepte-t-il ?).
+  déjà utilisé pour Copilot et les pull requests. Slack exige une adresse de retour en HTTPS ; une adresse locale n'est
+  acceptée qu'après l'activation de PKCE pour l'app Slack, qui est irréversible, et sans les droits d'un bot
+  (documentation Slack). Proposition : Slack passe par le serveur d'équipe, en HTTPS ; dans un espace local seul, il
+  reste masqué avec une date de revue (R12).
 
-## 12. Les équipes dans l'app desktop
+## 12. Les équipes
 
 ### 12.1 Ce que veut la Présidence
 
-Garder tout ce qui sert une équipe (membres, équipes, invitations, charge, compétences), parce que c'est du contexte ;
-travailler à plusieurs depuis l'app desktop ; un serveur derrière s'il le faut, sur un VPS OVH.
+Garder tout ce qui sert une équipe, parce que c'est du contexte : pas seulement qui sait faire quoi, mais qui a quel
+rôle, quel périmètre, qui est propriétaire de quoi, qui peut décider de quelle partie. Chacun est encouragé à être
+proactif : un développeur sert un produit qui sert un client ; il connaît le client, le produit et l'entreprise, pour
+tirer l'entreprise vers le haut. Travailler à plusieurs, depuis la webapp comme depuis l'app desktop, avec un serveur
+d'équipe sur un VPS OVH, pris dès que possible.
 
-### 12.2 Proposition : exécution locale, gouvernance partagée
+### 12.2 La matrice des rôles
+
+- À chaque niveau (entreprise, espace, équipe, projet), chaque personne a un rôle et un périmètre. Pour chaque domaine
+  du travail (une partie du produit, une règle, un connecteur, un budget), on sait qui réalise, qui décide et en
+  répond, qui est consulté, qui est informé : une matrice RACI.
+- Le harnais la lit : à qui demander une décision (§7.4), qui est propriétaire d'une règle (§6.1), qui revoit quoi,
+  qui est prévenu d'un résultat.
+- Les permissions suivent des grades. Elles prolongent les rôles actuels au lieu de les remplacer : espace
+  (`OWNER`, `ADMIN`, `MEMBER`), équipe (`LEAD`, `MEMBER`), projet (`LEAD`, `MEMBER`, `VIEWER`). Le niveau entreprise
+  est nouveau.
+- Les compétences et la charge, déjà là (`member_skill_profiles`), restent : elles disent qui sait faire quoi.
+
+### 12.3 Exécution locale, gouvernance partagée
 
 - Un espace d'équipe vit sur le serveur d'équipe : membres, projets, sources, règles et dossiers de preuve partagés.
 - Chacun travaille depuis son app desktop, qui affiche ses espaces locaux et ses espaces d'équipe. Le compte est déjà en
@@ -572,7 +714,7 @@ travailler à plusieurs depuis l'app desktop ; un serveur derrière s'il le faut
   calcule pas, ce qui le garde petit.
 - Un espace local devient un espace d'équipe par le fichier d'espace (existe depuis la 1.2.0, `WorkspaceBundleService`).
 
-### 12.3 Deux façons de le construire
+### 12.4 Deux façons de le construire
 
 | | A. L'app ouvre l'espace d'équipe du serveur | B. L'app parle à deux serveurs |
 | --- | --- | --- |
@@ -580,13 +722,25 @@ travailler à plusieurs depuis l'app desktop ; un serveur derrière s'il le faut
 | Effort | Faible : la webapp existe ; il faut l'ouverture sécurisée dans la coque et le runner relié au serveur d'équipe | Élevé : chaque appel choisit son serveur ; sessions, temps réel et fichiers en double |
 | Risque | Un contenu distant dans la coque : à verrouiller (origine autorisée, aucun accès au système) | Complexité, bugs aux frontières |
 
-Recommandation : **A**, puis converger si un besoin le justifie.
+Décision : **A d'abord** (Présidence, 28/10/2026), puis converger si un besoin le justifie.
 
-### 12.4 Le serveur d'équipe
+### 12.5 Le serveur d'équipe
 
-- Le backend hébergé actuel, installé sur un VPS OVH en France ; le choix de l'offre revient à la Présidence.
+- Le backend hébergé actuel, installé sur un VPS OVH en France, pris dès que possible ; le choix de l'offre revient à
+  la Présidence.
 - Sans réseau : les espaces locaux marchent entièrement. Un espace d'équipe n'est pas joignable ; une mission en cours
   continue dans son bac à sable, ses traces attendent le retour du réseau, et toute sortie ou décision attend.
+
+### 12.6 Le fil de l'équipe
+
+- « Plusieurs personnes sur le même chat » (Présidence) : ce n'est pas une messagerie. Tout ce qui passe par l'app et
+  produit quelque chose (une délégation, un résultat, une décision, une proposition de mise à jour) est noté,
+  documenté, et visible de l'équipe selon ses droits, en temps réel, comme dans Asana ou Slack : chacun sait ce que
+  chacun fait. Une simple question posée à Cortex ne s'y écrit pas forcément.
+- Le fil se nourrit des dossiers de preuve (§9) : une seule trace, deux lectures, celle de l'équipe et celle de
+  l'auditeur.
+- Le temps réel existe déjà (STOMP, notifications). La forme du fil est à repenser avec l'atelier design ; le chat
+  entre humains retiré le 11/07/2026 (migration V64) n'est pas ce qu'on refait.
 
 ## 13. Scalabilité et robustesse
 
@@ -666,8 +820,18 @@ les équipes sans ordinateur allumé, avec les mêmes baux et les mêmes règles
 
 ### 13.8 Sécurité
 
-- **Secrets** : jamais dans l'environnement de l'agent (déjà nettoyé par le runner) ni dans le bac à sable ; les jetons
-  des outils restent sur le serveur (invariant 6).
+- **Secrets** : jamais dans l'environnement de l'agent (déjà nettoyé par le runner), ni dans le bac à sable, ni dans le
+  contexte du modèle (invariant 6).
+  - Un coffre par projet, à la manière de Supabase : la personne y range ses clés, mots de passe et jetons. Ils sont
+    chiffrés en base avec la clé de l'app (`security.encryption-key`, qui chiffre déjà les jetons des connecteurs).
+  - L'agent s'en sert par leur nom. Pour un outil, la porte met la valeur côté serveur, comme pour les jetons des
+    connecteurs aujourd'hui. Pour une commande lancée par l'agent, le runner la met au moment de l'exécution (le
+    mécanisme est à vérifier avec les hooks de Claude Code). Toute sortie et toute trace masquent la valeur.
+  - Ce que la personne écrit est analysé avant de partir vers un modèle : formats connus, entropie, vérification quand
+    elle est possible. Les règles libres de gitleaks (licence MIT) se reprennent en Java avec RE2/J ; aucune
+    vérification ne part vers un fournisseur sans l'accord de la personne. Un secret détecté est arrêté, et la
+    personne choisit : le ranger dans le coffre, ou l'envoyer quand même par une commande explicite (`/secret`), par
+    exemple pour un mot de passe de test.
 - **Injection** : tout ce que l'agent lit est une donnée (invariant 7) ; les règles ne dépendent jamais d'un texte lu.
   La banque de tests contient des attaques (§16).
 - **Fuite** : une commande réseau qui sort du bac à sable est une sortie, classée par les règles ; le niveau S3 la
@@ -689,6 +853,12 @@ les équipes sans ordinateur allumé, avec les mêmes baux et les mêmes règles
 ## 15. Ce que voit l'utilisateur
 
 - Le harnais est invisible pour l'utilisateur et lisible pour l'auditeur (séance n°2).
+- **Le panneau de contexte**, à droite, à la manière de Claude : tout ce qui compte pour la tâche en cours, sans
+  naviguer nulle part. Les résultats, les versions publiées, les fichiers Markdown, les sources, les connecteurs,
+  l'environnement de la mission. Une note s'ouvre dans ce panneau ; personne n'édite plus une note à la main, et le
+  Brain OS n'a plus d'écran à lui (§1).
+- **Importer** un document se fait depuis ce panneau, par glisser-déposer ; au sprint, sous sa forme la plus simple.
+- **`/` et `@`** : appeler un agent, un outil, une source ou une règle, depuis la demande.
 - **La carte de résultat**, sur l'issue : le résultat (la pull request, le rapport), trois à cinq contrôles choisis par
   l'entreprise (vert, rouge, en attente), une décision (accepter, refuser, demander une reprise), « Défaire » quand
   c'est possible. En dessous, pour qui le demande : la fabrication (règles, étapes, sources) et l'export du dossier.
@@ -696,6 +866,9 @@ les équipes sans ordinateur allumé, avec les mêmes baux et les mêmes règles
 - Pour le premier cas d'usage, trois contrôles par défaut : affirmations sourcées, sections traitées, aucune action
   irréversible sans décision.
 - Une personne, un geste : déléguer reste un choix dans le menu Assignee.
+- **Le dessin avant le code** (R13) : la carte de résultat, le panneau de contexte, les demandes de décision, l'avis du
+  relecteur et le bac à sable se dessinent d'abord, par l'atelier design du Conseil, en s'appuyant sur des interfaces
+  qui marchent déjà (des bibliothèques de références comme Mobbin ou Lapa Ninja).
 
 ## 16. La mesure et la banque de tests
 
@@ -719,13 +892,18 @@ Six familles ; pour chaque cas, le résultat attendu est écrit avant de lancer.
 2. **Porte** : le runner et un faux agent (il existe) rejouent des suites d'actions écrites d'avance ; on vérifie les
    décisions et les traces.
 3. **Contexte** : un corpus public à plusieurs versions, libre de droits (proposition : MQTT 3.1.1 et 5.0, publiés par
-   OASIS, à vérifier) ; des questions dont la réponse et la source sont connues. Mesures : la bonne source parmi les
+   OASIS et téléchargeables librement ; la notice d'OASIS permet de les copier sans les modifier, notice jointe, ce
+   qu'un avis juridique confirmera ; la 5.0 résume ses nouveautés en annexe C, qui sert de vérité pour l'écart entre
+   versions) ; des questions dont la réponse et la source sont connues. Mesures : la bonne source parmi les
    premiers résultats, la citation exacte, l'alignement des versions.
 4. **Bout en bout** : des analyses d'impact complètes sur ce corpus et un projet libre qui l'utilise ; puis sur le vrai
    cas d'usage.
 5. **Attaques** : injection dans un document ou une réponse d'outil, tentative de modifier les règles depuis le bac à
    sable, commande réseau vers l'extérieur, recherche de secrets.
 6. **Pannes** : runner tué en pleine mission, serveur coupé, paquet de règles absent, événements en double.
+7. **Modèles** : les mêmes tâches, avec les petits modèles locaux de la Présidence et avec un grand modèle. C'est le test
+   de l'hypothèse « la décision vit dans l'architecture » (§10.4) ; le résultat sert aussi à choisir le modèle de
+   chaque tâche sur un ordinateur donné.
 
 ### 16.3 Le protocole (R8)
 
@@ -753,8 +931,13 @@ son projet, vieux de vingt-cinq ans, sort en nouvelle version.
 
 ## 18. Le sprint de trois jours
 
-**Objectif** : le premier cas d'usage de bout en bout, sur le corpus public, avec un harnais v0 et la banque de tests,
-dans l'app desktop. Un seul parcours : ce qui n'y est pas sort du sprint.
+**Avant le sprint** : la demi-journée de ménage (§1, R10).
+
+**Objectif** : le premier cas d'usage de bout en bout, sur le corpus public, avec un harnais v0 et la banque de tests.
+Un seul parcours (R11) : ce qui n'y est pas sort du sprint. On travaille sur la webapp, en local dans Docker ; puis une
+version de l'app desktop est publiée, et la Présidence l'essaie avec ses petits modèles locaux.
+
+**Le dessin d'abord** : la carte de résultat se dessine au jour 1, par l'atelier design (R13), et se code au jour 3.
 
 | Jour | Livre | Fini quand |
 | --- | --- | --- |
@@ -772,33 +955,50 @@ automatique, l'éditeur de harnais, le serveur d'équipe, les autres agents, PC-
 
 | Étape | Contenu |
 | --- | --- |
-| Lot ménage | Panneau Status masqué ; Pages migrées vers le Brain OS puis retirées ; code mort supprimé ; PC-061 et PC-062 corrigés |
 | Phase 2 : la porte complète | Outils de l'entreprise par la porte (§7.3) ; actions proposées (S2) ; relecteur automatique (§7.6) ; Mentions comme appel à un humain ; durée de décision unique ; identité d'agent marquée ; PC-059 et PC-060 ; essai de Copilot |
 | Phase 3 : les équipes | Serveur d'équipe sur le VPS ; espaces d'équipe dans l'app desktop (§12) ; runner relié au serveur d'équipe |
 | Phase 4 : élargir | Autres agents (§10.3) ; connecteurs par usage (§11.2) ; éditeur de harnais et modèles par métier ; isolation de la machine (S3) |
-| Ensuite | La version du Store, puis la webapp, reçoivent les mêmes changements |
+| Ensuite | La version du Store reçoit les mêmes changements ; la webapp revient en ligne sur le VPS |
 
-## 20. À trancher par la Présidence
+Les petits défauts PC-061 et PC-062 se corrigent pendant le ménage, s'ils tiennent dans la demi-journée ; sinon en
+phase 2.
 
-1. **Le ménage avant ou après le sprint.** La revue du Conseil recommande avant, en une demi-journée (R10 du
-   [PV n°3](../../recherche/conseil/seances/2026-10-27-menage-spec-v2.md)).
-2. **Assignments** : (a) le fondre dans My Work, ce qui m'est assigné ; (b) en faire « qui fait quoi » de l'équipe,
-   humains et agents ; (c) le masquer jusqu'au serveur d'équipe.
-3. **Public et Private** : les nouveaux noms, et le lien avec la visibilité du dépôt (§1).
-4. **Les textes de confidentialité et les mentions légales** : en écrire une version desktop (§1).
-5. **Les équipes** : approche A ou B (§12.3), et le moment du VPS.
-6. **« Plusieurs personnes sur le même chat »** : une conversation avec Cortex partagée entre membres, ou une
-   messagerie d'équipe ? Le chat temps réel a été retiré le 11/07/2026 (migration V64).
-7. **La table par défaut** (§6.2) : en particulier, pousser la branche de l'agent vers un dépôt privé sans attendre.
-8. **Le corpus public** de la banque de tests (§16.2).
-9. **Les recommandations R10 à R15** de la revue du Conseil ([PV n°3](../../recherche/conseil/seances/2026-10-27-menage-spec-v2.md)).
+## 20. Décisions et points ouverts
+
+**Décidé par la Présidence le 28/10/2026** : le ménage avant le sprint (R10) ; un seul parcours (R11) ; on ne montre
+que ce qui marche, le reste est masqué avec une date de revue (R12) ; la carte de résultat dessinée avant d'être codée,
+par l'atelier design (R13) ; des règles d'admission publiques pour les agents et les connecteurs (R14) ; un relecteur
+d'un autre fournisseur que l'agent (R15) ; Assignments fondu dans My Work ; Public et Private renommés ; les textes
+réécrits pour l'app ; l'approche A pour les équipes, le VPS dès que possible ; un fil de l'équipe plutôt qu'une
+messagerie, à repenser. Recommandations : [PV n°3](../../recherche/conseil/seances/2026-10-27-menage-spec-v2.md).
+
+**Reste à trancher**
+
+1. **L'amendement de R1** pour les actions que les règles ne classent pas (§6.2), après la revue du Conseil.
+2. **Les choix d'architecture** (§4.5), après la revue du Conseil.
+3. **La table par défaut** (§6.2), en particulier : pousser la branche de l'agent vers un dépôt privé sans attendre.
+4. **Le corpus public** de la banque de tests (§16.2).
+5. **Les Pages** : exporter ce que des utilisateurs y ont écrit avant de retirer leurs tables (§1).
+6. **Les libellés** de Public et Private (proposés : « Workspace », « Collaborators only »).
+7. **Les recommandations R16 à R26 de la revue du Conseil**
+   ([PV n°4](../../recherche/conseil/seances/2026-10-28-revue-spec-v2.md)) : les contrats d'abord (R16) ; un garde
+   fermé par défaut (R17) ; l'amendement de R1 par paliers, avec un juge non agentique dont l'erreur est mesurée avant
+   qu'il décide (R18) ; un aperçu des effets avant toute décision (R19) ; l'agent interne avec un petit modèle local sur
+   le parcours du sprint (R20) ; une demande de décision conçue contre l'erreur (R21) ; les mots du harnais gardés
+   internes, trois gestes pour l'utilisateur (R22) ; un mode dégradé décidé d'avance (R23) ; un fil qui montre le
+   travail sans noter les gens (R24) ; des cas indiscernables de l'usage réel dans la banque de tests (R25) ; une
+   délégation qui se voit, où l'humain juge le résultat et non chaque étape, sauf l'irréversible (R26).
 
 ## 21. Limites
 
 - Rien n'est construit ; les durées du sprint sont des estimations.
-- À vérifier avant de s'en servir : l'enchaînement des hooks de Claude Code (§7.1) ; Codex et l'agent de Cursor
-  (§10.2) ; l'adresse de retour locale chez les fournisseurs OAuth et chez Slack (§11.3) ; l'isolation de la machine
-  sous Windows (§8.2) ; le corpus public (§16.2) ; l'usage actuel de `ai_generations` (§14).
+- Vérifié le 28/10/2026 aux sources citées : les hooks de Claude Code, Codex, Cursor, Gemini CLI, Ollama, Windows
+  Sandbox, OAuth (RFC 8252, MCP, Slack), pgvector, Tika, MQTT, les outils de détection de secrets, les versions de
+  Java, de Spring et du SDK MCP. Ces faits bougent vite : ils se revérifient avant chaque usage.
+- Reste à tester : l'enchaînement de `PreToolUse` et `PermissionRequest`, et l'isolation de la configuration de Claude
+  Code (§7.1) ; les adresses de retour à port variable chez chaque fournisseur (§11.3) ; l'isolation de la machine
+  sous Windows (§8.2) ; le gain du cache de démarrage (§4.5) ; l'usage actuel de `ai_generations` (§14).
+- Un avis juridique confirmera la copie des textes d'OASIS dans la banque de tests (§16.2).
 - Les chiffres de référence du premier cas d'usage viennent de ses ingénieurs, pas de ce document.
 
 ---
