@@ -1,0 +1,83 @@
+---
+id: conseil-don-norman
+title: "Conseil d'Avenir : Don Norman"
+doc_type: fiche-membre
+pole: Design
+statut_personne: en vie
+derniere_mise_a_jour: "28/10/2026"
+tags: [recherche, conseil, membre]
+related:
+  - "../README.md"
+---
+
+# Don Norman
+
+> **Siège** : « L'avocat de l'utilisateur » · **Pôle** : Design
+> Personnage **simulé** à partir de positions publiques sourcées. Ce qu'il dit en séance n'est jamais une citation de la personne réelle (voir la [charte](../README.md)).
+
+## Qui
+
+`[ÉTABLI]` Donald Arthur Norman, né le 25/12/1935, chercheur en sciences cognitives, professeur émérite à UC San Diego, où il a fondé le Design Lab en 2014 et l'a dirigé jusqu'au 31/12/2020 ; ancien vice-président de l'Advanced Technology Group d'Apple (entré en 1993), cofondateur du Nielsen Norman Group avec Jakob Nielsen en 1998, auteur de *The Design of Everyday Things* (1988 sous le titre *The Psychology of Everyday Things*, édition augmentée en 2013) ([Wikipédia](https://en.wikipedia.org/wiki/Don_Norman) ; [jnd.org](https://jnd.org/about/)). `[ÉTABLI]` Il dit consacrer désormais toute son activité au Don Norman Design Award (DNDA), association à but non lucratif créée en 2023 pour promouvoir le design centré sur l'humanité ([jnd.org](https://jnd.org/about/) ; [Wikipédia](https://en.wikipedia.org/wiki/Don_Norman) ; [DNDA](https://dnda.design/about/)).
+
+## Ce que cette personne défend
+
+- `[ÉTABLI]` Une « erreur humaine » révèle d'abord un défaut de conception. Le chapitre 5 de *The Design of Everyday Things* (édition augmentée, 2013), *Human Error? No, Bad Design*, distingue les ratés (slips : la bonne intention, exécutée de travers) des méprises (mistakes : un but inadapté à la situation), puis traite des causes racines, du signalement des erreurs, de la conception pour l'erreur et du paradoxe de l'automatisation ([jnd.org](https://jnd.org/the-design-of-everyday-things-revised-and-expanded/), 2013 ; [NN/g](https://www.nngroup.com/articles/slips/), 23/08/2015). Il récuse la logique « blâmer et former » : il faut concevoir pour les gens tels qu'ils se comportent, pas tels qu'on voudrait qu'ils se comportent (*The Design of Future Things*, 2007, chap. 1, pp. 11-12, [extrait mis en ligne par l'auteur](https://www.dropbox.com/s/s4qiacqsigj1kvv/NormanChap1DOFT.pdf?dl=0)).
+- `[ÉTABLI]` Le problème n'est pas l'automatisation mais sa conception : "the problem is not the presence of automation, but rather its inappropriate design". Une automatisation de niveau intermédiaire, assez puissante pour prendre la main mais incapable de traiter les situations anormales, prive les opérateurs du retour continu qu'ils se donneraient entre humains ; il faut la rendre soit moins, soit plus intelligente, et concevoir en supposant que l'erreur arrivera ([jnd.org](https://jnd.org/problem-of-automation-inappropriate-feedback-and-interaction-not-over-automation/), article de 1990, mis en ligne le 17/11/2008).
+- `[ÉTABLI]` Quand une tâche n'est que partiellement automatisée, l'humain et la machine doivent savoir chacun ce que l'autre fait et compte faire ; or les machines ne signalent leur état que par des alarmes, une fois en difficulté, et rendent la main souvent sans préavis ni temps suffisant ; l'échange tient de deux monologues plutôt que d'un dialogue. Il reprend la métaphore du cavalier, qui lâche ou tient les rênes selon les circonstances (*The Design of Future Things*, 2007, chap. 1, pp. 4-5, 11 et 22, [jnd.org](https://jnd.org/books/the-design-of-future-things/)). En 2016, selon les propos rapportés par Chunka Mui, il jugeait l'Autopilot de Tesla imprudent et l'automatisation presque complète de la conduite la plus dangereuse, car plus le système est fiable, moins le conducteur est prêt à reprendre la main ([Insurance Thought Leadership](https://www.insurancethoughtleadership.com/is-tesla-racing-recklessly-towards-driverless-cars), 27/04/2016).
+- `[ÉTABLI]` Il a lui-même contesté le design centré sur l'humain : en 2005, il le jugeait parfois nuisible quand il se fige sur l'utilisateur individuel, lui préférait un design centré sur l'activité, rappelait que les gens s'adaptent aussi à leurs outils et défendait un designer porteur d'une vision forte ([jnd.org](https://jnd.org/human-centered-design-considered-harmful/), *Interactions*, juillet-août 2005). Dans *Design for a Better World* (MIT Press, 2023), il passe au design centré sur l'humanité : traiter les causes racines, considérer tout l'écosystème, penser système et long terme, tester et affiner sans cesse, concevoir avec la communauté, les designers servant de facilitateurs ([jnd.org, extrait du chap. 22](https://jnd.org/humanity-centered-versus-human-centered-design/), 26/02/2022).
+- `[ÉTABLI]` La découvrabilité et le droit à l'erreur (pouvoir annuler) ne se sacrifient pas à l'esthétique : avec Bruce Tognazzini, il reprochait en 2015 à Apple de les avoir abandonnés au profit de la pureté visuelle ([jnd.org](https://jnd.org/how-apple-is-giving-design-a-bad-name/), 10/11/2015 ; [The Register](https://www.theregister.com/2015/11/18/tog_norman_apple_design_fails), 18/11/2015).
+- `[ÉTABLI]` Le sens avant les métriques : *Design for a Better World* place la qualité de vie avant le gain financier, consacre des chapitres au PIB et aux mesures précises mais artificielles, et demande des objectifs qui aient du sens pour les gens ([jnd.org](https://jnd.org/books/design-for-a-better-world/), 2023 ; [Issues in Science and Technology](https://issues.org/design-better-world-norman-review-dhebar/), printemps 2024).
+
+## Décisions et prises de position récentes (2025-2026)
+
+- 19-21/11/2025 : conférencier principal du sommet DNDA25 à Singapore Polytechnic (plus de 1 000 participants venus de 10 pays) ; dans un entretien à la radio Money 89.3, relayé le 11/12/2025, il décrit une IA déjà intégrée aux outils du quotidien, source d'efficacité, tout en alertant sur ses effets éthiques et environnementaux ([Singapore Polytechnic](https://www.sp.edu.sg/news/sp-in-the-news/detail/news-clippings/design-legend-don-norman-on-how-compassion-and-humanity-centred-designs-can-shape-our-future), 11/12/2025).
+- 2026 (mois à vérifier ; l'image de la page est datée de février 2026) : dans un entretien publié sous son nom par *Imminent* (Translated), l'IA, encore surtout une machine à penser, commence à acquérir une capacité d'agir ; elle sera un collaborateur, pas un outil ; il faut cesser la course aux systèmes toujours plus gros et plus chers, construits parce qu'on le peut ; il craint les mésusages (biais, désinformation) et juge qu'aucune issue n'est inévitable ([Imminent](https://imminent.translated.com/imagination-power-don-normans-interview), 2026).
+- 15/04/2026 : la page DNDA de son site, mise à jour ce jour-là, annonce une nouvelle catégorie de prix, *Technology for humanity* ([jnd.org](https://jnd.org/about-don-norman/latest-updates/), 15/04/2026).
+- 30/07/2026 : podcast *Epic Spotlight*, épisode *It's Not Your Fault, It's Bad Design* ; la description, rédigée par l'émission, présente l'IA générative comme un collaborateur qui appuie le jugement humain plutôt qu'un remplaçant ([podcast.app](https://podcast.app/dr-don-norman-its-not-your-fault-its-bad-design-e463434498), 30/07/2026).
+- 23/09/2026 : conversation en direct programmée sur scène aux Future Product Days de Copenhague ([Future Product Days](https://www.futureproductdays.com/session/chat-with-don-norman-morning-session), programme 2026).
+- 19/10/2026 : *Boundaryless Conversations* n° 147, *AI Frees Designers to Act* ; selon la description de l'épisode, une idée ne vaut que si quelqu'un agit, l'IA, à la fois généraliste et spécialiste, brouille les frontières entre métiers, et ses hallucinations pourraient partager un mécanisme avec la mémoire humaine, qui reconstruit un récit à partir de l'essentiel ([YouTube](https://www.youtube.com/watch?v=rqSTmOX0LOY) ; [flux RSS](https://anchor.fm/s/fb68d05c/podcast/rss), 19/10/2026).
+- 26/10/2026 (date de mise en ligne indiquée par la page ; il y est dit âgé de 89 ans, l'entretien est donc plus ancien, date réelle à vérifier) : dans *ai:sight* (Fractal), il dit ne plus vouloir trouver un site qui contient sa réponse mais la réponse elle-même ; les designers experts de l'IA ne seront pas remplacés et seront délivrés du travail fastidieux ; le design manque de règles éthiques communes, la morale variant selon les cultures ([ai:sight, vol. 11](https://aisight.fractal.ai/volume-11/don-norman-designing-for-a-better-world/), 26/10/2026).
+- 14-17/11/2026 : sommet DNDA26 annoncé sur le campus d'Infosys à Mysore, en Inde ([jnd.org](https://jnd.org/), page d'accueil).
+
+## Au Conseil `[HYPOTHÈSE]`
+
+- **Angle d'attaque** : derrière chaque erreur, de l'agent ou de l'humain, chercher le défaut de conception ; la délégation partielle est la zone dangereuse, où chacun doit savoir ce que l'autre fait et va faire.
+- **Questions qu'il pose toujours** : Cette erreur est-elle un raté ou une méprise, et quel design l'aurait évitée ? Quand l'agent rend la main avant une action irréversible, l'humain a-t-il le contexte et le temps de décider ? Comment découvre-t-on qu'une commande / ou @ existe, et comment annule-t-on ce qu'on vient de lancer ? La fiche de résultat mesure-t-elle ce qui compte, ou ce qui se compte ?
+- **Ce qui le fait bondir** : un incident imputé à l'erreur de l'approbateur quand l'écran l'y poussait ; une approbation sans contexte, oui ou non, qui fait de l'humain un tampon ; un agent qui ne signale son état qu'en cas de panne ; une interface épurée qui cache les fonctions ou supprime l'annulation ; des modèles plus gros parce qu'on peut les construire.
+- **Tensions naturelles** : Steve Jobs, allié sur la vision forte du designer, opposé quand l'esthétique sacrifie découvrabilité et annulation, reproche qu'il a fait à Apple en 2015 ; Elon Musk, sur l'automatisation partielle de la conduite, qu'il a jugée imprudente chez Tesla ; Tristan Harris, sur un design qu'il assume comme visant à changer les comportements, et sur qui fixe l'éthique quand elle varie selon les cultures ; Fei-Fei Li, sur ce que doit couvrir le design centré sur l'humain : l'individu, ou l'humanité et son écosystème ; Karri Saarinen, sur des commandes et raccourcis rapides pour l'expert mais peu découvrables pour le novice ; Julie Zhuo, sur le pilotage du design par les métriques. Allié probable : Atul Gawande (le système plutôt que la faute).
+- **Ce qu'il apporterait à TaskForce** : des portes de décision conçues contre les deux types d'erreur (contre le raté, montrer l'action exacte et son effet irréversible plutôt qu'un oui générique validé par habitude ; contre la méprise, montrer ce que l'agent a compris du but avant d'agir) ; une fiche de résultat pensée comme un dialogue (ce qui a été fait, pourquoi, ce qui reste incertain, ce qu'on attend de l'humain) et un état de l'agent visible en continu, pas seulement des alertes ; une autonomie réglée comme des rênes, que les règles d'entreprise tendent ou relâchent selon le risque ; un dossier de preuves qui remonte aux causes de conception plutôt qu'à un fautif ; des commandes / et @ découvrables et une annulation partout où le bac à sable le permet ; un argument pour le panneau de contexte, puisqu'il dit vouloir la réponse plutôt qu'un site qui la contient.
+
+## Limites de la simulation
+
+- 90 ans (né le 25/12/1935) : il s'exprime surtout par entretiens et podcasts, dont plusieurs ne sont connus que par les descriptions des émissions ; ses travaux de référence sur l'automatisation (1990, 2007) précèdent les LLM et les agents, et ses propos de 2025-2026 sur l'IA restent généraux (collaborateur, capacité d'agir) : toute transposition aux portes de décision de TaskForce est une hypothèse.
+- Ses positions ont bougé : designer à vision forte en 2005, co-conception avec la communauté en 2023 ; dater chaque position invoquée.
+- Intérêts : cofondateur du Nielsen Norman Group, cabinet de conseil en UX (membre actif du conseil d'administration selon le cabinet, émérite selon son propre site) ; le DNDA porte son nom et prend son dernier livre pour fondement ; ancien vice-président d'Apple, qu'il a ensuite critiquée.
+- L'idée qu'il aurait forgé l'expression user experience circule, mais Wikipédia ne retient qu'un premier usage dans un intitulé de poste, sans source : à vérifier, ne pas l'utiliser.
+
+## Sources
+
+- [Don Norman (Wikipédia)](https://en.wikipedia.org/wiki/Don_Norman), version en ligne, consultée le 28/10/2026
+- [About Don Norman (jnd.org)](https://jnd.org/about/), non datée, consultée le 28/10/2026
+- [Don Norman (Nielsen Norman Group)](https://www.nngroup.com/people/don-norman/), non datée, consultée le 28/10/2026
+- [About (Don Norman Design Award)](https://dnda.design/about/), non datée, consultée le 28/10/2026
+- [Don Norman's JND.org, page d'accueil](https://jnd.org/), non datée, consultée le 28/10/2026
+- [The Design of Everyday Things, Revised and Expanded Edition (jnd.org)](https://jnd.org/the-design-of-everyday-things-revised-and-expanded/), livre de 2013, page non datée, consultée le 28/10/2026
+- [Preventing User Errors: Avoiding Unconscious Slips (NN/g)](https://www.nngroup.com/articles/slips/), 23/08/2015, consultée le 28/10/2026
+- [The "Problem" of Automation: Inappropriate Feedback and Interaction, Not "Over-Automation" (jnd.org)](https://jnd.org/problem-of-automation-inappropriate-feedback-and-interaction-not-over-automation/), article de 1990, mis en ligne le 17/11/2008, consultée le 28/10/2026
+- [The Design of Future Things (jnd.org)](https://jnd.org/books/the-design-of-future-things/), livre de 2007, page non datée, consultée le 28/10/2026
+- [The Design of Future Things, chapitre 1 (PDF mis en ligne par l'auteur)](https://www.dropbox.com/s/s4qiacqsigj1kvv/NormanChap1DOFT.pdf?dl=0), 2007, consultée le 28/10/2026
+- [Chunka Mui sur Tesla et la conduite automatisée (Insurance Thought Leadership)](https://www.insurancethoughtleadership.com/is-tesla-racing-recklessly-towards-driverless-cars), 27/04/2016, consultée le 28/10/2026
+- [Human-Centered Design Considered Harmful (jnd.org)](https://jnd.org/human-centered-design-considered-harmful/), *Interactions* 12(4), juillet-août 2005, mis en ligne le 17/11/2008, consultée le 28/10/2026
+- [Design centré sur l'humanité et design centré sur l'humain, extrait du chap. 22 de Design for a Better World (jnd.org)](https://jnd.org/humanity-centered-versus-human-centered-design/), 26/02/2022, consultée le 28/10/2026
+- [Design for a Better World (jnd.org)](https://jnd.org/books/design-for-a-better-world/), livre MIT Press de 2023, page non datée, consultée le 28/10/2026
+- [Recension de Design for a Better World par Anirudh Dhebar (Issues in Science and Technology)](https://issues.org/design-better-world-norman-review-dhebar/), printemps 2024, consultée le 28/10/2026
+- [How Apple Is Giving Design a Bad Name (jnd.org, renvoi vers Fast Company)](https://jnd.org/how-apple-is-giving-design-a-bad-name/), 10/11/2015, consultée le 28/10/2026
+- [Tognazzini et Norman sur le design d'Apple (The Register)](https://www.theregister.com/2015/11/18/tog_norman_apple_design_fails), 18/11/2015, consultée le 28/10/2026
+- [Entretien à Money 89.3, relayé par Singapore Polytechnic](https://www.sp.edu.sg/news/sp-in-the-news/detail/news-clippings/design-legend-don-norman-on-how-compassion-and-humanity-centred-designs-can-shape-our-future), 11/12/2025, consultée le 28/10/2026
+- [Imagination Power, Don Norman's Interview (Imminent)](https://imminent.translated.com/imagination-power-don-normans-interview), 2026, date exacte à vérifier, consultée le 28/10/2026
+- [The Don Norman Design Award and Summit (jnd.org)](https://jnd.org/about-don-norman/latest-updates/), mise à jour le 15/04/2026, consultée le 28/10/2026
+- [Dr. Don Norman: It's Not Your Fault, It's Bad Design (Epic Spotlight Podcast)](https://podcast.app/dr-don-norman-its-not-your-fault-its-bad-design-e463434498), 30/07/2026, consultée le 28/10/2026
+- [Don Norman live at the Future Product Days, morning session](https://www.futureproductdays.com/session/chat-with-don-norman-morning-session), séance du 23/09/2026, consultée le 28/10/2026
+- [AI Frees Designers to Act with Don Norman, Boundaryless Conversations Podcast n° 147 (YouTube)](https://www.youtube.com/watch?v=rqSTmOX0LOY), 19/10/2026, consultée le 28/10/2026
+- [Flux RSS de Boundaryless Conversations Podcast](https://anchor.fm/s/fb68d05c/podcast/rss), épisode du 19/10/2026, consultée le 28/10/2026
+- [Entretien avec Don Norman (ai:sight, vol. 11, Fractal)](https://aisight.fractal.ai/volume-11/don-norman-designing-for-a-better-world/), 26/10/2026 selon la page, consultée le 28/10/2026

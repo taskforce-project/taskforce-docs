@@ -24,6 +24,32 @@ related:
 
 ---
 
+## 2026-10-28 : spécification de la v2 en 0.2, pôle Design, séance n°4 du Conseil
+
+**Fait** : la spécification passe en 0.2 avec les décisions de la Présidence
+([spécification](../v1/road_to_v2/Specification_V2_Harnais.md)) et un schéma en image
+([schéma](../assets/diagrammes/architecture-v2-harnais.svg)) ; trois recherches sourcées (Java et Spring, outils
+d'agents et OAuth, fiches) ; le pôle Design rejoint le Conseil (Don Norman, Julie Zhuo, Karri Saarinen) ; séance n°4
+en formation élargie, revue de la spécification ([PV](./conseil/seances/2026-10-28-revue-spec-v2.md)).
+
+**Trouvé**
+- `[ÉTABLI]` Un hook HTTP injoignable laisse passer l'action de Claude Code, sauf avec `onFailure: "block"`, qui
+  demande la 2.1.295 ; la version minimale du runner (2.1.293) ne suffit pas.
+- `[ÉTABLI]` Seul Claude Code tient la décision « demander » sans interface ; Codex, Cursor et Gemini CLI s'arrêtent à
+  autoriser ou refuser.
+- `[ÉTABLI]` Ollama fait tourner Claude Code sur un modèle local, mais Anthropic ne prend pas en charge Claude Code sur
+  d'autres modèles : la boucle interne de TaskForce reste le chemin des petits modèles.
+- `[DÉDUIT]` Le monolithe modulaire est imposé par l'app desktop : le même backend doit tenir sur un ordinateur.
+
+**Décidé** (Présidence, avant la séance) : la webapp d'abord, en local, puis le .exe ; trois produits ; le front du
+Brain OS supprimé ; R10 à R15 retenues ; l'approche A ; le fil de l'équipe plutôt qu'une messagerie. Après la séance :
+R16 à R26 en attente.
+
+**Prochain coup** : la Présidence tranche R16 à R26, dont l'amendement de R1 ; puis le ménage et le sprint, en mode
+développement.
+
+---
+
 ## 2026-10-27 (ter) : état des lieux de la v1, séance n°3 du Conseil, spécification de la v2
 
 **Fait** : état des lieux d'un jour de la v1, tiré du code et du journal daté

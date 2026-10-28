@@ -3,8 +3,8 @@ id: recherche-conseil-avenir
 title: Conseil d'Avenir, charte et règlement
 doc_type: sop
 statut: active
-version: 1.0
-date: "21/10/2026"
+version: 1.1
+date: "28/10/2026"
 auteur: Pierre MICHEL
 review_cycle: quarterly
 tags: [recherche, conseil, prospective, laboratoire]
@@ -17,10 +17,10 @@ related:
 
 # 🏛️ Conseil d'Avenir
 
-**Version :** 1.0 · **Date :** 21/10/2026 · **Président :** Pierre MICHEL
+**Version :** 1.1 · **Date :** 28/10/2026 · **Président :** Pierre MICHEL
 
 <p class="lead">
-Le conseil du laboratoire : vingt et une personnalités, simulées à partir de leurs positions publiques sourcées,
+Le conseil du laboratoire : vingt-quatre personnalités, simulées à partir de leurs positions publiques sourcées,
 qui débattent des versions futures de TaskForce. Il siège <strong>à chaque session du labo</strong>.
 Pierre préside sans prendre part aux débats ; l'agent tient le secrétariat et donne voix aux membres.
 </p>
@@ -67,6 +67,7 @@ flowchart TB
     B["Pont<br/>Nadella · Mazzucato · Prabhakar · Ait Si Abbou"]
     H["Harmonie<br/>Vestager · Azoulay · Nilekani · Harris · Harari"]
     C["Science<br/>Bengio · LeCun · Li · Hamilton · Rus · Doudna · Duflo · Gawande"]
+    D["Design, derrière Jobs<br/>Norman · Zhuo · Saarinen"]
   end
   P -- "saisine" --> S
   S -- "donne la parole" --> T
@@ -109,7 +110,7 @@ flowchart TB
 
 ## 4. Composition
 
-Vingt et un membres, onze femmes et dix hommes, en quatre pôles. Chaque pôle porte une tension, et la table
+Vingt-quatre membres, douze femmes et douze hommes, en cinq pôles. Chaque pôle porte une tension, et la table
 est composée pour que ces tensions se rencontrent.
 
 | Pôle | Ce qu'il pousse | Ce qu'il craint |
@@ -118,6 +119,7 @@ est composée pour que ces tensions se rencontrent.
 | **Pont** | Le passage à l'échelle : entreprises, États, marchés | L'idée brillante que personne ne peut adopter |
 | **Harmonie** | Les règles, la confiance, l'humain dans la boucle | La technologie qui échappe à ceux qu'elle sert |
 | **Science** | La preuve, la sûreté, les systèmes critiques | La promesse sans mesure |
+| **Design** | L'expérience vécue, l'interface, le geste juste ; il suit Jobs, qui mène l'UX | L'outil puissant que personne n'a envie d'utiliser |
 
 | Pôle | Membre | Statut | Pourquoi au Conseil | Fiche |
 | --- | --- | --- | --- | --- |
@@ -142,6 +144,12 @@ est composée pour que ces tensions se rencontrent.
 | Science | Jennifer Doudna | en vie | Gouverner une technologie puissante, de la paillasse à la société | [fiche](./membres/jennifer-doudna.md) |
 | Science | Esther Duflo | en vie | La preuve par l'expérience de terrain | [fiche](./membres/esther-duflo.md) |
 | Science | Atul Gawande | en vie | Les listes de contrôle et les systèmes humains face à la complexité | [fiche](./membres/atul-gawande.md) |
+| Design | Don Norman | en vie | L'erreur humaine et l'automatisation, du design centré sur l'humain à celui centré sur l'humanité | [fiche](./membres/don-norman.md) |
+| Design | Julie Zhuo | en vie | Le design de produit à l'échelle, la critique de produit, l'autonomie des agents par paliers | [fiche](./membres/julie-zhuo.md) |
+| Design | Karri Saarinen | en vie | L'interface d'un outil de travail, la qualité, la délégation aux agents (Linear) | [fiche](./membres/karri-saarinen.md) |
+
+**Le pôle Design** (Présidence, 28/10/2026) : Steve Jobs mène l'expérience (UX) ; le pôle Design le suit, Don Norman
+pour l'UX, Karri Saarinen pour l'interface, Julie Zhuo pour le design de produit à l'échelle.
 
 **Siège invité.** La Présidence peut inviter une personnalité pour une séance (un industriel, une
 régulatrice, une astronaute, un spécialiste de la sûreté nucléaire). Elle siège avec une fiche complète,
@@ -155,7 +163,7 @@ devenu après sa mort, il ne le sait que par le dossier : le secrétariat signal
 | Formation | Qui | Quand |
 | --- | --- | --- |
 | **Restreinte** (par défaut) | 5 à 7 membres, au moins un par pôle, dont un **contradicteur** désigné | Toute question de version future, d'usage ou de marché |
-| **Plénière** | Les vingt et un, une intervention courte chacun, puis la confrontation entre les positions les plus éloignées | Vision, positionnement, règle zéro, choix structurant |
+| **Plénière** | Les vingt-quatre, une intervention courte chacun, puis la confrontation entre les positions les plus éloignées | Vision, positionnement, règle zéro, choix structurant |
 | **Duel** | Deux membres aux positions opposées | Une question précise, quand deux thèses documentées s'affrontent |
 | **Audition** | Un membre, questionné par la Présidence | Approfondir un domaine avant une décision |
 
@@ -260,7 +268,8 @@ ce qui est irréversible » ([PV](./seances/2026-10-26-premiere-regle.md)).
 | --- | --- | --- | --- | --- |
 | 26/10/2026 | Quelle est la première règle non négociable de TaskForce ? | Restreinte (7) | R1 à R4 retenues, règle zéro ratifiée | [PV](./seances/2026-10-26-premiere-regle.md) |
 | 27/10/2026 | La vision de la Présidence : le harnais comme principe de tout outil avec IA | Plénière (21) | Vision validée à dix ans ; R5' à R9', I1 et I2 retenues ; niches A puis B | [PV](./seances/2026-10-27-vision.md) |
-| 27/10/2026 | Le ménage de l'app desktop et la spécification de la v2 | Restreinte (2), à la demande de la Présidence | R10 à R15 proposées ; décision en attente | [PV](./seances/2026-10-27-menage-spec-v2.md) |
+| 27/10/2026 | Le ménage de l'app desktop et la spécification de la v2 | Restreinte (2), à la demande de la Présidence | R10 à R15 retenues le 28/10 | [PV](./seances/2026-10-27-menage-spec-v2.md) |
+| 28/10/2026 | La revue de la spécification de la v2 (version 0.2) | Élargie (11), à la demande de la Présidence | R16 à R26 proposées ; décision en attente | [PV](./seances/2026-10-28-revue-spec-v2.md) |
 
 ---
 
