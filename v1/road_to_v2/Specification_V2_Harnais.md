@@ -605,6 +605,11 @@ pourquoi.
 - La chaîne se calcule sur le serveur, à la réception, dans l'ordre : le runner ne peut pas réécrire l'histoire.
 - Ce n'est pas une signature. La signature par une clé de l'espace viendra quand un client la demandera (I1 : le
   harnais rend l'IA assurable).
+- Fait le 28/10 : la table `delivery_run_evidence` (V103), la chaîne calculée à la réception par le serveur, la racine
+  posée sur le run à la fin de la mission, quelle que soit la fin (résultat du runner, runner perdu). L'export
+  `GET /api/workspaces/{slug}/delivery/runs/{id}/evidence?format=json|md` : le JSON suit `contracts/evidence` et se
+  vérifie sans TaskForce ; le Markdown dit si la chaîne tenait au moment de l'export. Dans l'app, « Download the
+  record » sous la chronologie d'un run terminé.
 
 ### 9.2 Ce qu'il contient
 
@@ -613,6 +618,11 @@ sources lues (document, version, passage) ; chaque action, la règle appliquée 
 (qui, quand, sur quoi) ; les sorties des tests ; le diff ; les sorties proposées et leur sort ; l'avis du relecteur ;
 le coût quand l'agent le donne ; les durées (attente humaine, temps de cycle).
 
+Couvert le 28/10 : la demande, l'agent et son modèle, le paquet de règles (version et empreinte), chaque action et la
+décision de sa règle, les demandes faites à une personne et sa réponse (ou l'absence de réponse), les sorties et leur
+sort, la fin de la mission. Reste : les versions de TaskForce, du runner et de l'agent, les sources lues, les sorties
+des tests, le diff, le relecteur, le coût et les durées.
+
 ### 9.3 Sans troncature silencieuse
 
 Aujourd'hui, la chronologie garde 500 événements au plus et coupe les textes à 600 caractères. En v2, le contenu
@@ -620,11 +630,18 @@ complet va, compressé, dans le stockage de fichiers (MinIO pour la webapp, le d
 garde son empreinte et un résumé. Une limite de taille reste, pour tenir la charge, mais le dossier dit quand elle
 s'applique.
 
+Fait le 28/10, première marche : la chronologie affichée garde ses 500 événements, le dossier continue au-delà. Il a
+son plafond, 10 000 événements côté runner comme côté serveur, et le dit par un dernier événement `limit.reached`. Les
+textes restent coupés à 2 000 caractères : le contenu complet dans le stockage de fichiers reste à faire.
+
 ### 9.4 Conservation
 
 Le dossier survit à l'issue : supprimer une issue ne supprime plus sa preuve. Les dossiers se suppriment selon une
 durée de conservation réglée par l'espace, et la suppression se trace. Les données personnelles d'un dossier suivent
 les règles RGPD de l'espace (à préciser avec le registre des traitements).
+
+Pas encore : aujourd'hui, le dossier part avec son run (clé étrangère en cascade). À revoir avec la durée de
+conservation.
 
 ### 9.5 Export
 
@@ -941,6 +958,14 @@ Six familles ; pour chaque cas, le résultat attendu est écrit avant de lancer.
 7. **Modèles** : les mêmes tâches, avec les petits modèles locaux de la Présidence et avec un grand modèle. C'est le test
    de l'hypothèse « la décision vit dans l'architecture » (§10.4) ; le résultat sert aussi à choisir le modèle de
    chaque tâche sur un ordinateur donné.
+
+Fait le 28/10 :
+- famille 1 : 44 cas dans `contracts/rules/cases.json`, rejoués par le serveur et par le runner. Chacune des 31
+  règles par défaut en gagne au moins un, et un garde-fou échoue quand une règle n'en a aucun.
+- famille 2 : la porte du runner rejoue trois suites par les deux hooks réels : corriger un bug, une injection qui
+  cherche à sortir, une tâche sans dépôt.
+- en plus, un essai de bout en bout sur la webapp en Docker, avec le faux agent. Le dossier exporté par le serveur
+  est vérifié par le runner, et une copie falsifiée est repérée au bon événement.
 
 ### 16.3 Le protocole (R8)
 
