@@ -43,7 +43,7 @@ l'atelier design mené par Jobs : Cortex, les flows, la carte de résultat, le p
   isolée ; ils préfèrent que le runner lance seul les tests après l'agent (S1). Musk le défend autorisé, sous
   conditions.
 
-**Décidé** : en attente de la Présidence (R27 à R33, D1 à D11, décisions de Jobs J1 à J9).
+**Décidé** (Présidence) : R32 retenue, les tests lancés par le runner après l'agent (S1), aucune règle qui autorise l'agent à lancer un shell arbitraire ; R33 retenue, pas de mission déléguée en prod sur un dépôt public avant S1 ; les décisions de Jobs J1 à J9 gardées telles quelles. R27 à R31 en attente.
 
 **Prochain coup** : l'essai de la Présidence sur l'app desktop 1.3.0 et la webapp 1.5.0, selon le parcours de Jobs ;
 en parallèle, les défauts relevés par l'atelier, puis le reliquat du jour 1.

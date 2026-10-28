@@ -572,8 +572,12 @@ attendu du jour 2 ni du jour 3.
 
 ## Décision de la Présidence
 
-En attente. Les décisions de Jobs valent par délégation ; la Présidence garde le dernier mot et tranche chacune, comme D1
-à D11 : retenue, à l'essai, écartée ou reportée, avec sa raison, dans ses mots.
+Les décisions de Jobs valent par délégation ; la Présidence garde le dernier mot.
+
+| # | Décision | Raison, dans les mots de la Présidence |
+| --- | --- | --- |
+| J1 à J9 | Retenues telles quelles | « les décisions de jobs on les garde tel quelle » |
+| D1 à D11 | Comme Jobs les a tranchées (J1 à J9) | Même décision |
 
 ## Notes du secrétariat
 

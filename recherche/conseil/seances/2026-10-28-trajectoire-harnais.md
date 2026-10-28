@@ -305,8 +305,8 @@ Hamilton exige une date sur S3, aujourd'hui « à étudier ».
 
 ## Décision de la Présidence (28/10/2026)
 
-En attente. La Présidence tranche chaque recommandation (retenue, à l'essai, écartée ou reportée), avec sa raison, dans ses
-mots. Le secrétariat ne rédige pas cette raison à sa place.
+La Présidence tranche chaque recommandation (retenue, à l'essai, écartée ou reportée), avec sa raison, dans ses mots. Le
+secrétariat ne rédige pas cette raison à sa place.
 
 | # | Décision | Raison, dans les mots de la Présidence |
 | --- | --- | --- |
@@ -315,8 +315,11 @@ mots. Le secrétariat ne rédige pas cette raison à sa place.
 | R29 | En attente | |
 | R30 | En attente | |
 | R31 | En attente | |
-| R32 (`npm test`) | En attente | |
-| R33 | En attente | |
+| R32 (`npm test`) | Retenue | « npm test on suit les décisions du conseil » |
+| R33 | Retenue | « r33 je suis pour comme bengio » |
+
+Pour R32, la Présidence avait d'abord penché pour « autorisé par défaut », parce que les résultats de tests comptent ;
+elle suit le Conseil. Le niveau S1 garde ces résultats : c'est le runner qui lance les tests, après l'agent.
 
 ## Notes du secrétariat
 

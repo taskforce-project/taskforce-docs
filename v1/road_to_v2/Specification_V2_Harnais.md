@@ -413,13 +413,19 @@ rules:
 | Classe | Exemples | Effet par défaut |
 | --- | --- | --- |
 | Lecture | Lire un fichier, chercher, `brain_search`, lire une issue, lire dans un outil | Autoriser et tracer (R7') |
-| Écriture dans le bac à sable | Modifier un fichier de la copie, commit local, lancer les tests | Autoriser et tracer : « libre mais encadré » |
+| Écriture dans le bac à sable | Modifier un fichier de la copie, commit local | Autoriser et tracer : « libre mais encadré » |
 | Sortie réversible | Pousser la branche de l'agent vers un dépôt privé, ouvrir une pull request, créer une issue dans le projet | Autoriser et tracer si l'action inverse existe ; sinon demander |
 | Irréversible | Fusionner, publier un paquet, envoyer un message ou un e-mail, payer, rembourser, supprimer, migrer une base partagée, pousser vers un dépôt public, exposer un secret | Demander (R1) |
 | Inconnue | Tout ce qu'aucune règle ne classe | Demander (invariant 3) |
 
 Le web (chercher, lire une page) n'est pas une lecture comme les autres : une requête ou une adresse peut emporter des
 données hors du poste (invariant 5). Il est demandé par défaut, comme en v1.
+
+Les tests ne sont pas une écriture comme les autres : `npm test` exécute les scripts du dépôt, que l'agent peut modifier.
+Tant que la machine n'est pas isolée (S3, §8.2), aucune règle par défaut n'autorise l'agent à lancer un script du dépôt ;
+c'est le runner qui lance la commande de test déclarée, après le travail de l'agent (S1). Décidé le 28/10/2026 (R32,
+[PV n°5](../../recherche/conseil/seances/2026-10-28-trajectoire-harnais.md)). Et tant que S1 n'est pas livré, aucune
+mission ne démarre sur un dépôt public (R33).
 
 Le défaut est permissif pour le réversible et strict pour l'irréversible : « tout est vert, ça passe » (séance n°2).
 L'entreprise change la table ; chaque changement a son auteur.
@@ -1040,17 +1046,25 @@ LeCun ; R20 élargie à une hiérarchie d'agents et de modèles (§10.4), confi�
 après un second tour (Jobs, Bengio, Bezos) ; R26 avec l'avis de Jobs et du pôle Design ; le monolithe modulaire
 (§4.5) ; des produits aux fonctions différentes (§4.2) ; le harnais au-delà de TaskForce (§4.6).
 
+**Décidé par la Présidence le 28/10/2026, après les séances n°5 et n°6**
+([PV n°5](../../recherche/conseil/seances/2026-10-28-trajectoire-harnais.md),
+[PV n°6](../../recherche/conseil/seances/2026-10-28-atelier-design.md)) : R32 retenue, les tests lancés par le runner
+après l'agent (S1), et aucune règle par défaut n'autorise l'agent à lancer un script du dépôt (§6.2) ; R33 retenue, pas
+de mission déléguée sur un dépôt public avant S1 ; les décisions de Jobs (J1 à J9) gardées telles quelles : Cortex est
+l'endroit où l'on demande et où l'agent rend compte, pas celui où l'on décide ; une carte de résultat sur l'issue, aux
+gestes « Voir ce qui changera », « Essayer encore », « Appliquer », « Écarter » ; la délégation et l'auteur de chaque
+demande se voient ; un nom par chose. R27 à R31 restent à trancher.
+
 **Reste à trancher**
 
 1. **La table par défaut** (§6.2), en particulier :
    - pousser la branche de l'agent vers un dépôt privé sans attendre ;
-   - le web, demandé par défaut comme en v1 ;
-   - lancer les tests tant que la machine n'est pas isolée (S3, §8.2) : `npm test` exécute les scripts du dépôt, que
-     l'agent peut modifier puisque l'écriture dans la copie est autorisée. Sans S3, c'est donc n'importe quelle
-     commande. Choix possibles : demander jusqu'à S3, ou laisser le runner seul lancer les tests (S1).
+   - le web, demandé par défaut comme en v1.
 2. **Le corpus public** de la banque de tests (§16.2).
 3. **Les Pages** : exporter ce que des utilisateurs y ont écrit avant de retirer leurs tables (§1).
 4. **Les libellés** de Public et Private (proposés : « Workspace », « Collaborators only »).
+5. **R27 à R31** de la séance n°5 : la trajectoire, le découpage, le reliquat du jour 1, l'aperçu des effets, l'agent
+   interne au jour 3.
 
 **Recommandations retenues, pour mémoire**
 

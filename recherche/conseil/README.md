@@ -270,8 +270,8 @@ ce qui est irréversible » ([PV](./seances/2026-10-26-premiere-regle.md)).
 | 27/10/2026 | La vision de la Présidence : le harnais comme principe de tout outil avec IA | Plénière (21) | Vision validée à dix ans ; R5' à R9', I1 et I2 retenues ; niches A puis B | [PV](./seances/2026-10-27-vision.md) |
 | 27/10/2026 | Le ménage de l'app desktop et la spécification de la v2 | Restreinte (2), à la demande de la Présidence | R10 à R15 retenues le 28/10 | [PV](./seances/2026-10-27-menage-spec-v2.md) |
 | 28/10/2026 | La revue de la spécification de la v2 (version 0.2) | Élargie (11), à la demande de la Présidence | R16 à R26 retenues (R23 après un second tour) ; monolithe modulaire ; produits aux fonctions différentes | [PV](./seances/2026-10-28-revue-spec-v2.md) |
-| 28/10/2026 | La trajectoire du harnais, le découpage du sprint, `npm test` par défaut | Restreinte (7), à la demande de la Présidence | En attente (R27 à R33) | [PV](./seances/2026-10-28-trajectoire-harnais.md) |
-| 28/10/2026 | L'atelier design : Cortex, les flows, la carte de résultat, le parcours de test | Pôle Design (5), Jobs tranche par délégation | En attente (D1 à D11, J1 à J9) | [PV](./seances/2026-10-28-atelier-design.md) |
+| 28/10/2026 | La trajectoire du harnais, le découpage du sprint, `npm test` par défaut | Restreinte (7), à la demande de la Présidence | R32 (S1 pour les tests) et R33 retenues ; R27 à R31 en attente | [PV](./seances/2026-10-28-trajectoire-harnais.md) |
+| 28/10/2026 | L'atelier design : Cortex, les flows, la carte de résultat, le parcours de test | Pôle Design (5), Jobs tranche par délégation | J1 à J9 retenues telles quelles, D1 à D11 comme Jobs les a tranchées | [PV](./seances/2026-10-28-atelier-design.md) |
 
 ---
 
