@@ -72,7 +72,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | McpActionController · McpOAuthCallbackController | `/api/workspaces/{slug}/mcp` (`/actions/execute`, `/servers`, `/servers/{key}/oauth/start`) · public `/api/mcp/oauth/callback` | ✅ |
 | ProfileController | `/api/workspaces/{slug}/profile` | ✅ |
 | NotificationController | `/api/workspaces/{slug}/notifications` | ✅ |
-| MyWorkController | `/api/workspaces/{slug}` (→ `/my-issues`, `/my-cycles`, `/my-pages`) | ✅ |
+| MyWorkController | `/api/workspaces/{slug}` (`/my-issues`, `/my-cycles` ; `/my-pages` retiré le 28/10/2026 avec les Pages) | ✅ |
 | RoadmapController | `/api/workspaces/{slug}/roadmap` | ✅ |
 | WebhookController | `/api/workspaces/{slug}/webhooks` (+ `/{id}/secret`, `/{id}/test`, `/{id}/deliveries`), propriétaires et admins seulement | ✅ |
 | IntegrationController | `/api/workspaces/{slug}/integrations/...` + `/api/integrations/*/callback` (`code`, `state`, `error` facultatifs : toujours une redirection vers l'app, `github=` ou `slack=connected` ou `error`, 19/10/2026) ; `GET github/connect?returnTo=` (chemin applicatif où revenir après le consentement, validé, 21/09/2026) | ✅ |
@@ -81,7 +81,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | FileController / AttachmentController (ged) | `/api/files` · `/api/workspaces/{slug}/projects/{projectId}/issues/{issueId}/attachments` | ✅ |
 | CycleController | `/api/workspaces/{slug}/projects/{projectId}/cycles` | ✅ |
 | TeamController | `/api/workspaces/{slug}/teams` | ✅ |
-| PageController | `/api/workspaces/{slug}/projects/{projectId}/pages` | ✅ |
+| PageController | Retiré le 28/10/2026 (ménage de la v2) : écrans, API et entité supprimés ; la table `pages` reste et voyage dans les fichiers de projet | retiré |
 | KnowledgeController (Brain OS) | `/api/workspaces/{slug}/brain` (→ `GET` vue d'ensemble, `POST /search`, `POST /nodes`, `PATCH /nodes/{id}`, `PATCH /nodes/{id}/move`, `DELETE /nodes/{id}` ; `POST /files` dans `BrainAttachmentController`) ; `POST /reseed`, `GET /nodes`, `GET /nodes/{id}`, `POST /edges` et `DELETE /edges/{id}` retirés le 18/10/2026 (lot 3, ADR-017) : les liens viennent des `#tags` et des `[[wikilinks]]`. `POST /search` est sémantique au sein du modèle d'embeddings courant, en plein texte sans embeddings (lot 4, V94) | ✅ |
 | ProjectExportController | `/api/workspaces/{slug}/projects/{projectId}/export` | ✅ |
 | ProjectBundleController (transfer) | `/api/workspaces/{slug}/projects` (→ `GET /{projectId}/bundle` fichier de projet en zip, `POST /import` corps `application/zip`, 201 + projet créé) : un projet entier passe d'une instance à l'autre, webapp ou app desktop (20/10/2026) | ✅ |
