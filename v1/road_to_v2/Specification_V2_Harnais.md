@@ -418,6 +418,9 @@ rules:
 | Irréversible | Fusionner, publier un paquet, envoyer un message ou un e-mail, payer, rembourser, supprimer, migrer une base partagée, pousser vers un dépôt public, exposer un secret | Demander (R1) |
 | Inconnue | Tout ce qu'aucune règle ne classe | Demander (invariant 3) |
 
+Le web (chercher, lire une page) n'est pas une lecture comme les autres : une requête ou une adresse peut emporter des
+données hors du poste (invariant 5). Il est demandé par défaut, comme en v1.
+
 Le défaut est permissif pour le réversible et strict pour l'irréversible : « tout est vert, ça passe » (séance n°2).
 L'entreprise change la table ; chaque changement a son auteur.
 
@@ -479,18 +482,25 @@ table.
   règle sur place : autoriser ou refuser.
 - « Demander » ne passe pas par `PreToolUse` : en mode sans interface, un « ask » y finit en refus. L'action à demander
   n'est pas autorisée d'avance, ce qui l'envoie au hook `PermissionRequest`, déjà servi par le runner : c'est là que
-  l'humain décide, comme en v1. L'enchaînement exact est à tester.
+  l'humain décide, comme en v1. Le runner sert les deux hooks depuis le 28/10 ; l'enchaînement réel reste à voir avec
+  Claude Code 2.1.295 ou plus.
 - Un hook HTTP injoignable laisse passer l'appel, sauf avec `onFailure: "block"`, qui demande Claude Code 2.1.295. La
   version minimale passe donc de 2.1.293 à 2.1.295 au moins (la dernière est la 2.1.312, du 27/10/2026), et l'app le
   vérifie avant chaque mission, plus seulement par `--check`.
 - Claude Code tourne avec une configuration à lui : un module installé par la personne peut, d'après la
   documentation, lever un blocage de hook quand il n'y a pas de réglages gérés. Le moyen d'isoler cette configuration
   est à vérifier.
-- `--allowedTools` se construit depuis le paquet de règles, au lieu d'être codé en dur.
+- Rien n'est autorisé d'avance (fait le 28/10) : une autorisation d'avance passerait outre une règle qui demande.
+  `PreToolUse` autorise ce que les règles autorisent. Seuls les outils que la personne ajoute sur son poste sont
+  autorisés d'avance, et une règle qui refuse les bloque quand même.
 - Chaque action est aussi tracée depuis le flux `stream-json`, déjà relayé par le runner.
 - Une commande se juge sur sa forme analysée (programme, sous-commande, arguments), pas sur son texte : `npm test` n'est
   pas `npm publish`. Une commande composée (`&&`, `|`, `;`) se juge morceau par morceau. Ce qui ne s'analyse pas est
   inconnu, donc demandé.
+- Fait le 28/10 (`contracts/agent/adapter.md`) : la découpe se fait hors des guillemets, `&` compris. Une substitution,
+  une redirection vers un fichier, `--output`, un chemin hors de la copie ou dans `.git` (un hook écrit là
+  s'exécuterait au prochain commit) ne sont jamais autorisés par une règle : ils sont refusés ou demandés. Le message
+  de commit que Claude Code écrit (`"$(cat <<'EOF' … EOF)"`) se lit comme du texte.
 
 ### 7.2 Les outils de TaskForce
 
@@ -578,6 +588,11 @@ Linux et WSL2, pas Windows natif. Pistes : WSL2 quand il est installé ; l'isola
 
 À la fin, le runner propose les sorties : push, pull request, issues, actions dans les outils. Chacune suit sa règle
 (§6.2) : le réversible part et se trace, l'irréversible attend.
+
+Fait le 28/10 pour le push et la pull request : le runner lit la visibilité du dépôt avec `gh`, juge chaque sortie
+avec les règles de la mission, et pose la demande dans TaskForce quand elles demandent. Une visibilité inconnue n'est
+pas devinée : la sortie est demandée. Refusés, les commits restent sur la branche locale et le résumé du run dit
+pourquoi.
 
 ## 9. Le dossier de preuve
 
@@ -1002,7 +1017,12 @@ après un second tour (Jobs, Bengio, Bezos) ; R26 avec l'avis de Jobs et du pôl
 
 **Reste à trancher**
 
-1. **La table par défaut** (§6.2), en particulier : pousser la branche de l'agent vers un dépôt privé sans attendre.
+1. **La table par défaut** (§6.2), en particulier :
+   - pousser la branche de l'agent vers un dépôt privé sans attendre ;
+   - le web, demandé par défaut comme en v1 ;
+   - lancer les tests tant que la machine n'est pas isolée (S3, §8.2) : `npm test` exécute les scripts du dépôt, que
+     l'agent peut modifier puisque l'écriture dans la copie est autorisée. Sans S3, c'est donc n'importe quelle
+     commande. Choix possibles : demander jusqu'à S3, ou laisser le runner seul lancer les tests (S1).
 2. **Le corpus public** de la banque de tests (§16.2).
 3. **Les Pages** : exporter ce que des utilisateurs y ont écrit avant de retirer leurs tables (§1).
 4. **Les libellés** de Public et Private (proposés : « Workspace », « Collaborators only »).
@@ -1020,7 +1040,8 @@ après un second tour (Jobs, Bengio, Bezos) ; R26 avec l'avis de Jobs et du pôl
 
 ## 21. Limites
 
-- Rien n'est construit ; les durées du sprint sont des estimations.
+- Le sprint a commencé le 28/10 : les contrats, le moteur de règles des deux côtés et la porte locale de Claude Code
+  existent ; le reste est à construire, et les durées sont des estimations.
 - Vérifié le 28/10/2026 aux sources citées : les hooks de Claude Code, Codex, Cursor, Gemini CLI, Ollama, Windows
   Sandbox, OAuth (RFC 8252, MCP, Slack), pgvector, Tika, MQTT, les outils de détection de secrets, les versions de
   Java, de Spring et du SDK MCP. Ces faits bougent vite : ils se revérifient avant chaque usage.
@@ -1032,4 +1053,4 @@ après un second tour (Jobs, Bengio, Bezos) ; R26 avec l'avis de Jobs et du pôl
 
 ---
 
-**Dernière mise à jour :** 27/10/2026 · **v0.1**
+**Dernière mise à jour :** 28/10/2026 · **v0.3**

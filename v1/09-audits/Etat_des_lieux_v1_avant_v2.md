@@ -105,7 +105,7 @@ d'abonnement).
 **Petits défauts relevés** : les deux délais de validation (runner et serveur) sont réglés séparément ; les délais de
 réclamation et de battement de cœur ne se vérifient que lorsque l'interface lit le run ; la version minimale de Claude
 Code (2.1.293) n'est contrôlée que par `--check`, que l'app ne lance pas : elle lit la version installée sans la
-comparer.
+comparer. Corrigé le 28/10 sur la branche v2 : le runner vérifie la version avant chaque mission, 2.1.295 au moins.
 
 ## 2. Le contexte de l'IA (Brain OS) et les connecteurs
 

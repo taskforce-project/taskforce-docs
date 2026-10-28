@@ -316,9 +316,11 @@ touche jamais aux identifiants Anthropic. Options de la CLI vérifiées sur la v
   OS, commentaires) et rien d'autre ;
 - `--settings` et `--setting-sources user` : réglages de la session imposés par l'app, ceux du dépôt cloné ignorés
   (OSS-1.8). Depuis le lot 5, le runner lance l'agent en `--permission-mode manual --permission-prompts none` : une
-  action hors du socle pré-autorisé appelle un crochet `PermissionRequest` HTTP vers un serveur local du runner, qui
-  ouvre la demande dans TaskForce ; l'utilisateur clique Allow ou Deny sur l'issue ; sans réponse, refus (OSS-5.4,
-  vérifié sur la CLI 2.1.293). Le desktop garde ce mécanisme, la demande restant dans l'app.
+  action à demander appelle un crochet `PermissionRequest` HTTP vers un serveur local du runner, qui ouvre la demande
+  dans TaskForce ; l'utilisateur clique Allow ou Deny sur l'issue ; sans réponse, refus (OSS-5.4, vérifié sur la CLI
+  2.1.293). Le desktop garde ce mécanisme, la demande restant dans l'app. Depuis la v2 (28/10/2026), rien n'est
+  autorisé d'avance : un crochet `PreToolUse` juge chaque action avec les règles de la tâche, et la version minimale
+  passe à 2.1.295 (spécification de la v2, §7.1).
 
 Le dépôt est celui lié au projet sur GitHub (§5.6). Le runner le clone à la première tâche avec le GitHub CLI de la
 personne (`gh`), dans le dossier de données du compte, puis chaque run travaille dans un worktree git dédié. Pour ce
