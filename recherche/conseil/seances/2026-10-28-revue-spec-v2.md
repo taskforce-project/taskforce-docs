@@ -201,9 +201,39 @@ autre chose en sort.
 par paliers ; Musk n'accepte R20 que contre un retrait dans le sprint ; Musk écarte Embabel tant que la boucle de
 Cortex suffit.
 
-## Décision de la Présidence
+## Second tour sur R23, demandé par la Présidence `[HYPOTHÈSE]`
 
-En attente : la Présidence relit ce procès-verbal et tranche R16 à R26, dont l'amendement de R1 (R18).
+La Présidence ne voit pas bien ce que recouvre le mode dégradé et demande à Jobs, Bengio et Bezos de le valider ou
+non. Dit simplement : quand l'ordinateur ou le réseau peine (un petit modèle qui sature, peu de mémoire, plus de
+réseau), TaskForce garde la sécurité (la porte, la preuve) et met en pause le confort (le fil, la recherche par le
+sens, le panneau), en le disant.
+
+- **Steve Jobs** : la personne ne doit jamais voir un écran cassé. En mode dégradé, l'app dit en clair ce qui est en
+  pause et ce qui continue (« le fil reprendra au retour du réseau, votre travail continue »). Pour.
+- **Yoshua Bengio** : l'ordre de Hamilton est le bon, puisque la sûreté passe avant le confort. Si la porte elle-même ne
+  peut plus tourner, rien ne tourne. Pour.
+- **Jeff Bezos** : c'est une affaire de portes : en mode dégradé, les portes à double sens continuent, les portes à sens
+  unique attendent. Pour.
+
+## Décision de la Présidence (28/10/2026)
+
+| # | Décision | Raison, dans les mots de la Présidence |
+| --- | --- | --- |
+| R16 | **Retenue** | « Je valide. » |
+| R17 | **Retenue** | « Je valide. » |
+| R18 | **Retenue** | « Je suis peut-être d'accord avec Hamilton, mais ceci dit, on laisse ça à Bengio, Zhuo, Bezos et Musk. » |
+| R19 | **Retenue** | « C'est Yann LeCun. On valide à 100 %. » |
+| R20 | **Retenue**, élargie | Pas seulement Claude : une hiérarchie d'agents. Les petits modèles locaux (Ollama) font les petites choses, Claude Code les grosses ; un curseur automatique choisit le modèle et sa puissance selon la tâche, ce qui gère aussi les coûts. « On laisse ça à LeCun, sur ses théories aussi. » |
+| R21 | **Retenue** | « Je valide. » |
+| R22 | **Retenue** | Jobs mène. |
+| R23 | **Retenue** après le second tour | « Je ne comprends pas trop, mais pourquoi pas » ; validée par Jobs, Bengio et Bezos. |
+| R24 | **Retenue** | « Bien sûr, évidemment. » |
+| R25 | **Retenue** | « Bengio, à 100 % derrière toi. » |
+| R26 | **Retenue** | Avec l'avis de Jobs et d'une équipe UX. |
+| Webapp et desktop | **Précisé** | Les deux produits n'ont pas les mêmes fonctions, comme claude.ai et l'app Claude : il ne faut pas tout mélanger. Les résultats obtenus en local peuvent se voir dans la webapp et inciter à télécharger l'app desktop. La webapp doit marcher : elle sert le référencement et les personnes qui utilisent TaskForce comme un outil de gestion de projet ou un chat d'IA classiques. |
+| Linear | **Précisé** | Concurrent pour la gestion de projet, pas pour le harnais : un jour, TaskForce pourrait servir de harnais dans Linear et dans les outils déjà très répandus. Le branchement et le modèle économique restent à voir. |
+| Monolithe modulaire | **Retenu** | « Des microservices, ça ne tiendrait pas du tout dans le .exe. » |
+| Séance | **Close** | Suite : le ménage, puis le sprint. |
 
 ## Notes du secrétariat
 
@@ -219,5 +249,6 @@ En attente : la Présidence relit ce procès-verbal et tranche R16 à R26, dont 
 
 ## Suites
 
-- La Présidence tranche R16 à R26 ; la spécification passe en version 0.3.
-- Puis la demi-journée de ménage (R10) et le sprint de trois jours, en mode développement.
+- R16 à R26 retenues le 28/10/2026 ; la spécification passe en version 0.3.
+- La demi-journée de ménage (R10), puis le sprint de trois jours, en mode développement : la webapp d'abord, dans
+  Docker, puis une version de l'app desktop pour l'essai de la Présidence.

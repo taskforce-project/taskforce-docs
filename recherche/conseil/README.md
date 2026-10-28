@@ -269,7 +269,7 @@ ce qui est irréversible » ([PV](./seances/2026-10-26-premiere-regle.md)).
 | 26/10/2026 | Quelle est la première règle non négociable de TaskForce ? | Restreinte (7) | R1 à R4 retenues, règle zéro ratifiée | [PV](./seances/2026-10-26-premiere-regle.md) |
 | 27/10/2026 | La vision de la Présidence : le harnais comme principe de tout outil avec IA | Plénière (21) | Vision validée à dix ans ; R5' à R9', I1 et I2 retenues ; niches A puis B | [PV](./seances/2026-10-27-vision.md) |
 | 27/10/2026 | Le ménage de l'app desktop et la spécification de la v2 | Restreinte (2), à la demande de la Présidence | R10 à R15 retenues le 28/10 | [PV](./seances/2026-10-27-menage-spec-v2.md) |
-| 28/10/2026 | La revue de la spécification de la v2 (version 0.2) | Élargie (11), à la demande de la Présidence | R16 à R26 proposées ; décision en attente | [PV](./seances/2026-10-28-revue-spec-v2.md) |
+| 28/10/2026 | La revue de la spécification de la v2 (version 0.2) | Élargie (11), à la demande de la Présidence | R16 à R26 retenues (R23 après un second tour) ; monolithe modulaire ; produits aux fonctions différentes | [PV](./seances/2026-10-28-revue-spec-v2.md) |
 
 ---
 

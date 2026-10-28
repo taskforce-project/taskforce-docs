@@ -43,10 +43,12 @@ en formation élargie, revue de la spécification ([PV](./conseil/seances/2026-1
 
 **Décidé** (Présidence, avant la séance) : la webapp d'abord, en local, puis le .exe ; trois produits ; le front du
 Brain OS supprimé ; R10 à R15 retenues ; l'approche A ; le fil de l'équipe plutôt qu'une messagerie. Après la séance :
-R16 à R26 en attente.
+R16 à R26 retenues, R23 après un second tour (Jobs, Bengio, Bezos) ; une hiérarchie d'agents et de modèles choisie par
+tâche (R20 élargie) ; des produits aux fonctions différentes ; le harnais pourra servir dans d'autres outils, Linear
+compris. Spécification en 0.3, validée.
 
-**Prochain coup** : la Présidence tranche R16 à R26, dont l'amendement de R1 ; puis le ménage et le sprint, en mode
-développement.
+**Prochain coup** : le ménage d'une demi-journée, puis le sprint, en mode développement : la webapp dans Docker, puis
+une version de l'app desktop pour l'essai de la Présidence avec ses modèles Ollama.
 
 ---
 
