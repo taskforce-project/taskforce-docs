@@ -24,6 +24,32 @@ related:
 
 ---
 
+## 2026-10-28 (bis) : le jour 1 du sprint en prod, séances n°5 et n°6 du Conseil
+
+**Fait** : le ménage et le jour 1 du harnais construits, vérifiés de bout en bout et mis en prod (TaskForce 1.5.0,
+app desktop 1.3.0) ; deux séances tenues en parallèle, à la demande de la Présidence. La séance n°5 a revu la
+trajectoire, le découpage et `npm test` ([PV](./conseil/seances/2026-10-28-trajectoire-harnais.md)). La séance n°6 est
+l'atelier design mené par Jobs : Cortex, les flows, la carte de résultat, le parcours de test
+([PV](./conseil/seances/2026-10-28-atelier-design.md)).
+
+**Trouvé**
+- `[ÉTABLI]` La porte laissait passer `npm test --prefix ../ailleurs` et `--outDir=../../x` : la règle ne lisait que
+  le nom de la commande. Trouvé par la séance n°5, corrigé sur la branche v2.
+- `[ÉTABLI]` Le serveur envoie les conditions vides des règles à `null`. Le moteur du runner les prenait pour des
+  motifs ; trouvé par l'essai de bout en bout, corrigé. La garde fermée a tenu pendant le défaut.
+- `[ÉTABLI]` L'atelier a relevé dans le code huit défauts visibles. Exemples : « Brain OS » encore dans Cortex ; Claude
+  Code 2.1.293 affiché prêt ; les demandes du runner affichées « Claude Code asks ». Liste au PV.
+- `[HYPOTHÈSE]` Quatre des cinq membres consultés refusent `npm test` autorisé par défaut tant que la machine n'est pas
+  isolée ; ils préfèrent que le runner lance seul les tests après l'agent (S1). Musk le défend autorisé, sous
+  conditions.
+
+**Décidé** : en attente de la Présidence (R27 à R33, D1 à D11, décisions de Jobs J1 à J9).
+
+**Prochain coup** : l'essai de la Présidence sur l'app desktop 1.3.0 et la webapp 1.5.0, selon le parcours de Jobs ;
+en parallèle, les défauts relevés par l'atelier, puis le reliquat du jour 1.
+
+---
+
 ## 2026-10-28 : spécification de la v2 en 0.2, pôle Design, séance n°4 du Conseil
 
 **Fait** : la spécification passe en 0.2 avec les décisions de la Présidence
