@@ -573,7 +573,7 @@ comment il est construit. Il se conçoit avec le Conseil et l'atelier design ava
 | Niveau | Ce qui est isolé | État |
 | --- | --- | --- |
 | S0 | Le code : un worktree sur une branche `tf/...`, ou un dossier jetable | Existe (`taskforce-runner`) |
-| S1 | Le workflow : après le travail de l'agent, le runner lance la commande de test du projet et les tests de cas d'usage ; les résultats vont au dossier | v2.0 |
+| S1 | Le workflow : après le travail de l'agent, le runner lance la commande de test du projet et les tests de cas d'usage ; les résultats vont au dossier | Commande de test du projet faite le 28/10 (R32) ; tests de cas d'usage : v2.0 |
 | S2 | Les outils : les écritures vers l'extérieur deviennent des actions proposées, ou vont vers un environnement de test (mode test d'un service de paiement, préproduction) | Phase 2 |
 | S3 | La machine : processus isolé, réseau filtré (seulement les dépôts de paquets et le serveur TaskForce) | À étudier |
 
