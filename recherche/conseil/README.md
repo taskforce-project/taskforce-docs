@@ -274,6 +274,7 @@ ce qui est irréversible » ([PV](./seances/2026-10-26-premiere-regle.md)).
 | 28/10/2026 | L'atelier design : Cortex, les flows, la carte de résultat, le parcours de test | Pôle Design (5), Jobs tranche par délégation | J1 à J9 retenues telles quelles, D1 à D11 comme Jobs les a tranchées | [PV](./seances/2026-10-28-atelier-design.md) |
 | 29/10/2026 | La recette de la 1.3.1 (desktop) et de la 1.5.1 (web) : les retours de la Présidence, leurs causes, l'ordre des réparations | Élargie (10), proposée par le secrétariat | R34 à R45 retenues | [PV](./seances/2026-10-29-recette-131.md) |
 | 29/10/2026 | La recette de la 1.3.2 (desktop) et de la 1.6.2 (web) : les accords, Cortex qui prépare l'issue, la revue, la délégation à un modèle local | Élargie (10), proposée par le secrétariat ; Hamilton contradictrice | R46 à R54 retenues, R31 avec elles | [PV](./seances/2026-10-29-recette-132.md) |
+| 29/10/2026 | L'atelier design n°2 : l'écran d'arrivée, le layout et la carte des workflows principaux | Restreinte (5), l'équipe de Jobs ; Saarinen contradicteur | R55 à R59 retenues | [PV](./seances/2026-10-29-atelier-design-carte.md) |
 
 ---
 
