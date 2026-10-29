@@ -973,9 +973,13 @@ d'évaluations existe (29/10/2026, séance n°11, R66 à R71) ; le registre des 
     fait ou accordé, datés avant tout rejeu (R68) ; un rejeu ne touche jamais l'espace (R66) et des programmes le notent
     (R69) ; le dossier de chaque réponse garde le modèle qui a répondu (R70) ; l'écran et l'interrupteur sont dans les
     réglages (R71).
-  - **Les réserves retenues par la Présidence**, à résoudre : un cas qui s'adapte quand l'espace change (R66) ; le
-    produit n'est pas Cortex, et l'écran changera avec l'équipe de Jobs (R67) ; une confirmation qui ne ralentit pas la
-    banque (R68) ; un écran qui ne la retarde pas (R71).
+  - **Les réserves de la Présidence et leurs solutions** (séance n°12, retenues le 30/10/2026) :
+    - un cas dont l'espace a changé sort du score et s'adapte d'un clic, en un nouveau cas (R72) ;
+    - la banque est celle de l'entreprise, dessinée par l'équipe de Jobs dans les workflows 8 et 9 (R73) ;
+    - « Add as proposed » confirme un cas d'un clic, et TaskForce proposera des cas depuis ses dossiers (R74) ;
+    - chaque geste de la banque passera aussi par le serveur MCP de l'espace (R75).
+  - **L'ordre de Jobs**, suivi par la Présidence : aucune surface nouvelle (la file des cas proposés, les outils MCP)
+    avant les écrans de base du produit.
 - **Le registre des modèles par tâche** : lequel tourne, quelle version, qui l'a choisi, pourquoi, son score. Changer de
   modèle est un changement de règle : raison écrite, accord, évaluations rejouées, retour en arrière possible.
   L'entreprise décide quand ses modèles changent.
@@ -1161,6 +1165,12 @@ demande se voient ; un nom par chose. R27 à R31 restent à trancher.
   - ce qui est possédé part avec le client ;
   - les mots éprouvés avant la page.
 - R31 a été retenue le 29/10/2026 avec R51 (séance n°8).
+
+**Décidé par la Présidence les 29 et 30/10/2026, après les séances n°11 et n°12**
+([PV n°11](../../recherche/conseil/seances/2026-10-29-boucle-premier-lot.md), [PV n°12](../../recherche/conseil/seances/2026-10-29-reserves-premier-lot.md))
+- R66 à R71 retenues : le premier lot de la banque d'évaluations (§14), avec quatre réserves faites siennes.
+- R72 à R75 retenues, qui résolvent ces réserves ; le désaccord de Jobs suivi : aucune surface nouvelle avant les écrans
+  de base.
 
 **Reste à trancher**
 
