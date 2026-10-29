@@ -24,6 +24,24 @@ related:
 
 ---
 
+## 2026-10-30 (bis) : l'atelier des écrans de base, séance n°13 du Conseil
+
+**Fait** : la Présidence a lancé l'atelier en même temps que la release 1.6.7 (la banque de tests en production).
+Restreinte (7), l'équipe de Jobs, Norman contradicteur ([PV](./conseil/seances/2026-10-30-atelier-ecrans-base.md)), avec
+des maquettes de sept écrans. La règle `project.create` passe en `allow` (`taskforce-fullstack` #442).
+
+**Trouvé**
+- `[ÉTABLI]` Il n'existe aujourd'hui qu'une barre, dans le panneau de Cortex, et aucune voix dans le code.
+- `[ÉTABLI]` Les mots de la cible, d'après la Présidence : audit, traçabilité, IQ, OQ, PQ, réglementation, référentiel.
+- `[ÉTABLI]` Le texte de la séance n°10 vient d'un post Instagram d'une personne de Y Combinator.
+
+**Décidé** (Présidence) : R76 modifiée (la voix démarre et s'arrête d'un clic, rien ne part sans que la personne envoie),
+R77 à R79 retenues ; R80 à préciser, après la réponse du secrétariat sur l'entraînement.
+
+**Prochain coup** : construire la barre sur chaque écran et « Undo » ; la décision sur R80 ; un message à Y Combinator.
+
+---
+
 ## 2026-10-30 : les réserves du premier lot, séance n°12 du Conseil
 
 **Fait** : la Présidence a retenu R66 à R71 en faisant siennes quatre réserves, chacune à résoudre. Restreinte (7), Jobs
