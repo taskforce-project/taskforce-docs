@@ -276,6 +276,7 @@ ce qui est irréversible » ([PV](./seances/2026-10-26-premiere-regle.md)).
 | 29/10/2026 | La recette de la 1.3.2 (desktop) et de la 1.6.2 (web) : les accords, Cortex qui prépare l'issue, la revue, la délégation à un modèle local | Élargie (10), proposée par le secrétariat ; Hamilton contradictrice | R46 à R54 retenues, R31 avec elles | [PV](./seances/2026-10-29-recette-132.md) |
 | 29/10/2026 | L'atelier design n°2 : l'écran d'arrivée, le layout et la carte des workflows principaux | Restreinte (5), l'équipe de Jobs ; Saarinen contradicteur | R55 à R59 retenues | [PV](./seances/2026-10-29-atelier-design-carte.md) |
 | 29/10/2026 | Posséder son intelligence : des modèles spécialisés aux entreprises, sous leurs règles, et la conformité comme terrain ; le business et le coût nul | Plénière (24) ; Bezos contradicteur | R60 à R65 retenues | [PV](./seances/2026-10-29-intelligence-possedee.md) |
+| 29/10/2026 | Construire la boucle (R61), le premier lot : le cas figé, le rejeu à blanc, les notes, le modèle au dossier, l'écran | Restreinte (7) ; Duflo contradictrice | R66 à R71 retenues ; les réserves de Shotwell (R66, R68, R71) et de Duflo (R67) faites siennes par la Présidence | [PV](./seances/2026-10-29-boucle-premier-lot.md) |
 
 ---
 

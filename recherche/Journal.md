@@ -24,6 +24,28 @@ related:
 
 ---
 
+## 2026-10-29 (quater) : le premier lot de la boucle, séance n°11 du Conseil
+
+**Fait** : la Présidence a demandé d'enchaîner sur R61 en consultant le Conseil. Restreinte (7), Duflo contradictrice
+([PV](./conseil/seances/2026-10-29-boucle-premier-lot.md)). Le premier lot a été construit sur une branche et vérifié en
+développement (`taskforce-fullstack` #437) : le modèle au dossier de chaque réponse, le rejeu à blanc d'un cas figé, la
+banque notée par du code, son écran.
+
+**Trouvé**
+- `[ÉTABLI]` La capture de V81 a été retirée le 18/10/2026 (`5700e4b1`) : rien ne pouvait l'activer, elle est restée
+  vide. La note du flywheel la disait faite ; elle est corrigée.
+- `[ÉTABLI]` En développement, un cas tiré d'une vraie réponse passe sur deux modèles locaux (`qwen3:8b`,
+  `qwen2.5:7b-instruct`), sans écriture ni dossier pendant les rejeux.
+- `[ÉTABLI]` Depuis le noyau, une écriture accordée peut échouer après le clic : un petit modèle a inventé un type de
+  note. Corrigé à part (`taskforce-fullstack` #438).
+
+**Décidé** (Présidence) : R66 à R71 retenues ; les réserves de Shotwell (R66, R68, R71) et de Duflo (R67) faites siennes,
+chacune à résoudre.
+
+**Prochain coup** : les solutions aux quatre réserves, au Conseil ; puis le registre des modèles par tâche (R61).
+
+---
+
 ## 2026-10-29 (ter) : la carte des workflows et la direction, séances n°9 et n°10 du Conseil
 
 **Fait** : l'équipe de Jobs a dessiné l'écran d'arrivée et les sept workflows principaux en diagrammes de séquence
