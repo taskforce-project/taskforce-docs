@@ -66,6 +66,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | AnalyticsController | `/api/workspaces/{slug}/analytics` | ✅ |
 | AnalysisController | `/api/workspaces/{slug}` (→ `/analysis`, `/projects/{id}/brief`, `/priorities/{id}`) | ✅ |
 | AssistantController | `/api/workspaces/{slug}/assistant` (→ `POST` une question à Cortex, `POST /actions/execute` l'accord d'une action qu'il a proposée) | ✅ |
+| EvalController | `/api/workspaces/{slug}/evals` (→ la banque d'évaluations de Cortex : ses cas, ses rejeux, son interrupteur) | ✅ |
 | PersonalAccessTokenController | `/api/users/me/tokens` (→ `GET` liste sans valeur, `POST` création, la valeur n'est rendue qu'ici, `DELETE /{id}` révocation) : jetons personnels, refusés partout sauf sur le serveur MCP (lot 5) | ✅ |
 | McpServerController | `/api/workspaces/{slug}/mcp` (→ `POST` JSON-RPC 2.0, `GET` et `DELETE` 405) : serveur MCP de l'instance, 12 outils ; réponse JSON-RPC, pas l'enveloppe `ApiResponse` (lot 5) | ✅ |
 | AiStatusController | `/api/ai/status` (→ `GET`) : état de l'IA de l'instance (configurée, chat et embeddings joignables, modèles), relu par le backend toutes les 30 s (lot 4, ADR-019) | ✅ |
@@ -200,6 +201,25 @@ désormais l'action, ou `error` (arguments illisibles). 404 si le dossier n'est 
 espace. 400 si le dossier est illisible ou plein, si l'outil n'existe plus, si une écriture externe est accordée par
 quelqu'un qui n'est ni propriétaire ni administrateur (OSS-1.5), ou si le dossier n'attend pas cette action (jamais
 proposée, ou déjà accordée). L'accord est gardé au dossier avant l'action ; le résultat, après.
+
+**La banque d'évaluations de Cortex** (29/10/2026, R61) : sous `/api/workspaces/{slug}/evals`.
+
+- `GET` : l'interrupteur, `canManage` (propriétaire ou admin), les cas actifs, les dix derniers rejeux.
+- `POST /cases/draft`, corps `{record}` : le brouillon d'un cas tiré du dossier d'une réponse de la personne (la
+  question, sa date, les notes servies, les appels, les critères proposés). 404 si le dossier n'est pas le sien.
+- `POST /cases`, corps `{record, title, criteria}` : le serveur refait le contenu figé depuis le dossier, jamais
+  depuis le client, et date les critères. `criteria` = `{tool, args, effect, forbid, contains, notContains}` ;
+  `tool` vaut `none` pour aucun outil, une valeur vide n'est pas vérifiée.
+- `DELETE /cases/{caseId}` : archive le cas (la personne qui l'a ajouté, ou un propriétaire ou un admin ; 403 sinon).
+- `POST /runs`, corps `{model}` : ouvre un rejeu ; un nom vide rejoue sur le modèle par défaut.
+- `POST /runs/{runId}/cases/{caseId}` : rejoue et note un cas, une seule fois ; le quota (409) et le frein de débit
+  (429) de l'IA valent comme pour une réponse.
+- `GET /runs/{runId}` : le rejeu et la note de chaque cas, critère par critère.
+- `PUT /settings`, corps `{enabled}` : propriétaire ou admin. Coupée, la banque ne prend plus de cas ; les siens
+  restent rejouables.
+
+Une règle métier refusée (banque coupée, critère invalide, cas écrit après le départ du rejeu, 200 cas actifs)
+répond 400.
 
 **Cycles / Pages / Teams — alignés ✅** (vérifié 28/08/2026) — `CycleController` (`CycleController.java:33`),
 `PageController` (`PageController.java:39`) et `TeamController` (`TeamController.java:33`) portent tous

@@ -963,10 +963,19 @@ Décision de la Présidence, le 29/10/2026 : « enchaîne sur le noyau pour Cort
   retirée le 18/10/2026 (`5700e4b1`) : rien ne pouvait l'activer, la table est restée vide. La table reste, sans code
   qui l'écrive ni la lise.
 
-**La boucle (R61, séance n°10)** : ce que l'entreprise possède avant les poids d'un modèle. Rien de cela n'existe encore.
+**La boucle (R61, séance n°10)** : ce que l'entreprise possède avant les poids d'un modèle. Le premier lot de la banque
+d'évaluations existe (29/10/2026, séance n°11, R66 à R71) ; le registre des modèles et l'export, pas encore.
 
 - **La banque d'évaluations de l'espace**, nourrie par les dossiers : une tâche échouée, refusée ou regrettée devient un
   cas, avec son résultat attendu écrit. Elle prolonge la banque de tests (§16.2) au travail de chaque entreprise.
+  - **Construit pour Cortex** (`taskforce-fullstack` #437) : un cas naît d'un geste sur une réponse et se fige depuis son
+    dossier (la question, sa date, les notes servies, ce que les lectures ont rendu) ; ses critères viennent de l'acte
+    fait ou accordé, datés avant tout rejeu (R68) ; un rejeu ne touche jamais l'espace (R66) et des programmes le notent
+    (R69) ; le dossier de chaque réponse garde le modèle qui a répondu (R70) ; l'écran et l'interrupteur sont dans les
+    réglages (R71).
+  - **Les réserves retenues par la Présidence**, à résoudre : un cas qui s'adapte quand l'espace change (R66) ; le
+    produit n'est pas Cortex, et l'écran changera avec l'équipe de Jobs (R67) ; une confirmation qui ne ralentit pas la
+    banque (R68) ; un écran qui ne la retarde pas (R71).
 - **Le registre des modèles par tâche** : lequel tourne, quelle version, qui l'a choisi, pourquoi, son score. Changer de
   modèle est un changement de règle : raison écrite, accord, évaluations rejouées, retour en arrière possible.
   L'entreprise décide quand ses modèles changent.
