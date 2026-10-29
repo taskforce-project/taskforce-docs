@@ -49,6 +49,7 @@ related:
 | [E8](#e8--des-règles-écrites-comme-du-code-sont-elles-relues-) | Règles d'agent écrites comme du code (Conseil, R2) | ~1 j | non | proposée |
 | [E9](#e9--le-temps-dattention-par-résultat-accepté-se-mesure-t-il-) | Attention humaine par résultat accepté (Conseil, R3) | ~1 j | non | proposée |
 | [E10](#e10--un-relecteur-dédié-trouve-t-il-de-vrais-défauts-) | Relecteur dédié des pull requests (Conseil, R4) | ~0,5 j | oui | proposée |
+| [E11](#e11--un-petit-modèle-local-rend-il-une-tâche-en-commentaire-acceptable-) | Un petit modèle local pour les tâches en commentaire (Conseil, R51) | ~1,5 j | oui | proposée |
 
 > **L'ordre compte.** E1 avant tout le reste : sans mesure de calibration, **aucune** des autres n'est
 > interprétable. C'est l'inversion proposée dans [`World_Model_Notes.md`](../revues/World-Model.md) §10 —
@@ -304,6 +305,16 @@ délégations réelles de Pierre pendant 10 jours ; mesurer la part du temps d'a
 
 **Coût** : ~0,5 j de développement (horodater les demandes, si ce n'est pas déjà fait) et 10 jours d'usage.
 
+**Premiers relevés** (recette 1.3.2, 29/10/2026, en nombre de demandes et non en durée), d'après le
+[Conseil, séance n°8](../conseil/seances/2026-10-29-recette-132.md) :
+- `[ÉTABLI]` Une mission de modification d'un fichier a demandé quatre accords : deux commandes de lecture, le commit
+  local, le lancement des tests. Trois portaient sur du réversible.
+- `[ÉTABLI]` Une mission de recherche a demandé sept accords, tous des recherches ou des lectures d'adresses web. La table
+  des règles les classe irréversibles, parce que la requête sort de la machine.
+- `[DÉDUIT]` Sur la première mission, la falsification ne tient pas : 3 demandes sur 4 portent sur du réversible. R46
+  (retenue le 29/10) en tire la suite : les lectures passent, le web demande un accord par mission. Les missions
+  rejouées après R46 sont la mesure suivante.
+
 ---
 
 ## E8 : Des règles écrites comme du code sont-elles relues ?
@@ -382,6 +393,33 @@ Pierre sur 10 pull requests ; Pierre classe chaque remarque (vrai défaut ou bru
 si le modèle existant montre la valeur.
 
 **Coût** : ~0,5 j de développement, plus les appels au modèle relecteur.
+
+---
+
+## E11 : Un petit modèle local rend-il une tâche en commentaire acceptable ?
+
+`[statut:: proposée]` · Ouverte le 29/10/2026 · issue du [Conseil, séance n°8](../conseil/seances/2026-10-29-recette-132.md), R51 (avec R31)
+
+**Hypothèse** `[HYPOTHÈSE]` : un petit modèle à outils, sur l'ordinateur (qwen3:8b), porté par la boucle de Cortex,
+rend acceptable au moins trois tâches sur cinq dont le livrable est un commentaire : chercher et résumer, trier, rédiger.
+
+**Falsification** : le petit modèle échoue sur trois tâches sur cinq, avec les critères écrits avant de lancer.
+L'hypothèse est alors fausse pour les commentaires, et l'agent local n'est pas proposé.
+
+**Schéma réel** `[ÉTABLI]` : deux agents de délégation existent, Claude Code par le runner local et GitHub Copilot ; aucun
+ne délègue à un modèle local. La boucle de Cortex appelle déjà ses outils avec qwen3:8b dans l'app desktop. Dans la
+recette 1.3.2, deux missions ont rendu leur résultat en commentaire, sans code.
+
+**Protocole** : cinq tâches, dont les deux missions en commentaire de la recette 1.3.2 ; pour chacune, les critères
+d'acceptation écrits avant de lancer ; la même tâche faite par qwen3:8b et par Claude Code ; Pierre juge chaque
+résultat sans savoir lequel l'a produit, si c'est possible.
+
+**Métrique** : tâches acceptées sur cinq, pour chaque modèle ; durée ; corrections demandées.
+
+**Limite** : cinq tâches, une personne qui juge (C1) ; un poste avec un GPU portable de 8 Go.
+
+**Coût** : ~1 j de développement (l'agent local comme troisième agent de délégation, par la même porte et le même dossier),
+plus une demi-journée de mesure.
 
 ---
 

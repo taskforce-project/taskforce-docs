@@ -243,6 +243,21 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 
 ---
 
+## Q12 : Demander à Anthropic d'afficher le logo de Claude ?
+
+`[statut:: ouverte]` · `[prio:: P3]` · Ouverte le 29/10/2026 · issue du [Conseil, séance n°8](./conseil/seances/2026-10-29-recette-132.md), R53
+
+- **La question** : TaskForce montre Claude Code par son seul nom (R53, retenue). Faut-il demander à Anthropic
+  l'autorisation d'afficher le logo de Claude, dans l'app et sur le site ?
+- **Pourquoi ça compte** : `[ÉTABLI]` les conditions d'Anthropic (en vigueur depuis le 01/08/2024) n'autorisent ses
+  marques que de la façon qu'il permet, sans parrainage ni affiliation sous-entendus, et ne décrivent aucun programme
+  de partenaires. La Présidence avait voulu le logo sur le site le 19/10/2026.
+- **Position actuelle** : `[HYPOTHÈSE]` le nom seul tant qu'aucune autorisation écrite n'existe ; la demande est au choix
+  de la Présidence.
+- **Ce qu'il faut pour trancher** : la décision de la Présidence de demander ou non, puis la réponse d'Anthropic.
+
+---
+
 **Points d'entrée :** [🔬 R&D](./README.md) · [🤖 Mode recherche](./CLAUDE.md) · [🧪 Expériences](./experiences/Experiences.md) · [📖 Notes critiques](./revues/World-Model.md)
 
 **Dernière mise à jour :** 27/10/2026 · **v1.1** · Projet Taskforce — Metz Numeric School 2025-2026

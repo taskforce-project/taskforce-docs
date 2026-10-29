@@ -24,6 +24,33 @@ related:
 
 ---
 
+## 2026-10-29 (bis) : la recette de la 1.3.2, séance n°8 du Conseil
+
+**Fait** : la Présidence a rejoué la recette sur l'app desktop 1.3.2 et la webapp 1.6.2, avec la même fiche. Le
+secrétariat a relu chaque note et vérifié les causes dans le code, les journaux et les réglages de la prod. Il a relu le
+code des réparations en Java, Python et TypeScript. Puis il a réuni le Conseil en formation élargie (10), Hamilton
+contradictrice ([PV](./conseil/seances/2026-10-29-recette-132.md)).
+
+**Trouvé**
+- `[ÉTABLI]` 19 étapes OK, 3 KO, aucune bloquée (7 à la recette précédente) : une mission va jusqu'à la pull request.
+- `[ÉTABLI]` Cortex a créé l'issue dans un autre projet que celui nommé. `create_issue` ne connaît le projet que par son
+  numéro, que le modèle n'a pas cherché. L'outil répond « Issue created in TaskForce », que le modèle a pris pour le nom
+  du projet.
+- `[ÉTABLI]` Une recherche web demande un accord à chaque requête : la règle la classe irréversible, puisque la requête
+  sort de la machine. Sur une mission de modification, trois accords sur quatre portaient sur du réversible (E7).
+- `[ÉTABLI]` La pull request affiche « nothing pushed » au-dessus d'une branche poussée : le runner recopie le résumé de
+  l'agent. Et le prompt demande à l'agent des tests qu'une règle lui interdit.
+- `[ÉTABLI]` Le « rate limiting » de la recette est le frein de la bêta : une requête IA par minute et par compte.
+- `[ÉTABLI]` La relecture a trouvé dix défauts dans les réparations, dont un introduit par le secrétariat (la mise en
+  place de la double vérification la coupait sans code). Ils sont corrigés et livrés en 1.6.3.
+
+**Décidé** (Présidence) : R46 à R54 retenues, R31 avec elles, « on suit le conseil sur tout, go release ».
+
+**Prochain coup** : les réparations courtes (R48, R49, R52), puis R46, puis la refonte des trois écrans avec Jobs (R54) ;
+E11 pour la délégation à un modèle local.
+
+---
+
 ## 2026-10-29 : la recette de la 1.3.1, séance n°7 du Conseil
 
 **Fait** : la Présidence a passé la recette de l'app desktop 1.3.1 et de la webapp 1.5.1 (24 étapes, le parcours J9).
