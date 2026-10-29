@@ -907,6 +907,13 @@ les équipes sans ordinateur allumé, avec les mêmes baux et les mêmes règles
 - **Un refus n'est pas un échec (R38).** Une mission refusée au départ par une règle finit `FAILED` pour la file, marquée `refused` : l'écran dit « Not started » avec la raison de la règle, écrite pour la personne ; le dossier garde l'identifiant de la règle. La notification a son type (`agentNotStarted`, « Agent didn't start »), et l'issue reste dans sa colonne.
 - **Une action ne se dit faite que si un outil l'a faite (R35).** La passerelle ne retire jamais tous les outils : refusés jusqu'au dernier, elle répond 422 avec le code `tools_refused`, et Cortex dit qu'il n'a rien fait ; un 413 qui reste avec un seul outil vient de la conversation, trop grosse (503). Un arrêt après une écriture garde ce qui a été fait. Une création annoncée sans écriture réussie est remplacée.
 
+### 13.10 Ce que la recette de la 1.3.2 a changé (tel que construit)
+
+- **Le harnais dit ce qu'il a fait (R49).** La pull request s'ouvre sur les faits du runner : la branche poussée et par quelle règle, la pull request ouverte et par quelle règle, les tests tels que le runner les a lancés, ou l'absence de commande de test. Le résumé de l'agent vient ensuite, sous son propre titre. Le brief ne demande plus à l'agent de lancer les tests, que la règle `no-agent-scripts` lui interdit : le runner les lance après lui (S1).
+- **Cortex place une issue dans le temps (R48).** Le projet se désigne par sa clé ou son nom, résolu par le code ; le Backlog par défaut, une autre colonne ou une échéance quand le but les justifie ; Cortex demande quand le projet ou le moment n'est pas clair.
+- **Cortex lit les issues comme on les cherche (R52).** Par projet, colonne et personne, avec ce qui bloque chaque issue ouverte.
+- **Le reste du noyau (R35).** Les écritures de Cortex ne passent pas encore par le moteur de règles ni par le dossier : `RulesEngine`, côté Java, n'est appelé par aucun code de production, et la condition « une écriture externe attend un accord » est écrite dans `AgentService`. C'est le chantier suivant du harnais, avec R46.
+
 ## 14. Le harnais apprend
 
 - Chaque mission laisse des données exploitables : demandes, décisions, regrets, sorties des tests, sources citées,

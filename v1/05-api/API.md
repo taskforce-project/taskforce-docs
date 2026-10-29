@@ -187,6 +187,11 @@ jeton chacun, divisant le quota réel par deux. Cf. [PC-033](../09-audits/Proble
 sans en-têtes CORS, le limiteur passant avant le filtre CORS ; le navigateur le bloquait et l'app affichait une
 panne réseau. `CorsConfig` enregistre désormais le `CorsFilter` en tête de la chaîne servlet : un 429 porte
 `Access-Control-Allow-Origin`, `Access-Control-Allow-Credentials` et `Retry-After` (exposé).
+**La garde de débit IA dit sa limite et la vraie attente** (29/10/2026, séance n°8, R52) : un refus de
+`AiRateGuard` répond 429 avec le libellé `AI Rate Limited`, un message qui nomme la limite (une requête IA par
+minute et par compte, le budget du compte, ou celui de l'instance) et l'attente jusqu'à la minute suivante, et un
+`Retry-After` exact : les fenêtres sont des minutes calendaires, l'en-tête valait 60 en dur. Le front affiche ce
+message tel quel ; les autres 429 gardent le libellé général.
 
 **Cycles / Pages / Teams — alignés ✅** (vérifié 28/08/2026) — `CycleController` (`CycleController.java:33`),
 `PageController` (`PageController.java:39`) et `TeamController` (`TeamController.java:33`) portent tous
