@@ -273,7 +273,13 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   - `[HYPOTHÈSE]` l'offre toujours gratuite d'Oracle (2 OCPU, 12 Go) pourrait la porter pour 0 €, à vérifier : images
     arm64, capacité disponible, mémoire réelle de la prod à mesurer ; sinon un petit serveur, de l'ordre de dix euros
     par mois (devis à refaire).
-- **Ce qu'il faut pour trancher** : les réponses de la Présidence.
+- **Réponses de la Présidence, le 30/10/2026** :
+  - L'hébergement : « pour l instant aucun mais je prendrais un VPS OVH des que possible, VPS-3 pour etre precis ».
+    `[ÉTABLI]` Le VPS-3 d'OVH : 6 vCores, 12 Go de mémoire, 100 Go de disque, 10,40 € HT par mois (page d'OVH lue le
+    19/10/2026, avec l'empreinte de la prod mesurée le même jour : environ 2,2 Go).
+  - Le temps, le partenaire, la source du texte : la Présidence ne voit pas ce que la question demande. Le secrétariat
+    doit la reformuler, plus explicitement.
+- **Ce qu'il faut pour trancher** : la date du VPS ; les trois points reformulés.
 
 ---
 

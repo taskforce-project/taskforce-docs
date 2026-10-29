@@ -425,6 +425,8 @@ plus une demi-journée de mesure.
 
 `[statut:: proposée]` · Ouverte le 29/10/2026 · issue du [Conseil, séance n°10](../conseil/seances/2026-10-29-intelligence-possedee.md), R62
 
+**Plateforme** : Kaggle, dans le compte de la Présidence (décision du 30/10/2026).
+
 **Hypothèse** `[HYPOTHÈSE]` : affiné sur le corpus public de la banque de tests (§16.2 de la spécification), un petit
 modèle ouvert répond mieux aux questions de ce corpus, avec la bonne source et la citation exacte, que le même modèle de
 base avec la recherche de TaskForce.

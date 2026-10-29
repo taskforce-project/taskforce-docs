@@ -1172,6 +1172,12 @@ demande se voient ; un nom par chose. R27 à R31 restent à trancher.
 - R72 à R75 retenues, qui résolvent ces réserves ; le désaccord de Jobs suivi : aucune surface nouvelle avant les écrans
   de base.
 
+**Décidé par la Présidence le 30/10/2026**
+- Cortex crée un projet sans demander : la règle `project.create` passe à `allow` ; « tout passera par un input de
+  chat + vocal globalement ».
+- L'expérience E12 se fait sur Kaggle.
+- La recette attend un produit complet et à jour.
+
 **Reste à trancher**
 
 1. **La table par défaut** (§6.2), en particulier :
@@ -1182,8 +1188,8 @@ demande se voient ; un nom par chose. R27 à R31 restent à trancher.
 4. **Les libellés** de Public et Private (proposés : « Workspace », « Collaborators only »).
 5. **R27 à R30** de la séance n°5 : la trajectoire, le découpage, le reliquat du jour 1, l'aperçu des effets. R31,
    l'agent interne au jour 3, est retenue (séance n°8).
-6. **Les moyens de la direction** (Q13) : l'hébergement, le temps de la Présidence, un partenaire de conception, la
-   source du texte apporté à la séance n°10.
+6. **Les moyens de la direction** (Q13) : le temps de la Présidence, un partenaire de conception, la source du texte
+   apporté à la séance n°10. L'hébergement est tranché le 30/10/2026 : un VPS OVH VPS-3 dès que possible.
 
 **Recommandations retenues, pour mémoire**
 
