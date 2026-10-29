@@ -926,7 +926,32 @@ les équipes sans ordinateur allumé, avec les mêmes baux et les mêmes règles
 - **Le harnais dit ce qu'il a fait (R49).** La pull request s'ouvre sur les faits du runner : la branche poussée et par quelle règle, la pull request ouverte et par quelle règle, les tests tels que le runner les a lancés, ou l'absence de commande de test. Le résumé de l'agent vient ensuite, sous son propre titre. Le brief ne demande plus à l'agent de lancer les tests, que la règle `no-agent-scripts` lui interdit : le runner les lance après lui (S1).
 - **Cortex place une issue dans le temps (R48).** Le projet se désigne par sa clé ou son nom, résolu par le code ; le Backlog par défaut, une autre colonne ou une échéance quand le but les justifie ; Cortex demande quand le projet ou le moment n'est pas clair.
 - **Cortex lit les issues comme on les cherche (R52).** Par projet, colonne et personne, avec ce qui bloque chaque issue ouverte.
-- **Le reste du noyau (R35).** Les écritures de Cortex ne passent pas encore par le moteur de règles ni par le dossier : `RulesEngine`, côté Java, n'est appelé par aucun code de production, et la condition « une écriture externe attend un accord » est écrite dans `AgentService`. C'est le chantier suivant du harnais, avec R46.
+- **Le reste du noyau (R35).** À la 1.6.4, les écritures de Cortex ne passaient ni par le moteur de règles ni par le dossier : `RulesEngine`, côté Java, n'était appelé par aucun code de production, et la condition « une écriture externe attend un accord » était écrite dans `AgentService`. C'est fait depuis (§13.11).
+
+### 13.11 Le noyau pour Cortex (tel que construit)
+
+Décision de la Présidence, le 29/10/2026 : « enchaîne sur le noyau pour Cortex ». Elle applique R35 (séance n°7) : les écritures de Cortex passent par la même porte que celles des agents, les règles, puis le dossier.
+
+- **Un seul juge.** Chaque outil que Cortex veut lancer, interne ou externe, est jugé par `CortexGate` avec le moteur et le contrat des agents délégués (`RulesEngine`, `contracts/rules`) : les faits de l'outil, puis la règle la plus stricte qui les couvre, dans la dernière version des règles de l'espace ou dans la table par défaut. `allow` : l'outil tourne. `ask` : il est proposé à la personne, jamais lancé par le modèle. `deny` : il ne tourne pas, et la raison de la règle revient au modèle, qui la dit. `AgentService` ne teste plus aucun nom d'outil.
+- **Les outils dans les mots du contrat.** Avec la table par défaut :
+
+  | Outil de Cortex | Action | Effet | Règle |
+  | --- | --- | --- | --- |
+  | `search_brain` | `knowledge.search` | allow | `search-knowledge` |
+  | `list_projects`, `list_issues` | `issue.read` | allow | `read-issues` |
+  | `find_integration` | `mcp.read` | allow | `read-company-tools` |
+  | `create_issue` | `issue.create` | allow | `create-issue` |
+  | `create_note` | `knowledge.write` | ask | `propose-knowledge` |
+  | `create_project` | `project.create` | ask | aucune |
+  | outil externe en lecture | `mcp.read`, avec `server` | allow | `read-company-tools` |
+  | outil externe en écriture | `mcp.write`, avec `server` | ask | `write-company-tools` |
+
+  Un outil absent de cette table n'a pas d'action : aucune règle ne le couvre, il est demandé. Une règle d'espace peut viser un serveur (`server`) ou un outil (`tool`) ; refuser l'emporte sur demander, qui l'emporte sur autoriser.
+- **Ce qui change pour la personne.** Une note et un projet que Cortex veut créer lui sont désormais proposés, avec « Approve and run », comme une écriture externe : la table par défaut demande une décision pour ce qui entre au Brain OS, et aucune règle ne couvre la création d'un projet. Une issue se crée toujours seule. Une action refusée s'affiche « Refused by a rule », avec sa raison.
+- **Le dossier d'une réponse (V107).** Une réponse de Cortex qui appelle un outil ouvre un dossier (`cortex_records`, `cortex_record_events`), chaîné comme celui d'une mission (`EvidenceChain`, contrat `contracts/evidence`) : `mission.started` (la question, l'agent `internal`), puis pour chaque outil `action.requested` et `action.decided` avant tout effet, `action.result` après. Une réponse sans outil n'en ouvre pas.
+- **Tracer avant d'agir (§13.4).** Si le dossier ne s'ouvre pas, ou s'il est plein (200 événements), l'outil ne tourne pas. Une panne au moment de garder le résultat se journalise : elle ne défait pas ce qui a été fait et ne le dit pas raté.
+- **L'accord prolonge le dossier.** « Approve and run » envoie l'outil, ses arguments et le dossier de la réponse (`POST /assistant/actions/execute`). Le serveur vérifie que le dossier est celui de la personne, dans son espace ; qu'une écriture externe est accordée par un propriétaire ou un administrateur (OSS-1.5) ; que le dossier attend cette action, c'est-à-dire une proposition (un résultat `pending`) que personne n'a accordée, sous le verrou du dossier : un deuxième clic ne relance rien, et rien ne s'accorde que Cortex n'a pas proposé. Il garde `human.decision` avec les arguments accordés, rejuge l'action par les règles, qui ont pu changer, la lance avec les droits de la personne et garde le résultat.
+- **Reste.** Le dossier de Cortex ne se lit pas encore hors de la base : ni export, ni écran (la carte de résultat, §15).
 
 ## 14. Le harnais apprend
 

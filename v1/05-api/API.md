@@ -65,7 +65,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | IssueController | `/api/workspaces/{slug}/projects/{projectId}/issues` | ✅ |
 | AnalyticsController | `/api/workspaces/{slug}/analytics` | ✅ |
 | AnalysisController | `/api/workspaces/{slug}` (→ `/analysis`, `/projects/{id}/brief`, `/priorities/{id}`) | ✅ |
-| AssistantController | `/api/workspaces/{slug}/assistant` | ✅ |
+| AssistantController | `/api/workspaces/{slug}/assistant` (→ `POST` une question à Cortex, `POST /actions/execute` l'accord d'une action qu'il a proposée) | ✅ |
 | PersonalAccessTokenController | `/api/users/me/tokens` (→ `GET` liste sans valeur, `POST` création, la valeur n'est rendue qu'ici, `DELETE /{id}` révocation) : jetons personnels, refusés partout sauf sur le serveur MCP (lot 5) | ✅ |
 | McpServerController | `/api/workspaces/{slug}/mcp` (→ `POST` JSON-RPC 2.0, `GET` et `DELETE` 405) : serveur MCP de l'instance, 12 outils ; réponse JSON-RPC, pas l'enveloppe `ApiResponse` (lot 5) | ✅ |
 | AiStatusController | `/api/ai/status` (→ `GET`) : état de l'IA de l'instance (configurée, chat et embeddings joignables, modèles), relu par le backend toutes les 30 s (lot 4, ADR-019) | ✅ |
@@ -192,6 +192,14 @@ panne réseau. `CorsConfig` enregistre désormais le `CorsFilter` en tête de la
 minute et par compte, le budget du compte, ou celui de l'instance) et l'attente jusqu'à la minute suivante, et un
 `Retry-After` exact : les fenêtres sont des minutes calendaires, l'en-tête valait 60 en dur. Le front affiche ce
 message tel quel ; les autres 429 gardent le libellé général.
+
+**L'accord d'une action de Cortex** (29/10/2026, R35) : `POST /api/workspaces/{slug}/assistant/actions/execute`,
+corps `{tool, input, record}` (l'outil et les arguments tels que la réponse les a rendus, et le dossier de cette
+réponse). 200 avec `{tool, status, output}` : `success`, `refused` quand les règles de l'espace refusent
+désormais l'action, ou `error` (arguments illisibles). 404 si le dossier n'est pas celui de la personne dans cet
+espace. 400 si le dossier est illisible ou plein, si l'outil n'existe plus, si une écriture externe est accordée par
+quelqu'un qui n'est ni propriétaire ni administrateur (OSS-1.5), ou si le dossier n'attend pas cette action (jamais
+proposée, ou déjà accordée). L'accord est gardé au dossier avant l'action ; le résultat, après.
 
 **Cycles / Pages / Teams — alignés ✅** (vérifié 28/08/2026) — `CycleController` (`CycleController.java:33`),
 `PageController` (`PageController.java:39`) et `TeamController` (`TeamController.java:33`) portent tous
