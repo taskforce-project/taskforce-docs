@@ -24,6 +24,36 @@ related:
 
 ---
 
+## 2026-10-29 (ter) : la carte des workflows et la direction, séances n°9 et n°10 du Conseil
+
+**Fait** : l'équipe de Jobs a dessiné l'écran d'arrivée et les sept workflows principaux en diagrammes de séquence
+(séance n°9, [PV](./conseil/seances/2026-10-29-atelier-design-carte.md),
+[carte](https://claude.ai/artifact/CzYEJ2xV4kHQpPzWCd8y4x)). Le noyau pour Cortex est construit et vérifié en
+développement. Puis la Présidence a saisi le Conseil entier : les entreprises posséderont des modèles spécialisés, sous
+leurs règles, et TaskForce en serait le harnais, d'abord pour la conformité. Elle demandait aussi le business, les coûts
+et un prototype à coût nul. Plénière (24), Bezos contradicteur, sur un dossier sourcé
+([PV](./conseil/seances/2026-10-29-intelligence-possedee.md)).
+
+**Trouvé**
+- `[ÉTABLI]` TaskForce a le socle de la thèse : règles, dossiers chaînés, accords, choix du modèle, modèle local dans
+  l'app desktop. Pas la boucle : ni évaluations par espace, ni registre des modèles, ni export des données, ni
+  entraînement.
+- `[ÉTABLI]` C1 et C4 excluent tout entraînement dans le labo, et toute preuve de la valeur d'un modèle spécialisé sur
+  nos données.
+- `[ÉTABLI]` Les meilleurs modèles ouverts ont environ quatre mois de retard en moyenne (Epoch AI). Sur une tâche étroite,
+  un petit modèle affiné peut battre un modèle de pointe (prépublications de 2026).
+- `[ÉTABLI]` L'entraînement et l'hébergement de modèles spécialisés sont occupés par des fournisseurs financés ; la
+  conformité « agentique » lève des fonds ; l'Omnibus reporte le haut risque au 02/12/2027.
+- `[DÉDUIT]` Servir chacun à coût nul et posséder son intelligence sont la même architecture : le local.
+
+**Décidé** (Présidence) : R55 à R59 et R60 à R65 retenues, « on suit le conseil sur tout, go ».
+
+**Prochain coup** : la direction dans la spécification et la roadmap ; la boucle (R61 : évaluations, registre des
+modèles, export des données) ; E12 (l'affinage sur le corpus public) ; un partenaire de conception (R63, E13) ; les mots
+(R65, E14) ; l'atelier des écrans reprend sur la carte, avec deux workflows de plus.
+
+---
+
 ## 2026-10-29 (bis) : la recette de la 1.3.2, séance n°8 du Conseil
 
 **Fait** : la Présidence a rejoué la recette sur l'app desktop 1.3.2 et la webapp 1.6.2, avec la même fiche. Le

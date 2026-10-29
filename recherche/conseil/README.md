@@ -275,6 +275,7 @@ ce qui est irréversible » ([PV](./seances/2026-10-26-premiere-regle.md)).
 | 29/10/2026 | La recette de la 1.3.1 (desktop) et de la 1.5.1 (web) : les retours de la Présidence, leurs causes, l'ordre des réparations | Élargie (10), proposée par le secrétariat | R34 à R45 retenues | [PV](./seances/2026-10-29-recette-131.md) |
 | 29/10/2026 | La recette de la 1.3.2 (desktop) et de la 1.6.2 (web) : les accords, Cortex qui prépare l'issue, la revue, la délégation à un modèle local | Élargie (10), proposée par le secrétariat ; Hamilton contradictrice | R46 à R54 retenues, R31 avec elles | [PV](./seances/2026-10-29-recette-132.md) |
 | 29/10/2026 | L'atelier design n°2 : l'écran d'arrivée, le layout et la carte des workflows principaux | Restreinte (5), l'équipe de Jobs ; Saarinen contradicteur | R55 à R59 retenues | [PV](./seances/2026-10-29-atelier-design-carte.md) |
+| 29/10/2026 | Posséder son intelligence : des modèles spécialisés aux entreprises, sous leurs règles, et la conformité comme terrain ; le business et le coût nul | Plénière (24) ; Bezos contradicteur | R60 à R65 retenues | [PV](./seances/2026-10-29-intelligence-possedee.md) |
 
 ---
 

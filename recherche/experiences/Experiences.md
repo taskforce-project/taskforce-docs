@@ -421,8 +421,84 @@ résultat sans savoir lequel l'a produit, si c'est possible.
 **Coût** : ~1 j de développement (l'agent local comme troisième agent de délégation, par la même porte et le même dossier),
 plus une demi-journée de mesure.
 
+## E12 : Un petit modèle affiné bat-il le modèle de base avec recherche ?
+
+`[statut:: proposée]` · Ouverte le 29/10/2026 · issue du [Conseil, séance n°10](../conseil/seances/2026-10-29-intelligence-possedee.md), R62
+
+**Hypothèse** `[HYPOTHÈSE]` : affiné sur le corpus public de la banque de tests (§16.2 de la spécification), un petit
+modèle ouvert répond mieux aux questions de ce corpus, avec la bonne source et la citation exacte, que le même modèle de
+base avec la recherche de TaskForce.
+
+**Falsification** : le modèle affiné ne bat pas le modèle de base avec recherche sur les évaluations écrites avant, ou il
+perd sur les cas de sûreté. L'entraînement n'est alors pas promis : la boucle reste les évaluations et le choix du
+modèle.
+
+**Schéma réel** `[ÉTABLI]` : aucun entraînement ni affinage dans TaskForce, pas de GPU au labo (C4). L'app desktop fait
+tourner des modèles d'Ollama. La banque de tests prévoit une famille « contexte » sur un corpus public à plusieurs
+versions, et une famille « modèles ».
+
+**Protocole** :
+- Le secrétariat prépare le carnet et les évaluations ; la Présidence le lance dans son compte d'un GPU gratuit (Kaggle
+  ou Colab, quotas à vérifier), puisque l'agent ne crée pas de compte.
+- Un petit modèle ouvert, d'une taille que le GPU gratuit accepte, affiné en LoRA ou QLoRA, puis exporté au format
+  d'Ollama.
+- Trois bras sur les mêmes questions : le modèle de base seul, le modèle de base avec recherche, le modèle affiné avec
+  recherche.
+- Les questions, leurs sources et les cas de sûreté (demandes hors domaine ou dangereuses) sont écrits avant de lancer.
+
+**Métrique** : réponses avec la bonne source et la citation exacte ; refus corrects sur les cas de sûreté ; durée et
+mémoire sur le poste.
+
+**Limite** : un corpus public, pas les données d'un client (C1) ; un seul modèle ; une personne qui juge.
+
+**Coût** : 0 € de calcul ; ~1 j pour préparer le carnet et les évaluations, plus une demi-journée de mesure.
+
+## E13 : Le spécialiste gagne-t-il du temps sur un vrai dossier ?
+
+`[statut:: proposée]` · Ouverte le 29/10/2026 · issue du [Conseil, séance n°10](../conseil/seances/2026-10-29-intelligence-possedee.md), R63
+
+**Hypothèse** `[HYPOTHÈSE]` : sur un dossier réel de conformité d'un produit à un standard qui évolue, un spécialiste du
+partenaire de conception passe moins de temps avec TaskForce (les règles, les accords, le dossier chaîné) qu'avec sa
+méthode actuelle, sans rater un point qu'elle trouve.
+
+**Falsification** : son temps ne baisse pas, ou la revue avec TaskForce rate un point que la méthode actuelle trouve.
+
+**Schéma réel** `[ÉTABLI]` : pas encore de partenaire de conception ; le premier cas d'usage est retenu depuis la séance
+n°2 ; aucun connecteur d'outil de conformité.
+
+**Protocole** : un dossier choisi avec le partenaire ; le temps de la méthode actuelle, chronométré ou relevé sur le
+dernier dossier comparable ; le même type de dossier dans TaskForce ; les points trouvés de chaque côté, comparés par le
+spécialiste.
+
+**Métrique** : le temps du spécialiste ; les points trouvés et ratés ; le nombre de demandes de décision.
+
+**Limite** : un dossier, un spécialiste ; aucun tirage au sort possible (C1, C2).
+
+**Coût** : le temps du partenaire ; ~1 j de préparation.
+
+## E14 : La promesse se redit-elle en une phrase ?
+
+`[statut:: proposée]` · Ouverte le 29/10/2026 · issue du [Conseil, séance n°10](../conseil/seances/2026-10-29-intelligence-possedee.md), R65
+
+**Hypothèse** `[HYPOTHÈSE]` : après la même présentation de deux minutes, au moins trois personnes de la cible sur cinq
+redisent la promesse en une phrase juste, pour l'une des deux formules : « posséder son intelligence », ou
+« infrastructure de conformité native IA ».
+
+**Falsification** : moins de trois sur cinq, pour les deux formules. Le site ne change pas.
+
+**Schéma réel** `[ÉTABLI]` : aucun entretien mené ; le site ne porte aucune des deux formules.
+
+**Protocole** : cinq personnes de la cible, dont un spécialiste de la conformité et un responsable ; les deux formules,
+dans un ordre tiré au sort ; on note la phrase redite, mot pour mot.
+
+**Métrique** : phrases justes sur cinq, par formule.
+
+**Limite** : cinq personnes, que la Présidence recrute.
+
+**Coût** : ~2 h d'entretiens.
+
 ---
 
 **Points d'entrée :** [🔬 R&D](../README.md) · [🤖 Mode recherche](../CLAUDE.md) · [❓ Questions](../Questions-ouvertes.md) · [📖 Notes critiques](../revues/World-Model.md)
 
-**Dernière mise à jour :** 27/10/2026 · **v1.1** · Projet Taskforce — Metz Numeric School 2025-2026
+**Dernière mise à jour :** 29/10/2026 · **v1.1** · Projet Taskforce, Metz Numeric School 2025-2026

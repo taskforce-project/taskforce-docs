@@ -256,8 +256,23 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   de la Présidence.
 - **Ce qu'il faut pour trancher** : la décision de la Présidence de demander ou non, puis la réponse d'Anthropic.
 
+## Q13 : Les moyens de la direction : l'hébergement, le temps, un partenaire, la source du texte
+
+`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 29/10/2026 · issue du [Conseil, séance n°10](./conseil/seances/2026-10-29-intelligence-possedee.md), R60 à R65
+
+- **La question** :
+  - Ce que coûte l'hébergement actuel, et jusqu'à quand il tient.
+  - Combien d'heures par semaine la Présidence peut donner.
+  - Qui serait le partenaire de conception, dans le secteur du premier cas d'usage.
+  - D'où vient le texte apporté à la séance n°10.
+- **Pourquoi ça compte** : `[DÉDUIT]` les paliers 0 à 3 de la séance ne coûtent que du temps ; le palier 4 demande un
+  partenaire ; si le texte vient d'un appel d'investisseurs, y répondre devient une suite.
+- **Position actuelle** : `[HYPOTHÈSE]` l'hébergement actuel tient ; sinon un petit serveur, de l'ordre de dix euros par
+  mois (devis à refaire).
+- **Ce qu'il faut pour trancher** : les réponses de la Présidence.
+
 ---
 
 **Points d'entrée :** [🔬 R&D](./README.md) · [🤖 Mode recherche](./CLAUDE.md) · [🧪 Expériences](./experiences/Experiences.md) · [📖 Notes critiques](./revues/World-Model.md)
 
-**Dernière mise à jour :** 27/10/2026 · **v1.1** · Projet Taskforce — Metz Numeric School 2025-2026
+**Dernière mise à jour :** 29/10/2026 · **v1.1** · Projet Taskforce, Metz Numeric School 2025-2026
