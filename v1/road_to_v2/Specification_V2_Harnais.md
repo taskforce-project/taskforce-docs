@@ -904,8 +904,8 @@ les équipes sans ordinateur allumé, avec les mêmes baux et les mêmes règles
 ### 13.9 Ce que la recette du 29/10/2026 a changé (tel que construit)
 
 - **Un agent n'est proposé que s'il peut partir (R37).** Le runner lit `claude auth status` et la version de Claude Code dans `--check`, avant chaque mission et une fois par minute dans sa boucle ; il le dit à TaskForce en réclamant une tâche. Avec un problème connu, rien ne lui est remis, et le menu Assignee montre l'agent grisé, avec ce qui manque.
-- **Un refus n'est pas un échec (R38).** Une mission refusée au départ par une règle finit `FAILED` pour la file, marquée `refused` : l'écran dit « Not started » avec la raison de la règle, écrite pour la personne ; le dossier garde l'identifiant de la règle.
-- **Une action ne se dit faite que si un outil l'a faite (R35).** La passerelle ne retire jamais tous les outils : refusés jusqu'au dernier, elle répond 422 et Cortex dit qu'il n'a rien fait. Une création annoncée sans écriture réussie est remplacée.
+- **Un refus n'est pas un échec (R38).** Une mission refusée au départ par une règle finit `FAILED` pour la file, marquée `refused` : l'écran dit « Not started » avec la raison de la règle, écrite pour la personne ; le dossier garde l'identifiant de la règle. La notification a son type (`agentNotStarted`, « Agent didn't start »), et l'issue reste dans sa colonne.
+- **Une action ne se dit faite que si un outil l'a faite (R35).** La passerelle ne retire jamais tous les outils : refusés jusqu'au dernier, elle répond 422 avec le code `tools_refused`, et Cortex dit qu'il n'a rien fait ; un 413 qui reste avec un seul outil vient de la conversation, trop grosse (503). Un arrêt après une écriture garde ce qui a été fait. Une création annoncée sans écriture réussie est remplacée.
 
 ## 14. Le harnais apprend
 

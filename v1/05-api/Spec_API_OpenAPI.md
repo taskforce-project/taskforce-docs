@@ -509,9 +509,9 @@ Le callback pose le refresh token dans le même cookie `tf_refresh` HttpOnly que
 | `POST` | `/api/users/me/avatar` | Upload avatar (multipart) | JWT |
 | `POST` | `/api/users/me/password/reset` | Déclenche l'email reset (Keycloak) | JWT |
 | `GET` | `/api/users/me/2fa` | Statut 2FA (TOTP) | JWT |
-| `POST` | `/api/users/me/2fa/setup` | Démarre l'activation 2FA (secret + otpauth) | JWT |
+| `POST` | `/api/users/me/2fa/setup` | Démarre l'activation 2FA (secret + otpauth) ; refusé tant que le 2FA est actif | JWT |
 | `POST` | `/api/users/me/2fa/confirm` | Confirme l'activation avec un code TOTP | JWT |
-| `DELETE` | `/api/users/me/2fa` | Désactive le 2FA | JWT |
+| `DELETE` | `/api/users/me/2fa` | Désactive le 2FA (corps `{code}`, un code TOTP valide) | JWT |
 | `GET` | `/api/users/search` | Recherche d'utilisateurs (autocomplete invite) | JWT |
 | `POST` | `/api/users/me/data-request` | Demande RGPD (accès ou suppression) | JWT |
 | `POST` | `/api/me/assignments/{issueId}/accept` | Accepte une issue assignée | JWT |

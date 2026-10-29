@@ -59,7 +59,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | Contrôleur | `@RequestMapping` | `/api` ? |
 | ---------- | ----------------- | :------: |
 | AuthController | `/api/auth` (inscription : `otpSent=false` quand l'instance ne vérifie pas les adresses, `SIGNUP_EMAIL_VERIFICATION=false`, compte prêt ; mot de passe oublié sans SMTP : 400, 19/10/2026) | ✅ |
-| UserController | `/api/users` (désactiver la double vérification, `DELETE /me/2fa`, demande le code en cours `{code}` depuis le 29/10/2026, R42) | ✅ |
+| UserController | `/api/users` (désactiver la double vérification, `DELETE /me/2fa`, demande le code en cours `{code}` depuis le 29/10/2026, R42 ; la remise en place, `POST /me/2fa/setup`, est refusée tant qu'elle est active, depuis la 1.6.3) | ✅ |
 | WorkspaceController | `/api/workspaces` | ✅ |
 | ProjectController | `/api/workspaces/{slug}/projects` | ✅ |
 | IssueController | `/api/workspaces/{slug}/projects/{projectId}/issues` | ✅ |

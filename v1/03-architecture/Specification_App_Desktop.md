@@ -398,7 +398,10 @@ son jeton, `gh agent-task`).
   interface desktop sans cache d'images sur disque. Les outils de la personne (Claude Code, git, GitHub CLI) tournent
   hors du paquet. Vérification avant soumission : `Invoke-CommandInDesktopPackage` (procédure dans
   `marketing/store/README.md`).
-- **Mises à jour** : `electron-updater` depuis GitHub Releases. Les migrations Flyway s'appliquent au démarrage, comme
+- **Mises à jour** : `electron-updater` depuis GitHub Releases. Depuis la 1.3.3, l'état du téléchargement va aux
+  fenêtres (`desktop:update-state`), qui le montrent dans un toast avec l'avancement puis « Restart now » ; plus de
+  fenêtre du système, et une notification seulement si aucune fenêtre n'est au premier plan. Les migrations Flyway
+  s'appliquent au démarrage, comme
   aujourd'hui ; une sauvegarde de la base précède chaque migration. La version du Store est mise à jour par le Store :
   l'app n'en cherche pas (`process.windowsStore`), les réglages le disent.
 - **Signature** : sans signature, Windows affiche l'avertissement SmartScreen (contournable) et macOS bloque l'app non
