@@ -3,8 +3,8 @@ id: specification-v2-harnais
 title: "Spécification de la v2 : le harnais"
 doc_type: spec
 statut: draft
-version: 0.3
-date: "28/10/2026"
+version: 0.4
+date: "29/10/2026"
 auteur: Pierre MICHEL
 tags: [road-to-v2, spec, harnais, architecture, scalabilite, robustesse, bac-a-sable, preuve, desktop]
 related:
@@ -15,12 +15,19 @@ related:
   - "../../recherche/conseil/seances/2026-10-27-vision.md"
   - "../../recherche/conseil/seances/2026-10-27-menage-spec-v2.md"
   - "../../recherche/conseil/seances/2026-10-28-revue-spec-v2.md"
+  - "../../recherche/conseil/seances/2026-10-29-atelier-design-carte.md"
+  - "../../recherche/conseil/seances/2026-10-29-intelligence-possedee.md"
 ---
 
 # Spécification de la v2 : le harnais
 
-**Version :** 0.3 · **Date :** 28/10/2026 · **Auteur(s) :** Pierre MICHEL · **Statut :** validée par la Présidence
-le 28/10/2026 ; base du ménage et du sprint
+**Version :** 0.4 · **Date :** 29/10/2026 · **Auteur(s) :** Pierre MICHEL · **Statut :** validée par la Présidence
+le 28/10/2026 ; base du ménage et du sprint ; direction de la séance n°10 retenue le 29/10/2026
+
+> **Ce qui change en 0.4** (décisions de la Présidence du 29/10/2026, séances n°9 et n°10) : la direction, posséder
+> son intelligence (En une page) ; la boucle avant les poids (§14) ; le local comme prototype à coût nul ; la
+> conformité comme premier terrain, par un partenaire (§17) ; ce qui est possédé part avec le client ; l'arrivée et la
+> carte des workflows (§15) ; R55 à R65 retenues (§20).
 
 > **Ce qui change en 0.3** : R16 à R26 retenues (§20) ; les produits n'ont pas les mêmes fonctions (§4.2) ; le
 > harnais pourra servir dans d'autres outils (§4.6) ; une hiérarchie d'agents et de modèles, choisie par tâche (§10.4).
@@ -75,6 +82,11 @@ le 28/10/2026 ; base du ménage et du sprint
 **La promesse (R5')** : « Vous décrivez le résultat ; TaskForce le fait faire par l'agent de votre choix, avec vos
 outils et vos règles, et vous montre qu'il est bon. »
 
+**La direction (R60, séance n°10)** : TaskForce aide une entreprise à posséder son intelligence : ses règles, ses
+dossiers, ses évaluations, et demain ses modèles. Cela vaut sur n'importe quel modèle, loué ou possédé, là où elle le
+choisit. La boucle d'abord, les poids ensuite (R61) : rien n'est entraîné dans TaskForce. La conformité est le premier
+terrain : réduire la charge du spécialiste (R63). Le prototype à coût nul passe par la machine du client (R62).
+
 **Ce que la v2 ajoute à la v1**
 
 1. Les documents de l'entreprise, avec leurs versions, cherchés par le sens et par le texte exact ; chaque réponse
@@ -91,6 +103,8 @@ outils et vos règles, et vous montre qu'il est bon. »
 9. Un panneau de contexte, à la manière de Claude, à la place de la navigation dans le Brain OS.
 10. Le bon modèle pour chaque tâche : l'app trouve les modèles Ollama installés ; un petit modèle local doit suffire à
     tout ou partie des tâches, parce que la décision vit dans l'architecture, pas dans le modèle.
+11. La boucle de l'entreprise : les évaluations tirées de ses workflows, le registre de ses modèles par tâche, l'export
+    de ses dossiers en données d'entraînement (§14).
 
 **L'architecture en une phrase** : un plan de contrôle, le serveur TaskForce (local ou d'équipe), garde les règles, les
 sources et les preuves ; des exécutants, les runners sur l'ordinateur de chacun, font travailler les agents et
@@ -923,6 +937,22 @@ les équipes sans ordinateur allumé, avec les mêmes baux et les mêmes règles
 - Elles restent dans l'espace ; rien n'est envoyé sans consentement (Q10). La table `ai_generations` (V81) est un point
   de départ ; son usage actuel est à vérifier.
 
+**La boucle (R61, séance n°10)** : ce que l'entreprise possède avant les poids d'un modèle. Rien de cela n'existe encore.
+
+- **La banque d'évaluations de l'espace**, nourrie par les dossiers : une tâche échouée, refusée ou regrettée devient un
+  cas, avec son résultat attendu écrit. Elle prolonge la banque de tests (§16.2) au travail de chaque entreprise.
+- **Le registre des modèles par tâche** : lequel tourne, quelle version, qui l'a choisi, pourquoi, son score. Changer de
+  modèle est un changement de règle : raison écrite, accord, évaluations rejouées, retour en arrière possible.
+  L'entreprise décide quand ses modèles changent.
+- **L'export des dossiers en données d'entraînement**, en formats ouverts, avec consentement et filtre de sensibilité
+  (Q10). L'entreprise entraîne où elle veut, sans TaskForce.
+- **Rien n'est entraîné dans TaskForce** : le labo n'a ni données ni GPU (C1, C4). L'expérience E12 mesure d'abord si
+  l'affinage d'un petit modèle ouvert bat le modèle de base avec recherche, sur un corpus public et un GPU gratuit.
+- **Ce qui est possédé part avec le client (R64)** : règles, dossiers, évaluations, jeux de données et, plus tard,
+  modèles adaptés s'exportent en formats ouverts (R9') ; le client peut faire tourner ses modèles sans TaskForce.
+- **Le coût nul passe par le local (R62)** : dans l'app desktop, le modèle de l'entreprise tourne sur sa machine, sans
+  coût par personne pour TaskForce. La webapp reste une démonstration.
+
 ## 15. Ce que voit l'utilisateur
 
 - Le harnais est invisible pour l'utilisateur et lisible pour l'auditeur (séance n°2).
@@ -942,6 +972,16 @@ les équipes sans ordinateur allumé, avec les mêmes baux et les mêmes règles
 - **Le dessin avant le code** (R13) : la carte de résultat, le panneau de contexte, les demandes de décision, l'avis du
   relecteur et le bac à sable se dessinent d'abord, par l'atelier design du Conseil, en s'appuyant sur des interfaces
   qui marchent déjà (des bibliothèques de références comme Mobbin ou Lapa Ninja).
+- **L'arrivée (R55, séance n°9)** : une phrase, « Quel résultat voulez-vous ? » ; ce qui attend la main de la personne,
+  en une pile qui se vide ; ses résultats placés dans le temps autour d'une ligne « maintenant » ; l'objet ouvert à
+  droite, avec Cortex. Pas un tableau de bord de suivi.
+- **Le résultat porte un but et une date (R56)**, et Cortex le place dans le temps (R48). Il faut une migration : le
+  but, la date visée et les critères d'un projet.
+- **L'invisible se voit en une ligne, sur son objet (R57)** : le travail des agents, jamais dans un écran de suivi.
+- **La carte des workflows est la référence de la refonte (R58)** ([carte](https://claude.ai/artifact/CzYEJ2xV4kHQpPzWCd8y4x)). Deux workflows s'y ajoutent avec
+  la séance n°10 : une erreur devient un cas d'essai, et changer de modèle.
+- **Le noyau ne se nomme jamais à la personne (R59, R22, J8)** : elle en voit les effets, la demande d'accord, la carte
+  de résultat, le dossier.
 
 ## 16. La mesure et la banque de tests
 
@@ -1010,6 +1050,11 @@ son projet, vieux de vingt-cinq ans, sort en nouvelle version.
 6. À l'acceptation, le rapport devient une note du Brain OS, les issues proposées (une par impact) sont créées, et le
    dossier de preuve s'exporte.
 
+Ce cas se présente comme un travail de conformité (R63, séance n°10) : la conformité d'un produit à un standard qui
+évolue, où TaskForce réduit la charge du spécialiste. Le dossier en est la pièce justificative (traces automatiques,
+supervision humaine). Un partenaire de conception passe avant tout connecteur d'outil de conformité, et l'on vend le
+temps gagné par dossier, mesuré avant et après (E13).
+
 ## 18. Le sprint de trois jours
 
 **Avant le sprint** : la demi-journée de ménage (§1, R10).
@@ -1039,7 +1084,8 @@ automatique, l'éditeur de harnais, le serveur d'équipe, les autres agents, PC-
 | Phase 2 : la porte complète | Outils de l'entreprise par la porte (§7.3) ; actions proposées (S2) ; relecteur automatique (§7.6) ; Mentions comme appel à un humain ; durée de décision unique ; identité d'agent marquée ; PC-059 et PC-060 ; essai de Copilot |
 | Phase 3 : les équipes | Serveur d'équipe sur le VPS ; espaces d'équipe dans l'app desktop (§12) ; runner relié au serveur d'équipe |
 | Phase 4 : élargir | Autres agents (§10.3) ; connecteurs par usage (§11.2) ; éditeur de harnais et modèles par métier ; isolation de la machine (S3) |
-| Ensuite | La version du Store reçoit les mêmes changements ; la webapp revient en ligne sur le VPS |
+| La boucle (séance n°10) | La banque d'évaluations de l'espace, le registre des modèles par tâche, l'export des dossiers (§14) ; E12, l'affinage sur le corpus public ; E13 avec un partenaire de conception |
+| Ensuite | La version du Store reçoit les mêmes changements ; la webapp revient en ligne sur le VPS, ou sur l'offre toujours gratuite d'Oracle (2 OCPU, 12 Go), à vérifier : images arm64, capacité disponible |
 
 Les petits défauts PC-061 et PC-062 se corrigent pendant le ménage, s'ils tiennent dans la demi-journée ; sinon en
 phase 2.
@@ -1068,6 +1114,19 @@ l'endroit où l'on demande et où l'agent rend compte, pas celui où l'on décid
 gestes « Voir ce qui changera », « Essayer encore », « Appliquer », « Écarter » ; la délégation et l'auteur de chaque
 demande se voient ; un nom par chose. R27 à R31 restent à trancher.
 
+**Décidé par la Présidence le 29/10/2026, après les séances n°9 et n°10**
+([PV n°9](../../recherche/conseil/seances/2026-10-29-atelier-design-carte.md), [PV n°10](../../recherche/conseil/seances/2026-10-29-intelligence-possedee.md)) : « on suit le conseil sur tout, go ».
+- R55 à R59 retenues : l'arrivée sur une phrase, le résultat qui porte un but et une date, l'invisible en une ligne sur
+  son objet, la carte des workflows comme référence, le noyau dessiné au centre avec Cortex dedans.
+- R60 à R65 retenues :
+  - posséder son intelligence comme direction ;
+  - la boucle avant les poids ;
+  - le prototype à coût nul par la machine du client ;
+  - la conformité par un partenaire ;
+  - ce qui est possédé part avec le client ;
+  - les mots éprouvés avant la page.
+- R31 a été retenue le 29/10/2026 avec R51 (séance n°8).
+
 **Reste à trancher**
 
 1. **La table par défaut** (§6.2), en particulier :
@@ -1076,8 +1135,10 @@ demande se voient ; un nom par chose. R27 à R31 restent à trancher.
 2. **Le corpus public** de la banque de tests (§16.2).
 3. **Les Pages** : exporter ce que des utilisateurs y ont écrit avant de retirer leurs tables (§1).
 4. **Les libellés** de Public et Private (proposés : « Workspace », « Collaborators only »).
-5. **R27 à R31** de la séance n°5 : la trajectoire, le découpage, le reliquat du jour 1, l'aperçu des effets, l'agent
-   interne au jour 3.
+5. **R27 à R30** de la séance n°5 : la trajectoire, le découpage, le reliquat du jour 1, l'aperçu des effets. R31,
+   l'agent interne au jour 3, est retenue (séance n°8).
+6. **Les moyens de la direction** (Q13) : l'hébergement, le temps de la Présidence, un partenaire de conception, la
+   source du texte apporté à la séance n°10.
 
 **Recommandations retenues, pour mémoire**
 

@@ -267,8 +267,12 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   - D'où vient le texte apporté à la séance n°10.
 - **Pourquoi ça compte** : `[DÉDUIT]` les paliers 0 à 3 de la séance ne coûtent que du temps ; le palier 4 demande un
   partenaire ; si le texte vient d'un appel d'investisseurs, y répondre devient une suite.
-- **Position actuelle** : `[HYPOTHÈSE]` l'hébergement actuel tient ; sinon un petit serveur, de l'ordre de dix euros par
-  mois (devis à refaire).
+- **Position actuelle** :
+  - `[ÉTABLI]` les machines virtuelles de l'école s'arrêtent (spécification de la v2, ordre de livraison décidé le
+    28/10/2026) : la webapp a besoin d'un autre hébergement.
+  - `[HYPOTHÈSE]` l'offre toujours gratuite d'Oracle (2 OCPU, 12 Go) pourrait la porter pour 0 €, à vérifier : images
+    arm64, capacité disponible, mémoire réelle de la prod à mesurer ; sinon un petit serveur, de l'ordre de dix euros
+    par mois (devis à refaire).
 - **Ce qu'il faut pour trancher** : les réponses de la Présidence.
 
 ---
