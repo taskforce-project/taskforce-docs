@@ -272,6 +272,7 @@ ce qui est irréversible » ([PV](./seances/2026-10-26-premiere-regle.md)).
 | 28/10/2026 | La revue de la spécification de la v2 (version 0.2) | Élargie (11), à la demande de la Présidence | R16 à R26 retenues (R23 après un second tour) ; monolithe modulaire ; produits aux fonctions différentes | [PV](./seances/2026-10-28-revue-spec-v2.md) |
 | 28/10/2026 | La trajectoire du harnais, le découpage du sprint, `npm test` par défaut | Restreinte (7), à la demande de la Présidence | R32 (S1 pour les tests) et R33 retenues ; R27 à R31 en attente | [PV](./seances/2026-10-28-trajectoire-harnais.md) |
 | 28/10/2026 | L'atelier design : Cortex, les flows, la carte de résultat, le parcours de test | Pôle Design (5), Jobs tranche par délégation | J1 à J9 retenues telles quelles, D1 à D11 comme Jobs les a tranchées | [PV](./seances/2026-10-28-atelier-design.md) |
+| 29/10/2026 | La recette de la 1.3.1 (desktop) et de la 1.5.1 (web) : les retours de la Présidence, leurs causes, l'ordre des réparations | Élargie (10), proposée par le secrétariat | R34 à R45 retenues | [PV](./seances/2026-10-29-recette-131.md) |
 
 ---
 

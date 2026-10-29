@@ -24,6 +24,33 @@ related:
 
 ---
 
+## 2026-10-29 : la recette de la 1.3.1, séance n°7 du Conseil
+
+**Fait** : la Présidence a passé la recette de l'app desktop 1.3.1 et de la webapp 1.5.1 (24 étapes, le parcours J9).
+Le secrétariat a relu chaque note, cherché les causes dans le code, les journaux et la prod, puis réuni le Conseil en
+formation élargie (10) ([PV](./conseil/seances/2026-10-29-recette-131.md)).
+
+**Trouvé**
+- `[ÉTABLI]` 11 étapes OK, dont 8 avec des remarques ; 4 KO ; 7 bloquées ; une passée.
+- `[ÉTABLI]` Depuis le 05/09/2026, le serveur envoie au modèle des définitions d'outils invalides. Le paramètre `title`
+  de `create_issue` devient du texte. Ollama et Groq les refusent (400), et la passerelle retire tous les outils sans le
+  dire. Dans l'app desktop, le modèle invente « Issue created » ; sur le web, Groq refuse aussi la requête sans outils,
+  car le modèle appelle un outil que le prompt nomme. Les deux erreurs sont rejouées et citées au PV.
+- `[ÉTABLI]` Claude Code n'était plus connecté sur le poste de la Présidence. L'app le savait mais proposait l'agent, et
+  le runner ne contrôle que la version : quatre missions ont échoué au démarrage. Le contrôle du poste par le
+  secrétariat ne regardait, lui aussi, que la version.
+- `[ÉTABLI]` La directive `/no_think` est ignorée par Ollama 0.40.11 : couper le raisonnement par le réglage natif fait
+  passer un appel d'outil de 2,9 s à 0,5 s.
+- `[ÉTABLI]` La double vérification se désactive sans code. Un refus de règle s'affiche « Agent failed », avec des mots
+  internes.
+
+**Décidé** (Présidence) : R34 à R45 retenues, « on suit le conseil sur tout », et les réparations lancées.
+
+**Prochain coup** : le premier panier (les outils de Cortex, la délégation sans
+connexion) dans une seule branche, une version web et desktop, et la recette rejouée.
+
+---
+
 ## 2026-10-28 (bis) : le jour 1 du sprint en prod, séances n°5 et n°6 du Conseil
 
 **Fait** : le ménage et le jour 1 du harnais construits, vérifiés de bout en bout et mis en prod (TaskForce 1.5.0,
