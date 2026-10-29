@@ -959,8 +959,9 @@ Décision de la Présidence, le 29/10/2026 : « enchaîne sur le noyau pour Cort
   sort de la pull request (fusionnée, reprise, abandonnée).
 - Elles servent à proposer des règles (jamais à les appliquer seules), à donner à l'agent la mémoire de ses résultats,
   et à faire gagner l'autonomie par la preuve, seulement sur l'initiative de l'agent et sur le sensible (séance n°2).
-- Elles restent dans l'espace ; rien n'est envoyé sans consentement (Q10). La table `ai_generations` (V81) est un point
-  de départ ; son usage actuel est à vérifier.
+- Elles restent dans l'espace ; rien n'est envoyé sans consentement (Q10). La capture de `ai_generations` (V81) a été
+  retirée le 18/10/2026 (`5700e4b1`) : rien ne pouvait l'activer, la table est restée vide. La table reste, sans code
+  qui l'écrive ni la lise.
 
 **La boucle (R61, séance n°10)** : ce que l'entreprise possède avant les poids d'un modèle. Rien de cela n'existe encore.
 
@@ -1185,7 +1186,7 @@ demande se voient ; un nom par chose. R27 à R31 restent à trancher.
   Java, de Spring et du SDK MCP. Ces faits bougent vite : ils se revérifient avant chaque usage.
 - Reste à tester : l'enchaînement de `PreToolUse` et `PermissionRequest`, et l'isolation de la configuration de Claude
   Code (§7.1) ; les adresses de retour à port variable chez chaque fournisseur (§11.3) ; l'isolation de la machine
-  sous Windows (§8.2) ; le gain du cache de démarrage (§4.5) ; l'usage actuel de `ai_generations` (§14).
+  sous Windows (§8.2) ; le gain du cache de démarrage (§4.5).
 - Un avis juridique confirmera la copie des textes d'OASIS dans la banque de tests (§16.2).
 - Les chiffres de référence du premier cas d'usage viennent de ses ingénieurs, pas de ce document.
 
