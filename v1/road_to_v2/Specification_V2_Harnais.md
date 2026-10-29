@@ -942,12 +942,13 @@ Décision de la Présidence, le 29/10/2026 : « enchaîne sur le noyau pour Cort
   | `find_integration` | `mcp.read` | allow | `read-company-tools` |
   | `create_issue` | `issue.create` | allow | `create-issue` |
   | `create_note` | `knowledge.write` | ask | `propose-knowledge` |
-  | `create_project` | `project.create` | ask | aucune |
+  | `create_project` | `project.create` | allow | `create-project` (30/10/2026) |
   | outil externe en lecture | `mcp.read`, avec `server` | allow | `read-company-tools` |
   | outil externe en écriture | `mcp.write`, avec `server` | ask | `write-company-tools` |
 
   Un outil absent de cette table n'a pas d'action : aucune règle ne le couvre, il est demandé. Une règle d'espace peut viser un serveur (`server`) ou un outil (`tool`) ; refuser l'emporte sur demander, qui l'emporte sur autoriser.
-- **Ce qui change pour la personne.** Une note et un projet que Cortex veut créer lui sont désormais proposés, avec « Approve and run », comme une écriture externe : la table par défaut demande une décision pour ce qui entre au Brain OS, et aucune règle ne couvre la création d'un projet. Une issue se crée toujours seule. Une action refusée s'affiche « Refused by a rule », avec sa raison.
+- **Ce qui change pour la personne.** Depuis le 30/10/2026, Cortex crée tout de suite le projet qu'on lui demande
+  (`create-project`, un projet s'archive d'un geste). Une note que Cortex veut créer est proposée, avec « Approve and run », comme une écriture externe : la table par défaut demande une décision pour ce qui entre au Brain OS. Une issue et un projet se créent seuls. Une action refusée s'affiche « Refused by a rule », avec sa raison.
 - **Le dossier d'une réponse (V107).** Une réponse de Cortex qui appelle un outil ouvre un dossier (`cortex_records`, `cortex_record_events`), chaîné comme celui d'une mission (`EvidenceChain`, contrat `contracts/evidence`) : `mission.started` (la question, l'agent `internal`), puis pour chaque outil `action.requested` et `action.decided` avant tout effet, `action.result` après. Une réponse sans outil n'en ouvre pas.
 - **Tracer avant d'agir (§13.4).** Si le dossier ne s'ouvre pas, ou s'il est plein (200 événements), l'outil ne tourne pas. Une panne au moment de garder le résultat se journalise : elle ne défait pas ce qui a été fait et ne le dit pas raté.
 - **L'accord prolonge le dossier.** « Approve and run » envoie l'outil, ses arguments et le dossier de la réponse (`POST /assistant/actions/execute`). Le serveur vérifie que le dossier est celui de la personne, dans son espace ; qu'une écriture externe est accordée par un propriétaire ou un administrateur (OSS-1.5) ; que le dossier attend cette action, c'est-à-dire une proposition (un résultat `pending`) que personne n'a accordée, sous le verrou du dossier : un deuxième clic ne relance rien, et rien ne s'accorde que Cortex n'a pas proposé. Il garde `human.decision` avec les arguments accordés, rejuge l'action par les règles, qui ont pu changer, la lance avec les droits de la personne et garde le résultat.
@@ -1173,8 +1174,12 @@ demande se voient ; un nom par chose. R27 à R31 restent à trancher.
   de base.
 
 **Décidé par la Présidence le 30/10/2026**
-- Cortex crée un projet sans demander : la règle `project.create` passe à `allow` ; « tout passera par un input de
-  chat + vocal globalement ».
+- Cortex crée un projet sans demander : la règle `project.create` est en `allow` (`taskforce-fullstack` #442) ;
+  « tout passera par un input de chat + vocal globalement ».
+- Séance n°13 ([PV](../../recherche/conseil/seances/2026-10-30-atelier-ecrans-base.md)) : R76 modifiée (une entrée
+  d'écriture et de voix sur chaque écran ; la voix démarre et s'arrête d'un clic ; rien ne part sans que la personne
+  envoie), R77 à R79 retenues (« Undo » sur ce qui se défait, les trois écrans des retours, la banque aux deux moments) ;
+  R80 à préciser.
 - L'expérience E12 se fait sur Kaggle.
 - La recette attend un produit complet et à jour.
 
@@ -1188,8 +1193,10 @@ demande se voient ; un nom par chose. R27 à R31 restent à trancher.
 4. **Les libellés** de Public et Private (proposés : « Workspace », « Collaborators only »).
 5. **R27 à R30** de la séance n°5 : la trajectoire, le découpage, le reliquat du jour 1, l'aperçu des effets. R31,
    l'agent interne au jour 3, est retenue (séance n°8).
-6. **Les moyens de la direction** (Q13) : le temps de la Présidence, un partenaire de conception, la source du texte
-   apporté à la séance n°10. L'hébergement est tranché le 30/10/2026 : un VPS OVH VPS-3 dès que possible.
+6. **Les moyens de la direction** (Q13), répondus le 30/10/2026 : un VPS OVH VPS-3 dès que possible ; la Présidence y
+   passe ses journées ; le texte de la séance n°10 vient d'un post d'une personne de Y Combinator, à qui écrire ; le
+   partenaire de conception, plus tard.
+7. **La voix** (R80, séance n°13) : comme dans la webapp, ou sur la machine ; la question de l'entraînement renvoie à R61.
 
 **Recommandations retenues, pour mémoire**
 

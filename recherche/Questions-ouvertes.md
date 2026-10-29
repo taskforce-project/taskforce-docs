@@ -277,9 +277,12 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   - L'hébergement : « pour l instant aucun mais je prendrais un VPS OVH des que possible, VPS-3 pour etre precis ».
     `[ÉTABLI]` Le VPS-3 d'OVH : 6 vCores, 12 Go de mémoire, 100 Go de disque, 10,40 € HT par mois (page d'OVH lue le
     19/10/2026, avec l'empreinte de la prod mesurée le même jour : environ 2,2 Go).
-  - Le temps, le partenaire, la source du texte : la Présidence ne voit pas ce que la question demande. Le secrétariat
-    doit la reformuler, plus explicitement.
-- **Ce qu'il faut pour trancher** : la date du VPS ; les trois points reformulés.
+  - Reformulées, les trois autres réponses : le temps, « j y passe mes journee » ; le texte, « un gars de YC qui disais
+    ca dans un poste [...] sur instagram, donc oui on pourrait leur ecrire » ; le partenaire de conception, plus tard.
+  - Les mots de la cible (R65), d'après la Présidence : audit, traçabilité, IQ, OQ, PQ, réglementation, référentiel.
+    `[DÉDUIT]` IQ, OQ et PQ sont les étapes de la qualification d'un équipement ou d'un système dans les industries
+    réglementées (pharmacie, dispositifs médicaux) : à confirmer avec la Présidence.
+- **Ce qu'il faut pour trancher** : la date du VPS ; le nom et le lien du post, pour le citer et écrire à Y Combinator.
 
 ---
 

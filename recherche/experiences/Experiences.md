@@ -488,7 +488,8 @@ redisent la promesse en une phrase juste, pour l'une des deux formules : « poss
 
 **Falsification** : moins de trois sur cinq, pour les deux formules. Le site ne change pas.
 
-**Schéma réel** `[ÉTABLI]` : aucun entretien mené ; le site ne porte aucune des deux formules.
+**Schéma réel** `[ÉTABLI]` : aucun entretien mené ; le site ne porte aucune des deux formules. Les mots de la cible,
+d'après la Présidence (30/10/2026) : audit, traçabilité, IQ, OQ, PQ, réglementation, référentiel.
 
 **Protocole** : cinq personnes de la cible, dont un spécialiste de la conformité et un responsable ; les deux formules,
 dans un ordre tiré au sort ; on note la phrase redite, mot pour mot.
