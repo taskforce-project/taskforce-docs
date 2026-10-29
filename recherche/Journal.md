@@ -24,6 +24,26 @@ related:
 
 ---
 
+## 2026-10-30 : les réserves du premier lot, séance n°12 du Conseil
+
+**Fait** : la Présidence a retenu R66 à R71 en faisant siennes quatre réserves, chacune à résoudre. Restreinte (7), Jobs
+contradicteur ([PV](./conseil/seances/2026-10-29-reserves-premier-lot.md)). Le premier lot est fusionné dans `dev`
+(`taskforce-fullstack` #437) ; la 1.6.6 et le desktop 1.3.6 sont en production.
+
+**Trouvé**
+- `[ÉTABLI]` Un cas ne garde ni l'identifiant des notes servies ni la version des règles : rien ne dit qu'il a vieilli.
+- `[ÉTABLI]` Le serveur MCP de l'espace expose douze outils, aucun de la banque ; l'API en a huit routes.
+- `[DÉDUIT]` Les réserves portent sur l'ordre autant que sur le fond : ajouter des surfaces avant les écrans de base
+  disperse le produit.
+
+**Décidé** (Présidence, 30/10/2026) : R72 à R75 retenues ; le désaccord de Jobs suivi : aucune surface nouvelle avant
+les écrans de base. Et des explications plus explicites.
+
+**Prochain coup** : l'atelier des écrans de l'équipe de Jobs, avec la banque dans les workflows 8 et 9 ; puis le lot 2
+de la banque (l'adaptation des cas, « Add as proposed »).
+
+---
+
 ## 2026-10-29 (quater) : le premier lot de la boucle, séance n°11 du Conseil
 
 **Fait** : la Présidence a demandé d'enchaîner sur R61 en consultant le Conseil. Restreinte (7), Duflo contradictrice
