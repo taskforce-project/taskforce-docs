@@ -259,7 +259,18 @@ comme la webapp je suppose, ca nous servira pour entrainer les models right ? »
 | R79 | Retenue | La banque au refus d'une proposition (workflow 8) et au changement de modèle (workflow 9) |
 | R80 | Non retenue telle quelle, à préciser | La Présidence préfère la voix « comme la webapp », et demande si elle servira à entraîner des modèles. Le secrétariat répond ci-dessous ; la Présidence choisit ensuite |
 
-## Notes du secrétariat
+### Seconde décision : la voix, et les questions laissées ouvertes
+
+Le 30/10/2026, après la réponse du secrétariat (ci-dessous) : « R80 choix 1 / La duree du undo tant que rien n'a bouge. /
+La note comme un projet / Les libelles tu gardes, et go release ».
+
+| Point | Décision | Ce que la décision veut dire |
+| --- | --- | --- |
+| R80 | Retenue telle quelle | Le premier des trois choix posés par le secrétariat : dans l'app desktop, la voix se transcrit sur l'ordinateur ; dans la webapp, elle passe par le service du navigateur, et une phrase le dit avant le premier usage. Les deux autres choix étaient le navigateur partout, ou notre propre transcription partout. Rien n'est entraîné sur la voix (R61) |
+| La durée de « Undo » (R77) | Tant que rien n'a bougé | Un projet sans issue ni page ajoutée, une issue sans commentaire, une note sans page rangée dessous ni lien d'une autre note vers elle. Au-delà, un message dit pourquoi, et l'objet reste |
+| La note | Comme un projet | Cortex écrit tout de suite la note qu'on lui demande, et la réponse porte « Undo ». Réécrire une note qui existe reste demandé |
+| Les libellés de la maquette | Gardés | « Workspace » et « Collaborators only » pour la visibilité d'une issue (créer) ; « Apply » sur la carte de résultat (relire) |
+
 
 - **Ordre de parole** tiré au sort le 29/10/2026 à 23:15 UTC (`shuf`). Contradicteur désigné : Don Norman.
 - **La maquette** est dessinée par le secrétariat depuis le tour de table, la carte et le code du 30/10/2026. Les
@@ -288,5 +299,6 @@ comme la webapp je suppose, ca nous servira pour entrainer les models right ? »
    moments.
 2. **Construire, dans l'ordre** : la barre écrite sur chaque écran (R76) et « Undo » avec la règle `project.create`
    (R77) ; les trois écrans (R78) ; le refus dans Cortex et la banque aux deux moments (R79).
-3. **La voix** : la décision sur R80, après la réponse du secrétariat ; E15 se déclare ensuite.
+3. **La voix** : R80 retenue le 30/10/2026 ; E15 se déclare, puis la voix entre dans la barre sans retarder les trois
+   écrans (réserve de Saarinen).
 4. **Ensuite** : le registre des modèles par tâche (R61), puis l'export (R64).

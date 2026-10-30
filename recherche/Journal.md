@@ -38,7 +38,11 @@ des maquettes de sept écrans. La règle `project.create` passe en `allow` (`tas
 **Décidé** (Présidence) : R76 modifiée (la voix démarre et s'arrête d'un clic, rien ne part sans que la personne envoie),
 R77 à R79 retenues ; R80 à préciser, après la réponse du secrétariat sur l'entraînement.
 
-**Prochain coup** : construire la barre sur chaque écran et « Undo » ; la décision sur R80 ; un message à Y Combinator.
+**Décidé ensuite** (Présidence, même jour) : R80 retenue (la voix sur la machine dans l'app desktop, par le navigateur
+dans la webapp) ; « Undo » tant que rien n'a bougé ; la note créée comme un projet, avec « Undo » ; les libellés de la
+maquette gardés. La barre (R76) et « Undo » (R77) sont construits (`taskforce-fullstack` #444 et #446).
+
+**Prochain coup** : la release de la barre et de « Undo » ; les trois écrans (R78) ; E15 ; un message à Y Combinator.
 
 ---
 
