@@ -940,7 +940,7 @@ Décision de la Présidence, le 29/10/2026 : « enchaîne sur le noyau pour Cort
   | `search_brain` | `knowledge.search` | allow | `search-knowledge` |
   | `list_projects`, `list_issues` | `issue.read` | allow | `read-issues` |
   | `find_integration` | `mcp.read` | allow | `read-company-tools` |
-  | `create_issue` | `issue.create` | allow | `create-issue` |
+  | `create_issue` | `issue.create` | allow, préparée en carte (R78) | `create-issue` |
   | `create_note` | `knowledge.create` | allow | `create-note` (30/10/2026) |
   | `create_project` | `project.create` | allow | `create-project` (30/10/2026) |
   | outil externe en lecture | `mcp.read`, avec `server` | allow | `read-company-tools` |
@@ -948,7 +948,7 @@ Décision de la Présidence, le 29/10/2026 : « enchaîne sur le noyau pour Cort
 
   Un outil absent de cette table n'a pas d'action : aucune règle ne le couvre, il est demandé. Une règle d'espace peut viser un serveur (`server`) ou un outil (`tool`) ; refuser l'emporte sur demander, qui l'emporte sur autoriser.
 - **Ce qui change pour la personne.** Depuis le 30/10/2026, Cortex crée tout de suite le projet ou la note qu'on lui
-  demande (`create-project`, `create-note` : la note suit le projet, décision du CEO), et la réponse porte « Undo » (R77) : tant que rien n'a bougé, un geste défait le projet et ses pages, l'issue ou la note. Réécrire une note qui existe (`knowledge.write`, `propose-knowledge`) reste demandé, comme une écriture externe, avec « Approve and run ». Une action refusée s'affiche « Refused by a rule », avec sa raison.
+  demande (`create-project`, `create-note` : la note suit le projet, décision du CEO), et la réponse porte « Undo » (R77) : tant que rien n'a bougé, un geste défait le projet et ses pages, l'issue ou la note. Une issue, Cortex la prépare en carte : la personne la relit, la modifie et la crée (R47, R78). Réécrire une note qui existe (`knowledge.write`, `propose-knowledge`) reste demandé, comme une écriture externe, avec « Approve and run ». Une action refusée s'affiche « Refused by a rule », avec sa raison.
 - **Le dossier d'une réponse (V107).** Une réponse de Cortex qui appelle un outil ouvre un dossier (`cortex_records`, `cortex_record_events`), chaîné comme celui d'une mission (`EvidenceChain`, contrat `contracts/evidence`) : `mission.started` (la question, l'agent `internal`), puis pour chaque outil `action.requested` et `action.decided` avant tout effet, `action.result` après. Une réponse sans outil n'en ouvre pas.
 - **Tracer avant d'agir (§13.4).** Si le dossier ne s'ouvre pas, ou s'il est plein (200 événements), l'outil ne tourne pas. Une panne au moment de garder le résultat se journalise : elle ne défait pas ce qui a été fait et ne le dit pas raté.
 - **L'accord prolonge le dossier.** « Approve and run » envoie l'outil, ses arguments et le dossier de la réponse (`POST /assistant/actions/execute`). Le serveur vérifie que le dossier est celui de la personne, dans son espace ; qu'une écriture externe est accordée par un propriétaire ou un administrateur (OSS-1.5) ; que le dossier attend cette action, c'est-à-dire une proposition (un résultat `pending`) que personne n'a accordée, sous le verrou du dossier : un deuxième clic ne relance rien, et rien ne s'accorde que Cortex n'a pas proposé. Il garde `human.decision` avec les arguments accordés, rejuge l'action par les règles, qui ont pu changer, la lance avec les droits de la personne et garde le résultat.
