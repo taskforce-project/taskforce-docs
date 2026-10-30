@@ -282,7 +282,10 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   - Les mots de la cible (R65), d'après la Présidence : audit, traçabilité, IQ, OQ, PQ, réglementation, référentiel.
     `[DÉDUIT]` IQ, OQ et PQ sont les étapes de la qualification d'un équipement ou d'un système dans les industries
     réglementées (pharmacie, dispositifs médicaux) : à confirmer avec la Présidence.
-- **Ce qu'il faut pour trancher** : la date du VPS ; le nom et le lien du post, pour le citer et écrire à Y Combinator.
+  - L'auteur du post, d'après la Présidence : Jon Xu. `[ÉTABLI]` Jon Xu est General Partner de Y Combinator depuis mai
+    2025 ([YC](https://www.ycombinator.com/blog/welcome-jon-and-andrew)). Le post lui-même n'a pas été retrouvé en ligne
+    par le secrétariat : à citer avec son lien quand la Présidence l'a.
+- **Ce qu'il faut pour trancher** : la date du VPS ; le lien du post.
 
 ---
 

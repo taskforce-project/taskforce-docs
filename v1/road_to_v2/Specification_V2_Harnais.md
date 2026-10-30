@@ -1194,7 +1194,7 @@ demande se voient ; un nom par chose. R27 à R31 restent à trancher.
 5. **R27 à R30** de la séance n°5 : la trajectoire, le découpage, le reliquat du jour 1, l'aperçu des effets. R31,
    l'agent interne au jour 3, est retenue (séance n°8).
 6. **Les moyens de la direction** (Q13), répondus le 30/10/2026 : un VPS OVH VPS-3 dès que possible ; la Présidence y
-   passe ses journées ; le texte de la séance n°10 vient d'un post d'une personne de Y Combinator, à qui écrire ; le
+   passe ses journées ; le texte de la séance n°10 vient d'un post de Jon Xu, General Partner de Y Combinator, à qui écrire ; le
    partenaire de conception, plus tard.
 7. **La voix** (R80, séance n°13) : comme dans la webapp, ou sur la machine ; la question de l'entraînement renvoie à R61.
 
