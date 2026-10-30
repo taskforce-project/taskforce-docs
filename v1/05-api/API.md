@@ -65,7 +65,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | IssueController | `/api/workspaces/{slug}/projects/{projectId}/issues` | ✅ |
 | AnalyticsController | `/api/workspaces/{slug}/analytics` | ✅ |
 | AnalysisController | `/api/workspaces/{slug}` (→ `/analysis`, `/projects/{id}/brief`, `/priorities/{id}`) | ✅ |
-| AssistantController | `/api/workspaces/{slug}/assistant` (→ `POST` une question à Cortex, `POST /actions/execute` l'accord d'une action qu'il a proposée) | ✅ |
+| AssistantController | `/api/workspaces/{slug}/assistant` (→ `POST` une question à Cortex, `POST /actions/execute` l'accord d'une action qu'il a proposée, `POST /actions/undo` défaire ce qu'il a créé) | ✅ |
 | EvalController | `/api/workspaces/{slug}/evals` (→ la banque d'évaluations de Cortex : ses cas, ses rejeux, son interrupteur) | ✅ |
 | PersonalAccessTokenController | `/api/users/me/tokens` (→ `GET` liste sans valeur, `POST` création, la valeur n'est rendue qu'ici, `DELETE /{id}` révocation) : jetons personnels, refusés partout sauf sur le serveur MCP (lot 5) | ✅ |
 | McpServerController | `/api/workspaces/{slug}/mcp` (→ `POST` JSON-RPC 2.0, `GET` et `DELETE` 405) : serveur MCP de l'instance, 12 outils ; réponse JSON-RPC, pas l'enveloppe `ApiResponse` (lot 5) | ✅ |
@@ -201,6 +201,13 @@ désormais l'action, ou `error` (arguments illisibles). 404 si le dossier n'est 
 espace. 400 si le dossier est illisible ou plein, si l'outil n'existe plus, si une écriture externe est accordée par
 quelqu'un qui n'est ni propriétaire ni administrateur (OSS-1.5), ou si le dossier n'attend pas cette action (jamais
 proposée, ou déjà accordée). L'accord est gardé au dossier avant l'action ; le résultat, après.
+
+**Défaire ce que Cortex a créé** (30/10/2026, R77) : `POST /api/workspaces/{slug}/assistant/actions/undo`, corps
+`{tool, record}`. 200 avec `{tool, status: "success", output}` : ce qui est défait (« Removed the project PRICING… »).
+404 si le dossier n'est pas celui de la personne dans cet espace. 400 si l'outil ne se défait pas (seuls
+`create_project`, `create_issue` et `create_note`), s'il n'y a plus rien à défaire (déjà défait, aucune création
+réussie), ou si l'objet a bougé (un projet avec des issues ou une page ajoutée, une issue commentée, une note avec une
+page rangée dessous ou un lien d'une autre note).
 
 **La banque d'évaluations de Cortex** (29/10/2026, R61) : sous `/api/workspaces/{slug}/evals`.
 
