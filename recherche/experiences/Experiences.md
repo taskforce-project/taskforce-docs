@@ -500,8 +500,32 @@ dans un ordre tiré au sort ; on note la phrase redite, mot pour mot.
 
 **Coût** : ~2 h d'entretiens.
 
+## E15 : La voix se transcrit-elle sur la machine, juste et vite ?
+
+`[statut:: proposée]` · Ouverte le 30/10/2026 · issue du [Conseil, séance n°13](../conseil/seances/2026-10-30-atelier-ecrans-base.md), R80
+
+**Hypothèse** `[HYPOTHÈSE]` : dans l'app desktop, un modèle de transcription qui tourne sur l'ordinateur comprend les
+commandes qu'on dit à TaskForce avec moins d'une erreur sur dix mots, et rend le texte en moins de deux secondes après
+le second clic sur le micro, sans service en ligne ni coût (R62).
+
+**Falsification** : une erreur ou plus sur dix mots, ou plus de deux secondes, sur la machine de la Présidence. La voix
+de l'app desktop passe alors par le navigateur, comme dans la webapp, avec la phrase qui le dit.
+
+**Schéma réel** `[ÉTABLI]` : aucune voix dans le code au 30/10/2026 ; la barre écrite existe (R76, #444). Dans la
+webapp, la voix passera par le service de reconnaissance du navigateur : TaskForce n'en reçoit que le texte.
+
+**Protocole** : vingt commandes, dix en français et dix en anglais, prises dans les suggestions de la barre et dans les
+demandes gardées aux dossiers (« Create an issue… », « Which issues are blocked? »), dites par la Présidence sur sa
+machine ; le texte rendu comparé mot pour mot au texte dit.
+
+**Métrique** : l'erreur par mot (WER) sur les vingt commandes, et le délai entre le second clic et le texte affiché.
+
+**Limite** : une seule voix et une seule machine ; le modèle de transcription reste à choisir.
+
+**Coût** : ~1 j (le modèle sur la machine, puis la mesure).
+
 ---
 
 **Points d'entrée :** [🔬 R&D](../README.md) · [🤖 Mode recherche](../CLAUDE.md) · [❓ Questions](../Questions-ouvertes.md) · [📖 Notes critiques](../revues/World-Model.md)
 
-**Dernière mise à jour :** 29/10/2026 · **v1.1** · Projet Taskforce, Metz Numeric School 2025-2026
+**Dernière mise à jour :** 30/10/2026 · **v1.2** · Projet Taskforce, Metz Numeric School 2025-2026
