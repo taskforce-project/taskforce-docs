@@ -1210,7 +1210,7 @@ Les tickets confiés à un agent de code (Claude Code par le runner local, ou Gi
 
 ### `delivery_run_approvals`
 
-12 colonnes · 2 clé(s) étrangère(s).
+17 colonnes · 2 clé(s) étrangère(s).
 
 | Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
 |---|---|:--:|---|---|---|
@@ -1218,7 +1218,12 @@ Les tickets confiés à un agent de code (Claude Code par le runner local, ou Gi
 | `run_id` | int8 | non | FK → `delivery_runs.id` |  | CASCADE |
 | `tool` | varchar(120) | non |  |  |  |
 | `summary` | varchar(2000) | non |  |  |  |
+| `asked_by` | varchar(16) | non |  | `'agent'::character varying` |  |
+| `action` | varchar(40) | oui |  |  |  |
+| `rule_id` | varchar(120) | oui |  |  |  |
+| `rule_reason` | varchar(500) | oui |  |  |  |
 | `status` | varchar(16) | non |  | `'PENDING'::character varying` |  |
+| `scope` | varchar(16) | oui |  |  |  |
 | `expires_at` | timestamp | non |  |  |  |
 | `decided_by` | int8 | oui | FK → `users.id` |  | SET NULL |
 | `decided_at` | timestamp | oui |  |  |  |
