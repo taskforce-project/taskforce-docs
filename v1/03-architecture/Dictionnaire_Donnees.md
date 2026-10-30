@@ -1169,7 +1169,7 @@ Les tickets confiés à un agent de code (Claude Code par le runner local, ou Gi
 
 ### `delivery_runs`
 
-17 colonnes · 2 clé(s) étrangère(s).
+32 colonnes · 3 clé(s) étrangère(s).
 
 | Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
 |---|---|:--:|---|---|---|
@@ -1190,6 +1190,21 @@ Les tickets confiés à un agent de code (Claude Code par le runner local, ou Gi
 | `claimed_by` | varchar(120) | oui |  |  |  |
 | `claimed_at` | timestamp | oui |  |  |  |
 | `heartbeat_at` | timestamp | oui |  |  |  |
+| `rules_version` | int4 | oui |  |  |  |
+| `rules_digest` | varchar(71) | oui |  |  |  |
+| `evidence_root` | varchar(71) | oui |  |  |  |
+| `refused` | bool | non |  | `false` |  |
+| `branch` | varchar(255) | oui |  |  |  |
+| `commits` | int4 | oui |  |  |  |
+| `tests_command` | varchar(500) | oui |  |  |  |
+| `tests_ran` | bool | oui |  |  |  |
+| `tests_passed` | bool | oui |  |  |  |
+| `tests_passed_count` | int4 | oui |  |  |  |
+| `tests_total` | int4 | oui |  |  |  |
+| `ended_at` | timestamp | oui |  |  |  |
+| `outcome` | varchar(16) | oui |  |  |  |
+| `outcome_by` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `outcome_at` | timestamp | oui |  |  |  |
 
 ### `delivery_run_events`
 
