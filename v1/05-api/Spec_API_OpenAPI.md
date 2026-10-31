@@ -392,7 +392,11 @@ Le callback pose le refresh token dans le même cookie `tf_refresh` HttpOnly que
 | `POST` | `/priorities/{priorityId}/dismiss` | Écarte une priorité | MEMBER+ |
 | `PUT` | `/priorities/{priorityId}` | Édite une priorité | MEMBER+ |
 
-> Le job publie son plan d'étapes sur `/topic/analysis.{workspaceId}` (STOMP). Remplace l'ancien
+> Toutes ces routes suivent la visibilité du projet : un projet privé que la personne ne voit pas répond 404 (`POST
+> /analysis` aussi, depuis le 31/10/2026).
+>
+> Le job publie son plan d'étapes sur `/topic/projects.{projectId}.analysis` (STOMP), ouvert à qui voit le projet ;
+> l'ancien `/topic/analysis.{workspaceId}`, ouvert à tout l'espace, est retiré depuis le 31/10/2026. Remplace l'ancien
 > `POST /projects/{projectId}/decision` (synchrone, supprimé le 10/07/2026 avec `DecisionController`).
 > Source : `AnalysisController.java:57-169`.
 

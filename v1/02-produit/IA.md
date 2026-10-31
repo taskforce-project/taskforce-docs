@@ -70,7 +70,7 @@ related:
 - [x] ~~**Data flywheel : couche de capture HITL**~~ (`ai_generations`, migration V81). **Retirée le 18/10/2026** (OSS-3.6) : la capture ne tournait que pour un workspace avec `ai_learning_enabled` vrai, et rien ne pouvait le poser (ni endpoint, ni écran) ; la table restait vide et rien ne la lisait. Service, entité, enums et dépôt sont supprimés ; la table et la colonne `ai_learning_enabled` (défaut faux) restent, `ai_runs` est intact. Conception d'origine : à chaque point human-in-the-loop où l'IA propose et l'humain tranche (SPEC via `generateSpec`/`approveSpec`, DECISION via `AnalysisJobService.accept`/`dismiss`, SMART_ASSIGN via `recommend`/`updateIssue`), on capture le contexte Brain OS servi, le draft, le final retenu, le **signal** (ACCEPTED/EDITED/REJECTED) et l'`edit_distance`, **par workspace** (jamais cross-tenant). Corpus de préférences = observabilité aujourd'hui + carburant d'un LoRA/DPO plus tard (on ne fine-tune rien maintenant, on collecte le bon corpus ; cf. `road_to_v2/Data_Flywheel_et_Apprentissage.md`). **Opt-in RGPD** (`ai_learning_enabled`, défaut OFF), **best-effort** (transaction séparée `REQUIRES_NEW` + try/catch : ne casse jamais le flux métier), `kind`/`final` **extensibles V2** (outcome d'exécution d'agent plus tard, sans migration). Corpus DISTINCT d'`assignment_events`/`ai_runs` (historique opérationnel du scoring). Tests `AiGenerationServiceTest` + verify gate dans `SmartAssignServiceTest`. [id:: IA-FLYW-001] [statut:: done] [parite:: extra] [ref:: core/service/AiGenerationService.java] (02/09/2026)
 
 ## À faire
-- [ ] Abonner le front à `/topic/analysis.{workspaceId}` (STOMP) — le backend publie déjà, le dock retombe sur un polling 5 s [id:: IA-DEC-004] [statut:: todo] [prio:: P2] [besoin-backend:: néant] (10/07/2026)
+- [ ] Abonner le front aux flux `/topic/projects.{projectId}.analysis` (STOMP, un par projet que le dock montre ; le canal de l'espace est retiré depuis le 31/10/2026) : le backend publie déjà, le dock retombe sur un polling 5 s [id:: IA-DEC-004] [statut:: todo] [prio:: P2] [besoin-backend:: néant] (10/07/2026)
 - [ ] Exploiter les priorités `DISMISSED` comme signal de feedback (mesurer les recommandations suivies vs écartées). La capture du data flywheel (`IA-FLYW-001`) est retirée le 18/10/2026 ; le statut `DISMISSED` reste stocké sur chaque priorité (`DecisionPriorityStatus`). Reste l'exploitation/mesure. [id:: IA-DEC-005] [statut:: todo] [prio:: P3]
 - [ ] Vrai streaming SSE de l'assistant [id:: IA-AS-002] [statut:: todo] [prio:: P2] [besoin-backend:: BE-IA-001] (PC-009)
 - [ ] Cache Insights (`ai_runs`/`insight_snapshots`) + garde quota/timeout du fournisseur [id:: IA-IN-002] [statut:: todo] [prio:: P2] [besoin-backend:: BE-IA-002] (PC-007)
@@ -98,6 +98,10 @@ triplerait.
 `buildRealtimeUrls`), migrer les deux hooks existants dessus, puis ajouter l'abonnement à
 `/topic/analysis.{workspaceId}` qui patche le store des jobs — le polling 5 s redevenant un filet de
 sécurité plutôt que le mécanisme principal.
+
+**MAJ 31/10/2026** : ce canal de l'espace est retiré (il montrait les analyses des projets privés à tout membre) ;
+chaque workflow publie sur le flux de son projet, `/topic/projects.{projectId}.analysis`, ouvert à qui voit le
+projet. Le dock s'abonnera donc au flux de chaque projet qu'il montre.
 
 ---
 **Dernière mise à jour :** 18/10/2026 · **Projet :** Taskforce - Metz Numeric School 2025-2026

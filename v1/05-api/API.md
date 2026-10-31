@@ -118,8 +118,10 @@ Issue (`issue-service` ↔ `IssueController` : CRUD, **`GET /paged?page&size`** 
 `POST /analysis/{jobId}/answer` (HITL — reprise après clarification du modèle).
 La décision produite est persistée : `GET /projects/{projectId}/brief` (→ `null` si aucune analyse aboutie), et chaque
 priorité est actionnable : `POST /priorities/{id}/accept` (→ crée l'issue liée), `/pin`, `/dismiss` (bascules), `PUT /priorities/{id}` (édition).
-Le job publie son plan d'étapes sur `/topic/analysis.{workspaceId}` (STOMP) ; **le front n'y est pas encore abonné** et
-retombe sur un polling 5 s tant qu'un workflow est actif.
+Le job publie son plan d'étapes sur `/topic/projects.{projectId}.analysis` (STOMP), ouvert à qui voit le projet comme
+son board ; jusqu'au 31/10/2026 il passait par `/topic/analysis.{workspaceId}`, ouvert à tout l'espace, canal retiré
+depuis (tout abonnement y est refusé). **Le front n'y est pas encore abonné** et retombe sur un polling 5 s tant qu'un
+workflow est actif. `POST /analysis` sur un projet que la personne ne voit pas répond 404.
 > Remplace l'ancien `POST /projects/{projectId}/decision` (synchrone, non persisté), **supprimé** le 10/07/2026 avec `DecisionController`.
 > `GET /analysis/{jobId}` est retiré le 18/10/2026 (lot 3) : le panneau lit la liste.
 

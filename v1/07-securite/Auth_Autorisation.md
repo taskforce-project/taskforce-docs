@@ -465,7 +465,8 @@ reste mince et délègue la lecture en base à `RealtimeAuthorizationService` :
 |---|---|
 | `/topic/notifications.{userId}` | l'abonné **doit être** ce `userId` |
 | `/topic/projects.{projectId}` | l'abonné **doit voir** le projet (`ProjectVisibilityGuard` : public / membre / OWNER-ADMIN) |
-| `/topic/analysis.{workspaceId}` | l'abonné **doit être membre** du workspace |
+| `/topic/projects.{projectId}.analysis` | même règle : les workflows d'analyse IA du projet (depuis le 31/10/2026) |
+| `/topic/analysis.{workspaceId}` | **retiré le 31/10/2026**, tout abonnement est refusé : ouvert à tout membre de l'espace, il montrait le nom des projets privés et la question du modèle |
 
 Un abonnement non autorisé est refusé (frame `ERROR`), sans révéler l'existence de la ressource.
 **Preuve** : `StompAuthInterceptor`, `RealtimeAuthorizationService`, `StompAuthInterceptorTest`.
