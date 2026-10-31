@@ -344,16 +344,14 @@ Le callback pose le refresh token dans le même cookie `tf_refresh` HttpOnly que
 
 | Méthode | Chemin | Description | Rôle |
 |---|---|---|:---:|
-| `GET` | (base) | Récupère le brain du workspace | MEMBER+ |
-| `POST` | `/search` | Recherche sémantique (pgvector cosine) | MEMBER+ |
-| `POST` | `/reseed` | Re-génère les embeddings | ADMIN+ |
-| `GET` | `/nodes` | Liste les nœuds de connaissance | MEMBER+ |
-| `GET` | `/nodes/{nodeId}` | Détail d'un nœud | MEMBER+ |
-| `POST` | `/nodes` | Crée un nœud | MEMBER+ |
-| `PATCH` | `/nodes/{nodeId}` | Modifie un nœud | MEMBER+ |
-| `DELETE` | `/nodes/{nodeId}` | Supprime un nœud | ADMIN+ |
-| `POST` | `/edges` | Crée un lien entre nœuds | MEMBER+ |
-| `DELETE` | `/edges/{edgeId}` | Supprime un lien | MEMBER+ |
+| `GET` | (base) | Vue d'ensemble : les pages et les liens que la personne lit | MEMBER+ |
+| `POST` | `/search` | Recherche sémantique (pgvector cosine), plein texte sans modèle d'embeddings | MEMBER+ |
+| `POST` | `/nodes` | Crée une page | MEMBER+ |
+| `PATCH` | `/nodes/{nodeId}` | Modifie une page | MEMBER+ |
+| `PATCH` | `/nodes/{nodeId}/move` | Déplace une page dans l'arbre | MEMBER+ |
+| `DELETE` | `/nodes/{nodeId}` | Supprime une page | MEMBER+ |
+
+**Visibilité (31/10/2026)** : une page rattachée à un projet ne se lit que par qui voit ce projet (`ProjectVisibilityGuard`) ; ailleurs, elle répond comme une page absente (404). Détail dans [[Backend]], BE-BRAIN-VISIBILITY. Les routes `/reseed`, `GET /nodes`, `GET /nodes/{nodeId}` et `/edges` ont été supprimées le 18/10/2026 (OSS-3.4).
 
 ---
 
