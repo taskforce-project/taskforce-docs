@@ -303,7 +303,7 @@ Le domaine que le cahier des charges décrit : les tâches, leur affectation, la
 
 ### `issue_activity`
 
-7 colonnes · 2 clé(s) étrangère(s).
+8 colonnes · 2 clé(s) étrangère(s).
 
 | Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
 |---|---|:--:|---|---|---|
@@ -314,6 +314,7 @@ Le domaine que le cahier des charges décrit : les tâches, leur affectation, la
 | `old_value` | varchar(500) | oui |  |  |  |
 | `new_value` | varchar(500) | oui |  |  |  |
 | `created_at` | timestamp | non |  | `now()` |  |
+| `via` | varchar(60) | oui |  |  |  |
 
 ### `issue_checklist_items`
 
