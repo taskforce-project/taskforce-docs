@@ -179,7 +179,11 @@ localement par Ollama</strong>. Le backend en dépend explicitement
 Groq a été retiré le 16/07 (<code>TF-AI-GROQ-CLEANUP</code>) : bloqué par le réseau de l'école (403),
 et son implémentation n'enregistrait pas la consommation de jetons, ce qui désarmait silencieusement
 la facturation de l'IA. Conséquence pour la conformité : <strong>aucun contenu de travail ne quitte
-l'infrastructure</strong>.
+l'infrastructure</strong>.<br><br>
+<strong>▶ 01/11/2026 : ce n'est plus vrai partout.</strong> L'<code>ai-service</code> parle désormais à n'importe
+quelle API compatible OpenAI. En production web, c'est Groq : les questions posées à Cortex y partent. Dans l'app
+desktop, le modèle tourne sur la machine (Ollama) ou chez le fournisseur que la personne choisit (Réglages > AI). La
+séance n°14 du Conseil l'a relevé (R82).
 </div>
 
 Dépendances externes : Keycloak (identité), Stripe (facturation), GitHub & Slack (OAuth

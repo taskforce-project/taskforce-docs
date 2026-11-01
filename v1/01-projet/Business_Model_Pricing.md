@@ -2,7 +2,7 @@
 id: business-model-pricing
 title: Business Model & Pricing — TaskForce
 doc_type: business
-statut: valide
+statut: archived
 version: 2.0
 date: "12/07/2026"
 auteur: Pierre MICHEL
@@ -10,6 +10,10 @@ tags: [business, pricing, monetisation, saas, stripe, freemium, per-seat, tam-sa
 ---
 
 # 💰 Business Model & Pricing — TaskForce
+
+> **▶ 01/11/2026 : archivé.** Ce modèle ne décrit plus le produit. Depuis le 18/10/2026, TaskForce est gratuit sous
+> AGPL : Stripe et les offres payantes ont été retirés. Le prochain modèle de revenus se décide à J9 de la feuille de
+> route (séance n°15 du Conseil, R106 ; question ouverte Q15). Ce document reste la référence historique de la v1.
 
 > Synthèse du modèle économique. Reflète la grille **4 forfaits par siège** réellement implémentée
 > (migration `V68`, cf. `PlanType` / `WorkspaceService` / `StripeService`). Source marché complète →
