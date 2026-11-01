@@ -3,8 +3,8 @@ id: recherche-conseil-avenir
 title: Conseil d'Avenir, charte et règlement
 doc_type: sop
 statut: active
-version: 1.1
-date: "28/10/2026"
+version: 1.2
+date: "01/11/2026"
 auteur: Pierre MICHEL
 review_cycle: quarterly
 tags: [recherche, conseil, prospective, laboratoire]
@@ -17,7 +17,7 @@ related:
 
 # 🏛️ Conseil d'Avenir
 
-**Version :** 1.1 · **Date :** 28/10/2026 · **Président :** Pierre MICHEL
+**Version :** 1.2 · **Date :** 01/11/2026 · **Président :** Pierre MICHEL
 
 <p class="lead">
 Le conseil du laboratoire : vingt-quatre personnalités, simulées à partir de leurs positions publiques sourcées,
@@ -186,6 +186,9 @@ s'il le partage.
    meilleur argument.
 5. **Convergence** : le Conseil formule ses recommandations. Chacune porte qui la soutient, qui s'y
    oppose, sa **preuve en dix jours** et son **signal d'arrêt** (§11).
+   **La règle des 90 %** (Présidence, 01/11/2026) : une recommandation ne passe qu'avec au moins 90 % de oui des membres
+   présents. Sous le seuil, elle est amendée puis revotée, et le PV garde le premier tour. Le contradicteur l'attaque
+   avant chaque vote, pour qu'un oui ne vienne jamais de la complaisance (§7.5).
 6. **Décision** (Présidence) : retenue, à l'essai, écartée ou reportée, avec la raison.
 7. **Suites** (secrétariat) : chaque résultat est rangé à sa station (§10).
 
@@ -279,9 +282,11 @@ ce qui est irréversible » ([PV](./seances/2026-10-26-premiere-regle.md)).
 | 29/10/2026 | Construire la boucle (R61), le premier lot : le cas figé, le rejeu à blanc, les notes, le modèle au dossier, l'écran | Restreinte (7) ; Duflo contradictrice | R66 à R71 retenues ; les réserves de Shotwell (R66, R68, R71) et de Duflo (R67) faites siennes par la Présidence | [PV](./seances/2026-10-29-boucle-premier-lot.md) |
 | 29/10/2026 | Les réserves du premier lot de la boucle : le cas qui vieillit, la banque hors de Cortex, la confirmation, l'écran | Restreinte (7) ; Jobs contradicteur | R72 à R75 retenues le 30/10 ; le désaccord de Jobs suivi : aucune surface nouvelle avant les écrans de base | [PV](./seances/2026-10-29-reserves-premier-lot.md) |
 | 30/10/2026 | L'atelier des écrans de base : une entrée de chat et de voix, créer, relire, accorder, la banque aux deux moments | Restreinte (7), l'équipe de Jobs ; Norman contradicteur | R76 modifiée (la voix d'un clic, rien ne part sans envoi), R77 à R79 retenues ; R80 retenue après la réponse du secrétariat (la voix sur la machine dans l'app desktop) | [PV](./seances/2026-10-30-atelier-ecrans-base.md) |
+| 31/10/2026 | TaskForce face au texte de la « souveraineté opérationnelle de l'IA » : devant, derrière, ailleurs ? | Plénière (24) ; Nadella contradicteur | Le 01/11, accord avec tout le Conseil, avec des orientations : R81 et R83 modifiées, R84 remplacée par R103 et R105, R85 et R86 élargies, R82 et R87 à R89 retenues | [PV](./seances/2026-10-31-souverainete-operationnelle.md) |
+| 01/11/2026 | TaskForce complet : une solution par problème, votée à 90 %, et la feuille de route jusqu'au bout | Plénière (24) ; Zhuo contradictrice | R90 à l'essai (E16) ; R91 modifiée (la webapp reste, on teste sur l'app desktop) ; R92 à R106 retenues, R92 élargie, R102 et R103 précisées ; feuille de route J0 à J9 lancée ; règle des 90 % inscrite au §6 | [PV](./seances/2026-11-01-feuille-de-route.md) |
 
 ---
 
 **Points d'entrée :** [🔬 Labo](../README.md) · [📋 Protocole](../CLAUDE.md) · [📓 Journal](../Journal.md) · [🧰 Gabarits](../Gabarits.md)
 
-**Dernière mise à jour :** 21/10/2026 · **v1.0** · Projet Taskforce
+**Dernière mise à jour :** 01/11/2026 · **v1.2** · Projet Taskforce
