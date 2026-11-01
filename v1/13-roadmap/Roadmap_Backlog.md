@@ -116,6 +116,15 @@ pour l'instant (R91).
 | TF-J8 | Le parcours d'arrivée, qui se vit comme un jeu ; la démo complète sur trois natures de travail ; cinq personnes extérieures ; une évaluation par un tiers | J8 | ⬜ | R102, R103, E13, E14 |
 | TF-J9 | La mise sur le marché : le modèle de revenus, la distribution, la spécification et l'essai publiés | J9 | ⬜ | R98, R106 |
 
+**Critères de sortie de J0** (PV n°15) : un commit par écart fermé ; l'essai des droits de recherche vert ; R78 publiée avec « Apply » bloqué sur un échec de tests ; la boucle actuelle (Créer, Accorder, Relire) rejouée de bout en bout sur l'app desktop.
+
+**Critères de sortie de J1**, écrits le 01/11/2026, avant le jalon :
+1. E16 mesurée : le délai d'une décision demandée au backend de la machine (médiane, 95e centile) face au moteur du runner, et le moteur Java compilé en JavaScript essayé sur les 51 cas ; la Présidence tranche R90.
+2. Cortex répond par la passerelle Java avec Ollama, avec une API compatible OpenAI et avec l'API d'Anthropic ; l'ai-service Python et le relais de la coque ne servent plus ; la banque d'évaluations (R61) ne recule sur aucun cas.
+3. Le catalogue ne montre que des connecteurs essayés ; le plan figé d'« AI Workflows » a disparu.
+4. La liste de lancement : une installation propre, une mise à jour depuis la version publiée, une sauvegarde puis une restauration.
+5. Les tests verts ; la boucle rejouée sur l'app desktop, avec Claude Code et Ollama.
+
 ---
 
 ## 1. P0 — Correctifs bloquants
