@@ -1559,6 +1559,8 @@ Le 01/11/2026, dans ses mots.
   - J0 est lancé ; la release de R78 attend toujours son « go release ».
 - **Le risque reste écrit** : si les machines de l'école s'arrêtent avant le VPS, une nouvelle installation de l'app
   desktop ne peut plus se connecter (Q13).
+- **Complément de la Présidence, le 01/11/2026 après la release 1.7.0** : les machines de l'école s'arrêtent le
+  31/12/2026 ; l'adresse de l'hébergeur attend le VPS. Le VPS a donc une date butoir : le 31/12/2026.
 
 ## Suites
 

@@ -27,6 +27,9 @@ Logo projet        : assets/images/logo_taskforce.png
 > **▶ 01/11/2026 :** le chantier en cours est la feuille de route jusqu'à la démo complète, J0 à J9, décidée par la
 > Présidence après les séances n°14 et n°15 du Conseil ([PV](../../recherche/conseil/seances/2026-11-01-feuille-de-route.md)).
 > Elle est au [§0](#0-la-feuille-de-route-jusquà-la-démo-complète-j0-à-j9) ; chaque jalon se valide avant le suivant.
+> Date butoir hors jalons : les machines de l'école s'arrêtent le 31/12/2026 (Présidence, 01/11) ; le VPS d'OVH doit
+> porter avant cette date les comptes, la webapp, l'API et les sauvegardes, puisque l'app desktop se connecte par la
+> webapp ([Q13](../../recherche/Questions-ouvertes.md)).
 >
 > **▶ 14/10/2026 :** le chantier en cours est la release open source de TaskForce 1.0, suivie item par item dans
 > [[Plan_Release_Open_Source]] (ADR-014 à ADR-020). Ce backlog reste la référence historique de la v1.

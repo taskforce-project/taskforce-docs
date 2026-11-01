@@ -296,8 +296,12 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   - la webapp reste en ligne et reçoit chaque release, mais on n'y teste rien pour l'instant : « pas de serveur, pas
     d'API Claude ou autre, pas de connexion possible avec des agent ou autre a moins de payer » ;
   - l'app desktop continue de se connecter par la webapp ; elle est le banc d'essai, avec Claude Code et Ollama.
-- **Ce qui manque encore** : la date d'arrêt des machines de l'école. `[DÉDUIT]` Si elles s'arrêtent avant le VPS, une
-  nouvelle installation de l'app desktop ne peut plus se connecter.
+- **Réponses de la Présidence, le 01/11/2026, après la release 1.7.0** :
+  - les machines de l'école s'arrêtent le 31/12/2026 ;
+  - l'adresse de l'hébergeur pour les mentions légales attend le VPS : « on attend le VPS globalement ».
+- `[DÉDUIT]` Le VPS doit être en service avant le 31/12/2026, avec les comptes, la webapp, l'API et les sauvegardes :
+  sans lui, une nouvelle installation de l'app desktop ne peut plus se connecter, puisqu'elle passe par la webapp.
+- **Ce qui manque encore** : la date de mise en service du VPS.
 
 ## Q14 : Se brancher à n8n ?
 
