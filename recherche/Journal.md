@@ -24,6 +24,51 @@ related:
 
 ---
 
+## 2026-11-01 : séances n°14 et n°15 du Conseil, la feuille de route jusqu'à la démo complète
+
+**Fait** : deux plénières de 24 membres.
+- La n°14 (31/10/2026, Nadella contradicteur, [PV](./conseil/seances/2026-10-31-souverainete-operationnelle.md)) a jugé
+  un texte de ChatGPT sur la « souveraineté opérationnelle de l'IA ». Elle a dressé une carte de 21 lignes (pile, devant,
+  en route, derrière, ailleurs) et formulé R81 à R89.
+- La n°15 (01/11/2026, Zhuo contradictrice, [PV](./conseil/seances/2026-11-01-feuille-de-route.md)) a répondu au cap
+  de la Présidence. Elle a d'abord dit avoir compris ce que la Présidence veut faire de TaskForce. Elle a ensuite voté
+  une solution par problème, R90 à R106, chacune à 90 % de oui au moins, et tracé une feuille de route en dix jalons,
+  J0 à J9.
+
+**Trouvé**
+- `[ÉTABLI]` Trois logiques existent en double :
+  - la décision des règles, en Java pour Cortex et en TypeScript dans le runner ;
+  - la chaîne de preuve, en Java et en TypeScript ;
+  - le protocole d'IA, dans l'ai-service en Python et dans la coque de l'app desktop en TypeScript.
+
+  Le premier double est un choix de la spécification v2 : le runner juge chaque action sans aller-retour vers le serveur.
+- `[ÉTABLI]` L'app desktop se connecte par la webapp (`/auth/desktop`), qui tourne sur les machines de l'école.
+- `[ÉTABLI]` Au repos, seuls les secrets sont chiffrés ; le contenu et les sauvegardes sont en clair.
+- `[ÉTABLI]` n8n se présente déjà comme une plateforme d'agents IA et de flux, avec des accords humains et l'auto-hébergement.
+  « Un n8n IA » n'est donc pas une place libre : la différence est la règle du métier sur chaque action, la preuve
+  vérifiable sans TaskForce, le métier qui construit sans code, le local sous AGPL.
+- `[ÉTABLI]` La faille des droits dans la recherche du Brain OS est corrigée par une session dédiée, dans deux pull
+  requests ouvertes (`taskforce-fullstack` #459 et #460).
+
+**Décidé** (Présidence, 01/11/2026) :
+- la lecture de ses décisions sur la n°14 est confirmée ;
+- R90 (un seul moteur, en Java) est à l'essai : le double moteur reste, protégé par ses cas partagés, tant qu'une source
+  unique sans aller-retour vers Java n'est pas trouvée (E16) ;
+- R91 est modifiée : la webapp reste en ligne et reçoit chaque release, mais on n'y teste rien ; l'app desktop, avec
+  Claude Code et Ollama, est le banc d'essai ;
+- R92 est élargie : chacun branche ses modèles, quels qu'ils soient, et TaskForce ne gère pas les modèles, sauf
+  l'entraînement si c'est possible ;
+- R102 est précisée : l'arrivée se vit comme un jeu, ce n'en est pas un ;
+- R103 est modifiée : une infrastructure générale, montrée sur trois natures de travail, pas un produit pour tous les
+  métiers pour le moment ;
+- tout le reste est retenu, et la règle des 90 % entre à la charte (§6).
+
+**Prochain coup** : J0. Fusionner #459 et #460, puis « Apply » qui respecte les tests, le refus par délai qui se dit,
+et les pages qui disent vrai. La release de R78 attend le « go release » de la Présidence. Ensuite J1 : E16 et la
+passerelle de modèles ouverte.
+
+---
+
 ## 2026-10-30 (bis) : l'atelier des écrans de base, séance n°13 du Conseil
 
 **Fait** : la Présidence a lancé l'atelier en même temps que la release 1.6.7 (la banque de tests en production).

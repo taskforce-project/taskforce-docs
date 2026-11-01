@@ -50,6 +50,12 @@ related:
 | [E9](#e9--le-temps-dattention-par-résultat-accepté-se-mesure-t-il-) | Attention humaine par résultat accepté (Conseil, R3) | ~1 j | non | proposée |
 | [E10](#e10--un-relecteur-dédié-trouve-t-il-de-vrais-défauts-) | Relecteur dédié des pull requests (Conseil, R4) | ~0,5 j | oui | proposée |
 | [E11](#e11--un-petit-modèle-local-rend-il-une-tâche-en-commentaire-acceptable-) | Un petit modèle local pour les tâches en commentaire (Conseil, R51) | ~1,5 j | oui | proposée |
+| [E12](#e12--un-petit-modèle-affiné-bat-il-le-modèle-de-base-avec-recherche-) | Un petit modèle affiné contre le modèle de base avec recherche (Conseil, R62) | ~1,5 j | oui | proposée |
+| [E13](#e13--le-spécialiste-gagne-t-il-du-temps-sur-un-vrai-dossier-) | Le temps du spécialiste sur un vrai dossier (Conseil, R63), à J8 | ~1 j | oui | proposée |
+| [E14](#e14--la-promesse-se-redit-elle-en-une-phrase-) | La promesse redite en une phrase (Conseil, R65), à J8 | ~2 h | non | proposée |
+| [E15](#e15--la-voix-se-transcrit-elle-sur-la-machine-juste-et-vite-) | La voix transcrite sur la machine (Conseil, R80) | ~1 j | oui | proposée |
+| [E16](#e16--une-seule-source-pour-le-moteur-de-règles-sans-aller-retour-) | Une seule source pour le moteur de règles (Conseil, R90), en J1 | ~1 j | non | proposée |
+| [E17](#e17--lindice-de-confiance-se-mesure-t-il-et-monte-t-il-) | L'indice de confiance, mesure de départ à J2 (Conseil, R104) | ~1 j | non | proposée |
 
 > **L'ordre compte.** E1 avant tout le reste : sans mesure de calibration, **aucune** des autres n'est
 > interprétable. C'est l'inversion proposée dans [`World_Model_Notes.md`](../revues/World-Model.md) §10 —
@@ -283,6 +289,9 @@ vérité (C3). Seed **synthétique**.
 ## E7 : Quelle part de l'attente humaine porte sur du réversible ?
 
 `[statut:: proposée]` · Ouverte le 27/10/2026 · issue du [Conseil, séance n°1](../conseil/seances/2026-10-26-premiere-regle.md), R1
+
+**Jalon** : J2 de la feuille de route ([séance n°15](../conseil/seances/2026-11-01-feuille-de-route.md)) : la part des
+demandes sur du réversible est l'un des signaux de l'indice de confiance (E17).
 
 **Hypothèse** `[HYPOTHÈSE]` : au moins 30 % du temps où un agent attend une décision humaine porte sur des actions
 réversibles, celles qui restent dans la branche de travail (lecture, écriture, commit local, tests).
@@ -524,8 +533,65 @@ machine ; le texte rendu comparé mot pour mot au texte dit.
 
 **Coût** : ~1 j (le modèle sur la machine, puis la mesure).
 
+## E16 : Une seule source pour le moteur de règles, sans aller-retour ?
+
+`[statut:: proposée]` · Ouverte le 01/11/2026 · issue du [Conseil, séance n°15](../conseil/seances/2026-11-01-feuille-de-route.md), R90 (à l'essai)
+
+**Hypothèse** `[HYPOTHÈSE]` : l'une de deux voies supprime le double moteur sans gêner l'agent.
+- **(a) Le runner demande chaque décision au backend Java de la machine.** Le surcoût reste sous 10 ms au 95e centile,
+  quand une action de Claude Code prend plusieurs secondes.
+- **(b) Le moteur Java, compilé en JavaScript** (TeaVM ou J2CL), tourne dans le runner, sans aller-retour, et passe les
+  51 cas partagés.
+
+**Falsification** : les deux voies échouent.
+- (a) dépasse 10 ms au 95e centile, ou bloque l'agent quand le backend redémarre.
+- (b) ne compile pas le moteur, ou échoue à un cas.
+
+Le double moteur reste alors, protégé par les cas partagés, comme la Présidence l'a accepté.
+
+**Schéma réel** `[ÉTABLI]` :
+- `RulesEngine`, `Glob` et `RulesDigest` en Java, environ 200 lignes ;
+- `rules.ts` et `glob.ts` dans le runner, environ 185 lignes ;
+- 51 cas dans `contracts/rules/cases.json`, rejoués par la CI des deux côtés.
+
+Dans l'app desktop, le backend et le runner tournent sur la même machine.
+
+**Protocole** :
+1. Une mission réelle de Claude Code, jouée deux fois : décisions prises dans le runner, puis demandées au backend. On
+   mesure le délai de chaque décision et la durée totale.
+2. Le moteur Java compilé en JavaScript, branché sur les 51 cas.
+
+**Métrique** : le délai de décision (médiane, 95e centile), les cas passés, la taille du code produit.
+
+**Limite** : une machine, une mission ; la version hébergée, avec un serveur distant, n'est pas mesurée.
+
+**Coût** : ~1 j.
+
+## E17 : L'indice de confiance se mesure-t-il, et monte-t-il ?
+
+`[statut:: proposée]` · Ouverte le 01/11/2026 · issue du [Conseil, séance n°15](../conseil/seances/2026-11-01-feuille-de-route.md), R104
+
+**Hypothèse** `[HYPOTHÈSE]` : les neuf signaux de l'indice de confiance (PV n°15) se mesurent à partir des dossiers et
+des journaux, sans questionnaire, sauf le retour des personnes extérieures. Chacun progresse d'un jalon à l'autre à
+partir de J2.
+
+**Falsification** : un signal qu'on ne sait pas mesurer à J2, ou un signal qui recule deux jalons de suite (le signal
+d'arrêt de R104).
+
+**Schéma réel** `[ÉTABLI]` : les dossiers de mission gardent les décisions, les accords et les tests ; aucun des neuf
+signaux n'est calculé aujourd'hui.
+
+**Protocole** : la mesure de départ à la fin de J2, sur la boucle mince (deux packs), avec les seuils écrits avant
+(Duflo) ; puis la même mesure à chaque jalon, publiée au Journal.
+
+**Métrique** : les neuf signaux, chacun avec son seuil.
+
+**Limite** : peu de missions avant J8, et trois personnes extérieures par jalon.
+
+**Coût** : ~1 j pour la mesure de départ, puis ~2 h par jalon.
+
 ---
 
 **Points d'entrée :** [🔬 R&D](../README.md) · [🤖 Mode recherche](../CLAUDE.md) · [❓ Questions](../Questions-ouvertes.md) · [📖 Notes critiques](../revues/World-Model.md)
 
-**Dernière mise à jour :** 30/10/2026 · **v1.2** · Projet Taskforce, Metz Numeric School 2025-2026
+**Dernière mise à jour :** 01/11/2026 · **v1.3** · Projet Taskforce, Metz Numeric School 2025-2026

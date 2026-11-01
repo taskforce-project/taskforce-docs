@@ -35,6 +35,12 @@ related:
 | [Q7](#q7--causalité-sans-contrefactuel--que-signifie-caused_by-) | Que signifie `CAUSED_BY` sans contrefactuel ? | P1 | ouverte |
 | [Q8](#q8--construire-vers-lintérieur-ou-vers-lextérieur-) | Écosystème : vers l'intérieur ou l'extérieur ? | **P0** | ouverte |
 | [Q9](#q9--quel-flywheel-vend-on-) | Quel flywheel vend-on (F1/F2/F3) ? | P1 | ouverte |
+| [Q10](#q10--mesurer-lattention-humaine--sur-lordinateur-seulement-ou-avec-des-données-envoyées-) | Mesurer l'attention humaine : sur la machine, ou avec des données envoyées ? | P2 | ouverte |
+| [Q11](#q11--un-harnais-embarqué-pour-le-monde-physique-) | Un harnais embarqué pour le monde physique ? | P3 | ouverte |
+| [Q12](#q12--demander-à-anthropic-dafficher-le-logo-de-claude-) | Demander à Anthropic d'afficher le logo de Claude ? | P3 | ouverte |
+| [Q13](#q13--les-moyens-de-la-direction--lhébergement-le-temps-un-partenaire-la-source-du-texte) | Les moyens : l'hébergement, le temps, un partenaire, la source du texte | P2 | ouverte |
+| [Q14](#q14--se-brancher-à-n8n-) | Se brancher à n8n ? | P3 | ouverte |
+| [Q15](#q15--quel-modèle-de-revenus-quand-le-produit-cessera-dêtre-gratuit-) | Quel modèle de revenus, quand le produit cessera d'être gratuit ? | P2 | ouverte |
 
 ---
 
@@ -286,9 +292,42 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
     2025 ([YC](https://www.ycombinator.com/blog/welcome-jon-and-andrew)). Le post lui-même n'a pas été retrouvé en ligne
     par le secrétariat : à citer avec son lien quand la Présidence l'a.
 - **Ce qu'il faut pour trancher** : la date du VPS ; le lien du post.
+- **Réponses de la Présidence, le 01/11/2026** ([séance n°15](./conseil/seances/2026-11-01-feuille-de-route.md), R91) :
+  - la webapp reste en ligne et reçoit chaque release, mais on n'y teste rien pour l'instant : « pas de serveur, pas
+    d'API Claude ou autre, pas de connexion possible avec des agent ou autre a moins de payer » ;
+  - l'app desktop continue de se connecter par la webapp ; elle est le banc d'essai, avec Claude Code et Ollama.
+- **Ce qui manque encore** : la date d'arrêt des machines de l'école. `[DÉDUIT]` Si elles s'arrêtent avant le VPS, une
+  nouvelle installation de l'app desktop ne peut plus se connecter.
+
+## Q14 : Se brancher à n8n ?
+
+`[statut:: ouverte]` · `[prio:: P3]` · Ouverte le 01/11/2026 · issue du [Conseil, séance n°15](./conseil/seances/2026-11-01-feuille-de-route.md), R99 (point 5, reporté)
+
+- **La question** : faut-il ouvrir le point de décision de TaskForce à n8n, pour que ses agents demandent la décision aux
+  règles d'un espace et écrivent au dossier ?
+- **Pourquoi ça compte** : `[ÉTABLI]` n8n se présente comme une plateforme pour construire et déployer des agents IA et
+  des flux, avec des accords humains, des journaux d'audit et l'auto-hébergement ([GitHub](https://github.com/n8n-io/n8n),
+  lu le 01/11/2026). `[DÉDUIT]` Se brancher ferait de TaskForce la couche de règles et de preuve d'outils déjà en place ;
+  ne pas le faire garde TaskForce entière, sans dépendre d'un autre éditeur.
+- **Position actuelle** : la Présidence, le 01/11/2026 : « On va pas se brancher a n8n je pense, enfin jsp a voir ».
+- **Ce qu'il faut pour trancher** : le point de décision ouvert de R99, construit en J5 pour les agents que TaskForce
+  connaît ; puis une demande réelle d'un client qui utilise n8n.
+
+## Q15 : Quel modèle de revenus, quand le produit cessera d'être gratuit ?
+
+`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 01/11/2026 · issue du [Conseil, séance n°15](./conseil/seances/2026-11-01-feuille-de-route.md), R106
+
+- **La question** : double licence (l'AGPL, et une licence commerciale), open core (des fonctions d'entreprise payantes),
+  installation et support payants, ou une version hébergée ?
+- **Pourquoi ça compte** : la Présidence, le 01/11/2026 : « Pour l instant c est gratuit mais ca va pas le rester ».
+  `[ÉTABLI]` Stripe et les offres payantes ont été retirés le 18/10/2026.
+- **Position actuelle** : rien de payant ne se construit avant J9 ; les trois options s'instruisent avant J8 et se
+  testent pendant les démos ; le cœur reste sous AGPL (R106).
+- **Ce qu'il faut pour trancher** : les réponses des démos de J8 ; une vérification juridique, puisque la double licence
+  suppose de détenir les droits sur tout le code.
 
 ---
 
 **Points d'entrée :** [🔬 R&D](./README.md) · [🤖 Mode recherche](./CLAUDE.md) · [🧪 Expériences](./experiences/Experiences.md) · [📖 Notes critiques](./revues/World-Model.md)
 
-**Dernière mise à jour :** 29/10/2026 · **v1.1** · Projet Taskforce, Metz Numeric School 2025-2026
+**Dernière mise à jour :** 01/11/2026 · **v1.2** · Projet Taskforce, Metz Numeric School 2025-2026
