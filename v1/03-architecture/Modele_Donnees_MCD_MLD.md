@@ -4,7 +4,7 @@ title: "Modèle de données : MCD / MLD (MERISE)"
 doc_type: reference
 statut: active
 version: 2.0
-date: "20/10/2026"
+date: "01/11/2026"
 auteur: Pierre MICHEL
 tags: [architecture, donnees, mcd, mld, merise, erd, postgresql, flyway, e8]
 ---
@@ -22,8 +22,8 @@ tags: [architecture, donnees, mcd, mld, merise, erd, postgresql, flyway, e8]
 
 ## 1. Périmètre et méthode
 
-- **67 tables** métier (hors `flyway_schema_history`), **705 colonnes**, **121 clés étrangères**.
-- **101 migrations Flyway** appliquées avec succès.
+- **75 tables** métier (hors `flyway_schema_history`), **789 colonnes**, **137 clés étrangères**.
+- **111 migrations Flyway** appliquées avec succès.
 - **MERISE** : le MCD (§3) décrit les domaines et leur poids ; le MLD (§4) est le schéma relationnel
   réel, table par table. Le MPD (physique) est PostgreSQL 18 avec l'extension pgvector.
 - Diagrammes en **Mermaid**, rendus nativement par GitHub et Obsidian.
@@ -97,7 +97,7 @@ produire le document.
 
 Le passage au logique fait apparaître des tables de liaison, d'historisation et de configuration
 qui n'ont pas d'existence conceptuelle. D'où l'écart entre 12 entités et
-67 tables. Leur poids relatif dit où se concentre la complexité, et il correspond à
+75 tables. Leur poids relatif dit où se concentre la complexité, et il correspond à
 ce qu'on attend : le coeur métier des projets et des tâches est de loin le plus lourd.
 
 | Domaine | Tables |
@@ -109,8 +109,9 @@ ce qu'on attend : le coeur métier des projets et des tâches est de loin le plu
 | 4.5 Facturation | 2 |
 | 4.6 Intégrations et communications | 9 |
 | 4.7 Documentation, tableaux de bord, prospects et retours | 4 |
-| 4.8 Délégation aux agents de code | 3 |
-| **Total métier** | **67** |
+| 4.8 Délégation aux agents de code | 4 |
+| 4.9 Règles du harnais, dossiers de Cortex et évaluations | 7 |
+| **Total métier** | **75** |
 
 ## 4. MLD : schéma relationnel réel, par domaine
 
@@ -170,15 +171,15 @@ erDiagram
   companies ||--o{ users : "company_id / ON DELETE SET NULL"
   users ||--|{ workspaces : "owner_id / ON DELETE RESTRICT"
   workspaces ||--|{ workspace_members : "workspace_id / ON DELETE CASCADE"
-  users ||--|{ workspace_members : "user_id / ON DELETE CASCADE"
   users ||--o{ workspace_members : "invited_by / ON DELETE SET NULL"
-  projects ||--o{ workspace_invitations : "project_id / ON DELETE CASCADE"
+  users ||--|{ workspace_members : "user_id / ON DELETE CASCADE"
   workspaces ||--|{ workspace_invitations : "workspace_id / ON DELETE CASCADE"
   users ||--o{ workspace_invitations : "invited_by / ON DELETE SET NULL"
-  workspaces ||--|{ teams : "workspace_id / ON DELETE CASCADE"
+  projects ||--o{ workspace_invitations : "project_id / ON DELETE CASCADE"
   users ||--o{ teams : "created_by / ON DELETE SET NULL"
-  teams ||--|{ team_members : "team_id / ON DELETE CASCADE"
+  workspaces ||--|{ teams : "workspace_id / ON DELETE CASCADE"
   users ||--|{ team_members : "user_id / ON DELETE CASCADE"
+  teams ||--|{ team_members : "team_id / ON DELETE CASCADE"
 ```
 
 ### 4.2 Projets et Issues (coeur métier)
@@ -316,8 +317,8 @@ erDiagram
   users ||--|{ project_favorites : "user_id / ON DELETE CASCADE"
   projects ||--|{ project_favorites : "project_id / ON DELETE CASCADE"
   users ||--o{ issues : "assignment_assigned_by_id / ON DELETE SET NULL"
-  projects ||--|{ issues : "project_id / ON DELETE CASCADE"
   issue_statuses ||--|{ issues : "status_id / ON DELETE RESTRICT"
+  projects ||--|{ issues : "project_id / ON DELETE CASCADE"
   issue_types ||--o{ issues : "type_id / ON DELETE SET NULL"
   users ||--o{ issues : "assignee_id / ON DELETE SET NULL"
   users ||--|{ issues : "reporter_id / ON DELETE RESTRICT"
@@ -334,24 +335,24 @@ erDiagram
   users ||--|{ issue_relations : "created_by / ON DELETE RESTRICT"
   project_labels ||--|{ issue_label_assignments : "label_id / ON DELETE CASCADE"
   issues ||--|{ issue_label_assignments : "issue_id / ON DELETE CASCADE"
-  users ||--|{ issue_worklogs : "user_id / ON DELETE CASCADE"
   issues ||--|{ issue_worklogs : "issue_id / ON DELETE CASCADE"
+  users ||--|{ issue_worklogs : "user_id / ON DELETE CASCADE"
   projects ||--|{ issue_sequence_counters : "project_id / ON DELETE CASCADE"
-  users ||--|{ cycles : "created_by / ON DELETE RESTRICT"
   projects ||--|{ cycles : "project_id / ON DELETE CASCADE"
+  users ||--|{ cycles : "created_by / ON DELETE RESTRICT"
   cycles ||--|{ cycle_issues : "cycle_id / ON DELETE CASCADE"
   issues ||--|{ cycle_issues : "issue_id / ON DELETE CASCADE"
   users ||--|{ cycle_issues : "added_by / ON DELETE RESTRICT"
-  issues ||--|{ attachments : "issue_id / ON DELETE CASCADE"
   users ||--o{ attachments : "uploaded_by / ON DELETE SET NULL"
+  issues ||--|{ attachments : "issue_id / ON DELETE CASCADE"
   users ||--|{ member_leaves : "user_id / ON DELETE CASCADE"
   workspaces ||--|{ member_leaves : "workspace_id / ON DELETE CASCADE"
-  workspaces ||--|{ member_skill_profiles : "workspace_id / ON DELETE CASCADE"
   users ||--|{ member_skill_profiles : "user_id / ON DELETE CASCADE"
-  workspaces ||--|{ assignment_events : "workspace_id / ON DELETE CASCADE"
+  workspaces ||--|{ member_skill_profiles : "workspace_id / ON DELETE CASCADE"
   issues ||--o{ assignment_events : "issue_id / ON DELETE SET NULL"
-  users ||--|{ assignment_events : "assignee_user_id / ON DELETE RESTRICT"
+  workspaces ||--|{ assignment_events : "workspace_id / ON DELETE CASCADE"
   users ||--o{ assignment_events : "assigned_by_user_id / ON DELETE SET NULL"
+  users ||--|{ assignment_events : "assignee_user_id / ON DELETE RESTRICT"
 ```
 
 ### 4.3 IA, affectation intelligente et graphe de connaissances
@@ -435,8 +436,8 @@ erDiagram
     int8 workspace_id FK
     int8 created_by_id FK
   }
-  workspaces ||--|{ ai_conversation : "workspace_id / ON DELETE CASCADE"
   users ||--|{ ai_conversation : "user_id / ON DELETE CASCADE"
+  workspaces ||--|{ ai_conversation : "workspace_id / ON DELETE CASCADE"
   ai_conversation ||--|{ ai_message : "conversation_id / ON DELETE CASCADE"
   workspaces ||--|{ ai_documents : "workspace_id / ON DELETE CASCADE"
   workspaces ||--|{ ai_runs : "workspace_id / ON DELETE CASCADE"
@@ -445,19 +446,19 @@ erDiagram
   workspaces ||--|{ ai_insight_snapshots : "workspace_id / ON DELETE CASCADE"
   workspaces ||--|{ brain_workspaces : "workspace_id / ON DELETE CASCADE"
   knowledge_nodes ||--o{ knowledge_nodes : "parent_node_id / ON DELETE SET NULL"
-  brain_workspaces ||--o{ knowledge_nodes : "brain_id / ON DELETE CASCADE"
   workspaces ||--|{ knowledge_nodes : "workspace_id / ON DELETE CASCADE"
-  workspaces ||--|{ knowledge_edges : "workspace_id / ON DELETE CASCADE"
-  knowledge_nodes ||--|{ knowledge_edges : "from_node_id / ON DELETE CASCADE"
+  brain_workspaces ||--o{ knowledge_nodes : "brain_id / ON DELETE CASCADE"
   knowledge_nodes ||--|{ knowledge_edges : "to_node_id / ON DELETE CASCADE"
-  workspaces ||--|{ analysis_job : "workspace_id / ON DELETE CASCADE"
-  projects ||--|{ analysis_job : "project_id / ON DELETE CASCADE"
+  knowledge_nodes ||--|{ knowledge_edges : "from_node_id / ON DELETE CASCADE"
+  workspaces ||--|{ knowledge_edges : "workspace_id / ON DELETE CASCADE"
   users ||--o{ analysis_job : "user_id / ON DELETE SET NULL"
   decision_brief ||--o{ analysis_job : "brief_id / ON DELETE SET NULL"
-  projects ||--|{ decision_brief : "project_id / ON DELETE CASCADE"
+  workspaces ||--|{ analysis_job : "workspace_id / ON DELETE CASCADE"
+  projects ||--|{ analysis_job : "project_id / ON DELETE CASCADE"
   workspaces ||--|{ decision_brief : "workspace_id / ON DELETE CASCADE"
-  issues ||--o{ decision_priority : "issue_id / ON DELETE SET NULL"
+  projects ||--|{ decision_brief : "project_id / ON DELETE CASCADE"
   decision_brief ||--|{ decision_priority : "brief_id / ON DELETE CASCADE"
+  issues ||--o{ decision_priority : "issue_id / ON DELETE SET NULL"
   workspaces ||--|{ saved_chart : "workspace_id / ON DELETE CASCADE"
   users ||--o{ saved_chart : "created_by_id / ON DELETE SET NULL"
 ```
@@ -505,8 +506,8 @@ erDiagram
   users ||--o{ otp_verification : "user_id / ON DELETE CASCADE"
   users ||--o{ oauth_states : "user_id / ON DELETE SET NULL"
   workspaces ||--|{ oauth_states : "workspace_id / ON DELETE CASCADE"
-  workspaces ||--o{ audit_logs : "workspace_id / ON DELETE SET NULL"
   users ||--o{ audit_logs : "actor_user_id / ON DELETE SET NULL"
+  workspaces ||--o{ audit_logs : "workspace_id / ON DELETE SET NULL"
   users ||--|{ user_two_factor : "user_id / ON DELETE CASCADE"
   users ||--|{ user_credentials : "user_entity_user_id / ON DELETE CASCADE"
   users ||--|{ personal_access_tokens : "user_id / ON DELETE CASCADE"
@@ -588,21 +589,21 @@ erDiagram
     int8 user_id FK
     varchar event_key UK
   }
-  users ||--o{ integrations : "installed_by / ON DELETE SET NULL"
   workspaces ||--|{ integrations : "workspace_id / ON DELETE CASCADE"
+  users ||--o{ integrations : "installed_by / ON DELETE SET NULL"
   users ||--o{ connector_connection : "connected_by / ON DELETE SET NULL"
   workspaces ||--|{ connector_connection : "workspace_id / ON DELETE CASCADE"
-  users ||--o{ mcp_oauth_states : "user_id / ON DELETE SET NULL"
   workspaces ||--|{ mcp_oauth_states : "workspace_id / ON DELETE CASCADE"
+  users ||--o{ mcp_oauth_states : "user_id / ON DELETE SET NULL"
   workspaces ||--|{ webhooks : "workspace_id / ON DELETE CASCADE"
   users ||--o{ webhooks : "created_by / ON DELETE SET NULL"
   webhooks ||--|{ webhook_deliveries : "webhook_id / ON DELETE CASCADE"
   workspaces ||--|{ slack_channels : "workspace_id / ON DELETE CASCADE"
   issues ||--|{ issue_github_links : "issue_id / ON DELETE CASCADE"
   users ||--o{ issue_github_links : "linked_by / ON DELETE SET NULL"
+  users ||--|{ notifications : "recipient_id / ON DELETE CASCADE"
   workspaces ||--|{ notifications : "workspace_id / ON DELETE CASCADE"
   users ||--o{ notifications : "actor_id / ON DELETE SET NULL"
-  users ||--|{ notifications : "recipient_id / ON DELETE CASCADE"
   users ||--|{ notification_preferences : "user_id / ON DELETE CASCADE"
 ```
 
@@ -640,9 +641,9 @@ erDiagram
 
 ### 4.8 Délégation aux agents de code
 
-Les tickets confiés à un agent de code (Claude Code par le runner local, ou GitHub Copilot) : chaque exécution, sa chronologie, et les actions de l'agent qui attendent la décision de la personne qui a délégué.
+Les tickets confiés à un agent de code (Claude Code par le runner local, ou GitHub Copilot) : chaque exécution, sa chronologie, les actions de l'agent qui attendent la décision de la personne qui a délégué, et le dossier de preuve de la mission. Ce dossier est un journal chaîné, ajouté et jamais modifié : chaque événement porte l'empreinte du précédent, et celle du dernier, posée sur `delivery_runs.evidence_root`, le scelle.
 
-**3 tables** : `delivery_runs`, `delivery_run_events`, `delivery_run_approvals`.
+**4 tables** : `delivery_runs`, `delivery_run_events`, `delivery_run_approvals`, `delivery_run_evidence`.
 
 ```mermaid
 erDiagram
@@ -650,6 +651,7 @@ erDiagram
     int8 id PK
     int8 issue_id FK
     int8 started_by FK
+    int8 outcome_by FK
   }
   delivery_run_events {
     int8 id PK
@@ -661,11 +663,78 @@ erDiagram
     int8 run_id FK
     int8 decided_by FK
   }
+  delivery_run_evidence {
+    int8 id PK
+    int8 run_id FK
+    int4 seq UK
+  }
+  users ||--o{ delivery_runs : "outcome_by / ON DELETE SET NULL"
   issues ||--|{ delivery_runs : "issue_id / ON DELETE CASCADE"
   users ||--o{ delivery_runs : "started_by / ON DELETE SET NULL"
   delivery_runs ||--|{ delivery_run_events : "run_id / ON DELETE CASCADE"
   users ||--o{ delivery_run_approvals : "decided_by / ON DELETE SET NULL"
   delivery_runs ||--|{ delivery_run_approvals : "run_id / ON DELETE CASCADE"
+  delivery_runs ||--|{ delivery_run_evidence : "run_id / ON DELETE CASCADE"
+```
+
+### 4.9 Règles du harnais, dossiers de Cortex et évaluations
+
+Ce qui encadre les agents au-delà d'une mission. Les règles de l'espace, versionnées, jugent à la fois les actions des agents de code et les outils que Cortex veut lancer ; sans version enregistrée, la table par défaut s'applique. Chaque réponse de Cortex qui appelle un outil garde un dossier chaîné, au format de celui d'une mission, et la banque d'évaluations fige des cas tirés de ces dossiers pour les rejouer avec un modèle nommé, sans jamais toucher l'espace.
+
+**7 tables** : `harness_rule_sets`, `cortex_records`, `cortex_record_events`, `eval_cases`, `eval_runs`, `eval_results`, `eval_bank_settings`.
+
+```mermaid
+erDiagram
+  harness_rule_sets {
+    int8 id PK
+    int8 workspace_id FK
+    int4 version UK
+    int8 created_by FK
+  }
+  cortex_records {
+    uuid id PK
+    int8 workspace_id FK
+    int8 user_id FK
+  }
+  cortex_record_events {
+    int8 id PK
+    uuid record_id FK
+    int4 seq UK
+  }
+  eval_cases {
+    int8 id PK
+    int8 workspace_id FK
+    int8 created_by FK
+    uuid source_record FK
+  }
+  eval_runs {
+    int8 id PK
+    int8 workspace_id FK
+    int8 started_by FK
+  }
+  eval_results {
+    int8 id PK
+    int8 run_id FK
+    int8 case_id FK
+  }
+  eval_bank_settings {
+    int8 workspace_id PK
+    int8 updated_by FK
+  }
+  users ||--o{ harness_rule_sets : "created_by / ON DELETE SET NULL"
+  workspaces ||--|{ harness_rule_sets : "workspace_id / ON DELETE CASCADE"
+  workspaces ||--|{ cortex_records : "workspace_id / ON DELETE CASCADE"
+  users ||--|{ cortex_records : "user_id / ON DELETE CASCADE"
+  cortex_records ||--|{ cortex_record_events : "record_id / ON DELETE CASCADE"
+  workspaces ||--|{ eval_cases : "workspace_id / ON DELETE CASCADE"
+  cortex_records ||--o{ eval_cases : "source_record / ON DELETE SET NULL"
+  users ||--o{ eval_cases : "created_by / ON DELETE SET NULL"
+  users ||--o{ eval_runs : "started_by / ON DELETE SET NULL"
+  workspaces ||--|{ eval_runs : "workspace_id / ON DELETE CASCADE"
+  eval_cases ||--|{ eval_results : "case_id / ON DELETE CASCADE"
+  eval_runs ||--|{ eval_results : "run_id / ON DELETE CASCADE"
+  users ||--o{ eval_bank_settings : "updated_by / ON DELETE SET NULL"
+  workspaces ||--|{ eval_bank_settings : "workspace_id / ON DELETE CASCADE"
 ```
 
 ## 5. Régénération

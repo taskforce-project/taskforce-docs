@@ -4,7 +4,7 @@ title: Diagramme de classes UML
 doc_type: reference
 statut: active
 version: 2.0
-date: "20/10/2026"
+date: "01/11/2026"
 auteur: Pierre MICHEL
 tags: [architecture, uml, classes, jpa, e8]
 ---
@@ -20,15 +20,15 @@ tags: [architecture, uml, classes, jpa, e8]
 
 ## 1. Méthode et périmètre
 
-- **54 entités JPA**, **19 héritant** de `AuditableEntity`, **95 associations** entre entités.
-- **22 références par identifiant nu** (voir §4), qui ne sont pas des associations JPA.
+- **61 entités JPA**, **19 héritant** de `AuditableEntity`, **97 associations** entre entités.
+- **30 références par identifiant nu** (voir §4), qui ne sont pas des associations JPA.
 - Extraction par analyse des annotations, commentaires et chaînes retirés au préalable.
 - Les entités vivent majoritairement dans `core/model`, mais **pas exclusivement** : les modules
   métier portent les leurs. Restreindre l'extraction à `core/model` en oublierait.
 
 > **Piège de comptage à connaître.** `@EntityListeners` contient la chaîne `@Entity` : un
 > décompte par recherche textuelle simple inclut donc `AuditableEntity`, qui est un
-> `@MappedSuperclass` et non une entité. Le compte exact est **54**, pas 55.
+> `@MappedSuperclass` et non une entité. Le compte exact est **61**, pas 62.
 
 ## 2. Vue par domaine
 
@@ -360,7 +360,7 @@ classDiagram
 
 Pages de documentation collaborative, composition du tableau de bord par utilisateur, demandes commerciales, et retours envoyés depuis l'app.
 
-**2 entités** : `DashboardCard`, `Page`.
+**1 entités** : `DashboardCard`.
 
 ```mermaid
 classDiagram
@@ -368,20 +368,15 @@ classDiagram
     <<dashboard_cards>>
   }
   AuditableEntity <|-- DashboardCard
-  class Page {
-    <<pages>>
-  }
   DashboardCard "*" --> "1" Workspace : workspace
   DashboardCard "*" --> "1" User : user
-  Page "*" --> "1" Project : project
-  Page "*" --> "1" User : createdBy
 ```
 
 ### 4.8 Délégation aux agents de code
 
-Les tickets confiés à un agent de code (Claude Code par le runner local, ou GitHub Copilot) : chaque exécution, sa chronologie, et les actions de l'agent qui attendent la décision de la personne qui a délégué.
+Les tickets confiés à un agent de code (Claude Code par le runner local, ou GitHub Copilot) : chaque exécution, sa chronologie, les actions de l'agent qui attendent la décision de la personne qui a délégué, et le dossier de preuve de la mission. Ce dossier est un journal chaîné, ajouté et jamais modifié : chaque événement porte l'empreinte du précédent, et celle du dernier, posée sur `delivery_runs.evidence_root`, le scelle.
 
-**3 entités** : `DeliveryRun`, `DeliveryRunApproval`, `DeliveryRunEvent`.
+**4 entités** : `DeliveryRun`, `DeliveryRunApproval`, `DeliveryRunEvent`, `DeliveryRunEvidence`.
 
 ```mermaid
 classDiagram
@@ -397,11 +392,57 @@ classDiagram
     <<delivery_run_events>>
   }
   AuditableEntity <|-- DeliveryRunEvent
+  class DeliveryRunEvidence {
+    <<delivery_run_evidence>>
+  }
   DeliveryRun "*" --> "1" Issue : issue
   DeliveryRun "*" --> "1" User : startedBy
+  DeliveryRun "*" --> "1" User : outcomeBy
   DeliveryRunApproval "*" --> "1" DeliveryRun : run
   DeliveryRunApproval "*" --> "1" User : decidedBy
   DeliveryRunEvent "*" --> "1" DeliveryRun : run
+  DeliveryRunEvidence "*" --> "1" DeliveryRun : run
+```
+
+### 4.9 Règles du harnais, dossiers de Cortex et évaluations
+
+Ce qui encadre les agents au-delà d'une mission. Les règles de l'espace, versionnées, jugent à la fois les actions des agents de code et les outils que Cortex veut lancer ; sans version enregistrée, la table par défaut s'applique. Chaque réponse de Cortex qui appelle un outil garde un dossier chaîné, au format de celui d'une mission, et la banque d'évaluations fige des cas tirés de ces dossiers pour les rejouer avec un modèle nommé, sans jamais toucher l'espace.
+
+**7 entités** : `CortexRecord`, `CortexRecordEvent`, `EvalBankSetting`, `EvalCase`, `EvalResult`, `EvalRun`, `HarnessRuleSet`.
+
+```mermaid
+classDiagram
+  class CortexRecord {
+    <<cortex_records>>
+    +Long workspaceId
+    +Long userId
+  }
+  class CortexRecordEvent {
+    <<cortex_record_events>>
+    +Long recordId
+  }
+  class EvalBankSetting {
+    <<eval_bank_settings>>
+    +Long workspaceId
+  }
+  class EvalCase {
+    <<eval_cases>>
+    +Long workspaceId
+  }
+  class EvalResult {
+    <<eval_results>>
+    +Long runId
+    +Long caseId
+  }
+  class EvalRun {
+    <<eval_runs>>
+    +Long workspaceId
+  }
+  class HarnessRuleSet {
+    <<harness_rule_sets>>
+  }
+  HarnessRuleSet "*" --> "1" Workspace : workspace
+  HarnessRuleSet "*" --> "1" User : createdBy
 ```
 
 ## 3. Héritage
@@ -410,7 +451,7 @@ classDiagram
 ses colonnes sont recopiées dans chaque table fille. C'est ce qui explique qu'on retrouve
 `created_at` et `updated_at` répétés au dictionnaire de données plutôt que dans une table commune.
 
-**19 entités sur 54** en héritent :
+**19 entités sur 61** en héritent :
 
 - `AiConversation` (`ai_conversation`)
 - `AiTokenUsage` (`ai_token_usage`)
@@ -432,7 +473,7 @@ ses colonnes sont recopiées dans chaque table fille. C'est ce qui explique qu'o
 - `WebhookDelivery` (`webhook_deliveries`)
 - `WorkspaceInvitation` (`workspace_invitations`)
 
-Les 35 autres portent leur horodatage elles-mêmes, ou n'en ont pas besoin
+Les 42 autres portent leur horodatage elles-mêmes, ou n'en ont pas besoin
 (tables de liaison, compteurs de séquence, jetons éphémères).
 
 ## 4. Le modèle hybride de références
@@ -446,7 +487,7 @@ Le cas emblématique est le journal d'audit : conserver un identifiant nu permet
 **survivre à l'anonymisation** du compte qu'elle référence, ce qu'une association avec cascade
 aurait empêché. Une contrainte `ON DELETE SET NULL` complète le dispositif côté base.
 
-**22 références de ce type** sont recensées :
+**30 références de ce type** sont recensées :
 
 | Entité | Références par identifiant |
 |---|---|
@@ -454,6 +495,12 @@ aurait empêché. Une contrainte `ON DELETE SET NULL` complète le dispositif c�
 | `AiMessage` | `conversationId` |
 | `AiTokenUsage` | `accountId` |
 | `AuditLog` | `workspaceId`, `actorUserId` |
+| `CortexRecord` | `workspaceId`, `userId` |
+| `CortexRecordEvent` | `recordId` |
+| `EvalBankSetting` | `workspaceId` |
+| `EvalCase` | `workspaceId` |
+| `EvalResult` | `runId`, `caseId` |
+| `EvalRun` | `workspaceId` |
 | `IssueChecklistItem` | `issueId` |
 | `IssueSequenceCounter` | `projectId` |
 | `IssueWorklog` | `issueId` |

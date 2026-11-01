@@ -4,7 +4,7 @@ title: Dictionnaire de données
 doc_type: reference
 statut: active
 version: 2.0
-date: "20/10/2026"
+date: "01/11/2026"
 auteur: Pierre MICHEL
 tags: [architecture, donnees, dictionnaire, postgresql, e8]
 ---
@@ -14,8 +14,8 @@ tags: [architecture, donnees, dictionnaire, postgresql, e8]
 > **Document GÉNÉRÉ**, il ne se modifie pas à la main. Régénération :
 > `node scripts/generate-schema-docs.mjs`.
 >
-> Périmètre : **67 tables** métier, **705 colonnes**, **121 clés étrangères**,
-> **101 migrations Flyway** appliquées. Introspection d'`information_schema` sur la base réelle.
+> Périmètre : **75 tables** métier, **789 colonnes**, **137 clés étrangères**,
+> **111 migrations Flyway** appliquées. Introspection d'`information_schema` sur la base réelle.
 
 La colonne **ON DELETE** n'est renseignée que lorsqu'elle diffère du comportement par défaut.
 C'est une information de conception, pas un détail : elle dit si la suppression d'un parent
@@ -160,7 +160,7 @@ Le domaine que le cahier des charges décrit : les tâches, leur affectation, la
 
 ### `projects`
 
-15 colonnes · 2 clé(s) étrangère(s).
+16 colonnes · 2 clé(s) étrangère(s).
 
 | Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
 |---|---|:--:|---|---|---|
@@ -179,6 +179,7 @@ Le domaine que le cahier des charges décrit : les tâches, leur affectation, la
 | `growth_mode` | bool | non |  | `false` |  |
 | `repo_provider` | varchar(30) | oui |  |  |  |
 | `repo_full_name` | varchar(255) | oui |  |  |  |
+| `test_command` | varchar(500) | oui |  |  |  |
 
 ### `project_members`
 
@@ -1165,7 +1166,7 @@ Pages de documentation collaborative, composition du tableau de bord par utilisa
 
 ## 4.8 Délégation aux agents de code
 
-Les tickets confiés à un agent de code (Claude Code par le runner local, ou GitHub Copilot) : chaque exécution, sa chronologie, et les actions de l'agent qui attendent la décision de la personne qui a délégué.
+Les tickets confiés à un agent de code (Claude Code par le runner local, ou GitHub Copilot) : chaque exécution, sa chronologie, les actions de l'agent qui attendent la décision de la personne qui a délégué, et le dossier de preuve de la mission. Ce dossier est un journal chaîné, ajouté et jamais modifié : chaque événement porte l'empreinte du précédent, et celle du dernier, posée sur `delivery_runs.evidence_root`, le scelle.
 
 ### `delivery_runs`
 
@@ -1234,12 +1235,7 @@ Les tickets confiés à un agent de code (Claude Code par le runner local, ou Gi
 | `run_id` | int8 | non | FK → `delivery_runs.id` |  | CASCADE |
 | `tool` | varchar(120) | non |  |  |  |
 | `summary` | varchar(2000) | non |  |  |  |
-| `asked_by` | varchar(16) | non |  | `'agent'::character varying` |  |
-| `action` | varchar(40) | oui |  |  |  |
-| `rule_id` | varchar(120) | oui |  |  |  |
-| `rule_reason` | varchar(500) | oui |  |  |  |
 | `status` | varchar(16) | non |  | `'PENDING'::character varying` |  |
-| `scope` | varchar(16) | oui |  |  |  |
 | `expires_at` | timestamp | non |  |  |  |
 | `decided_by` | int8 | oui | FK → `users.id` |  | SET NULL |
 | `decided_at` | timestamp | oui |  |  |  |
@@ -1247,5 +1243,132 @@ Les tickets confiés à un agent de code (Claude Code par le runner local, ou Gi
 | `updated_at` | timestamp | non |  |  |  |
 | `created_by` | varchar(255) | oui |  |  |  |
 | `updated_by` | varchar(255) | oui |  |  |  |
+| `asked_by` | varchar(16) | non |  | `'agent'::character varying` |  |
+| `action` | varchar(40) | oui |  |  |  |
+| `rule_id` | varchar(120) | oui |  |  |  |
+| `rule_reason` | varchar(500) | oui |  |  |  |
+| `scope` | varchar(16) | oui |  |  |  |
+
+### `delivery_run_evidence`
+
+10 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('delivery_run_evidence_id_seq'::` |  |
+| `run_id` | int8 | non | FK → `delivery_runs.id`, UK |  | CASCADE |
+| `seq` | int4 | non | UK |  |  |
+| `at` | varchar(32) | non |  |  |  |
+| `type` | varchar(32) | non |  |  |  |
+| `actor_kind` | varchar(16) | non |  |  |  |
+| `actor_id` | varchar(255) | non |  |  |  |
+| `data` | text | non |  |  |  |
+| `prev` | varchar(71) | non |  |  |  |
+| `hash` | varchar(71) | non |  |  |  |
+
+## 4.9 Règles du harnais, dossiers de Cortex et évaluations
+
+Ce qui encadre les agents au-delà d'une mission. Les règles de l'espace, versionnées, jugent à la fois les actions des agents de code et les outils que Cortex veut lancer ; sans version enregistrée, la table par défaut s'applique. Chaque réponse de Cortex qui appelle un outil garde un dossier chaîné, au format de celui d'une mission, et la banque d'évaluations fige des cas tirés de ces dossiers pour les rejouer avec un modèle nommé, sans jamais toucher l'espace.
+
+### `harness_rule_sets`
+
+6 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('harness_rule_sets_id_seq'::regc` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id`, UK |  | CASCADE |
+| `version` | int4 | non | UK |  |  |
+| `rules` | jsonb | non |  |  |  |
+| `created_by` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `created_at` | timestamp | non |  | `now()` |  |
+
+### `cortex_records`
+
+5 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | uuid | non | PK |  |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `user_id` | int8 | non | FK → `users.id` |  | CASCADE |
+| `created_at` | timestamp | non |  |  |  |
+| `root` | varchar(71) | oui |  |  |  |
+
+### `cortex_record_events`
+
+10 colonnes · 1 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('cortex_record_events_id_seq'::r` |  |
+| `record_id` | uuid | non | FK → `cortex_records.id`, UK |  | CASCADE |
+| `seq` | int4 | non | UK |  |  |
+| `at` | varchar(32) | non |  |  |  |
+| `type` | varchar(32) | non |  |  |  |
+| `actor_kind` | varchar(16) | non |  |  |  |
+| `actor_id` | varchar(255) | non |  |  |  |
+| `data` | text | non |  |  |  |
+| `prev` | varchar(71) | non |  |  |  |
+| `hash` | varchar(71) | non |  |  |  |
+
+### `eval_cases`
+
+13 colonnes · 3 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('eval_cases_id_seq'::regclass)` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `created_by` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `created_at` | timestamp | non |  |  |  |
+| `criteria_at` | timestamp | non |  |  |  |
+| `source_record` | uuid | oui | FK → `cortex_records.id` |  | SET NULL |
+| `title` | varchar(200) | non |  |  |  |
+| `question` | text | non |  |  |  |
+| `asked_on` | date | non |  |  |  |
+| `notes` | text | non |  |  |  |
+| `cassette` | text | non |  |  |  |
+| `criteria` | text | non |  |  |  |
+| `archived` | bool | non |  | `false` |  |
+
+### `eval_runs`
+
+8 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('eval_runs_id_seq'::regclass)` |  |
+| `workspace_id` | int8 | non | FK → `workspaces.id` |  | CASCADE |
+| `started_by` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `started_at` | timestamp | non |  |  |  |
+| `finished_at` | timestamp | oui |  |  |  |
+| `model` | varchar(128) | non |  |  |  |
+| `total` | int4 | non |  |  |  |
+| `passed` | int4 | non |  | `0` |  |
+
+### `eval_results`
+
+6 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `id` | int8 | non | PK | `nextval('eval_results_id_seq'::regclass)` |  |
+| `run_id` | int8 | non | FK → `eval_runs.id`, UK |  | CASCADE |
+| `case_id` | int8 | non | FK → `eval_cases.id`, UK |  | CASCADE |
+| `passed` | bool | non |  |  |  |
+| `details` | text | non |  |  |  |
+| `created_at` | timestamp | non |  |  |  |
+
+### `eval_bank_settings`
+
+4 colonnes · 2 clé(s) étrangère(s).
+
+| Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
+|---|---|:--:|---|---|---|
+| `workspace_id` | int8 | non | PK, FK → `workspaces.id` |  | CASCADE |
+| `enabled` | bool | non |  |  |  |
+| `updated_by` | int8 | oui | FK → `users.id` |  | SET NULL |
+| `updated_at` | timestamp | non |  |  |  |
 
 > Voir aussi : [[Modele_Donnees_MCD_MLD]] · [[Table_Reconciliation]].
