@@ -55,7 +55,7 @@ déployables et leur infrastructure de support.
 | Landing | Astro 5.x | `landing-page/` | 18081→4321 |
 | Frontend (app) | Next.js 16.1 · React 19.2 · TS 5 · Tailwind 4 | `frontend/` | 3000 |
 | Backend API | Spring Boot 4.0 · Java 21 · Maven | `backend/tf-api/` | 8080 (debug 5005) |
-| Service IA | FastAPI 0.115 · Python 3.12 — **vestigial** (cf. §5) | `ai-service/` | 8000 |
+| Passerelle de modèles | Java, dans le backend : Ollama, API compatible OpenAI, API d'Anthropic (cf. §5) | `backend/tf-api/` (`core/service/ai`) | dans 8080 |
 | Base de données | PostgreSQL 18 + `pgvector` | conteneur | 5432 |
 | Identité | Keycloak (26 prod / build custom dev) | `keycloak/` | 8180→8080 |
 | Stockage objet | MinIO (S3) | conteneur | 9000 / 9001 |
@@ -82,7 +82,7 @@ déployables et leur infrastructure de support.
                        │   └──┬───┬───┬───┬───┬─────────┘
         STOMP 61613 ───┘      │   │   │   │   └──▶ SMTP / Mailtrap (OTP, mails)
         ┌──────────────┐      │   │   │   └──────▶ MinIO :9000 (avatars, pièces jointes)
-        │ RabbitMQ     │◀─────┘   │   └──────────▶ ai-service → Ollama Qwen3 local (smart-assign, assistant,insights)
+        │ RabbitMQ     │◀─────┘   │   └──────────▶ passerelle de modèles → Ollama, API compatible OpenAI ou Anthropic
         │ relais STOMP │          └──────────────▶ Stripe · GitHub/Slack OAuth
         └──────────────┘
 ```
@@ -158,32 +158,44 @@ statusCode }` ; le frontend lit systématiquement `response.data.data`.
 ## 5. Infrastructure & déploiement
 
 Le dépôt fournit plusieurs fichiers Compose à la racine : `docker-compose.dev.yml` (stack dev complète :
-postgres pgvector, keycloak custom, backend hot-reload, frontend, ai-service, landing, rabbitmq, minio,
+postgres pgvector, keycloak custom, backend hot-reload, frontend, landing, rabbitmq, minio,
 pgadmin), `docker-compose.prod.yml` (postgres 16-alpine, keycloak 23, backend temurin, frontend, nginx),
 et `docker-compose.tools.yml` (profils optionnels : observabilité SigNoz et scanners de sécurité
 `trivy`/`semgrep`). Le CI/CD repose sur GitHub Actions (`.github/workflows/` : tests par app, release
 vers GHCR, gestion sémantique des versions).
 
 <div style="background-color: #f8f9fa; padding: 1rem; border-left: 4px solid #0d6efd; margin: 1rem 0;">
-<strong>Service IA Python : passerelle active, et non plus un vestige</strong><br>
-<em>Encadré corrigé le 23/07/2026 : il affirmait l'inverse de la réalité.</em> Il décrivait
-<code>ai-service</code> comme un <em>stub</em> à embeddings SHA256 dont le backend ne dépendait pas,
-l'IA tournant « en Java via <code>GroqService</code> appelant directement l'API Groq ».
-<strong>Les deux propositions sont fausses</strong>, et <code>GroqService</code> n'existe plus dans
-le code.<br><br>
-Le chemin réel est inversé : <code>SmartAssignService</code> appelle l'interface
-<code>LlmClient</code>, dont l'unique implémentation <code>AiGatewayClient</code> s'adresse à la
-passerelle Python <code>ai-service</code>, elle-même devant un modèle <strong>Qwen3 exécuté
-localement par Ollama</strong>. Le backend en dépend explicitement
-(<code>AI_SERVICE_URL</code>, dépendance déclarée dans la composition Docker).<br><br>
-Groq a été retiré le 16/07 (<code>TF-AI-GROQ-CLEANUP</code>) : bloqué par le réseau de l'école (403),
-et son implémentation n'enregistrait pas la consommation de jetons, ce qui désarmait silencieusement
-la facturation de l'IA. Conséquence pour la conformité : <strong>aucun contenu de travail ne quitte
-l'infrastructure</strong>.<br><br>
-<strong>▶ 01/11/2026 : ce n'est plus vrai partout.</strong> L'<code>ai-service</code> parle désormais à n'importe
-quelle API compatible OpenAI. En production web, c'est Groq : les questions posées à Cortex y partent. Dans l'app
-desktop, le modèle tourne sur la machine (Ollama) ou chez le fournisseur que la personne choisit (Réglages > AI). La
-séance n°14 du Conseil l'a relevé (R82).
+<strong>Passerelle de modèles : dans le backend, en Java (TF-J1-2, 01/11/2026, R92 ; `taskforce-fullstack` #470, ouverte vers `dev`)</strong><br>
+Le backend parle lui-même au fournisseur d'IA. <code>ModelGateway</code> (<code>core/service/ai</code>) joint Ollama
+par son API compatible OpenAI, toute API compatible OpenAI (Groq, OpenAI, vLLM, LM Studio, le point d'accès d'une
+entreprise) et l'API Messages d'Anthropic, outils compris : les messages et les outils y sont traduits depuis et vers
+le format OpenAI que parle la boucle d'agent, et les blocs de raisonnement d'une réponse qui appelle des outils
+reviennent tels quels au tour suivant. Elle sert la conversation avec outils, les paliers (<code>fast</code>,
+<code>standard</code>, <code>deep</code>), les vecteurs (1024 dimensions) et l'état de l'IA
+(<code>AiStatusService</code> lit la liste des modèles du fournisseur, gardée 30 s). <code>LlmClient</code>
+(<code>AiGatewayClient</code>) et <code>EmbeddingClient</code> gardent leur contrat : leurs appelants n'ont pas
+changé.<br><br>
+Elle remplace l'<code>ai-service</code> Python, supprimé avec son secret <code>AI_SERVICE_TOKEN</code>, et le relais
+d'IA de la coque de l'app desktop, et reprend leur comportement : <code>/no_think</code> pour Qwen3, et sur Ollama
+<code>reasoning_effort: "none"</code> ; un bloc <code>&lt;think&gt;</code> retiré de la réponse ; les outils réduits de
+moitié sur un refus 400 ou 413, jamais jusqu'à zéro (un refus jusqu'au dernier outil devient
+<code>LlmToolsRefusedException</code>) ; le 400 <code>tool_use_failed</code> de Groq redemandé une fois ; un
+<code>User-Agent</code> applicatif (Cloudflare devant Groq) ; le délai <code>AI_TIMEOUT</code>.<br><br>
+<strong>Réglages.</strong> Sur un serveur, les variables de l'ancien ai-service, passées désormais au service
+<code>backend</code> des trois composes : <code>AI_PROVIDER</code> (<code>ollama</code>, <code>openai</code>,
+<code>anthropic</code>, <code>groq</code>, <code>none</code> ; vide, le fournisseur se déduit comme avant),
+<code>AI_BASE_URL</code>, <code>AI_API_KEY</code>, <code>AI_MODEL</code>, <code>AI_MODEL_FAST</code>,
+<code>AI_EMBED_*</code>, <code>AI_TIMEOUT</code>, <code>AI_MAX_TOKENS</code> (Anthropic), et les alias
+<code>GROQ_*</code> et <code>OLLAMA_*</code> : un <code>.env.prod</code> en place n'a rien à changer. Sans
+<code>AI_PROVIDER</code>, les défauts de l'ai-service (<code>qwen3:8b</code>, <code>bge-m3</code>, le nom que portent
+les vecteurs déjà calculés) ; avec, un modèle vide est choisi parmi ceux que le fournisseur annonce. Dans l'app desktop,
+la coque traduit le choix de la personne en ces variables au lancement du backend, puis l'envoie à
+<code>PUT /api/desktop/ai</code> (avec le secret de la coque, que la fenêtre ne connaît pas) quand il change : la
+passerelle s'en sert dès l'appel suivant, sans redémarrage. La clé d'API reste dans la mémoire du backend, jamais en
+base ni dans un fichier.<br><br>
+<em>Historique.</em> Cet encadré a été corrigé le 23/07/2026 : il décrivait l'ai-service comme un stub dont le backend
+ne dépendait pas. Groq, retiré le 16/07, est revenu en production web par l'ai-service. Les questions posées à Cortex
+partent chez le fournisseur choisi : la séance n°14 du Conseil l'a relevé (R82).
 </div>
 
 Dépendances externes : Keycloak (identité), Stripe (facturation), GitHub & Slack (OAuth

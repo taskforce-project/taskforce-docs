@@ -132,7 +132,7 @@ flowchart LR
   BE -->|"processus par run"| CC["CLI claude<br/>(worktree du dépôt)"]
   CC -->|"MCP TaskForce"| BE
   BE -->|"local"| OL["Ollama"]
-  BE -->|"si clé"| API["API compatible OpenAI"]
+  BE -->|"si clé"| API["API compatible OpenAI<br/>ou API d'Anthropic"]
   BE -->|"si connecté"| GH["GitHub, Copilot"]
 ```
 
@@ -152,7 +152,7 @@ Inventaire du code du 18/10/2026 (backend, front et IA, en lecture seule).
 | Redis | Limites de débit, cache des analytics, garde-débit IA (prod seulement) | Rien : chaque usage a déjà un repli local | Nul |
 | MinIO | Pièces jointes des issues (liens présignés), avatars et fichiers Brain (servis par le backend) | Dossier local derrière `MinioService`, pièces jointes servies par une route du backend | Faible |
 | SMTP | Codes d'inscription et de réinitialisation, bienvenue, invitations, notifications, demandes RGPD, retours | Coupé dans l'app ; inscription, réinitialisation et e-mails de service restent côté hébergé (Keycloak, Brevo) | Faible |
-| Service Python (`ai-service`) | Simple relais : `POST /v1/chat` (compatible OpenAI, paliers, `/no_think` pour Qwen) et `POST /v1/embeddings` (même fournisseur ou un autre, Ollama par défaut ; plus de repli lexical depuis le lot 4) ; aucune dépendance de ML | Porté en Java : le backend appelle Ollama ou l'API directement | Faible |
+| Service Python (`ai-service`) | Simple relais : `POST /v1/chat` (compatible OpenAI, paliers, `/no_think` pour Qwen) et `POST /v1/embeddings` (même fournisseur ou un autre, Ollama par défaut ; plus de repli lexical depuis le lot 4) ; aucune dépendance de ML | Porté en Java : le backend appelle Ollama ou l'API directement. **Fait le 01/11/2026 (TF-J1-2, `taskforce-fullstack` #470, ouverte vers `dev`)** : la passerelle de modèles du backend (`core/service/ai`) joint Ollama, une API compatible OpenAI ou l'API d'Anthropic ; l'ai-service et le relais d'IA de la coque sont supprimés | Faible |
 | Tâches planifiées (4) | Purge des comptes (4 h), nettoyage (3 h 30), alertes d'échéance (8 h) et de surcharge (8 h 30) | Rattrapage au démarrage pour les échéances ; purge et surcharge sans objet pour une personne | Faible |
 | Retours OAuth (GitHub, Slack, MCP, fournisseurs Keycloak) | Retour après consentement, sur une adresse publique | Device flow pour GitHub, retour sur 127.0.0.1 pour le MCP ; un secret d'application ne reste pas secret dans une app installée | Moyen |
 | Runner et clients Keycloak | Délégation à Claude Code depuis un serveur distant | L'app lance l'agent elle-même (§5.5) | Moyen |
@@ -259,12 +259,24 @@ ci-dessus) et les fichiers que montrent les pages sous `brain-files/<nom>`.
 
 ### 5.4 IA sur la machine de l'utilisateur
 
-**Fournisseurs.** Deux voies, choisies au premier lancement et modifiables dans les réglages :
+**Fournisseurs.** Trois voies, choisies au premier lancement et modifiables dans les réglages :
 
 - **Ollama** (local, gratuit, privé) : l'app le détecte sur `http://127.0.0.1:11434`, liste les modèles installés et
   propose d'en télécharger un si besoin. L'app n'embarque pas de modèle ni Ollama lui-même (plusieurs Go).
 - **Clé d'API compatible OpenAI** (OpenAI, Groq, Mistral, OpenRouter, LM Studio, vLLM…) : URL de base, clé, modèle.
   La clé va dans le trousseau du système (§5.7).
+- **Clé d'API d'Anthropic** (depuis le 01/11/2026, TF-J1-2) : la clé seule ; sans modèle choisi, un Opus pour les
+  réponses et un Haiku pour les réponses rapides. Anthropic n'a pas de modèle de vecteurs : la recherche sémantique
+  reste sur Ollama.
+
+**Qui parle au fournisseur (01/11/2026, TF-J1-2, `taskforce-fullstack` #470, ouverte vers `dev`).** Le backend embarqué, par sa passerelle de modèles, comme sur un
+serveur. La coque traduit le choix de la personne en variables d'un serveur (`AI_PROVIDER`, `AI_API_KEY`...,
+`desktop/src/ai.ts`) qu'elle passe au backend à son lancement. Quand la personne change de fournisseur, la coque
+envoie les nouvelles variables à `PUT /api/desktop/ai`, avec le jeton de lancement et un secret tiré à chaque
+lancement que la fenêtre ne connaît pas (`desktop.shell-secret`) : la passerelle s'en sert dès l'appel suivant.
+Un redémarrage du backend aurait coupé l'interface, le temps réel et une mission du runner en cours, pour remplacer des
+réglages gardés en mémoire. L'écran de réglages lit l'état par `GET /api/desktop/ai` (modèles du fournisseur,
+modèles retenus) : le choix automatique des modèles n'existe qu'en Java.
 
 Sans fournisseur, l'app reste pleinement utilisable en gestion de projet ; les fonctions IA affichent « IA non
 configurée » au lieu d'échouer (OSS-4.4).
@@ -293,8 +305,8 @@ deux paliers, sans rechargement) ; le modèle du palier rapide du desktop reste 
 fixer pendant l'essai ; `bge-m3` actuel pèse environ 1,2 Go). Sans modèle d'embeddings, la recherche passe en
 plein texte PostgreSQL. **Corrigé au lot 4** : le repli lexical, dont `EmbeddingClient` stockait les vecteurs avec les
 vrais sans jamais les recalculer, est supprimé ; chaque vecteur porte son modèle (V94) et une tâche de fond calcule
-les vecteurs manquants ou périmés, ce qui couvre le poste où Ollama démarre après l'app. Les délais sont alignés :
-120 s pour l'`ai-service`, 150 s pour le backend, 200 s pour le front.
+les vecteurs manquants ou périmés, ce qui couvre le poste où Ollama démarre après l'app. Les délais :
+120 s pour une réponse du modèle (`AI_TIMEOUT`, passerelle de modèles du backend), 200 s pour le front.
 
 **Règle de conception.** Tout ce qui n'a pas besoin d'un LLM n'en utilise pas : tri, filtres, analytics, liens,
 historique. L'IA reste une aide, jamais un point de passage obligé.
@@ -337,7 +349,7 @@ ce qui manque : commande d'installation, lien de téléchargement, connexion à 
 connexion GitHub de l'espace (`WorkspaceGitHubTokenSource`) ; dans l'app, le compte GitHub de la personne, connecté par
 son GitHub CLI (`DesktopGitHubTokenSource`, `@Primary` en profil `desktop`). La coque lit ce jeton à la demande
 (`gh auth token`) et le sert au seul backend local, sur 127.0.0.1, avec un jeton de service tiré à chaque lancement
-(`desktop/src/github-relay.ts`, comme le relais d'IA) ; un jeton lu reste une minute, une connexion faite dans l'app
+(`desktop/src/github-relay.ts`) ; un jeton lu reste une minute, une connexion faite dans l'app
 vaut tout de suite. Copilot apparaît donc dans Réglages > Agents, avec la connexion à GitHub s'il en manque une, et
 démarre par la même API des tâches d'agent que sur le serveur. **Non essayé** : faute d'abonnement Copilot sous la main,
 l'acceptation par cette API d'un jeton du GitHub CLI n'est pas vérifiée (le GitHub CLI pilote lui-même cette API avec
@@ -377,7 +389,9 @@ son jeton, `gh agent-task`).
   des jetons Keycloak dans le profil `desktop`.
 - **Secrets** : clés d'API, jetons GitHub et clé de chiffrement de la base (aujourd'hui `security.encryption-key`) sont
   gardés par le trousseau du système via `safeStorage` d'Electron (DPAPI sous Windows, Trousseau sous macOS, libsecret
-  sous Linux). Rien en clair sur le disque.
+  sous Linux). Rien en clair sur le disque. La clé d'API d'IA ne va qu'au backend local, qui la garde en mémoire
+  (variables du processus au lancement, `PUT /api/desktop/ai` ensuite), jamais en base ni dans un fichier. Une clé
+  par fournisseur (`aiApiKey`, `aiAnthropicKey`) : celle d'un fournisseur ne part jamais chez un autre.
 - **Agents** : réglages du dépôt ignorés (`--setting-sources user`), autorisations demandées dans l'app, refus par
   défaut ; écritures MCP réservées comme sur le serveur (OSS-1.5).
 - **Mises à jour** : paquets signés, vérifiés par l'outil de mise à jour avant installation.
@@ -522,12 +536,12 @@ Branche `feature/desktop`, fusionnée dans `dev` à chaque version : 1.0.0 le 19
 
 | Lot | État | Ce qui est fait, ce qui reste |
 | --- | ---- | ----------------------------- |
-| D.2 | Fait | Profil `desktop` : jeton de lancement, compte local, stockage fichier et liens signés, contrôle de l'hôte, jetons du runner émis par l'app, pas de limiteur de débit sur l'API locale. **Écart à §5.2** : l'IA ne passe pas par des appels Java directs ; la coque sert le protocole de l'ai-service et relaie vers le fournisseur choisi, sans modifier le backend, la clé d'API restant dans le trousseau |
+| D.2 | Fait | Profil `desktop` : jeton de lancement, compte local, stockage fichier et liens signés, contrôle de l'hôte, jetons du runner émis par l'app, pas de limiteur de débit sur l'API locale. **Écart à §5.2** : l'IA ne passe pas par des appels Java directs ; la coque sert le protocole de l'ai-service et relaie vers le fournisseur choisi, sans modifier le backend, la clé d'API restant dans le trousseau. **Résorbé le 01/11/2026 (TF-J1-2, `taskforce-fullstack` #470, ouverte vers `dev`)** : la passerelle de modèles du backend appelle elle-même le fournisseur ; la coque lui passe le choix de la personne |
 | D.3 | Fait | Une base par compte dans le dossier de l'app, mot de passe et clé de chiffrement dans le trousseau. Récupération du compte (20/10) : la session de l'app rend les réglages du compte en ligne (rôle, onboarding fait, dernier profil de compétences, préférences de notification), que l'app reprend une fois par poste, là où elle n'a encore rien (rôle vide, onboarding pas fait, pas de profil de compétences, notifications par défaut), sans rien écraser ; vérifiée de bout en bout sur une pile isolée et sur le backend de l'app (nouveau poste, poste installé par une version précédente). Une base restée ouverte après un arrêt forcé (plantage, fin de tâche) est arrêtée au lancement suivant. Fait le 20/10 : photo de profil du compte en ligne (téléchargée par la coque, reprise une fois par poste si l'app n'en a pas), copie de la base avant chaque migration, fichier de projet et déplacement des projets à la demande dans les deux sens, puis fichier d'espace : un espace entier, Brain OS compris, d'un clic dans les deux sens, et « Copy everything » pour tous les espaces (§5.3). Vérifié par les tests (intégration Postgres de l'export et de l'import, coque, interface), pas encore à l'écran avec la vraie app |
 | D.4 | Fait | Connexion par les pages de la webapp (PKCE, retour sur 127.0.0.1, session de l'app chiffrée par le système ; vérifiée le 19/10 avec la vraie app : « Create an account » → inscription → connexion → accord → app ouverte sur l'onboarding du compte), pile locale, relais d'origine, écran d'attente, arrêt propre, mises à jour. Notifications du système (20/10, `desktop/src/notify.ts`) : un événement reçu pendant que la fenêtre n'est pas au premier plan s'affiche au nom de l'app (identifiant `fr.taskforce-project.desktop` sous Windows), et un clic ramène sur sa page |
 | D.5 | Fait | La coque lance le runner existant. Un projet sans dépôt reçoit la réponse en commentaire ; un projet avec dépôt reçoit une pull request (clone, push et PR par `gh`). Autorisations dans l'app ; état des outils et branchement de Claude Code en un clic dans Réglages > Agents |
 | D.6 | Fait | GitHub par le GitHub CLI de la personne : connexion dans l'app, liste, création et vérification des dépôts, lien au projet (carte « Code repository » et nouveau projet). 20/10 : Copilot avec le compte GitHub de la personne (relais du jeton par la coque), PR d'un agent liée seule à son ticket, statuts relus toutes les cinq minutes, ticket terminé quand sa PR est fusionnée. Vérifié par les tests ; Copilot pas essayé faute d'abonnement |
-| D.7 | Fait | Build desktop de l'interface (`NEXT_PUBLIC_DESKTOP`) : ni membres, ni équipes, ni invitations, ni sécurité locale ; compte géré en ligne ; onboarding en trois étapes ; réglages « AI » (Ollama, API compatible OpenAI ou aucune IA) et « Agents » adaptés |
+| D.7 | Fait | Build desktop de l'interface (`NEXT_PUBLIC_DESKTOP`) : ni membres, ni équipes, ni invitations, ni sécurité locale ; compte géré en ligne ; onboarding en trois étapes ; réglages « AI » (Ollama, API compatible OpenAI, API d'Anthropic depuis le 01/11/2026, ou aucune IA) et « Agents » adaptés |
 | D.8 | En partie | Installateur Windows (NSIS, par utilisateur), `.deb` et AppImage, icône, workflow `Desktop - Release` (release versionnée pour le site, release roulante `desktop-latest` pour les mises à jour). Versions 1.0.0 à 1.0.3 publiées, non signées. Désinstallation (1.0.3) : le désinstalleur Windows ouvre la page « merci » du site (`/goodbye`, peinture des pages de connexion), sauf pendant une mise à jour ou en silencieux ; les données restent sur le poste. Signature : la SignPath Foundation a refusé le 20/10 (projet trop récent pour son programme) ; en attendant, guide d'installation, SHA-256 et rapports VirusTotal sur le site ([[Signature_Code_SignPath]] §8). Versions 1.1.0 et 1.2.0 publiées le 20/10, avec les rapports VirusTotal dans leurs notes de release. Mise à jour dans l'app vérifiée le 20/10 sur le poste du CEO (1.1.0 vers 1.2.0 : téléchargement complet en ~5 min, « Restart now », base copiée avant, relance en 1.2.0). Version 1.2.1 : téléchargement complet direct (la tentative différentielle échouait toujours : carte de blocs précédente absente de `desktop-latest`, plages multiples refusées par GitHub) et notification « TaskForce X is installed » au premier lancement d'une nouvelle version. Smart App Control (vu le 20/10 sur le poste du CEO) : sur un Windows 11 où il est actif, l'app non signée est bloquée sans « Run anyway » ni exception par app ; le site dit où le couper. Piste gratuite : le Microsoft Store (compte développeur individuel gratuit depuis 09/2025 ; un paquet MSIX y est re-signé par Microsoft, ce qui lève SmartScreen et Smart App Control, mises à jour par le Store), à mener avec le compte Partner Center du CEO. Version Store (21/10, 1.2.2) : paquet AppX construit par la CI (artefact `store-package`) à l'identité du Partner Center (`TaskForceProject.TaskForce` : le Partner Center refuse toute autre identité), validé en local (manifeste, logos indexés, non signé, chemin le plus long 185 caractères dans le paquet) ; mises à jour par le Store, données dans le LocalState du paquet, identité du paquet gardée pour les notifications ; fiche FR/EN et réponses dans `marketing/store/`. Publiée le 21/10 ; la 1.2.2 du Store ne démarrait pas (base lancée par `cmd.exe`, refusé dans le paquet, §5.8), corrigée en 1.2.3 (25/10), vérifiée dans le paquet installé. Reste : soumission de la 1.2.3 par le CEO, signature du .exe, macOS, essai sur un vrai Linux |
 
 Points ouverts relevés pendant le travail :
