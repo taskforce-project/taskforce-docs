@@ -105,7 +105,7 @@ pour l'instant (R91).
 | TF-J0-8 | La revue UI/UX, et la réponse qui naît où l'on a écrit | J0 | 🔄 | R112 |
 | TF-J1-1 | E16 : une source unique pour le moteur de règles (l'aller-retour mesuré, le moteur Java compilé en JavaScript) ; la Présidence tranche R90 | J1 | ⬜ | R90 |
 | TF-J1-2 | La passerelle de modèles ouverte : n'importe quel LLM ou modèle, en un seul endroit du backend ; l'ai-service Python et le relais de la coque cessent de servir | J1 | ⬜ | R92 |
-| TF-J1-3 | Les préréglages de connecteurs jamais essayés quittent le catalogue visible ; le plan figé d'« AI Workflows » disparaît | J1 | ⬜ | R99, R105 |
+| TF-J1-3 | Les préréglages de connecteurs jamais essayés quittent le catalogue visible ; le plan figé d'« AI Workflows » disparaît. Le catalogue ne montre à tous que Linear, le seul préréglage essayé de bout en bout ; un préréglage jamais essayé reste visible de l'espace qui l'a connecté. Le plan d'étapes des analyses est supprimé, du panneau à la base (V113) ; l'historique des délégations reste (`taskforce-fullstack` #468, ouverte vers `dev`) | J1 | 🔄 | R99, R105 |
 | TF-J1-4 | Ce que chaque modèle sait faire, mesuré par la banque d'évaluations sur la machine de la personne ; TaskForce propose le premier capable, la personne choisit ; R51 essayée sur la passerelle (cinq tâches en commentaire) | J1 | ⬜ | R113, R51 |
 | TF-J2-1 | Le déroulé de la démo, son communiqué et sa foire aux questions, écrits d'abord | J2 | ⬜ | R105 |
 | TF-J2-2 | Processus v1 : un canevas modifiable, cinq types d'étapes, exécuté par le moteur durable v1 | J2 | ⬜ | R97, ADR-023 |

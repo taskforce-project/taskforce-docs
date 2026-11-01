@@ -1268,6 +1268,10 @@ Lot 6 du [[Plan_Release_Open_Source]], branche `feature/lean-oss` (pas en prod).
   dans le navigateur. Les états connectés n'ont pas été rejoués en réel : le seul GitHub connecté en local est le
   compte du CEO, et l'application Slack doit d'abord déclarer ses portées.
 
+**▶ MAJ 01/11/2026 (TF-J1-3, séance n°15 du Conseil, R99)** : les préréglages jamais essayés quittent le catalogue
+visible jusqu'à leur essai. Linear, le seul essayé de bout en bout, s'y montre à tous ; les 24 autres restent déclarés,
+connectables par l'API et visibles de l'espace qui en a connecté un (PR #468 de `taskforce-fullstack`).
+
 ---
 
 ## ADR-021 - Application desktop locale, sur le modèle de Claude Desktop

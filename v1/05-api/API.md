@@ -118,9 +118,10 @@ Issue (`issue-service` ↔ `IssueController` : CRUD, **`GET /paged?page&size`** 
 `POST /analysis/{jobId}/answer` (HITL — reprise après clarification du modèle).
 La décision produite est persistée : `GET /projects/{projectId}/brief` (→ `null` si aucune analyse aboutie), et chaque
 priorité est actionnable : `POST /priorities/{id}/accept` (→ crée l'issue liée), `/pin`, `/dismiss` (bascules), `PUT /priorities/{id}` (édition).
-Le job publie son plan d'étapes sur `/topic/projects.{projectId}.analysis` (STOMP), ouvert à qui voit le projet comme
-son board ; jusqu'au 31/10/2026 il passait par `/topic/analysis.{workspaceId}`, ouvert à tout l'espace, canal retiré
-depuis (tout abonnement y est refusé). **Le front n'y est pas encore abonné** et retombe sur un polling 5 s tant qu'un
+Le job publie chaque changement de statut sur `/topic/projects.{projectId}.analysis` (STOMP), ouvert à qui voit le
+projet comme son board ; il ne porte plus de plan d'étapes (champ `plan` retiré par TF-J1-3, PR #468) ; jusqu'au
+31/10/2026 il passait par `/topic/analysis.{workspaceId}`, ouvert à tout l'espace, canal retiré depuis (tout
+abonnement y est refusé). **Le front n'y est pas encore abonné** et retombe sur un polling 5 s tant qu'un
 workflow est actif. `POST /analysis` sur un projet que la personne ne voit pas répond 404.
 > Remplace l'ancien `POST /projects/{projectId}/decision` (synchrone, non persisté), **supprimé** le 10/07/2026 avec `DecisionController`.
 > `GET /analysis/{jobId}` est retiré le 18/10/2026 (lot 3) : le panneau lit la liste.
@@ -136,7 +137,9 @@ des serveurs : `GET /mcp/servers` (joignabilité, nom, outils après allow-list 
 obligatoire, clé `custom-<slug>` tirée du nom), ou la clé `custom-…` d'un serveur existant ; les natives et les clés
 inconnues sont refusées (lot 6). Le jeton part en `Authorization: Bearer`, ou tel quel dans `headerName`. Ouvert à tout
 workspace (ADR-016) ; une écriture proposée par Cortex n'est offerte qu'à un propriétaire ou un admin, et toujours
-validée. Catalogue : `GET /integrations/catalog` (3 natives, 25 préréglages, serveurs du workspace) ; les routes
+validée. Catalogue : `GET /integrations/catalog` (3 natives, les préréglages essayés de bout en bout, aujourd'hui
+Linear seul, plus un préréglage jamais essayé que le workspace a connecté, puis ses serveurs personnalisés ; le
+catalogue déclare toujours 25 préréglages ; TF-J1-3, PR #468) ; les routes
 `/integrations/connectors/{key}` sont retirées (lot 6). Détail : [IA-MCP-002](../02-produit/IA.md).
 
 **OAuth MCP 1-clic ✅** (02/09/2026, `[TF-MCP-02]`) : connexion d'un serveur MCP **sans coller de token**, via OAuth 2.1 **générique** (valable pour tout serveur conforme, zéro code par service). `POST /mcp/servers/{key}/oauth/start` (`{mcpUrl, name?, returnTo?}`, propriétaire ou admin ; `name` gardé jusqu'au callback, V97) : **découverte** (probe `401`/`WWW-Authenticate` → Protected Resource Metadata RFC 9728 → Authorization Server Metadata RFC 8414) + **Dynamic Client Registration** RFC 7591 + **PKCE S256**, renvoie l'URL d'autorisation (le front y redirige). `GET /api/mcp/oauth/callback` (**public** : résout le workspace via le `state` anti-CSRF, jamais l'URL) : échange le code, stocke les tokens **chiffrés** dans le `config` de la connexion (**refresh auto** avant expiration via `McpTokenService`), redirige **toujours** vers l'UI. Table éphémère `mcp_oauth_states` (V82). **`SsrfGuard`** sur chaque fetch de découverte/DCR/token. Prouvé en live contre Linear (découverte + DCR + URL d'autorisation OK). Le champ URL + token reste en fallback bring-your-own. **Déployé en prod le 02/09/2026** (#218, `--admin --squash`, auto-deploy VM1+VM2 ; V82 appliquée, backend sain, callback public vérifié `302` vers le front prod). Durcissement (#217) : `SsrfGuard` valide aussi l'`authorization_endpoint` (issu de metadata semi-fiable) avant la redirection navigateur.
