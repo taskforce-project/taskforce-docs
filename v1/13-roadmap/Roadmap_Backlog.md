@@ -24,6 +24,10 @@ Logo projet        : assets/images/logo_taskforce.png
 **Date :** 08/06/2026  
 **Auteur(s) :** Pierre MICHEL
 
+> **▶ 01/11/2026 :** le chantier en cours est la feuille de route jusqu'à la démo complète, J0 à J9, décidée par la
+> Présidence après les séances n°14 et n°15 du Conseil ([PV](../../recherche/conseil/seances/2026-11-01-feuille-de-route.md)).
+> Elle est au [§0](#0-la-feuille-de-route-jusquà-la-démo-complète-j0-à-j9) ; chaque jalon se valide avant le suivant.
+>
 > **▶ 14/10/2026 :** le chantier en cours est la release open source de TaskForce 1.0, suivie item par item dans
 > [[Plan_Release_Open_Source]] (ADR-014 à ADR-020). Ce backlog reste la référence historique de la v1.
 
@@ -50,6 +54,7 @@ le <strong>socle minimal</strong> ; les items marqués ★ vont au-delà). À pi
 
 ## Table des matières
 
+0. [La feuille de route jusqu'à la démo complète (J0 à J9)](#0-la-feuille-de-route-jusquà-la-démo-complète-j0-à-j9)
 1. [P0 — Correctifs bloquants](#1-p0--correctifs-bloquants)
 2. [Frontend](#2-frontend)
 3. [Backend](#3-backend)
@@ -61,6 +66,55 @@ le <strong>socle minimal</strong> ; les items marqués ★ vont au-delà). À pi
 9. [Conventions & process](#9-conventions--process)
 10. [Documentation](#10-documentation)
 11. [Synthèse de couverture RNCP](#11-synthèse-de-couverture-rncp)
+
+---
+
+## 0. La feuille de route jusqu'à la démo complète (J0 à J9)
+
+Décidée le 01/11/2026 ([séance n°15](../../recherche/conseil/seances/2026-11-01-feuille-de-route.md), R90 à R106). Le
+cap :
+- l'infrastructure sur laquelle une entreprise fait travailler ses agents, sous ses règles, sur ses données, avec les
+  modèles qu'elle choisit, en voyant et en prouvant tout ;
+- les gens du métier construisent l'outil (ADR-022) ;
+- la confiance est l'indicateur premier (R104).
+
+Le banc d'essai est l'app desktop, avec Claude Code et Ollama. La webapp reçoit chaque release, mais on n'y teste rien
+pour l'instant (R91).
+
+**Chaque jalon se valide de la même façon** (R105) :
+1. les critères de sortie écrits avant ;
+2. la boucle de démo rejouée de bout en bout ;
+3. les tests verts ;
+4. la liste de lancement (installation, mise à jour, sauvegarde et restauration) ;
+5. trois personnes extérieures au moins, dès J2 ;
+6. l'indice de confiance mesuré (E17) ;
+7. une séance du Conseil, puis le go de la Présidence.
+
+| ID | Tâche | Jalon | Statut | Réf |
+| -- | ----- | :--: | :--: | --- |
+| TF-J0-1 | La recherche du Brain OS respecte les droits des projets privés ; l'analyse d'un projet privé ne se lance ni ne se suit hors de ses membres (`taskforce-fullstack` #459, #460) | J0 | 🔄 | R82 |
+| TF-J0-2 | « Apply » se désactive sur un échec de tests ; passer outre demande un geste explicite et une raison écrite au dossier | J0 | ⬜ | R87 |
+| TF-J0-3 | Un accord refusé faute de réponse le dit à la personne | J0 | ⬜ | R87 |
+| TF-J0-4 | Les pages qui disent vrai : la confidentialité de la webapp (Groq), les pages légales du site (l'hébergement réel), l'annonce de fermeture de la webapp ; l'architecture et le modèle de prix (faits le 01/11) ; l'ADR-010 et l'ADR-021 | J0 | 🔄 | R82 |
+| TF-J0-5 | La release de R78 (Créer, Accorder, Relire) avec J0, sur « go release » | J0 | ⬜ | R78, R87 |
+| TF-J1-1 | E16 : une source unique pour le moteur de règles (l'aller-retour mesuré, le moteur Java compilé en JavaScript) ; la Présidence tranche R90 | J1 | ⬜ | R90 |
+| TF-J1-2 | La passerelle de modèles ouverte : n'importe quel LLM ou modèle, en un seul endroit du backend ; l'ai-service Python et le relais de la coque cessent de servir | J1 | ⬜ | R92 |
+| TF-J1-3 | Les préréglages de connecteurs jamais essayés quittent le catalogue visible ; le plan figé d'« AI Workflows » disparaît | J1 | ⬜ | R99, R105 |
+| TF-J2-1 | Le déroulé de la démo, son communiqué et sa foire aux questions, écrits d'abord | J2 | ⬜ | R105 |
+| TF-J2-2 | Processus v1 : un canevas modifiable, cinq types d'étapes, exécuté par le moteur durable v1 | J2 | ⬜ | R97, ADR-023 |
+| TF-J2-3 | Agents v1 ; la boucle d'agent de TaskForce sur n'importe quel modèle (missions sur un modèle local) | J2 | ⬜ | R92, R51 |
+| TF-J2-4 | Règles v1 éditables : la table V102 écrite, la classe appliquée, les actions sans code retirées, des cas par règle | J2 | ⬜ | R94, R98 |
+| TF-J2-5 | Contexte v1 : des documents importés avec version, responsable et date de validité, cités au passage près | J2 | ⬜ | R96 |
+| TF-J2-6 | La vue du travail v1 ; les surfaces Travail, Processus et Règles, avec l'assistant | J2 | ⬜ | R95 |
+| TF-J2-7 | Dossier v1 : il survit à la suppression, il est signé et vérifié ; le journal des actions d'IA ; un échec devient un cas | J2 | ⬜ | R93, R100, R101 |
+| TF-J2-8 | Deux packs (livraison logicielle ; rédaction et revue de document), zéro code par pack ; mesure de départ de l'indice de confiance | J2 | ⬜ | R103, E17 |
+| TF-J3 | Le profil de l'espace, le vocabulaire, les types d'objets, les règles complètes (seuils, double signature, séparation des rôles, charte), les packs, le français et l'anglais, la maquette du parcours d'arrivée, le troisième pack | J3 | ⬜ | R94, R98, R102 |
+| TF-J4 | Le contexte : tous les formats, les droits prouvés, la recherche hybride, les citations, l'agent qui demande, la surface Connaissances, le manifeste d'ingestion | J4 | ⬜ | R96, R99 |
+| TF-J5 | Des agents robustes : le moteur durable complet, le vérificateur indépendant, l'aperçu des effets, le bac à sable, les paliers d'autonomie, le registre et le routage des modèles | J5 | ⬜ | R92, R97 |
+| TF-J6 | Les données souveraines : la carte des flux, les règles de sortie, le chiffrement du contenu et des sauvegardes, le dossier conservé, l'export complet, le profil serveur, le kit de conformité, OpenTelemetry | J6 | ⬜ | R93, R100 |
+| TF-J7 | L'amélioration continue : les recommandations acceptées par une personne, la banque d'évaluations généralisée, l'essai contradictoire publié, les données possédées et l'affinage chez le client | J7 | ⬜ | R100, R101 |
+| TF-J8 | Le parcours d'arrivée, qui se vit comme un jeu ; la démo complète sur trois natures de travail ; cinq personnes extérieures ; une évaluation par un tiers | J8 | ⬜ | R102, R103, E13, E14 |
+| TF-J9 | La mise sur le marché : le modèle de revenus, la distribution, la spécification et l'essai publiés | J9 | ⬜ | R98, R106 |
 
 ---
 
