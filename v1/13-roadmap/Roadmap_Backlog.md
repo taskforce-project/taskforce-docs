@@ -95,8 +95,8 @@ pour l'instant (R91).
 | TF-J0-1 | La recherche du Brain OS respecte les droits des projets privés ; l'analyse d'un projet privé ne se lance ni ne se suit hors de ses membres (`taskforce-fullstack` #459, #460, fusionnées dans `dev` le 01/11) | J0 | ✅ | R82 |
 | TF-J0-2 | « Apply » se désactive sur un échec de tests ; passer outre demande un geste explicite et une raison, gardée sur la mission et postée sur l'issue (#461, fusionnée dans `dev` le 01/11) | J0 | ✅ | R87 |
 | TF-J0-3 | Un accord refusé faute de réponse le dit à la personne : déjà fait, la chronologie dit « No answer in time: refused » (#457) | J0 | ✅ | R87 |
-| TF-J0-4 | Les pages qui disent vrai : la confidentialité de la webapp (Groq), les pages légales du site (l'hébergement réel), l'annonce de fermeture de la webapp ; l'architecture et le modèle de prix (faits le 01/11) ; le site et la webapp (#462) ; l'ADR-010 et l'ADR-021 | J0 | 🔄 | R82 |
-| TF-J0-5 | La release de R78 (Créer, Accorder, Relire) avec J0, sur « go release » | J0 | ⬜ | R78, R87 |
+| TF-J0-4 | Les pages qui disent vrai : la confidentialité de la webapp (Groq), les pages légales du site (l'hébergement réel), l'annonce de fermeture de la webapp ; l'architecture et le modèle de prix (faits le 01/11) ; le site et la webapp (#462, en prod avec la 1.7.0) ; reste l'ADR-010 et l'ADR-021 | J0 | 🔄 | R82 |
+| TF-J0-5 | La release de R78 (Créer, Accorder, Relire) avec J0, sur « go release » : 1.7.0 en prod le 01/11 (#463), desktop 1.4.0 | J0 | ✅ | R78, R87 |
 | TF-J1-1 | E16 : une source unique pour le moteur de règles (l'aller-retour mesuré, le moteur Java compilé en JavaScript) ; la Présidence tranche R90 | J1 | ⬜ | R90 |
 | TF-J1-2 | La passerelle de modèles ouverte : n'importe quel LLM ou modèle, en un seul endroit du backend ; l'ai-service Python et le relais de la coque cessent de servir | J1 | ⬜ | R92 |
 | TF-J1-3 | Les préréglages de connecteurs jamais essayés quittent le catalogue visible ; le plan figé d'« AI Workflows » disparaît | J1 | ⬜ | R99, R105 |
