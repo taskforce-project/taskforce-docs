@@ -1169,7 +1169,7 @@ Les tickets confiés à un agent de code (Claude Code par le runner local, ou Gi
 
 ### `delivery_runs`
 
-32 colonnes · 3 clé(s) étrangère(s).
+33 colonnes · 3 clé(s) étrangère(s).
 
 | Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
 |---|---|:--:|---|---|---|
@@ -1205,6 +1205,7 @@ Les tickets confiés à un agent de code (Claude Code par le runner local, ou Gi
 | `outcome` | varchar(16) | oui |  |  |  |
 | `outcome_by` | int8 | oui | FK → `users.id` |  | SET NULL |
 | `outcome_at` | timestamp | oui |  |  |  |
+| `outcome_reason` | varchar(2000) | oui |  |  |  |
 
 ### `delivery_run_events`
 
