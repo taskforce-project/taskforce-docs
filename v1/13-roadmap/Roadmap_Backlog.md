@@ -100,9 +100,13 @@ pour l'instant (R91).
 | TF-J0-3 | Un accord refusé faute de réponse le dit à la personne : déjà fait, la chronologie dit « No answer in time: refused » (#457) | J0 | ✅ | R87 |
 | TF-J0-4 | Les pages qui disent vrai : la confidentialité de la webapp (Groq), les pages légales du site (l'hébergement réel), l'annonce de fermeture de la webapp ; l'architecture et le modèle de prix (faits le 01/11) ; le site et la webapp (#462, en prod avec la 1.7.0) ; reste l'ADR-010 et l'ADR-021 | J0 | 🔄 | R82 |
 | TF-J0-5 | La release de R78 (Créer, Accorder, Relire) avec J0, sur « go release » : 1.7.0 en prod le 01/11 (#463), desktop 1.4.0 | J0 | ✅ | R78, R87 |
+| TF-J0-6 | La porte : une demande de la table atteint toujours la personne, un accord vaut morceau par morceau, les lectures dans la copie ont leur règle ([séance n°16](../../recherche/conseil/seances/2026-11-01-revue-j0.md)) | J0 | 🔄 | R107, R108 |
+| TF-J0-7 | L'issue dit vrai et l'agent la tient à jour : la carte de Cortex complète, au plus une question, « Checklist » ; l'activité dit qui a fait quoi ; l'agent coche la checklist sous son nom, et tout se défait | J0 | 🔄 | R110, R111 |
+| TF-J0-8 | La revue UI/UX, et la réponse qui naît où l'on a écrit | J0 | 🔄 | R112 |
 | TF-J1-1 | E16 : une source unique pour le moteur de règles (l'aller-retour mesuré, le moteur Java compilé en JavaScript) ; la Présidence tranche R90 | J1 | ⬜ | R90 |
 | TF-J1-2 | La passerelle de modèles ouverte : n'importe quel LLM ou modèle, en un seul endroit du backend ; l'ai-service Python et le relais de la coque cessent de servir | J1 | ⬜ | R92 |
 | TF-J1-3 | Les préréglages de connecteurs jamais essayés quittent le catalogue visible ; le plan figé d'« AI Workflows » disparaît | J1 | ⬜ | R99, R105 |
+| TF-J1-4 | Ce que chaque modèle sait faire, mesuré par la banque d'évaluations sur la machine de la personne ; TaskForce propose le premier capable, la personne choisit ; R51 essayée sur la passerelle (cinq tâches en commentaire) | J1 | ⬜ | R113, R51 |
 | TF-J2-1 | Le déroulé de la démo, son communiqué et sa foire aux questions, écrits d'abord | J2 | ⬜ | R105 |
 | TF-J2-2 | Processus v1 : un canevas modifiable, cinq types d'étapes, exécuté par le moteur durable v1 | J2 | ⬜ | R97, ADR-023 |
 | TF-J2-3 | Agents v1 ; la boucle d'agent de TaskForce sur n'importe quel modèle (missions sur un modèle local) | J2 | ⬜ | R92, R51 |
@@ -119,13 +123,14 @@ pour l'instant (R91).
 | TF-J8 | Le parcours d'arrivée, qui se vit comme un jeu ; la démo complète sur trois natures de travail ; cinq personnes extérieures ; une évaluation par un tiers | J8 | ⬜ | R102, R103, E13, E14 |
 | TF-J9 | La mise sur le marché : le modèle de revenus, la distribution, la spécification et l'essai publiés | J9 | ⬜ | R98, R106 |
 
-**Critères de sortie de J0** (PV n°15) : un commit par écart fermé ; l'essai des droits de recherche vert ; R78 publiée avec « Apply » bloqué sur un échec de tests ; la boucle actuelle (Créer, Accorder, Relire) rejouée de bout en bout sur l'app desktop.
+**Critères de sortie de J0** (PV n°15) : un commit par écart fermé ; l'essai des droits de recherche vert ; R78 publiée avec « Apply » bloqué sur un échec de tests ; la boucle actuelle (Créer, Accorder, Relire) rejouée de bout en bout sur l'app desktop. Ajouté par la séance n°16 (R109, retenue le 01/11) : J0 se clôt sur le rejeu de la mission 6 par la Présidence, une fois la porte publiée ; la liste de fin de jalon reçoit la ligne « chaque demande de la table atteint la personne », prouvée par un essai automatique et par le rejeu.
 
 **Critères de sortie de J1**, écrits le 01/11/2026, avant le jalon :
 1. E16 mesurée : le délai d'une décision demandée au backend de la machine (médiane, 95e centile) face au moteur du runner, et le moteur Java compilé en JavaScript essayé sur les 51 cas ; la Présidence tranche R90.
 2. Cortex répond par la passerelle Java avec Ollama, avec une API compatible OpenAI et avec l'API d'Anthropic ; l'ai-service Python et le relais de la coque ne servent plus ; la banque d'évaluations (R61) ne recule sur aucun cas.
 3. Le catalogue ne montre que des connecteurs essayés ; le plan figé d'« AI Workflows » a disparu.
 4. La liste de lancement : une installation propre, une mise à jour depuis la version publiée, une sauvegarde puis une restauration.
+5. Ajouté par la séance n°16 (R113, retenue le 01/11) : la table de ce que sait faire chaque modèle de la machine de la Présidence, mesurée par la banque d'évaluations ; R51 essayée par la passerelle, cinq tâches en commentaire par qwen3:8b, trois réussies au moins (sinon R51 reste en J2).
 5. Les tests verts ; la boucle rejouée sur l'app desktop, avec Claude Code et Ollama.
 
 ---
