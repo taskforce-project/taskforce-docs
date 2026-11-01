@@ -171,15 +171,15 @@ erDiagram
   companies ||--o{ users : "company_id / ON DELETE SET NULL"
   users ||--|{ workspaces : "owner_id / ON DELETE RESTRICT"
   workspaces ||--|{ workspace_members : "workspace_id / ON DELETE CASCADE"
-  users ||--o{ workspace_members : "invited_by / ON DELETE SET NULL"
   users ||--|{ workspace_members : "user_id / ON DELETE CASCADE"
+  users ||--o{ workspace_members : "invited_by / ON DELETE SET NULL"
   workspaces ||--|{ workspace_invitations : "workspace_id / ON DELETE CASCADE"
   users ||--o{ workspace_invitations : "invited_by / ON DELETE SET NULL"
   projects ||--o{ workspace_invitations : "project_id / ON DELETE CASCADE"
-  users ||--o{ teams : "created_by / ON DELETE SET NULL"
   workspaces ||--|{ teams : "workspace_id / ON DELETE CASCADE"
-  users ||--|{ team_members : "user_id / ON DELETE CASCADE"
+  users ||--o{ teams : "created_by / ON DELETE SET NULL"
   teams ||--|{ team_members : "team_id / ON DELETE CASCADE"
+  users ||--|{ team_members : "user_id / ON DELETE CASCADE"
 ```
 
 ### 4.2 Projets et Issues (coeur métier)
@@ -311,30 +311,30 @@ erDiagram
   projects ||--|{ project_members : "project_id / ON DELETE CASCADE"
   users ||--|{ project_members : "user_id / ON DELETE CASCADE"
   users ||--o{ project_members : "added_by / ON DELETE SET NULL"
-  teams ||--|{ project_teams : "team_id / ON DELETE CASCADE"
   projects ||--|{ project_teams : "project_id / ON DELETE CASCADE"
+  teams ||--|{ project_teams : "team_id / ON DELETE CASCADE"
   projects ||--|{ project_labels : "project_id / ON DELETE CASCADE"
   users ||--|{ project_favorites : "user_id / ON DELETE CASCADE"
   projects ||--|{ project_favorites : "project_id / ON DELETE CASCADE"
-  users ||--o{ issues : "assignment_assigned_by_id / ON DELETE SET NULL"
-  issue_statuses ||--|{ issues : "status_id / ON DELETE RESTRICT"
   projects ||--|{ issues : "project_id / ON DELETE CASCADE"
+  issue_statuses ||--|{ issues : "status_id / ON DELETE RESTRICT"
   issue_types ||--o{ issues : "type_id / ON DELETE SET NULL"
   users ||--o{ issues : "assignee_id / ON DELETE SET NULL"
   users ||--|{ issues : "reporter_id / ON DELETE RESTRICT"
   issues ||--o{ issues : "parent_id / ON DELETE SET NULL"
+  users ||--o{ issues : "assignment_assigned_by_id / ON DELETE SET NULL"
   projects ||--|{ issue_statuses : "project_id / ON DELETE CASCADE"
   projects ||--|{ issue_types : "project_id / ON DELETE CASCADE"
-  users ||--|{ issue_comments : "author_id / ON DELETE RESTRICT"
   issues ||--|{ issue_comments : "issue_id / ON DELETE CASCADE"
-  users ||--o{ issue_activity : "actor_id / ON DELETE SET NULL"
+  users ||--|{ issue_comments : "author_id / ON DELETE RESTRICT"
   issues ||--|{ issue_activity : "issue_id / ON DELETE CASCADE"
+  users ||--o{ issue_activity : "actor_id / ON DELETE SET NULL"
   issues ||--|{ issue_checklist_items : "issue_id / ON DELETE CASCADE"
-  issues ||--|{ issue_relations : "target_id / ON DELETE CASCADE"
   issues ||--|{ issue_relations : "source_id / ON DELETE CASCADE"
+  issues ||--|{ issue_relations : "target_id / ON DELETE CASCADE"
   users ||--|{ issue_relations : "created_by / ON DELETE RESTRICT"
-  project_labels ||--|{ issue_label_assignments : "label_id / ON DELETE CASCADE"
   issues ||--|{ issue_label_assignments : "issue_id / ON DELETE CASCADE"
+  project_labels ||--|{ issue_label_assignments : "label_id / ON DELETE CASCADE"
   issues ||--|{ issue_worklogs : "issue_id / ON DELETE CASCADE"
   users ||--|{ issue_worklogs : "user_id / ON DELETE CASCADE"
   projects ||--|{ issue_sequence_counters : "project_id / ON DELETE CASCADE"
@@ -343,16 +343,16 @@ erDiagram
   cycles ||--|{ cycle_issues : "cycle_id / ON DELETE CASCADE"
   issues ||--|{ cycle_issues : "issue_id / ON DELETE CASCADE"
   users ||--|{ cycle_issues : "added_by / ON DELETE RESTRICT"
-  users ||--o{ attachments : "uploaded_by / ON DELETE SET NULL"
   issues ||--|{ attachments : "issue_id / ON DELETE CASCADE"
-  users ||--|{ member_leaves : "user_id / ON DELETE CASCADE"
+  users ||--o{ attachments : "uploaded_by / ON DELETE SET NULL"
   workspaces ||--|{ member_leaves : "workspace_id / ON DELETE CASCADE"
-  users ||--|{ member_skill_profiles : "user_id / ON DELETE CASCADE"
+  users ||--|{ member_leaves : "user_id / ON DELETE CASCADE"
   workspaces ||--|{ member_skill_profiles : "workspace_id / ON DELETE CASCADE"
-  issues ||--o{ assignment_events : "issue_id / ON DELETE SET NULL"
+  users ||--|{ member_skill_profiles : "user_id / ON DELETE CASCADE"
   workspaces ||--|{ assignment_events : "workspace_id / ON DELETE CASCADE"
-  users ||--o{ assignment_events : "assigned_by_user_id / ON DELETE SET NULL"
+  issues ||--o{ assignment_events : "issue_id / ON DELETE SET NULL"
   users ||--|{ assignment_events : "assignee_user_id / ON DELETE RESTRICT"
+  users ||--o{ assignment_events : "assigned_by_user_id / ON DELETE SET NULL"
 ```
 
 ### 4.3 IA, affectation intelligente et graphe de connaissances
@@ -436,8 +436,8 @@ erDiagram
     int8 workspace_id FK
     int8 created_by_id FK
   }
-  users ||--|{ ai_conversation : "user_id / ON DELETE CASCADE"
   workspaces ||--|{ ai_conversation : "workspace_id / ON DELETE CASCADE"
+  users ||--|{ ai_conversation : "user_id / ON DELETE CASCADE"
   ai_conversation ||--|{ ai_message : "conversation_id / ON DELETE CASCADE"
   workspaces ||--|{ ai_documents : "workspace_id / ON DELETE CASCADE"
   workspaces ||--|{ ai_runs : "workspace_id / ON DELETE CASCADE"
@@ -445,16 +445,16 @@ erDiagram
   users ||--|{ ai_token_usage : "account_id / ON DELETE CASCADE"
   workspaces ||--|{ ai_insight_snapshots : "workspace_id / ON DELETE CASCADE"
   workspaces ||--|{ brain_workspaces : "workspace_id / ON DELETE CASCADE"
-  knowledge_nodes ||--o{ knowledge_nodes : "parent_node_id / ON DELETE SET NULL"
   workspaces ||--|{ knowledge_nodes : "workspace_id / ON DELETE CASCADE"
   brain_workspaces ||--o{ knowledge_nodes : "brain_id / ON DELETE CASCADE"
-  knowledge_nodes ||--|{ knowledge_edges : "to_node_id / ON DELETE CASCADE"
-  knowledge_nodes ||--|{ knowledge_edges : "from_node_id / ON DELETE CASCADE"
+  knowledge_nodes ||--o{ knowledge_nodes : "parent_node_id / ON DELETE SET NULL"
   workspaces ||--|{ knowledge_edges : "workspace_id / ON DELETE CASCADE"
-  users ||--o{ analysis_job : "user_id / ON DELETE SET NULL"
-  decision_brief ||--o{ analysis_job : "brief_id / ON DELETE SET NULL"
+  knowledge_nodes ||--|{ knowledge_edges : "from_node_id / ON DELETE CASCADE"
+  knowledge_nodes ||--|{ knowledge_edges : "to_node_id / ON DELETE CASCADE"
   workspaces ||--|{ analysis_job : "workspace_id / ON DELETE CASCADE"
   projects ||--|{ analysis_job : "project_id / ON DELETE CASCADE"
+  users ||--o{ analysis_job : "user_id / ON DELETE SET NULL"
+  decision_brief ||--o{ analysis_job : "brief_id / ON DELETE SET NULL"
   workspaces ||--|{ decision_brief : "workspace_id / ON DELETE CASCADE"
   projects ||--|{ decision_brief : "project_id / ON DELETE CASCADE"
   decision_brief ||--|{ decision_priority : "brief_id / ON DELETE CASCADE"
@@ -504,10 +504,10 @@ erDiagram
     varchar token_hash UK
   }
   users ||--o{ otp_verification : "user_id / ON DELETE CASCADE"
-  users ||--o{ oauth_states : "user_id / ON DELETE SET NULL"
   workspaces ||--|{ oauth_states : "workspace_id / ON DELETE CASCADE"
-  users ||--o{ audit_logs : "actor_user_id / ON DELETE SET NULL"
+  users ||--o{ oauth_states : "user_id / ON DELETE SET NULL"
   workspaces ||--o{ audit_logs : "workspace_id / ON DELETE SET NULL"
+  users ||--o{ audit_logs : "actor_user_id / ON DELETE SET NULL"
   users ||--|{ user_two_factor : "user_id / ON DELETE CASCADE"
   users ||--|{ user_credentials : "user_entity_user_id / ON DELETE CASCADE"
   users ||--|{ personal_access_tokens : "user_id / ON DELETE CASCADE"
@@ -591,8 +591,8 @@ erDiagram
   }
   workspaces ||--|{ integrations : "workspace_id / ON DELETE CASCADE"
   users ||--o{ integrations : "installed_by / ON DELETE SET NULL"
-  users ||--o{ connector_connection : "connected_by / ON DELETE SET NULL"
   workspaces ||--|{ connector_connection : "workspace_id / ON DELETE CASCADE"
+  users ||--o{ connector_connection : "connected_by / ON DELETE SET NULL"
   workspaces ||--|{ mcp_oauth_states : "workspace_id / ON DELETE CASCADE"
   users ||--o{ mcp_oauth_states : "user_id / ON DELETE SET NULL"
   workspaces ||--|{ webhooks : "workspace_id / ON DELETE CASCADE"
@@ -632,10 +632,10 @@ erDiagram
     int8 id PK
     int8 user_id FK
   }
-  users ||--o{ pages : "created_by / ON DELETE SET NULL"
   projects ||--|{ pages : "project_id / ON DELETE CASCADE"
-  users ||--|{ dashboard_cards : "user_id / ON DELETE CASCADE"
+  users ||--o{ pages : "created_by / ON DELETE SET NULL"
   workspaces ||--|{ dashboard_cards : "workspace_id / ON DELETE CASCADE"
+  users ||--|{ dashboard_cards : "user_id / ON DELETE CASCADE"
   users ||--|{ feedback : "user_id / ON DELETE CASCADE"
 ```
 
@@ -668,12 +668,12 @@ erDiagram
     int8 run_id FK
     int4 seq UK
   }
-  users ||--o{ delivery_runs : "outcome_by / ON DELETE SET NULL"
   issues ||--|{ delivery_runs : "issue_id / ON DELETE CASCADE"
   users ||--o{ delivery_runs : "started_by / ON DELETE SET NULL"
+  users ||--o{ delivery_runs : "outcome_by / ON DELETE SET NULL"
   delivery_runs ||--|{ delivery_run_events : "run_id / ON DELETE CASCADE"
-  users ||--o{ delivery_run_approvals : "decided_by / ON DELETE SET NULL"
   delivery_runs ||--|{ delivery_run_approvals : "run_id / ON DELETE CASCADE"
+  users ||--o{ delivery_run_approvals : "decided_by / ON DELETE SET NULL"
   delivery_runs ||--|{ delivery_run_evidence : "run_id / ON DELETE CASCADE"
 ```
 
@@ -721,20 +721,20 @@ erDiagram
     int8 workspace_id PK
     int8 updated_by FK
   }
-  users ||--o{ harness_rule_sets : "created_by / ON DELETE SET NULL"
   workspaces ||--|{ harness_rule_sets : "workspace_id / ON DELETE CASCADE"
+  users ||--o{ harness_rule_sets : "created_by / ON DELETE SET NULL"
   workspaces ||--|{ cortex_records : "workspace_id / ON DELETE CASCADE"
   users ||--|{ cortex_records : "user_id / ON DELETE CASCADE"
   cortex_records ||--|{ cortex_record_events : "record_id / ON DELETE CASCADE"
   workspaces ||--|{ eval_cases : "workspace_id / ON DELETE CASCADE"
-  cortex_records ||--o{ eval_cases : "source_record / ON DELETE SET NULL"
   users ||--o{ eval_cases : "created_by / ON DELETE SET NULL"
-  users ||--o{ eval_runs : "started_by / ON DELETE SET NULL"
+  cortex_records ||--o{ eval_cases : "source_record / ON DELETE SET NULL"
   workspaces ||--|{ eval_runs : "workspace_id / ON DELETE CASCADE"
-  eval_cases ||--|{ eval_results : "case_id / ON DELETE CASCADE"
+  users ||--o{ eval_runs : "started_by / ON DELETE SET NULL"
   eval_runs ||--|{ eval_results : "run_id / ON DELETE CASCADE"
-  users ||--o{ eval_bank_settings : "updated_by / ON DELETE SET NULL"
+  eval_cases ||--|{ eval_results : "case_id / ON DELETE CASCADE"
   workspaces ||--|{ eval_bank_settings : "workspace_id / ON DELETE CASCADE"
+  users ||--o{ eval_bank_settings : "updated_by / ON DELETE SET NULL"
 ```
 
 ## 5. Régénération

@@ -360,7 +360,7 @@ classDiagram
 
 Pages de documentation collaborative, composition du tableau de bord par utilisateur, demandes commerciales, et retours envoyés depuis l'app.
 
-**1 entités** : `DashboardCard`.
+**1 entité** : `DashboardCard`.
 
 ```mermaid
 classDiagram
