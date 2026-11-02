@@ -524,6 +524,12 @@ table.
   `head`, `tail`, `wc`, `grep`, `stat`, `diff`) a sa règle, `run-reads` (R7', R46) ; une variable ou un autre dépliage
   du shell, un chemin hors de la copie, une option courte qui porte un tel chemin ou un lien du dépôt vers l'extérieur ne
   se bornent pas, donc restent demandés.
+- Rejeu de la 1.8.0 (02/11/2026) : `echo` entre dans `run-reads` (redirigé vers un fichier, il ne se borne pas et
+  demande) ; les formes de git qui ne font que lire ont leur règle, `run-git-info` (classe `read`) : `git branch` nu,
+  `--show-current`, `-a`, `-r`, `-v`, `-vv`, `--list` avec ou sans motif, `git rev-parse`, `git ls-files`,
+  `git blame`, `git remote -v`. Créer, renommer ou supprimer une branche, ajouter un dépôt distant restent demandés.
+  Un motif couvre la valeur entière, mot pour mot : `git {status,diff,log,show,add}**` couvrait aussi `git difftool`,
+  qui lance un autre programme ; `run-git-reads` s'écrit désormais `git {status,diff,log,show,add}{, **}`.
 - Fait le 28/10 (`contracts/agent/adapter.md`) : la découpe se fait hors des guillemets, `&` compris. Une substitution,
   une redirection vers un fichier, `--output`, un chemin hors de la copie ou dans `.git` (un hook écrit là
   s'exécuterait au prochain commit) ne sont jamais autorisés par une règle : ils sont refusés ou demandés. Le message
