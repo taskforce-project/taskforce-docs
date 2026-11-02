@@ -220,6 +220,9 @@ Le lancement est demandé avant la séance : « oui lance la, passe la au consei
 2. R116 signe les corrections : la personne voit « TaskForce : rien n'a été supprimé », pas une phrase réécrite en
    silence.
 
+**Réponse de la Présidence, le 02/11/2026** : « oui d'accord pour les deux, vas-y ». R115 élargit R111 comme écrit, et R116
+signe les corrections. R114 à R118 sont retenues.
+
 ## Suites
 
 - Le PV au registre (§12) et au Journal.
