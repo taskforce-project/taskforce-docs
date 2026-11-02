@@ -68,7 +68,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | AssistantController | `/api/workspaces/{slug}/assistant` (→ `POST` une question à Cortex, `POST /actions/execute` l'accord d'une action qu'il a proposée, `POST /actions/undo` défaire ce qu'il a créé) | ✅ |
 | EvalController | `/api/workspaces/{slug}/evals` (→ la banque d'évaluations de Cortex : ses cas, ses rejeux, son interrupteur) | ✅ |
 | PersonalAccessTokenController | `/api/users/me/tokens` (→ `GET` liste sans valeur, `POST` création, la valeur n'est rendue qu'ici, `DELETE /{id}` révocation) : jetons personnels, refusés partout sauf sur le serveur MCP (lot 5) | ✅ |
-| McpServerController | `/api/workspaces/{slug}/mcp` (→ `POST` JSON-RPC 2.0, `GET` et `DELETE` 405) : serveur MCP de l'instance, 13 outils ; réponse JSON-RPC, pas l'enveloppe `ApiResponse` (lot 5) ; `check_checklist_item` (`projectId`, `issueId`, `itemId`, `done`) coche ou décoche une ligne de la checklist, rejugé comme le `PATCH` de la ligne, et `get_issue` rend la checklist avec les ids (01/11/2026) | ✅ |
+| McpServerController | `/api/workspaces/{slug}/mcp` (→ `POST` JSON-RPC 2.0, `GET` et `DELETE` 405) : serveur MCP de l'instance, 16 outils (les gestes de TF-J1-5 le 02/11/2026 : `update_issue` étendu, `delegate_issue`, `get_mission`, `delete_issue`) ; réponse JSON-RPC, pas l'enveloppe `ApiResponse` (lot 5) ; `check_checklist_item` (`projectId`, `issueId`, `itemId`, `done`) coche ou décoche une ligne de la checklist, rejugé comme le `PATCH` de la ligne, et `get_issue` rend la checklist avec les ids (01/11/2026) | ✅ |
 | AiStatusController | `/api/ai/status` (→ `GET`) : état de l'IA de l'instance (configurée, chat et embeddings joignables, modèles), relu par le backend toutes les 30 s (lot 4, ADR-019) | ✅ |
 | McpActionController · McpOAuthCallbackController | `/api/workspaces/{slug}/mcp` (`/actions/execute`, `/servers`, `/servers/{key}/oauth/start`) · public `/api/mcp/oauth/callback` | ✅ |
 | ProfileController | `/api/workspaces/{slug}/profile` | ✅ |
@@ -215,11 +215,35 @@ question. Les arguments de `create_issue` : `project`, `title`, `description`, `
 se résout pas parmi ce qui existe dans le projet arrête la création (`success` avec la raison, rien de créé).
 
 **Défaire ce que Cortex a créé** (30/10/2026, R77) : `POST /api/workspaces/{slug}/assistant/actions/undo`, corps
-`{tool, record}`. 200 avec `{tool, status: "success", output}` : ce qui est défait (« Removed the project PRICING… »).
+`{tool, record, ref?}` (`ref` depuis le 02/11/2026 : l'empreinte du résultat à défaire, rendue avec chaque appel ; absente, le dernier qui ne l'est pas encore). 200 avec `{tool, status: "success", output}` : ce qui est défait (« Removed the project PRICING… »).
 404 si le dossier n'est pas celui de la personne dans cet espace. 400 si l'outil ne se défait pas (seuls
 `create_project`, `create_issue` et `create_note`), s'il n'y a plus rien à défaire (déjà défait, aucune création
 réussie), ou si l'objet a bougé (un projet avec des issues ou une page ajoutée, une issue commentée, une note avec une
 page rangée dessous ou un lien d'une autre note).
+
+**Les gestes du chat dans le MCP TaskForce** (02/11/2026, TF-J1-5, ADR-024 ; PR #480, pas encore fusionnée). Une seule surface
+d'outils : chaque outil du serveur MCP porte l'action que la table de règles juge, et Cortex se sert des gestes dans le
+backend, au nom de la personne.
+
+| Outil | Arguments | Action jugée | Pour Cortex |
+| --- | --- | --- | --- |
+| `update_issue` | `issue` (la clé, « TF-12 ») ou `projectId` et `issueId` ; `title`, `description`, `priority`, `status` (nom de colonne) ou `statusId`, `assignee` (nom, e-mail, « me », « none ») ou `assigneeId`, `addLabels`, `removeLabels`, `points` (0 retire), `cycle` (« none » sort), `dueDate` (« none » retire) | `issue.update` | fait d'emblée, avec Undo |
+| `add_comment` | l'issue, `content` | `comment.create` | fait d'emblée, avec Undo |
+| `delegate_issue` | l'issue, `agent` (Claude Code par défaut) | `mission.start` | demandé : une mission ne se défait pas d'ici |
+| `get_mission` | l'issue | `issue.read` | fait : l'état et les demandes, rien n'est décidé |
+| `delete_issue` | l'issue | `issue.delete` (règle `delete-issue`, demandée) | demandé, avec un aperçu de ce qui partirait |
+
+Un geste rend `{summary, issue: {issueId, projectId, key, title, runId?}, changes?, comment?, mission?}` ; de quoi le
+défaire reste au dossier de Cortex. Une clé inconnue, une valeur qui ne se résout pas, une mission déjà au travail :
+une erreur d'outil (`isError`) qui dit les choix. Dans une session déléguée, la clé devient des ids avant la portée ;
+`delegate_issue`, `get_mission` et `delete_issue` n'y sont jamais proposés.
+
+Dans la réponse de Cortex, chaque appel porte `ref` (l'empreinte de son résultat au dossier, seulement s'il y a quelque
+chose à défaire) et `target` (l'issue du geste ; pour une suppression demandée, `comments`, `checklist`, `mission`,
+`archived` en plus) ; `POST /assistant/actions/execute` les rend aussi dans `AssistantActionResult`. `PATCH
+/projects/{projectId}/issues/{issueId}` prend `unassign` et `clearDueDate` (`true`) : un champ à null ne retire rien
+dans un patch partiel.
+
 
 **La banque d'évaluations de Cortex** (29/10/2026, R61) : sous `/api/workspaces/{slug}/evals`.
 
