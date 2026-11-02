@@ -107,6 +107,8 @@ pour l'instant (R91).
 | TF-J1-2 | La passerelle de modèles ouverte : n'importe quel LLM ou modèle, en un seul endroit du backend ; l'ai-service Python et le relais de la coque cessent de servir. La passerelle Java joint Ollama, toute API compatible OpenAI et l'API d'Anthropic ; l'ai-service, son secret et le relais de la coque sont supprimés ; un serveur garde ses variables, l'app desktop change de fournisseur sans redémarrer (`taskforce-fullstack` #470, ouverte vers `dev`) | J1 | 🔄 | R92 |
 | TF-J1-3 | En prod avec la 1.8.0 le 02/11 (#468). Les préréglages de connecteurs jamais essayés quittent le catalogue visible ; le plan figé d'« AI Workflows » disparaît. Le catalogue ne montre à tous que Linear, le seul préréglage essayé de bout en bout ; un préréglage jamais essayé reste visible de l'espace qui l'a connecté. Le plan d'étapes des analyses est supprimé, du panneau à la base (V113) ; l'historique des délégations reste (`taskforce-fullstack` #468, ouverte vers `dev`) | J1 | ✅ | R99, R105 |
 | TF-J1-4 | Ce que chaque modèle sait faire, mesuré par la banque d'évaluations sur la machine de la personne ; TaskForce propose le premier capable, la personne choisit ; R51 essayée sur la passerelle (cinq tâches en commentaire) | J1 | ⬜ | R113, R51 |
+| TF-J1-5 | Les premiers gestes du chat : modifier, déplacer et assigner une issue ; la confier à Claude Code ; répondre à une demande depuis la conversation, par le bouton de sa carte ; « Apply », « Discard », « Try again ». Chaque geste s'ajoute une fois, dans le MCP TaskForce, et sert à Cortex comme à tout agent, sous les mêmes règles ([ADR-024](../../recherche/decisions/ADR-024-DRAFT-mcp-taskforce-surface-unique.md), Présidence, 02/11) | J1 | ⬜ | R95, R92, R99 |
+| TF-J1-6 | La couverture du chat : l'inventaire de tous les gestes de l'app et la part que le chat sait faire (8 au 02/11), suivie à chaque jalon | J1 | ⬜ | R95 |
 | TF-J2-1 | Le déroulé de la démo, son communiqué et sa foire aux questions, écrits d'abord | J2 | ⬜ | R105 |
 | TF-J2-2 | Processus v1 : un canevas modifiable, cinq types d'étapes, exécuté par le moteur durable v1 | J2 | ⬜ | R97, ADR-023 |
 | TF-J2-3 | Agents v1 ; la boucle d'agent de TaskForce sur n'importe quel modèle (missions sur un modèle local) | J2 | ⬜ | R92, R51 |
@@ -131,6 +133,9 @@ pour l'instant (R91).
 3. Le catalogue ne montre que des connecteurs essayés ; le plan figé d'« AI Workflows » a disparu.
 4. La liste de lancement : une installation propre, une mise à jour depuis la version publiée, une sauvegarde puis une restauration.
 5. Ajouté par la séance n°16 (R113, retenue le 01/11) : la table de ce que sait faire chaque modèle de la machine de la Présidence, mesurée par la banque d'évaluations ; R51 essayée par la passerelle, cinq tâches en commentaire par qwen3:8b, trois réussies au moins (sinon R51 reste en J2).
+6. Ajouté par la Présidence le 02/11/2026 : les gestes de TF-J1-5 se font depuis la barre, sur n'importe quel modèle de la passerelle, sous les règles et au dossier ; l'inventaire de TF-J1-6 est publié avec la part couverte.
+
+**Pour les critères de sortie de J2**, décidé par la Présidence le 02/11/2026 (à reprendre quand ils s'écrivent, avant J2) : la boucle de démo se joue entièrement depuis la barre, de la création jusqu'à « Apply » ; les accords se donnent par les boutons des cartes, dans la conversation.
 5. Les tests verts ; la boucle rejouée sur l'app desktop, avec Claude Code et Ollama.
 
 ---
