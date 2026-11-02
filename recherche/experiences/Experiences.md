@@ -590,6 +590,11 @@ signaux n'est calculé aujourd'hui.
 
 **Coût** : ~1 j pour la mesure de départ, puis ~2 h par jalon.
 
+**Incidents relevés avant la mesure de départ** `[ÉTABLI]` :
+- 01/11/2026, mission 6 du rejeu de J0 sur l'app desktop : deux lectures de nodejs.org que la table disait « demander »
+  sont passées sans question, la porte laissant la décision aux permissions de Claude Code. Corrigé par R107 et R108,
+  publiés avec la 1.8.0 le 02/11/2026 ([séance n°16](../conseil/seances/2026-11-01-revue-j0.md)).
+
 ---
 
 **Points d'entrée :** [🔬 R&D](../README.md) · [🤖 Mode recherche](../CLAUDE.md) · [❓ Questions](../Questions-ouvertes.md) · [📖 Notes critiques](../revues/World-Model.md)
