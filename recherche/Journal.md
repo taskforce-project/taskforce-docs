@@ -24,6 +24,28 @@ related:
 
 ---
 
+## 2026-11-01 : séance n°16 du Conseil, la revue de J0 sur l'app desktop
+
+**Fait** : la Présidence a rejoué la boucle de J0 sur l'app desktop 1.4.0 (produit 1.7.0), sur un projet privé neuf.
+Séance restreinte de sept membres sur ce rejeu (Bengio contradicteur, tiré au sort ;
+[PV](./conseil/seances/2026-11-01-revue-j0.md)).
+
+**Trouvé** :
+- `[ÉTABLI]` La boucle passe de bout en bout : Cortex prépare l'issue, la Présidence la crée, Claude Code la prend, la carte
+  de résultat arrive, « Apply » fusionne et termine l'issue. Une commande de test qui échoue éteint « Apply ».
+- `[ÉTABLI]` La porte du runner ne posait pas toujours la question que la table demande : elle confiait « demander » aux
+  permissions de Claude Code. Corrigée le jour même (R107, R108), publiée avec la release suivante.
+- `[ÉTABLI]` Les retours de la Présidence portent sur ce que l'outil montre : la carte de Cortex incomplète et un mot
+  faux (« Subtasks » pour une checklist), une activité qui ne dit pas qui a agi, une réponse qui s'ouvre loin de la
+  question, un agent qui ne met pas l'issue à jour.
+
+**Décidé** : R107 à R113, votées à 7 sur 7. R109 (J0 se clôt sur le rejeu de la mission 6, J1 part tout de suite) et R113
+(ce que sait faire chaque modèle, mesuré chez la personne ; R51 essayée en J1) retenues par la Présidence ; les cinq
+autres mises en œuvre sur sa demande de « corriger tout ça ».
+
+**Prochain coup** : la release des correctifs de J0 sur « go release », le rejeu de la mission 6, puis J1 (E16, la
+passerelle Java, les suppressions, la table des capacités).
+
 ## 2026-11-01 : séances n°14 et n°15 du Conseil, la feuille de route jusqu'à la démo complète
 
 **Fait** : deux plénières de 24 membres.
