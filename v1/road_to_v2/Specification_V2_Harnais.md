@@ -234,7 +234,8 @@ et les validations. La v2 la généralise.
 ![Architecture de la v2 : le harnais](../../assets/diagrammes/architecture-v2-harnais.svg)
 
 La porte a deux gardes qui appliquent la même table : le runner pour les actions locales (fichiers, commandes), le
-serveur pour les outils (§7).
+serveur pour les outils (§7). Les deux jugent avec le même moteur, écrit en Java et compilé en JavaScript pour le
+runner (§6.4).
 
 ### 4.4 Ce que devient chaque brique de la v1
 
@@ -467,6 +468,18 @@ par la Présidence.
   en réclamant la mission ; la version appliquée est écrite dans la mission.
 - Le runner juge sur place, sans aller-retour réseau par action : c'est ce qui garde la vitesse. Le serveur juge de son
   côté ce qui passe par lui (outils, issues). Deux gardes, une seule table.
+- Un seul moteur (R90, adoptée le 02/11/2026 sur les résultats d'E16,
+  [ADR-025](../../recherche/decisions/ADR-025-DRAFT-un-seul-moteur-de-regles.md)). Les décisions, les motifs,
+  l'empreinte du paquet et la chaîne du dossier s'écrivent une fois, en Java (`core/harness` du backend). Le runner les
+  embarque compilés en JavaScript par TeaVM : le module Maven `backend/rules-engine-js` lit ces sources sans les
+  copier, leur ajoute l'adaptateur JavaScript et les deux classes du JDK que TeaVM n'a pas (`MessageDigest` en SHA-256,
+  `HexFormat`), et produit `taskforce-runner/src/harness/engine/rules-engine.js` avec ses déclarations TypeScript.
+  Les deux fichiers sont versionnés, pour que le runner se construise sans JDK ; la CI les régénère et refuse un écart.
+  La copie TypeScript du moteur (`rules.ts`, `glob.ts`, `evidence.ts`) disparaît ; ce qui décrit une action de Claude
+  Code en faits (`facts.ts`) reste au runner. Les cas partagés de `contracts/` se rejouent contre le Java et contre le
+  module compilé. Mesuré le 02/11/2026 (TF-J1-1, PR #479, pas encore fusionnée) : 391 Ko (127 Ko compressé), chargé en
+  20 à 27 ms, une décision en 11 à 13 µs à chaud, les mêmes décisions que l'ancien moteur sur les 43 actions réelles
+  d'E16.
 - Le paquet ne vient jamais du bac à sable : un fichier de règles modifié par l'agent dans sa copie n'a aucun effet
   (invariant 1). Aucun outil de l'agent ne modifie les règles.
 
