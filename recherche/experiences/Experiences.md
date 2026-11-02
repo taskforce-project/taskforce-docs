@@ -578,6 +578,9 @@ Dans l'app desktop, le backend et le runner tournent sur la même machine.
   `EvidenceChain` et deux classes du JDK fournies à TeaVM.
 - `[DÉDUIT]` L'hypothèse tient par (b) : une seule source Java, compilée pour le runner, sans aller-retour.
 
+**Décision de la Présidence (02/11/2026)** : « on adopte R90 (b) ». Le moteur Java, compilé en JavaScript, remplace
+le moteur TypeScript du runner (TF-J1-1, [ADR-025](../decisions/ADR-025-DRAFT-un-seul-moteur-de-regles.md)).
+
 **Code et machine** `[ÉTABLI]` :
 - branche `exp/e16-single-engine` de taskforce-fullstack, sans pull request, partie d'`origin/dev` le 01/11 puis
   fusionnée avec `origin/dev` le 02/11 (`cbf22ac6` : la porte de #467, la table de 36 règles) ; on y trouve l'endpoint

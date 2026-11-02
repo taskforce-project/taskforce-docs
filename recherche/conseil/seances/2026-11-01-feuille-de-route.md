@@ -1203,6 +1203,9 @@ Numérotées à partir de R90 (R89 est la dernière). Chacune dit :
 | R105 | Dix jalons validés | 23 | Zhuo | | 95,8 % (20 au premier tour) |
 | R106 | Le modèle de revenus avant la tournée | 24 | | | 100 % |
 
+**Décision complémentaire, le 02/11/2026** : R90 retenue sous la forme (b) de E16 : « on adopte R90 (b) ». Un seul
+moteur, écrit en Java, compilé en JavaScript pour le runner ([ADR-025](../../decisions/ADR-025-DRAFT-un-seul-moteur-de-regles.md)).
+
 ## La feuille de route : dix jalons, chacun validé
 
 ### Les principes
