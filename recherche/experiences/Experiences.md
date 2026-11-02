@@ -54,7 +54,7 @@ related:
 | [E13](#e13--le-spécialiste-gagne-t-il-du-temps-sur-un-vrai-dossier-) | Le temps du spécialiste sur un vrai dossier (Conseil, R63), à J8 | ~1 j | oui | proposée |
 | [E14](#e14--la-promesse-se-redit-elle-en-une-phrase-) | La promesse redite en une phrase (Conseil, R65), à J8 | ~2 h | non | proposée |
 | [E15](#e15--la-voix-se-transcrit-elle-sur-la-machine-juste-et-vite-) | La voix transcrite sur la machine (Conseil, R80) | ~1 j | oui | proposée |
-| [E16](#e16--une-seule-source-pour-le-moteur-de-règles-sans-aller-retour-) | Une seule source pour le moteur de règles (Conseil, R90), en J1 | ~1 j | non | proposée |
+| [E16](#e16--une-seule-source-pour-le-moteur-de-règles-sans-aller-retour-) | Une seule source pour le moteur de règles (Conseil, R90), en J1 | ~1 j | non | faite : (a) réfutée, (b) tient |
 | [E17](#e17--lindice-de-confiance-se-mesure-t-il-et-monte-t-il-) | L'indice de confiance, mesure de départ à J2 (Conseil, R104) | ~1 j | non | proposée |
 
 > **L'ordre compte.** E1 avant tout le reste : sans mesure de calibration, **aucune** des autres n'est
@@ -535,7 +535,7 @@ machine ; le texte rendu comparé mot pour mot au texte dit.
 
 ## E16 : Une seule source pour le moteur de règles, sans aller-retour ?
 
-`[statut:: proposée]` · Ouverte le 01/11/2026 · issue du [Conseil, séance n°15](../conseil/seances/2026-11-01-feuille-de-route.md), R90 (à l'essai)
+`[statut:: faite]` · Ouverte le 01/11/2026 · Faite le 02/11/2026 · issue du [Conseil, séance n°15](../conseil/seances/2026-11-01-feuille-de-route.md), R90 (à l'essai) · résultats [plus bas](#résultats-du-02112026)
 
 **Hypothèse** `[HYPOTHÈSE]` : l'une de deux voies supprime le double moteur sans gêner l'agent.
 - **(a) Le runner demande chaque décision au backend Java de la machine.** Le surcoût reste sous 10 ms au 95e centile,
@@ -566,6 +566,141 @@ Dans l'app desktop, le backend et le runner tournent sur la même machine.
 **Limite** : une machine, une mission ; la version hébergée, avec un serveur distant, n'est pas mesurée.
 
 **Coût** : ~1 j.
+
+### Résultats du 02/11/2026
+
+**Verdict** :
+- `[ÉTABLI]` (a) tient le seuil de latence sur la topologie de l'app (Java natif), mais l'agent n'a plus aucune décision
+  pendant chaque redémarrage du backend : elle est réfutée par son second critère.
+- `[ÉTABLI]` (b) compile le moteur et passe les 84 cas partagés d'aujourd'hui (22 motifs, 60 décisions, 2 empreintes) :
+  elle n'est pas réfutée.
+- `[ÉTABLI]` Les décisions se compilent sans rien changer ; l'empreinte a demandé trois lignes changées dans
+  `EvidenceChain` et deux classes du JDK fournies à TeaVM.
+- `[DÉDUIT]` L'hypothèse tient par (b) : une seule source Java, compilée pour le runner, sans aller-retour.
+
+**Code et machine** `[ÉTABLI]` :
+- branche `exp/e16-single-engine` de taskforce-fullstack, sans pull request, partie d'`origin/dev` le 01/11 puis
+  fusionnée avec `origin/dev` le 02/11 (`cbf22ac6` : la porte de #467, la table de 36 règles) ; on y trouve l'endpoint
+  `POST /api/delivery/runner/rules/decide` (authentifié comme les autres routes du runner), les bancs dans
+  `experiments/e16-single-engine/bench`, le module TeaVM dans `experiments/e16-single-engine/teavm` et les chiffres bruts
+  dans `experiments/e16-single-engine/results` ;
+- Intel Core 7 240H (10 cœurs, 16 fils), 31,6 Go, Windows 11 Home 10.0.26200, sur secteur, mode d'alimentation
+  « Équilibré » ;
+- Node 24.18.0, TeaVM 0.16.0, Jackson 2.21.4 ;
+- le backend de la branche en profil `desktop`, avec les options Java de l'app (`-XX:TieredStopAtLevel=1`,
+  `-XX:+UseSerialGC`, `-Xmx768m`), sur sa propre base PostgreSQL 18 (pgvector), à côté du backend de dev ;
+- « natif » : le Java de l'app desktop installée (Temurin 21.0.12.1), sur 127.0.0.1, comme dans l'app ;
+- « conteneur » : le Java de l'image du backend de dev (Temurin 21.0.13), port publié par Docker Desktop 29.7.2 (WSL2).
+
+**La suite rejouée** `[ÉTABLI]` :
+- les 43 lignes « Rule decision » du journal du runner de l'app : trois missions (29/10 à 13:16 et à 13:24, 01/11 à
+  14:33), 451 s de travail en tout, une décision toutes les 4 s en médiane (de 0 à 100 s) ;
+- le journal garde l'outil, l'effet et la règle, pas l'entrée : chaque entrée est reconstituée, et le runner
+  d'aujourd'hui la décide comme le journal, sauf cinq lectures du shell (`ls`, `cat`, `wc`) que la règle `run-reads`,
+  ajoutée depuis, autorise au lieu de les demander ;
+- sous la table de 36 règles : 27 actions autorisées, 16 demandées, aucune refusée ;
+- chaque passe compare le backend et le module JavaScript au runner : aucun écart.
+
+**(a) La décision demandée au backend** `[ÉTABLI]`, en millisecondes sauf mention :
+
+| Mesure | Natif, passe 1 (`a-native`) | Natif, passe 2 (`a-native-2`) | Conteneur (`a-container`) |
+| --- | ---: | ---: | ---: |
+| Démarrage jusqu'à `/readyz` (3 démarrages) | 19,4 à 21,0 s | 19,2 à 22,8 s | 20,9 à 22,4 s |
+| Première décision après un démarrage | 37 à 52 | 43 à 52 | 49 à 57 |
+| Premier passage après démarrage, 129 décisions : médiane / 95e centile | 5,2 / 8,0 | 4,9 / 8,4 | 6,6 / 11,7 |
+| À chaud, connexion gardée, 8 600 décisions : médiane / 95e / 99e centile | 1,12 / 2,16 / 2,85 | 1,54 / 2,79 / 3,47 | 3,13 / 5,66 / 8,76 |
+| À chaud, connexion neuve, 860 décisions : médiane / 95e centile | 2,01 / 3,09 | 2,21 / 3,20 | 3,80 / 5,26 |
+| Au rythme du journal (écarts plafonnés à 5 s), 43 décisions : médiane / 95e centile | 1,89 / 2,97 | 2,07 / 3,11 | 3,82 / 29,13 |
+| Redémarrage : temps sans décision | 19,9 s | 22,0 s | 22,6 s |
+| Redémarrage : décisions refusées (une tentative toutes les 50 ms) | 315 | 347 | 355 |
+| Processeur de la machine occupé (tout compris) pendant la passe à chaud | 41 % | 59 % | 69 % |
+| Build Maven d'une autre session pendant la passe | non | à la fin | du début à la fin |
+
+Repères, sur la même machine :
+- `[ÉTABLI]` Le moteur du runner, en TypeScript, dans trois processus neufs : 0,003 à 0,004 ms en médiane et 0,006 à
+  0,008 ms au 95e centile à chaud ; 0,08 à 0,09 ms au 95e centile au premier passage.
+- `[ÉTABLI]` Les faits (`toolFacts`), calculés par le runner dans les deux voies : 0,25 à 0,27 ms au 95e centile.
+- `[ÉTABLI]` La boucle locale seule (un serveur Node minimal, le même client, mesure du 01/11) : 0,047 ms en médiane et
+  0,135 ms au 95e centile, connexion gardée.
+- `[ÉTABLI]` Le 01/11, avec la table de 35 règles et une machine moins chargée (48 %), le conteneur restait sous le
+  seuil : 6,5 ms au 95e centile au premier passage, 3,4 ms au rythme du journal (historique de la branche, `efb58712`).
+- `[ÉTABLI]` Dans l'app desktop installée, le backend a mis 13,4 à 76,2 s à démarrer (19,8 s en médiane, 38,7 s au 95e
+  centile), sur 28 démarrages du 19/10 au 02/11/2026 (journal de l'app).
+
+Ce que disent ces chiffres :
+- `[ÉTABLI]` En natif, comme dans l'app, le seuil tient partout : le pire 95e centile est de 8,8 ms, sur les 43
+  premières décisions après un redémarrage.
+- `[ÉTABLI]` En conteneur, sous la charge d'un autre build, il casse : 11,7 ms au premier passage, 29,1 ms au rythme du
+  journal.
+- `[ÉTABLI]` La toute première décision après chaque démarrage dépasse le seuil partout : 37 à 59 ms.
+- `[DÉDUIT]` Sur les trois missions, 43 décisions à environ 5 ms ajoutent 0,2 s à 451 s de travail : l'agent ne le sent
+  pas.
+- `[ÉTABLI]` Pendant un redémarrage, aucune décision n'arrive pendant 19,9 à 22,6 s ; chaque tentative échoue vite, en
+  1,8 à 3,3 ms au 95e centile (connexion refusée, ou coupée par Docker Desktop).
+- `[ÉTABLI]` Les jetons du runner ne survivent pas au redémarrage : il en redemande un (une réponse 401 par passe).
+- `[DÉDUIT]` Avec la règle de R90 (sans réponse, l'action est refusée), chaque action de l'agent est refusée pendant ce
+  temps : c'est le second critère de falsification.
+- `[DÉDUIT]` (a) n'est pas seule en cause : 27 des 43 actions passent déjà par le backend (16 demandes d'accord, 11 outils
+  TaskForce par son serveur MCP) ; (a) y ajoute les 16 autres (lectures, écriture dans la copie, git, outils internes).
+- `[ÉTABLI]` Dans l'app, la coque démarre et arrête le runner avec le backend (`desktop/src/stack.ts`).
+- `[DÉDUIT]` Un redémarrage du backend seul, mission en cours, vient donc d'une panne.
+
+**(b) Le moteur Java compilé en JavaScript par TeaVM 0.16.0** `[ÉTABLI]` :
+
+| Mesure | Décisions seules (`decisions.js`) | Moteur entier (`rules-engine.js`) |
+| --- | --- | --- |
+| Sources du serveur changées | aucune | `EvidenceChain`, trois lignes |
+| Classes du JDK fournies à TeaVM | aucune | `MessageDigest` (SHA-256), `HexFormat` |
+| Cas passés | 82 sur 82 (sans les 2 empreintes) | 84 sur 84 |
+| Taille brute / gzip / brotli | 135 655 / 43 131 / 35 727 octets | 391 527 / 126 215 / 101 098 octets |
+| Chargement du module dans Node | 45 ms | 87 ms |
+| Décision à chaud : médiane / 95e centile | 0,002 / 0,004 ms | 0,002 / 0,004 ms |
+| Premier passage : 95e centile / maximum | 0,18 / 4,0 ms | 0,23 / 4,4 ms |
+
+- `[ÉTABLI]` Le module lit `RulesEngine`, `Glob`, `RulesBundle`, `RulesDigest`, `CanonicalJson` et `EvidenceChain` dans
+  `backend/tf-api`, sans copie ; lui sont propres l'adaptateur, qui lit les objets JavaScript (233 lignes), les deux
+  classes fournies à TeaVM et leur règle de substitution (183 lignes).
+- `[ÉTABLI]` La fusion du 02/11 n'a touché aucune de ces sources : la table et les cas se lisent à l'exécution, le même
+  module passe les cas d'hier (71) et ceux d'aujourd'hui (84).
+- `[ÉTABLI]` Sans changement, TeaVM refuse l'empreinte : `java.security.MessageDigest` lui manque
+  (`EvidenceChain.sha256`), et le champ statique `ObjectMapper` d'`EvidenceChain` construit tout Jackson, qui demande
+  `ReentrantLock`, puis `ConcurrentLinkedQueue`.
+- `[ÉTABLI]` Aucune de ces classes, ni `HexFormat`, n'est dans la bibliothèque de TeaVM 0.16.0 (1 510 classes).
+- `[ÉTABLI]` Le correctif : `EvidenceChain` crée ses événements par `JsonNodeFactory` au lieu d'un `ObjectMapper` (même
+  résultat ; les tests du serveur qui touchent la chaîne passent, 271 avant la fusion et 132 après) ; le module fournit
+  `MessageDigest` (SHA-256 en Java pur) et `HexFormat` par la substitution de classes de TeaVM.
+- `[ÉTABLI]` Compilé, le moteur Java décide en 2 µs en médiane et 4 µs au 95e centile, contre 3 à 4 µs et 6 à 8 µs pour
+  celui du runner.
+- `[ÉTABLI]` TeaVM ayant abouti, J2CL n'a pas été essayé.
+
+**Contre les critères de falsification** :
+- `[ÉTABLI]` (a), sous 10 ms au 95e centile : oui en natif (8,8 ms au pire), non en conteneur sous charge (29,1 ms au
+  rythme du journal). Bloque l'agent quand le backend redémarre : oui, 19,9 à 22,6 s sans décision mesurés, pour un
+  démarrage de 13,4 à 76,2 s dans l'app. (a) est réfutée.
+- `[ÉTABLI]` (b), compile le moteur : oui, après les trois lignes d'`EvidenceChain` et les deux classes fournies ; sans
+  elles, les décisions seulement. Échoue à un cas : non, 84 sur 84. (b) n'est pas réfutée.
+- `[DÉDUIT]` Les deux voies n'échouent pas ensemble : la condition qui gardait le double moteur n'est pas remplie.
+
+**Ce que la mesure ne dit pas** :
+- `[ÉTABLI]` Une machine, chargée par les builds d'autres sessions pendant une partie des passes, et trois missions
+  reconstituées, pas rejouées par Claude Code.
+- `[ÉTABLI]` Le prototype (a) décide avec la table par défaut et n'écrit pas la chaîne de preuve, que R90 écrivait à
+  chaque décision.
+- `[DÉDUIT]` Écrire un événement en base à chaque décision ajouterait une transaction PostgreSQL à chaque aller-retour.
+- `[ÉTABLI]` (b) n'est pas branché dans le runner : `rules.ts` et `glob.ts` décident toujours.
+- `[HYPOTHÈSE]` Une évolution du moteur Java peut appeler une classe que TeaVM n'a pas : la CI devrait compiler le module
+  et rejouer les cas sur le JavaScript produit à chaque changement.
+- `[HYPOTHÈSE]` Le module contient déjà `CanonicalJson` et l'empreinte SHA-256 de la chaîne : la vérification d'un
+  dossier (`evidence.ts`, `verify.ts`) pourrait passer par lui aussi, à essayer.
+
+**Ce que ça change pour R90** :
+- `[DÉDUIT]` (b) donne la source unique sans aller-retour que la Présidence cherchait : le runner décide sur place, avec
+  le code Java du serveur, et ne dépend du backend que pour ce qui en dépendait déjà.
+- `[ÉTABLI]` En échange, une étape de build (Maven et TeaVM : 21 s ici pour les deux modules) et un module de 136 à
+  392 Ko dans le runner.
+- `[ÉTABLI]` La Présidence tranche R90 sur ces chiffres (séance n°15).
+
+**Coût réel** `[ÉTABLI]` : ~0,6 j, sur deux jours (01/11 puis 02/11, après la fusion de `origin/dev`).
 
 ## E17 : L'indice de confiance se mesure-t-il, et monte-t-il ?
 
@@ -599,4 +734,4 @@ signaux n'est calculé aujourd'hui.
 
 **Points d'entrée :** [🔬 R&D](../README.md) · [🤖 Mode recherche](../CLAUDE.md) · [❓ Questions](../Questions-ouvertes.md) · [📖 Notes critiques](../revues/World-Model.md)
 
-**Dernière mise à jour :** 01/11/2026 · **v1.3** · Projet Taskforce, Metz Numeric School 2025-2026
+**Dernière mise à jour :** 02/11/2026 · **v1.4** · Projet Taskforce, Metz Numeric School 2025-2026
