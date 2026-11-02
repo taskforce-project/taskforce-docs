@@ -285,6 +285,7 @@ ce qui est irréversible » ([PV](./seances/2026-10-26-premiere-regle.md)).
 | 31/10/2026 | TaskForce face au texte de la « souveraineté opérationnelle de l'IA » : devant, derrière, ailleurs ? | Plénière (24) ; Nadella contradicteur | Le 01/11, accord avec tout le Conseil, avec des orientations : R81 et R83 modifiées, R84 remplacée par R103 et R105, R85 et R86 élargies, R82 et R87 à R89 retenues | [PV](./seances/2026-10-31-souverainete-operationnelle.md) |
 | 01/11/2026 | TaskForce complet : une solution par problème, votée à 90 %, et la feuille de route jusqu'au bout | Plénière (24) ; Zhuo contradictrice | R90 à l'essai (E16) ; R91 modifiée (la webapp reste, on teste sur l'app desktop) ; R92 à R106 retenues, R92 élargie, R102 et R103 précisées ; feuille de route J0 à J9 lancée ; règle des 90 % inscrite au §6 | [PV](./seances/2026-11-01-feuille-de-route.md) |
 | 01/11/2026 | La revue de J0 sur l'app desktop : la porte qui ne demandait pas, la carte de Cortex, la main à l'agent | Restreinte (7) ; Bengio contradicteur | R109 et R113 retenues ; R107, R108, R110, R111 et R112 mises en œuvre sur la saisine, publiées avec la 1.8.0 | [PV](./seances/2026-11-01-revue-j0.md) |
+| 02/11/2026 | Cortex voit, demande et dit vrai, quel que soit le modèle | Restreinte (7) ; Harari contradicteur | R114 à R118 mises en œuvre sur la demande de la Présidence (« oui lance la, passe la au conseil d'abord »), dans l'ordre du Conseil : dire vrai d'abord | [PV](./seances/2026-11-02-cortex-voit-demande-dit-vrai.md) |
 
 ---
 

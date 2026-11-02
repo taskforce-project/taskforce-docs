@@ -24,6 +24,18 @@ related:
 
 ---
 
+## 2026-11-02 : séance n°17, Cortex voit, demande et dit vrai
+
+**Fait** : la Présidence a essayé Cortex sur l'app desktop 1.6.0 (qwen3:8b), puis a soumis au Conseil la piste du secrétariat avant de la lancer ([PV](./conseil/seances/2026-11-02-cortex-voit-demande-dit-vrai.md)).
+
+**Trouvé** :
+- `[ÉTABLI]` En six échanges, Cortex a confondu une issue et une note, préparé une création pour une suppression, posé zéro question, et annoncé une suppression qui n'a pas eu lieu (incident de confiance, E17).
+- `[DÉDUIT]` Demander, situer et dire vrai dépendent aujourd'hui de la bonne volonté du modèle.
+
+**Décidé** : R114 à R118, à l'unanimité des sept (R115 et R116 au second tour) : TaskForce montre l'écran au modèle, pose lui-même les questions qu'un geste exige, dit ce qui a été fait à la place du modèle, écrit des plans pour les demandes courantes, et mesure chaque modèle sur les échecs de la Présidence. Dire vrai d'abord.
+
+**Prochain coup** : TF-J1-8, R116 et R118 tout de suite, R114, R115 et R117 après les gestes du chat (TF-J1-5).
+
 ## 2026-11-02 : J0 clos sur le rejeu de la Présidence
 
 **Fait** : la release 1.8.0 et l'app desktop 1.5.0 (la porte, l'issue qui dit vrai, la conversation depuis la barre) ; le rejeu de la mission par la Présidence.
