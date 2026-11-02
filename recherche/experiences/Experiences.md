@@ -732,6 +732,10 @@ signaux n'est calculé aujourd'hui.
 - 01/11/2026, mission 6 du rejeu de J0 sur l'app desktop : deux lectures de nodejs.org que la table disait « demander »
   sont passées sans question, la porte laissant la décision aux permissions de Claude Code. Corrigé par R107 et R108,
   publiés avec la 1.8.0 le 02/11/2026 ([séance n°16](../conseil/seances/2026-11-01-revue-j0.md)).
+- 02/11/2026, app desktop 1.6.0, Cortex sur qwen3:8b : à « What changed in this project this week? », Cortex répond « La
+  carte TESTTA-2 a été supprimée du projet test-taskforce. » alors qu'aucune suppression n'a eu lieu (son seul outil du
+  tour : `list_issues`). Une IA qui dit avoir fait ce qu'elle n'a pas fait. Juste avant, sans outil de suppression,
+  il avait préparé une carte de création titrée « Supprimer l'issue TESTTA-2 ».
 
 ---
 
