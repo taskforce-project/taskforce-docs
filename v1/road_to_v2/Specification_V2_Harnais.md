@@ -526,7 +526,11 @@ table.
 
 Le serveur MCP de l'espace (`POST /api/workspaces/{slug}/mcp`) juge chaque appel avec la même table. Il est refait sur
 le SDK officiel (§4.5).
-`DeliverySessionScope` reste la garde du serveur : l'agent n'écrit que dans le projet de sa mission et ne supprime rien.
+`DeliverySessionScope` reste la garde du serveur : l'agent ne change que l'issue de sa mission (ses champs, sa colonne,
+sa checklist, ses commentaires), peut créer une issue dans son projet, et ne supprime rien. Fait le 02/11 (R110,
+séance n°16 ; `taskforce-fullstack` #472, en revue), avec un plafond par mission : au-delà de
+`agent.maxTaskForceChanges` changements dans TaskForce (30 pour commencer, une valeur à mesurer), la porte du runner
+demande chacun comme une règle qui demande, et un accord pour la mission lève le plafond.
 
 ### 7.3 Les outils de l'entreprise
 

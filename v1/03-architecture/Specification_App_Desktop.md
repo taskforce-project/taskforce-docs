@@ -317,8 +317,11 @@ historique. L'IA reste une aide, jamais un point de passage obligé.
 (le runner réclame du travail au serveur) et le relais Keycloak n'existaient que parce que le serveur ne pouvait pas
 joindre le poste (ADR-013) : ils disparaissent. Le runner actuel (`taskforce-runner`, Node, sans dépendance
 d'exécution) se réutilise tel quel, lancé par la coque avec le Node d'Electron. L'app émet elle-même un jeton par run ;
-la portée par run (`DeliverySessionScope` : lecture de l'espace, écriture sur les issues du seul projet du run, jamais
-de suppression) reste, car elle borne ce qu'une injection de prompt dans le texte d'une issue peut faire.
+la portée par run (`DeliverySessionScope` : lecture de l'espace ; écriture sur la seule issue du run, ses champs, sa
+colonne, sa checklist et ses commentaires, plus la création d'une issue dans son projet, depuis R110, `taskforce-fullstack`
+#472 en revue ; jamais de suppression) reste, car elle borne ce qu'une injection de prompt dans le texte d'une issue peut
+faire. Au-delà d'un plafond de changements dans TaskForce par mission (`agent.maxTaskForceChanges`, 30 pour commencer),
+la porte du runner demande chacun à la personne.
 
 L'app lance la CLI `claude` installée par l'utilisateur, avec son propre abonnement ou sa propre clé ; TaskForce ne
 touche jamais aux identifiants Anthropic. Options de la CLI vérifiées sur la version 2.1.293 :
