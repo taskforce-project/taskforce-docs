@@ -244,7 +244,7 @@ serveur pour les outils (§7).
 | Chronologie (`delivery_run_events`, 500 événements, textes coupés à 600 caractères) | Le dossier de preuve : journal chaîné, sans troncature silencieuse (§9) |
 | Validations (`delivery_run_approvals`) | Les décisions humaines, reliées à la règle qui les a demandées |
 | Listes codées en dur du runner (`taskforce-runner/src/agent.ts`) | Le paquet de règles, versionné, reçu à la réclamation (§6) |
-| Hook `PermissionRequest`, qui envoie tout à l'humain | Les règles jugées sur place ; seul « demander » part vers l'humain (§7.1) |
+| Hook `PermissionRequest`, qui envoie tout à l'humain | Les règles jugées sur place ; seul « demander » part vers l'humain, depuis `PreToolUse` (§7.1) |
 | Serveur MCP de l'espace, 12 outils | La porte, qui relaie aussi les outils de l'entreprise (§7.3) |
 | `DeliverySessionScope` | Reste la garde du serveur ; les règles s'y ajoutent sans la remplacer |
 | Brain OS : une note, un vecteur, 4 000 caractères | Documents, versions, passages ; recherche hybride avec sources (§5) |
@@ -500,23 +500,30 @@ table.
 - Pour Claude Code, un hook `PreToolUse` juge chaque action : il passe avant tout appel d'outil, y compris ceux qui
   sont autorisés d'avance (documentation des hooks, consultée le 28/10/2026). Le runner le sert en local et juge la
   règle sur place : autoriser ou refuser.
-- « Demander » ne passe pas par `PreToolUse` : en mode sans interface, un « ask » y finit en refus. L'action à demander
-  n'est pas autorisée d'avance, ce qui l'envoie au hook `PermissionRequest`, déjà servi par le runner : c'est là que
-  l'humain décide, comme en v1. Le runner sert les deux hooks depuis le 28/10 ; l'enchaînement réel reste à voir avec
-  Claude Code 2.1.295 ou plus.
+- « Demander » se tranche aussi dans `PreToolUse` (depuis la 1.8.0, le 02/11/2026) : le runner ouvre la demande dans
+  TaskForce, attend la décision de la personne qui a délégué, puis répond autoriser ou refuser. Aucune action ne repart
+  sans décision : ce que les règles demandent, la personne le décide avant que l'action parte, quelles que soient les
+  permissions propres de Claude Code. Un « ask » rendu à Claude Code finirait en refus sans interface. Vérifié avec
+  Claude Code 2.1.312 : un hook `PreToolUse` HTTP a tenu 75 secondes, puis sa réponse a été suivie. Le hook
+  `PermissionRequest` reste servi, en secours, pour ce que Claude Code demande encore.
 - Un hook HTTP injoignable laisse passer l'appel, sauf avec `onFailure: "block"`, qui demande Claude Code 2.1.295. La
   version minimale passe donc de 2.1.293 à 2.1.295 au moins (la dernière est la 2.1.312, du 27/10/2026), et l'app le
   vérifie avant chaque mission, plus seulement par `--check`.
 - Claude Code tourne avec une configuration à lui : un module installé par la personne peut, d'après la
   documentation, lever un blocage de hook quand il n'y a pas de réglages gérés. Le moyen d'isoler cette configuration
   est à vérifier.
-- Rien n'est autorisé d'avance (fait le 28/10) : une autorisation d'avance passerait outre une règle qui demande.
-  `PreToolUse` autorise ce que les règles autorisent. Seuls les outils que la personne ajoute sur son poste sont
-  autorisés d'avance, et une règle qui refuse les bloque quand même.
+- Rien n'est autorisé d'avance (fait le 28/10). `PreToolUse` autorise ce que les règles autorisent. Seuls les outils
+  que la personne ajoute sur son poste sont autorisés d'avance : pour eux, ce que les règles demandent revient aux
+  permissions de Claude Code, et une règle qui refuse les bloque quand même.
+- Un accord « pour cette mission » (R46, R108) couvre chacun des morceaux d'une commande qui demandaient : une commande
+  ne passe ensuite sans demande que si chacun de ses morceaux qui demandent l'est déjà.
 - Chaque action est aussi tracée depuis le flux `stream-json`, déjà relayé par le runner.
 - Une commande se juge sur sa forme analysée (programme, sous-commande, arguments), pas sur son texte : `npm test` n'est
   pas `npm publish`. Une commande composée (`&&`, `|`, `;`) se juge morceau par morceau. Ce qui ne s'analyse pas est
-  inconnu, donc demandé.
+  inconnu, donc demandé. `cd` change le dossier des morceaux qui suivent. Lire dans la copie (`cd`, `pwd`, `ls`, `cat`,
+  `head`, `tail`, `wc`, `grep`, `stat`, `diff`) a sa règle, `run-reads` (R7', R46) ; une variable ou un autre dépliage
+  du shell, un chemin hors de la copie, une option courte qui porte un tel chemin ou un lien du dépôt vers l'extérieur ne
+  se bornent pas, donc restent demandés.
 - Fait le 28/10 (`contracts/agent/adapter.md`) : la découpe se fait hors des guillemets, `&` compris. Une substitution,
   une redirection vers un fichier, `--output`, un chemin hors de la copie ou dans `.git` (un hook écrit là
   s'exécuterait au prochain commit) ne sont jamais autorisés par une règle : ils sont refusés ou demandés. Le message
