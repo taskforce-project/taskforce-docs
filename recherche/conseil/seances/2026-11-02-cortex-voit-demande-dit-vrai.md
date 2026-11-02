@@ -223,6 +223,13 @@ Le lancement est demandé avant la séance : « oui lance la, passe la au consei
 **Réponse de la Présidence, le 02/11/2026** : « oui d'accord pour les deux, vas-y ». R115 élargit R111 comme écrit, et R116
 signe les corrections. R114 à R118 sont retenues.
 
+**Précisions de la Présidence, le 02/11/2026** (« Je valide pour le moment go »), sur les deux points ouverts par la mise
+en œuvre de R116 et R118 :
+- une réponse vide de Cortex est remplacée par ce qui s'est passé dans le tour, signé par TaskForce (« Cortex didn't
+  answer. Nothing was done. ») ;
+- une correction devient un cas de la banque par le geste « Add to test bank », jamais d'elle-même : une personne
+  accepte ce qui entre dans la banque (R61, R101).
+
 ## Suites
 
 - Le PV au registre (§12) et au Journal.
