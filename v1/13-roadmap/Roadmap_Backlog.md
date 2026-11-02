@@ -127,6 +127,8 @@ pour l'instant (R91).
 
 **Critères de sortie de J0** (PV n°15) : un commit par écart fermé ; l'essai des droits de recherche vert ; R78 publiée avec « Apply » bloqué sur un échec de tests ; la boucle actuelle (Créer, Accorder, Relire) rejouée de bout en bout sur l'app desktop. Ajouté par la séance n°16 (R109, retenue le 01/11) : J0 se clôt sur le rejeu de la mission 6 par la Présidence, une fois la porte publiée ; la liste de fin de jalon reçoit la ligne « chaque demande de la table atteint la personne », prouvée par un essai automatique et par le rejeu.
 
+**J0 clos le 02/11/2026** (R109) : la Présidence a rejoué la mission sur l'app desktop 1.5.0 (mission 7, TESTTA-2). La lecture de nodejs.org et la recherche web ont été demandées (journal du runner, 12:10 UTC), puis accordées pour la mission ; l'issue préparée par Cortex porte sa priorité, sa personne et « prepared by Cortex » ; pendant la mission, « Claude Code, for Pierre ». Les écarts relevés partent en J1 : « assignée à moi » non compris, la colonne « To Do », « Apply » éteint quand rien n'a changé, deux demandes inutiles (`echo`, `git branch`), le commentaire de l'agent à vérifier dans l'activité, les intégrations natives dans le catalogue, un chat plus visible.
+
 **Critères de sortie de J1**, écrits le 01/11/2026, avant le jalon :
 1. E16 mesurée : le délai d'une décision demandée au backend de la machine (médiane, 95e centile) face au moteur du runner, et le moteur Java compilé en JavaScript essayé sur les 51 cas ; la Présidence tranche R90.
 2. Cortex répond par la passerelle Java avec Ollama, avec une API compatible OpenAI et avec l'API d'Anthropic ; l'ai-service Python et le relais de la coque ne servent plus ; la banque d'évaluations (R61) ne recule sur aucun cas.

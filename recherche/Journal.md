@@ -24,6 +24,18 @@ related:
 
 ---
 
+## 2026-11-02 : J0 clos sur le rejeu de la Présidence
+
+**Fait** : la release 1.8.0 et l'app desktop 1.5.0 (la porte, l'issue qui dit vrai, la conversation depuis la barre) ; le rejeu de la mission par la Présidence.
+
+**Trouvé** :
+- `[ÉTABLI]` La porte demande ce que la table demande : la lecture de nodejs.org et la recherche web ont ouvert leur demande (journal du runner, mission 7).
+- `[ÉTABLI]` Deux demandes restent du bruit (`echo`, `git branch --show-current`) ; « assignée à moi » n'est pas compris ; « Apply » s'éteint sans dire pourquoi quand la mission n'a rien changé.
+
+**Décidé** : J0 clos (R109). La Présidence fait passer l'expérience par le chat : le MCP TaskForce devient la seule surface d'outils, pour Cortex comme pour tout agent (ADR-024 en brouillon) ; les premiers gestes du chat et sa couverture entrent en J1.
+
+**Prochain coup** : J1 : les écarts du rejeu, le chat en bulle, les premiers gestes du chat (TF-J1-5), E16, la passerelle Java après le contrôle de VM1.
+
 ## 2026-11-01 : séance n°16 du Conseil, la revue de J0 sur l'app desktop
 
 **Fait** : la Présidence a rejoué la boucle de J0 sur l'app desktop 1.4.0 (produit 1.7.0), sur un projet privé neuf.
