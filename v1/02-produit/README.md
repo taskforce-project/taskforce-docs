@@ -30,6 +30,7 @@ Logo projet        : assets/images/logo_taskforce.png
 - [🧠 Brain OS — Hub](../../Brain_OS.md)
 - [Fiche Frontend](./Frontend.md) · [Fiche Backend](./Backend.md)
 - [Fiche Landing](./Landing.md) · [Fiche IA](./IA.md) · [Fiche Infra](./Infra.md)
+- [Couverture du chat](./Couverture_du_chat.md) : les gestes de l'app, et la part que le chat sait faire (TF-J1-6)
 - [Backlog technique](../13-roadmap/Roadmap_Backlog.md) · [Problèmes connus](../09-audits/Problemes_Connus.md)
 
 **Tags :** `#produit` `#suivi` `#parite` `#plane`
