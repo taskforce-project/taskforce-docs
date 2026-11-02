@@ -717,7 +717,11 @@ partir de J2.
 d'arrêt de R104).
 
 **Schéma réel** `[ÉTABLI]` : les dossiers de mission gardent les décisions, les accords et les tests ; aucun des neuf
-signaux n'est calculé aujourd'hui.
+signaux n'est calculé aujourd'hui. Depuis TF-J1-8 (R116, `taskforce-fullstack` #483, pas encore fusionnée), chaque
+phrase de Cortex que TaskForce remplace, parce qu'elle annonçait une action sans son résultat d'outil, entre au dossier
+de la réponse comme incident de confiance : un événement `note` signé du serveur (`incident: trust`, `experiment: E17`),
+avec la phrase fausse, ce que TaskForce a montré et les outils du tour. Ces incidents se comptent depuis les dossiers,
+sans questionnaire ; la personne, elle, ne voit plus la phrase fausse.
 
 **Protocole** : la mesure de départ à la fin de J2, sur la boucle mince (deux packs), avec les seuils écrits avant
 (Duflo) ; puis la même mesure à chaque jalon, publiée au Journal.
@@ -735,10 +739,13 @@ signaux n'est calculé aujourd'hui.
 - 02/11/2026, app desktop 1.6.0, Cortex sur qwen3:8b : à « What changed in this project this week? », Cortex répond « La
   carte TESTTA-2 a été supprimée du projet test-taskforce. » alors qu'aucune suppression n'a eu lieu (son seul outil du
   tour : `list_issues`). Une IA qui dit avoir fait ce qu'elle n'a pas fait. Juste avant, sans outil de suppression,
-  il avait préparé une carte de création titrée « Supprimer l'issue TESTTA-2 ».
+  il avait préparé une carte de création titrée « Supprimer l'issue TESTTA-2 ». Réponse : R116 (séance n°17), dans
+  #483 ; les six échanges sont des cas de la banque (R118). Rejoués sur qwen3:8b sur une copie de la base de dev, une
+  note dite « créée » sans outil atteignait encore la personne avant R116 ; après, TaskForce la remplace et l'incident
+  est au dossier.
 
 ---
 
 **Points d'entrée :** [🔬 R&D](../README.md) · [🤖 Mode recherche](../CLAUDE.md) · [❓ Questions](../Questions-ouvertes.md) · [📖 Notes critiques](../revues/World-Model.md)
 
-**Dernière mise à jour :** 02/11/2026 · **v1.4** · Projet Taskforce, Metz Numeric School 2025-2026
+**Dernière mise à jour :** 02/11/2026 · **v1.5** · Projet Taskforce, Metz Numeric School 2025-2026
