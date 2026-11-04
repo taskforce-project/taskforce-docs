@@ -430,6 +430,36 @@ résultat sans savoir lequel l'a produit, si c'est possible.
 **Coût** : ~1 j de développement (l'agent local comme troisième agent de délégation, par la même porte et le même dossier),
 plus une demi-journée de mesure.
 
+**L'essai de J1, écrit le 04/11/2026 avant le lancement** (R113, séance n°16 ; TF-J1-4) : la boucle minimale de
+TaskForce sur la passerelle, avec qwen3:8b (Ollama, sur le poste de la Présidence). Elle lit l'issue (description, liste
+de contrôle, commentaires), les autres issues de son projet et les notes que la personne peut lire, puis poste sa réponse
+en commentaire. Elle n'a ni le web ni dépôt : les tâches des étapes 16 et 23 de la recette 1.3.2, qui cherchaient sur le
+web, sont remplacées par deux tâches du même genre dont la matière est dans l'issue (1 et 4). Claude Code ne fait pas les
+mêmes tâches dans cet essai, et le juge n'est pas à l'aveugle : c'est l'agent de développement, critère par critère. Une
+tâche est réussie quand tous ses critères tiennent ; R51 tient à trois sur cinq.
+
+Les cinq tâches, dans un projet sans dépôt (« Essai R51 ») de l'espace de démo, sur une copie de la base de dev :
+
+1. **Résumer** : la description colle les notes de version 2.3 et 2.4 d'une API fictive. « Résume en cinq points au plus
+   ce qui change pour l'équipe mobile, et dis s'il faut modifier l'app avant la mise à jour. » Critères : (a) le
+   changement cassant (`/v1/orders` devient `/v2/orders`) est nommé, et la réponse dit qu'il faut modifier l'app ; (b) cinq
+   points au plus ; (c) aucun changement absent des notes ; (d) en français.
+2. **Trier** : six retours de la bêta, chacun avec sa personne. « Classe ces retours par thème et dis lequel traiter en
+   premier, et pourquoi. » Critères : (a) trois thèmes au moins, chacun des six retours rangé ; (b) une seule priorité, la
+   perte de données que deux personnes rapportent, avec une raison tirée des retours ; (c) aucun retour inventé ; (d) en
+   français.
+3. **Rédiger**, en anglais : la liste de contrôle porte quatre éléments faits de la version 2.4. « Write the release note
+   for version 2.4 from the checklist, for our users. » Critères : (a) les quatre éléments y sont ; (b) 150 mots au plus ;
+   (c) rien au-delà de la liste ; (d) en anglais ; (e) elle ne dit pas avoir publié quoi que ce soit.
+4. **Faire le point sur le projet** : « Fais le point : quelles issues du projet sont bloquées, et lesquelles sont
+   terminées ? » Critères : (a) les issues de la colonne Blocked, toutes et seulement elles, par leur clé ; (b) les issues
+   de la colonne Done, par leur clé ; (c) aucune clé inventée ; (d) en français.
+5. **Résumer un fil** : la description colle un fil de quatre messages de trois personnes sur le choix d'une base de
+   données ; un commentaire y ajoute une question. « Résume la décision prise et les questions qui restent ouvertes. »
+   Critères : (a) la décision du fil (rester sur PostgreSQL, pas de MongoDB) ; (b) les deux questions ouvertes (la date de
+   la migration des sauvegardes, et qui la teste) ; (c) aucune décision prêtée à quelqu'un qui ne l'a pas prise ; (d) en
+   français.
+
 ## E12 : Un petit modèle affiné bat-il le modèle de base avec recherche ?
 
 `[statut:: proposée]` · Ouverte le 29/10/2026 · issue du [Conseil, séance n°10](../conseil/seances/2026-10-29-intelligence-possedee.md), R62
