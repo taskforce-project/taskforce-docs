@@ -49,7 +49,7 @@ related:
 | [E8](#e8--des-règles-écrites-comme-du-code-sont-elles-relues-) | Règles d'agent écrites comme du code (Conseil, R2) | ~1 j | non | proposée |
 | [E9](#e9--le-temps-dattention-par-résultat-accepté-se-mesure-t-il-) | Attention humaine par résultat accepté (Conseil, R3) | ~1 j | non | proposée |
 | [E10](#e10--un-relecteur-dédié-trouve-t-il-de-vrais-défauts-) | Relecteur dédié des pull requests (Conseil, R4) | ~0,5 j | oui | proposée |
-| [E11](#e11--un-petit-modèle-local-rend-il-une-tâche-en-commentaire-acceptable-) | Un petit modèle local pour les tâches en commentaire (Conseil, R51) | ~1,5 j | oui | proposée |
+| [E11](#e11--un-petit-modèle-local-rend-il-une-tâche-en-commentaire-acceptable-) | Un petit modèle local pour les tâches en commentaire (Conseil, R51) | ~1,5 j | oui | en cours : 4 sur 5 à l'essai de J1 (04/11) |
 | [E12](#e12--un-petit-modèle-affiné-bat-il-le-modèle-de-base-avec-recherche-) | Un petit modèle affiné contre le modèle de base avec recherche (Conseil, R62) | ~1,5 j | oui | proposée |
 | [E13](#e13--le-spécialiste-gagne-t-il-du-temps-sur-un-vrai-dossier-) | Le temps du spécialiste sur un vrai dossier (Conseil, R63), à J8 | ~1 j | oui | proposée |
 | [E14](#e14--la-promesse-se-redit-elle-en-une-phrase-) | La promesse redite en une phrase (Conseil, R65), à J8 | ~2 h | non | proposée |
@@ -407,7 +407,7 @@ si le modèle existant montre la valeur.
 
 ## E11 : Un petit modèle local rend-il une tâche en commentaire acceptable ?
 
-`[statut:: proposée]` · Ouverte le 29/10/2026 · issue du [Conseil, séance n°8](../conseil/seances/2026-10-29-recette-132.md), R51 (avec R31)
+`[statut:: en-cours]` · Ouverte le 29/10/2026 · issue du [Conseil, séance n°8](../conseil/seances/2026-10-29-recette-132.md), R51 (avec R31) · essai de J1 le 04/11/2026 : 4 sur 5
 
 **Hypothèse** `[HYPOTHÈSE]` : un petit modèle à outils, sur l'ordinateur (qwen3:8b), porté par la boucle de Cortex,
 rend acceptable au moins trois tâches sur cinq dont le livrable est un commentaire : chercher et résumer, trier, rédiger.
@@ -459,6 +459,22 @@ Les cinq tâches, dans un projet sans dépôt (« Essai R51 ») de l'espace de d
    Critères : (a) la décision du fil (rester sur PostgreSQL, pas de MongoDB) ; (b) les deux questions ouvertes (la date de
    la migration des sauvegardes, et qui la teste) ; (c) aucune décision prêtée à quelqu'un qui ne l'a pas prise ; (d) en
    français.
+
+**Résultat du 04/11/2026** (`taskforce-fullstack` #485 ; un backend de la branche sur une copie de la base de dev,
+qwen3:8b par la passerelle, Ollama 0.40.14 sur le poste de la Présidence) : **4 tâches sur 5 réussies**, R51 tient pour
+les tâches en commentaire. Chaque mission s'est close en 4 à 15 s, le commentaire signé du modèle pour la personne qui a délégué (« qwen3:8b for ... »),
+l'issue en « In review by AI », le dossier scellé (`mission.started`, la demande, la décision de la règle `comment`, la fin).
+
+| Tâche | Verdict | Ce qui le fonde |
+| --- | --- | --- |
+| 1. Résumer | Réussie | Cinq points, tous dans les notes ; `/v1/orders` remplacé par `/v2/orders` nommé, et « Il faut modifier l'app avant la mise à jour » (le changement d'endpoint et la durée des jetons) ; en français. Une imprécision : il date le remplacement du 1er décembre, quand c'est `/v1/orders` qui répondra 410 ce jour-là |
+| 2. Trier | **Échouée** | Quatre thèmes, les six retours rangés, rien d'inventé, en français ; mais la priorité est l'export CSV (Léa), pas la perte de données que rapportent Hugo et Chloé : le critère (b) ne tient pas |
+| 3. Rédiger | Réussie | Les quatre éléments, rien d'autre, en anglais, rien de publié ; 150 mots qui portent une lettre ou un chiffre (155 avec les tirets de la liste), à la limite |
+| 4. Faire le point | Réussie | Bloquées : ESSAI-6 et ESSAI-7, toutes et seulement elles ; terminées : ESSAI-8 et ESSAI-9 ; aucune clé inventée ; en français |
+| 5. Résumer un fil | Réussie | Rester sur PostgreSQL (les pièces jointes dans MinIO) ; les deux questions ouvertes ; « Karim a accepté », ce qu'il a dit ; en français |
+
+**Reste**, pour clore E11 : les mêmes tâches par Claude Code, et le jugement de la Présidence sans savoir lequel a produit
+quoi ; des tâches qui cherchent sur le web, que la boucle minimale ne sait pas faire.
 
 ## E12 : Un petit modèle affiné bat-il le modèle de base avec recherche ?
 
