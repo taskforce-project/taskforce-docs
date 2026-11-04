@@ -158,7 +158,7 @@ Créer, modifier, supprimer, réordonner les colonnes (`POST`, `PATCH`, `DELETE 
 
 | Geste | Route | Chat |
 | --- | --- | :--: |
-| Créer un projet | `POST /projects` | ✅ `create_project`, Undo |
+| Créer un projet | `POST /projects` | ✅ `create_project`, geste du MCP depuis R115 : demande le nom, puis le dépôt d'un projet de code (créé ou lié avec lui, `PUT .../repo`), Undo |
 | Modifier un projet (nom, description, statut, dates, responsable, visibilité) | `PATCH /projects/{id}` | ❌ |
 | Archiver, supprimer | `POST .../archive`, `DELETE /projects/{id}` | ❌ ❌ |
 | Ajouter, retirer un membre | `POST`, `DELETE .../members` | ❌ ❌ |
@@ -234,8 +234,12 @@ l'accueil : ❌. Ces gestes touchent la personne elle-même et restent à l'écr
 - **Une décision est un clic sur le bouton d'une carte (R1)** : répondre à une demande d'une mission, trancher son
   résultat, accorder une action. Aucun outil ne décide à la place de la personne, et un « oui » écrit n'accorde rien.
 - **Des noms, pas des ids** : la personne et Cortex nomment l'issue par sa clé (« TF-12 », « HR-1372-2 »), la colonne,
-  la personne (« moi ») et le cycle par leurs noms ; une issue nommée par sa colonne ou son titre se trouve par
-  `list_issues`.
+  la personne (« moi ») et le cycle par leurs noms ; une issue nommée par sa colonne ou son titre se lit à l'écran, que
+  chaque message porte (R114), ou par `list_issues`.
+- **Ce qui manque se demande, par TaskForce (R115)** : chaque geste déclare ce qu'il exige et son défaut sûr ; une
+  issue que la demande ne désigne pas, une colonne inconnue, un assigné ambigu, le nom et le dépôt d'un projet se
+  demandent en choix, le défaut d'abord, une réponse tapée possible, et le clic reprend le geste. Le chiffre du §1 ne
+  change pas : ce sont les mêmes gestes, qui demandent au lieu d'échouer.
 
 ## 5. Hors de l'inventaire
 
