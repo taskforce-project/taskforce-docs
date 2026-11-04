@@ -65,10 +65,10 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | IssueController | `/api/workspaces/{slug}/projects/{projectId}/issues` | ✅ |
 | AnalyticsController | `/api/workspaces/{slug}/analytics` | ✅ |
 | AnalysisController | `/api/workspaces/{slug}` (→ `/analysis`, `/projects/{id}/brief`, `/priorities/{id}`) | ✅ |
-| AssistantController | `/api/workspaces/{slug}/assistant` (→ `POST` une question à Cortex, `POST /actions/execute` l'accord d'une action qu'il a proposée, `POST /actions/undo` défaire ce qu'il a créé) | ✅ |
+| AssistantController | `/api/workspaces/{slug}/assistant` (→ `POST` une question à Cortex, avec l'écran de la personne depuis R114, `POST /actions/execute` l'accord d'une action qu'il a proposée, `POST /actions/undo` défaire ce qu'il a créé, `POST /actions/answer` la réponse à une question de TaskForce, R115) | ✅ |
 | EvalController | `/api/workspaces/{slug}/evals` (→ la banque d'évaluations de Cortex : ses cas, ses rejeux, son interrupteur) | ✅ |
 | PersonalAccessTokenController | `/api/users/me/tokens` (→ `GET` liste sans valeur, `POST` création, la valeur n'est rendue qu'ici, `DELETE /{id}` révocation) : jetons personnels, refusés partout sauf sur le serveur MCP (lot 5) | ✅ |
-| McpServerController | `/api/workspaces/{slug}/mcp` (→ `POST` JSON-RPC 2.0, `GET` et `DELETE` 405) : serveur MCP de l'instance, 16 outils (les gestes de TF-J1-5 le 02/11/2026 : `update_issue` étendu, `delegate_issue`, `get_mission`, `delete_issue`) ; réponse JSON-RPC, pas l'enveloppe `ApiResponse` (lot 5) ; `check_checklist_item` (`projectId`, `issueId`, `itemId`, `done`) coche ou décoche une ligne de la checklist, rejugé comme le `PATCH` de la ligne, et `get_issue` rend la checklist avec les ids (01/11/2026) | ✅ |
+| McpServerController | `/api/workspaces/{slug}/mcp` (→ `POST` JSON-RPC 2.0, `GET` et `DELETE` 405) : serveur MCP de l'instance, 17 outils (les gestes de TF-J1-5 le 02/11/2026 : `update_issue` étendu, `delegate_issue`, `get_mission`, `delete_issue` ; `create_project` avec R115, le 04/11/2026) ; réponse JSON-RPC, pas l'enveloppe `ApiResponse` (lot 5) ; `check_checklist_item` (`projectId`, `issueId`, `itemId`, `done`) coche ou décoche une ligne de la checklist, rejugé comme le `PATCH` de la ligne, et `get_issue` rend la checklist avec les ids (01/11/2026) | ✅ |
 | AiStatusController | `/api/ai/status` (→ `GET`) : état de l'IA de l'instance (configurée, chat et embeddings joignables, modèles), relu par le backend toutes les 30 s (lot 4, ADR-019) | ✅ |
 | McpActionController · McpOAuthCallbackController | `/api/workspaces/{slug}/mcp` (`/actions/execute`, `/servers`, `/servers/{key}/oauth/start`) · public `/api/mcp/oauth/callback` | ✅ |
 | ProfileController | `/api/workspaces/{slug}/profile` | ✅ |
@@ -243,6 +243,30 @@ chose à défaire) et `target` (l'issue du geste ; pour une suppression demandé
 `archived` en plus) ; `POST /assistant/actions/execute` les rend aussi dans `AssistantActionResult`. `PATCH
 /projects/{projectId}/issues/{issueId}` prend `unassign` et `clearDueDate` (`true`) : un champ à null ne retire rien
 dans un patch partiel.
+
+**L'écran, et les questions de TaskForce** (04/11/2026, TF-J1-8, R114 et R115 ; PR #484, pas encore fusionnée).
+`POST /assistant` prend `screen` (`{projectId, issueId?}`, entiers positifs, 400 sinon) : ce que la personne voit, que le
+serveur relit avec ses droits ; absent, Cortex répond sans l'écran. Un geste à qui il manque ce qu'il exige rend un
+appel au statut `question`, avec `question` (`{field, text, choices: [{value, label, recommended}]}`, le défaut d'abord)
+et `ref`, l'empreinte de la question au dossier ; la réponse du tour est la question, dans un bloc signé
+`> [!taskforce] TaskForce`. `POST /assistant/actions/answer`, corps `{tool, record, ref, value}` (tous requis) : la
+valeur d'un choix ou une réponse tapée ; 200 avec l'appel tel que le geste continue (`AssistantToolCall` : une autre
+question, `pending` pour sa carte, `success` avec `ref` et `target`, `refused`, `error`) ; 404 si le dossier n'est pas
+celui de la personne, 400 si la question est déjà répondue ou la réponse vide.
+
+**Les besoins des gestes, et créer un projet dans le MCP** (R115). Chaque geste déclare ce qu'il exige (l'issue, le
+texte d'un commentaire, le nom d'un projet) ; ce qui manque sans défaut sûr ou ne se résout pas rend, à un client MCP,
+une erreur d'outil qui dit la question et ses choix (« Which column should TF-12 move to? ... Choices: Backlog, In
+Progress. »). Un `statusId` inconnu reste une erreur ordinaire. Le serveur passe à 17 outils :
+
+| Outil | Arguments | Action jugée | Pour Cortex |
+| --- | --- | --- | --- |
+| `create_project` | `name` (les mots de la personne), `stack` (Next.js, Spring...), `description`, `identifier` (sinon tiré du nom), `repository` (« new », « none », ou `owner/name`), `repositoryVisibility` (« private », « public ») | `project.create` | fait d'emblée, avec Undo ; demande le nom puis le dépôt d'un projet de code |
+
+Un projet de code sans dépôt dit demande où vit son code : un nouveau dépôt privé (le défaut) ou public, un dépôt
+récent du compte connecté, ou aucun ; un nouveau dépôt n'est proposé que là où TaskForce le crée (GitHub connecté à
+l'espace). Il rend `{summary, project: {id, key, name, repository?}}`. Dans une session déléguée, il n'est jamais
+proposé.
 
 
 **La banque d'évaluations de Cortex** (29/10/2026, R61) : sous `/api/workspaces/{slug}/evals`.
