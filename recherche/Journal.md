@@ -24,6 +24,21 @@ related:
 
 ---
 
+## 2026-11-05 : séance n°18, l'atelier de la fenêtre
+
+**Fait** : la Présidence a essayé la 1.10.0 sur l'app desktop 1.7.0, puis a demandé une app « same as Claude Code », sans maquette, Jobs tranchant tout et elle validant d'avance ([PV](./conseil/seances/2026-11-05-atelier-fenetre.md)).
+
+**Trouvé** :
+- `[ÉTABLI]` À « prend OPS-35 et propose moi un resume dans les commentaire stp », Cortex n'a appelé que `add_comment`, sans lire l'issue, et a écrit le résumé d'une itération qu'il n'avait pas lue ; la réponse ne disait pas quel modèle l'avait écrite (incident de confiance, E17).
+- `[ÉTABLI]` La fiche d'issue recouvre la barre ; la conversation n'a pas de place à elle ; ses conversations ne sont pas dans la barre de gauche.
+- `[DÉDUIT]` Quand la conversation devient l'écran principal, ce qu'elle a lu doit se voir sous chaque réponse, sinon une invention passe pour un résumé.
+
+**Décidé** : R119 à R126, à l'unanimité des cinq : la fenêtre en trois zones (le travail et ses conversations, la conversation, ce qui l'entoure) ; les écrans en volets, entiers ; la conversation jamais vide, jamais seule, avec le modèle et ce qu'il a lu sous chaque réponse ; retirer sans cacher, l'annulation toujours là ; un volet « Progress » ; l'installateur à l'allure de la page de connexion. La structure de Claude Code, l'identité de TaskForce.
+
+**Prochain coup** : TF-J1-9, en trois lots, après la fusion des deux corrections en cours ; E18 mesure la fenêtre avant et après.
+
+---
+
 ## 2026-11-02 : séance n°17, Cortex voit, demande et dit vrai
 
 **Fait** : la Présidence a essayé Cortex sur l'app desktop 1.6.0 (qwen3:8b), puis a soumis au Conseil la piste du secrétariat avant de la lancer ([PV](./conseil/seances/2026-11-02-cortex-voit-demande-dit-vrai.md)).

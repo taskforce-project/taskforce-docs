@@ -56,6 +56,7 @@ related:
 | [E15](#e15--la-voix-se-transcrit-elle-sur-la-machine-juste-et-vite-) | La voix transcrite sur la machine (Conseil, R80) | ~1 j | oui | proposée |
 | [E16](#e16--une-seule-source-pour-le-moteur-de-règles-sans-aller-retour-) | Une seule source pour le moteur de règles (Conseil, R90), en J1 | ~1 j | non | faite : (a) réfutée, (b) tient |
 | [E17](#e17--lindice-de-confiance-se-mesure-t-il-et-monte-t-il-) | L'indice de confiance, mesure de départ à J2 (Conseil, R104) | ~1 j | non | proposée |
+| [E18](#e18--la-fenêtre-raccourcit-elle-le-travail-) | La fenêtre, mesurée avant et après (Conseil, R119 à R124) | ~2 h | non | proposée |
 
 > **L'ordre compte.** E1 avant tout le reste : sans mesure de calibration, **aucune** des autres n'est
 > interprétable. C'est l'inversion proposée dans [`World_Model_Notes.md`](../revues/World-Model.md) §10 —
@@ -789,9 +790,36 @@ sans questionnaire ; la personne, elle, ne voit plus la phrase fausse.
   #483 ; les six échanges sont des cas de la banque (R118). Rejoués sur qwen3:8b sur une copie de la base de dev, une
   note dite « créée » sans outil atteignait encore la personne avant R116 ; après, TaskForce la remplace et l'incident
   est au dossier.
+- 05/11/2026, app desktop 1.7.0, Cortex : à « prend OPS-35 et propose moi un resume dans les commentaire stp », Cortex
+  n'appelle que `add_comment`, sans lire l'issue, et écrit sur elle le résumé d'une itération qu'il n'a pas lue (des
+  fonctions de gestion des utilisateurs, une connexion refaite), en Markdown brut. La réponse ne dit pas quel modèle l'a
+  écrite. Réponse en cours (`fix/replay-1100`) : TaskForce lit l'issue avant tout résumé, et le modèle s'affiche sous
+  chaque réponse ; puis R123 (séance n°18) : ce que le modèle a lu, sous chaque réponse.
+
+## E18 : La fenêtre raccourcit-elle le travail ?
+
+`[statut:: proposée]` · Ouverte le 05/11/2026 · issue du [Conseil, séance n°18](../conseil/seances/2026-11-05-atelier-fenetre.md), R119 à R124
+
+**Hypothèse** `[HYPOTHÈSE]` : avec la conversation au centre et les écrans en volets, la boucle de démo se joue sans
+changer d'écran, la première action utile vient en moins de clics, et l'écran d'arrivée porte moins d'éléments.
+
+**Falsification** : la boucle demande encore un changement d'écran, ou l'un des deux autres nombres augmente.
+
+**Schéma réel** `[ÉTABLI]` : aujourd'hui, une page par écran, la barre en bas, la fiche d'issue par-dessus la page ;
+aucun de ces trois nombres n'est mesuré.
+
+**Protocole** : le secrétariat compte, sur l'app desktop et le seed de dev, avant (1.10.0) puis après (les lots 1 et 2
+de TF-J1-9) : les changements d'écran de la boucle de démo jouée pas à pas ; les clics entre l'ouverture de l'app et la
+première action utile ; les éléments visibles de l'écran d'arrivée. La Présidence joue ensuite la boucle elle-même.
+
+**Métrique** : trois nombres, avant et après.
+
+**Limite** : N = 1 ; le secrétariat connaît le chemin, ses comptes sont un plancher.
+
+**Coût** : ~2 h, avant et après.
 
 ---
 
 **Points d'entrée :** [🔬 R&D](../README.md) · [🤖 Mode recherche](../CLAUDE.md) · [❓ Questions](../Questions-ouvertes.md) · [📖 Notes critiques](../revues/World-Model.md)
 
-**Dernière mise à jour :** 02/11/2026 · **v1.5** · Projet Taskforce, Metz Numeric School 2025-2026
+**Dernière mise à jour :** 05/11/2026 · **v1.6** · Projet Taskforce, Metz Numeric School 2025-2026
