@@ -255,6 +255,17 @@ valeur d'un choix ou une réponse tapée ; 200 avec l'appel tel que le geste con
 question, `pending` pour sa carte, `success` avec `ref` et `target`, `refused`, `error`) ; 404 si le dossier n'est pas
 celui de la personne, 400 si la question est déjà répondue ou la réponse vide.
 
+**MAJ 05/11/2026 : une carte de deux questions au plus** (R115 précisée par la Présidence ; PR #486, pas encore
+fusionnée). Un appel au statut `question` porte `questions` (une ou deux, la carte) au lieu de `question` :
+`{field, header, text, multiple, choices: [{value, label, description, recommended}]}`, quatre choix au plus, le
+recommandé d'abord ; `multiple` dit que plusieurs choix se cochent. La réponse du tour dit les questions, une par
+ligne, sous `> [!taskforce] TaskForce · asks`. `POST /assistant/actions/answer` prend `{tool, record, ref, answers}`,
+une réponse par question (`{field, values, other}` : les valeurs des choix cochés, ce qui est tapé dans « Other » ;
+deux réponses au plus, quatre valeurs au plus) ; 400 si une question n'a pas sa réponse, si une valeur n'est pas un
+choix de la carte, si une question à un seul choix en reçoit deux, si un champ n'est celui d'aucune question de la
+carte, ou si la carte est déjà répondue : rien n'entre alors au dossier. Un client MCP lit les questions d'une carte
+dans l'erreur d'outil, l'une après l'autre (« ... Choices, several possible: bug (recommended). »).
+
 **Les besoins des gestes, et créer un projet dans le MCP** (R115). Chaque geste déclare ce qu'il exige (l'issue, le
 texte d'un commentaire, le nom d'un projet) ; ce qui manque sans défaut sûr ou ne se résout pas rend, à un client MCP,
 une erreur d'outil qui dit la question et ses choix (« Which column should TF-12 move to? ... Choices: Backlog, In
