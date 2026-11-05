@@ -266,6 +266,15 @@ choix de la carte, si une question à un seul choix en reçoit deux, si un champ
 carte, ou si la carte est déjà répondue : rien n'entre alors au dossier. Un client MCP lit les questions d'une carte
 dans l'erreur d'outil, l'une après l'autre (« ... Choices, several possible: bug (recommended). »).
 
+**MAJ 05/11/2026 : ce que le test de la 1.10.0 a montré dans Cortex** (PR #491, pas encore fusionnée). Une réponse de
+`POST /assistant` dit le modèle que la passerelle a appelé (`answer.model`, null pour un repli) et, dans `answer.usage`,
+ce que ce modèle a lu à son dernier appel : `lastPromptTokens` (les tokens de ce prompt, 0 sans appel) et
+`contextWindow` (la fenêtre que la passerelle a donnée à la requête, Ollama seulement, null ailleurs). Le détail d'une
+conversation (`GET /ai/conversations/{id}`) rend `model` pour chaque réponse gardée (V117). La carte d'une suppression
+(`target` d'un appel `delete_issue` au statut `pending`) porte `column`, la colonne de l'issue. Après l'envoi d'une
+carte (`POST /assistant/actions/answer`), les arguments du geste (`input`) portent `answered` : les questions auxquelles
+la personne a répondu, une fois par réponse ; seul le serveur l'écrit.
+
 **Les besoins des gestes, et créer un projet dans le MCP** (R115). Chaque geste déclare ce qu'il exige (l'issue, le
 texte d'un commentaire, le nom d'un projet) ; ce qui manque sans défaut sûr ou ne se résout pas rend, à un client MCP,
 une erreur d'outil qui dit la question et ses choix (« Which column should TF-12 move to? ... Choices: Backlog, In
