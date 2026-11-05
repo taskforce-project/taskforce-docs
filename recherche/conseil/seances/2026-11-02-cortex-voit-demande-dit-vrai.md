@@ -166,6 +166,12 @@ Désaccords conservés :
 - **Preuve en dix jours** : « crée un projet Next.js » demande le nom, puis le dépôt (nouveau ou existant), puis sa
   visibilité, en choix ; « supprime ça » sans cible claire demande laquelle, avec les issues de l'écran en choix.
 - **Signal d'arrêt** : plus de deux questions pour une demande courante, ou la personne abandonne avant la fin.
+- **Précision de la Présidence, le 05/11/2026** : « oui deux question au plus, tu sais on peut faire comme sur Claude
+  en fait genre comme tu me pose les question la ou alors presente sous form d'un truc a cliquer/cocher comme de temps
+  en temps tu proposes ». « Une question à la fois » devient deux questions au plus dans une même carte, à la manière
+  des questions de Claude : un titre court, des choix dits chacun en une ligne, le recommandé en premier, plusieurs
+  cochés quand les réponses ne s'excluent pas, une réponse tapée toujours possible, un seul envoi. Le signal d'arrêt
+  ne change pas. Mise en œuvre : taskforce-fullstack, PR #486.
 
 ### R116. TaskForce dit ce qui a été fait ; le modèle ne l'affirme jamais seul
 
@@ -251,4 +257,4 @@ Mon avis, après la clôture, et non celui du Conseil.
 
 **Points d'entrée :** [Charte](../README.md) · [📓 Journal](../../Journal.md) · [🧰 Gabarits](../../Gabarits.md)
 
-**Dernière mise à jour :** 02/11/2026 · **v1.0** · Projet Taskforce
+**Dernière mise à jour :** 05/11/2026 · **v1.1** · Projet Taskforce
