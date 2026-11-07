@@ -437,6 +437,17 @@ son jeton, `gh agent-task`).
   voit plus dans l'installeur : l'app note la version qu'elle installe (`update-pending.json`, dans son dossier) ; au
   lancement suivant, restée sur la version d'avant, elle le dit dans son journal, et le toast de la version prête
   devient « TaskForce x.y.z didn't install », avec « Restart now ». Pas vu en vrai : il faut deux versions publiées.
+- **Se déconnecter avec une mise à jour prête** (05/11/2026, PR #492) : la déconnexion et la session fermée en ligne
+  redémarraient l'app par `app.relaunch()` puis `app.quit()`. Avec une version téléchargée, `autoInstallOnAppQuit`
+  lançait alors l'installeur en silence, sans `--force-run` : il fermait de force l'instance relancée, qui tourne depuis
+  le dossier de l'app, et ne rouvrait rien ; l'app disparaissait. Depuis, avec une version prête, l'app redémarre par la
+  mise à jour, comme avec « Restart now » (`installNow`), et l'installeur la rouvre ; sinon, simple relance (`restartBy`
+  dans `update-state.ts`, `restartApp` dans `updater.ts`). Le compte s'efface avant le redémarrage : l'app rouverte
+  montre la connexion. Une session fermée en ligne ne démarre plus les mises à jour dans l'app qui quitte : une version
+  téléchargée lors d'un lancement précédent, retrouvée dans le cache pendant l'arrêt, s'installait alors en quittant.
+  Dans electron-updater 6.8.9, `install()` pose `quitAndInstallCalled` avant de lancer l'installeur, même s'il ne part
+  pas, et l'installation à la fermeture ne fait rien quand ce drapeau est posé : elle ne repart ni après `installNow`,
+  ni sur l'app que son repli relance. Pas vu en vrai : il faut deux versions publiées.
 - **Première installation** : l'installeur en un clic (NSIS) garde sa petite fenêtre (l'icône de l'app, une ligne,
   une barre aux couleurs du thème de Windows) ; electron-builder n'y permet que les icônes, déjà la tuile TaskForce.
   Les images d'en-tête et de côté n'existent que dans l'installeur à pages. Options pour une première installation à
