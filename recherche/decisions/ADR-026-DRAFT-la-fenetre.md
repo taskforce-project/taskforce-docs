@@ -24,8 +24,8 @@ related:
 
 ## Statut
 
-Accepté le 05/11/2026. Lot 1 construit le 07/11/2026 (TF-J1-9, branche `feat/window-lot1`, PR #493) ; les lots 2 et 3
-suivent sous la même décision.
+Accepté le 05/11/2026. Lot 1 construit le 07/11/2026 (TF-J1-9, branche `feat/window-lot1`, PR #493, en prod avec la
+1.11.0) ; lot 2 construit le 07/11/2026 (branche `feat/window-lot2`, PR #496) ; le lot 3 suit sous la même décision.
 
 ## Contexte
 
@@ -80,24 +80,35 @@ suivent sous la même décision.
 
 - Chaque page s'affiche dans un volet de largeur variable (480 px au moins à côté de la conversation) ; une page qui
   supposait toute la largeur l'obtient d'un clic. Sous 1 600 px, ouvrir un volet replie la zone de droite ; rouverte à
-  la main, elle prend sur le volet.
-- L'en-tête du volet et celui de la page se répètent tant que les pages ne deviennent pas des volets (lot 2).
+  la main, elle prend sur le volet. Depuis le lot 2, une poignée règle la largeur du volet, retenue pour la personne, et
+  la conversation garde 360 px : en dessous, le volet prend toute la largeur.
+- L'en-tête du volet et celui de la page se répètent encore après le lot 2 (le tableau garde l'en-tête et les onglets de
+  son projet) : à reprendre quand les pages deviennent tout à fait des volets.
 - L'app desktop dessine 52 px en haut (la marge de 8 px et la ligne de 44 px) ; les boutons de Windows s'y posent.
-- Les gestes faits sur leurs cartes (une issue préparée puis créée, une action accordée) sont gardés par
-  `useCortexStore` pour « Changes », et « Undo » y a un seul état pour un même geste. L'archivage ou la suppression
-  depuis la carte de suppression n'y entrent pas encore : la carte garde son résultat pour elle.
+- Les gestes faits sur leurs cartes (une issue préparée puis créée, une action accordée, l'archivage ou la suppression
+  depuis la carte de suppression) sont gardés par `useCortexStore` pour « Changes », et « Undo » y a un seul état pour
+  un même geste. Depuis le lot 2, la carte de suppression tient son état dans le store (`deletions`) : « Changes » le
+  lit, et la carte le garde quand la conversation se replie puis se déplie.
+- L'issue s'ouvre dans le volet, par-dessus l'écran qui la liste, à l'adresse du tableau (`?issue=`), celle des liens
+  qui existaient déjà : la fiche par-dessus la fenêtre a disparu (constat 5 de la revue UX du 01/11/2026). L'écran
+  dessous reste monté, caché, et le retour le retrouve tel qu'il était ; le contenu de la fiche (`IssueDetail`) est le
+  même, déplacé.
+- Chaque état de la fenêtre a son adresse : le chemin (le volet, dont la vue du travail `/{slug}/missions/{runId}`),
+  `?issue=` (l'issue), `?c=` (la conversation) ; retour et avant les parcourent. Une issue ou un projet nommé dans une
+  réponse est un lien vers son volet.
+- Échap referme une chose à la fois (la réponse dépliée, puis l'issue) ; sous `lg`, dans la webapp, les deux barres
+  sont des tiroirs et le volet couvre la conversation.
 - Les tests suivent la fenêtre : la logique dans `lib/window`, le store de la fenêtre, les composants de la fenêtre ;
   les tests des composants retirés partent avec eux.
 
-## Ce qui reste ouvert (lots 2 et 3)
+## Ce qui reste ouvert (lot 3)
 
-- La poignée du volet et sa largeur retenue ; l'issue en volet par-dessus le tableau, avec un retour, à la place de la
-  fiche ; la vue du travail d'une mission ; la conversation et le volet dans l'adresse.
-- L'arrivée (ce qui attend, trois suggestions), le volet « Progress », la ligne grise sous chaque réponse, le retrait du
-  tour guidé.
+- L'arrivée (ce qui attend, trois suggestions), le volet « Progress », la ligne grise sous chaque réponse, le « + » du
+  compositeur, le retrait du tour guidé.
+- La recherche (Ctrl+K) qui cherche aussi les issues ; les en-têtes des pages, qui doublent celui du volet.
 
 ---
 
 **Points d'entrée :** [Décisions du labo](./) · [📓 Journal](../Journal.md) · [Séance n°18](../conseil/seances/2026-11-05-atelier-fenetre.md)
 
-**Dernière mise à jour :** 07/11/2026 · **v1.0** · Projet Taskforce
+**Dernière mise à jour :** 07/11/2026 · **v1.1** · Projet Taskforce
