@@ -30,6 +30,7 @@ tags: [cicd, github-actions, pipeline, devops, docker, ghcr, release, memoire, r
 | Landing Tests | `landing-tests.yml` | push/PR | Tests landing page (Astro) |
 | Sync README Badges | `sync-readme-badges.yml` | push | Mise à jour badges README |
 | Version Management | `version-management.yml` | push | Gestion des tags de version |
+| Desktop - Launch checklist | `desktop-launch-checklist.yml` | manuel | Liste de lancement de l'app desktop sur un runner Windows neuf (R105) : [[Liste_de_lancement]] |
 
 ---
 

@@ -88,7 +88,7 @@ pour l'instant (R91).
 1. les critères de sortie écrits avant ;
 2. la boucle de démo rejouée de bout en bout ;
 3. les tests verts ;
-4. la liste de lancement (installation, mise à jour, sauvegarde et restauration) ;
+4. la [liste de lancement](../08-operations/Liste_de_lancement.md) (installation, mise à jour, sauvegarde et restauration) ;
 5. trois personnes extérieures au moins, dès J2 ;
 6. l'indice de confiance mesuré (E17) ;
 7. une séance du Conseil, puis le go de la Présidence.
