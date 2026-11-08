@@ -57,7 +57,7 @@ l'utilisateur : il refuse de tourner ailleurs que sur un runner hébergé par Gi
 - **Un PC sans outils.** Le runner a Java, Node et PostgreSQL. La liste retire leurs variables et lance tout par chemin absolu, mais une bibliothèque du système qui manquerait à un vrai PC ne se voit que si on la cache exprès, comme la runtime Visual C++.
 - **De vraies données.** Les tables de l'app sont vides sans compte : la copie et sa restauration portent sur le vrai schéma et sur les lignes de la table d'essai.
 - **Le Store et Linux.** La version Microsoft Store et les paquets Linux ne sont pas couverts.
-- **Le paquet d'une version pas encore publiée.** La liste ne prend que ce qui est publié : elle ne prouve l'installeur qui apporte la runtime (1.10.0) qu'une fois celui-ci publié, par un run de 1.9.0 à 1.10.0.
+- **Le paquet d'une version pas encore publiée.** La liste ne prend que ce qui est publié : elle ne prouve l'installeur qui apporte la runtime (1.10.0) qu'une fois celui-ci publié, par un run de 1.9.0 à 1.10.0 : fait le 08/11 (section 4).
 
 ## 4. Résultat du 08/11/2026
 
@@ -65,6 +65,11 @@ Run : https://github.com/taskforce-project/taskforce-fullstack/actions/runs/4251
 l'image qui construit l'app : https://github.com/taskforce-project/taskforce-fullstack/actions/runs/42513905622. Toutes les étapes de la liste passent. Les captures de la fenêtre de
 connexion, avant et après la mise à jour, sont dans l'artefact. Le déclenchement à la main avec ses champs a été essayé
 aussi, de 1.7.0 à 1.8.0 : vert (https://github.com/taskforce-project/taskforce-fullstack/actions/runs/42509970856).
+
+**De 1.9.0 à 1.10.0, une fois publiée** : vert en 3 min 42 s, sur `windows-latest`
+(https://github.com/taskforce-project/taskforce-fullstack/actions/runs/42531976429). L'installeur publié porte la
+runtime Visual C++ : l'étape bloquante passe, la runtime cachée à Windows, jusqu'à la fenêtre de connexion, Java, les
+six outils de PostgreSQL et `initdb`.
 
 **Constat 1, corrigé à partir de la 1.10.0 : le PostgreSQL embarqué a besoin de la runtime Visual C++.** Jusqu'à la
 1.9.0, ni `resources\postgres\bin` ni l'installeur ne l'apportent. Le runner l'a, donc la liste passe. L'étape qui la
@@ -91,8 +96,8 @@ de les mettre à jour soi-même : chaque construction reprend celles du Visual S
 
 Prouvé avant la release : sur une copie des fichiers publiés de 1.9.0, le code de la construction copie ces DLL, puis,
 la runtime cachée, les six outils se chargent, `initdb` crée un cluster, et PostgreSQL démarre et charge pgvector et
-uuid-ossp. Sur `windows-2022`, les DLL viennent de Visual Studio 2022, en 14.44.35211. Ne se prouvera qu'une fois 1.10.0
-publiée : que l'installeur publié porte ces DLL et passe l'étape bloquante, par un run de 1.9.0 à 1.10.0. Le paquet du
+uuid-ossp. Sur `windows-2022`, les DLL viennent de Visual Studio 2022, en 14.44.35211. Prouvé après la publication de
+1.10.0 : l'installeur publié porte ces DLL et passe l'étape bloquante (section 4). Le paquet du
 Store, lui, ne passe pas par cette liste.
 
 **Constat 2, corrigé à partir de la 1.10.0 : le backend ne refusait pas de démarrer sans compte.** Un essai fait en
