@@ -224,7 +224,7 @@ se résout pas parmi ce qui existe dans le projet arrête la création (`success
 réussie), ou si l'objet a bougé (un projet avec des issues ou une page ajoutée, une issue commentée, une note avec une
 page rangée dessous ou un lien d'une autre note).
 
-**Les gestes du chat dans le MCP TaskForce** (02/11/2026, TF-J1-5, ADR-024 ; PR #480, pas encore fusionnée). Une seule surface
+**Les gestes du chat dans le MCP TaskForce** (02/11/2026, TF-J1-5, ADR-024 ; PR #480, en prod avec la 1.10.0). Une seule surface
 d'outils : chaque outil du serveur MCP porte l'action que la table de règles juge, et Cortex se sert des gestes dans le
 backend, au nom de la personne.
 
@@ -247,7 +247,7 @@ chose à défaire) et `target` (l'issue du geste ; pour une suppression demandé
 /projects/{projectId}/issues/{issueId}` prend `unassign` et `clearDueDate` (`true`) : un champ à null ne retire rien
 dans un patch partiel.
 
-**L'écran, et les questions de TaskForce** (04/11/2026, TF-J1-8, R114 et R115 ; PR #484, pas encore fusionnée).
+**L'écran, et les questions de TaskForce** (04/11/2026, TF-J1-8, R114 et R115 ; PR #484, en prod avec la 1.10.0).
 `POST /assistant` prend `screen` (`{projectId, issueId?}`, entiers positifs, 400 sinon) : ce que la personne voit, que le
 serveur relit avec ses droits ; absent, Cortex répond sans l'écran. Un geste à qui il manque ce qu'il exige rend un
 appel au statut `question`, avec `question` (`{field, text, choices: [{value, label, recommended}]}`, le défaut d'abord)
@@ -268,7 +268,7 @@ choix de la carte, si une question à un seul choix en reçoit deux, si un champ
 carte, ou si la carte est déjà répondue : rien n'entre alors au dossier. Un client MCP lit les questions d'une carte
 dans l'erreur d'outil, l'une après l'autre (« ... Choices, several possible: bug (recommended). »).
 
-**MAJ 05/11/2026 : ce que le test de la 1.10.0 a montré dans Cortex** (PR #491, pas encore fusionnée). Une réponse de
+**MAJ 05/11/2026 : ce que le test de la 1.10.0 a montré dans Cortex** (PR #491, en prod avec la 1.11.0). Une réponse de
 `POST /assistant` dit le modèle que la passerelle a appelé (`answer.model`, null pour un repli) et, dans `answer.usage`,
 ce que ce modèle a lu à son dernier appel : `lastPromptTokens` (les tokens de ce prompt, 0 sans appel) et
 `contextWindow` (la fenêtre que la passerelle a donnée à la requête, Ollama seulement, null ailleurs). Le détail d'une
