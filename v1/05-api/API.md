@@ -277,7 +277,7 @@ conversation (`GET /ai/conversations/{id}`) rend `model` pour chaque réponse ga
 carte (`POST /assistant/actions/answer`), les arguments du geste (`input`) portent `answered` : les questions auxquelles
 la personne a répondu, une fois par réponse ; seul le serveur l'écrit.
 
-**MAJ 08/11/2026 : la conversation du lot 3a de la fenêtre** (R123, R124 ; PR #498, pas encore fusionnée).
+**MAJ 08/11/2026 : la conversation du lot 3a de la fenêtre** (R123, R124 ; PR #498, en prod avec la 1.12.0).
 `POST /assistant` prend `attach`, trois au plus (400 au-delà) : ce que la personne joint depuis le compositeur, chaque
 élément `{projectId, issueId?}` (entiers positifs) ; une issue (avec son projet) se lit comme avant un résumé, un projet
 (sans issue) montre son tableau comme l'écran, avec les droits de la personne ; une issue sans projet est ignorée. Une
