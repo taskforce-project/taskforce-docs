@@ -287,9 +287,10 @@ ce qui est irréversible » ([PV](./seances/2026-10-26-premiere-regle.md)).
 | 01/11/2026 | La revue de J0 sur l'app desktop : la porte qui ne demandait pas, la carte de Cortex, la main à l'agent | Restreinte (7) ; Bengio contradicteur | R109 et R113 retenues ; R107, R108, R110, R111 et R112 mises en œuvre sur la saisine, publiées avec la 1.8.0 | [PV](./seances/2026-11-01-revue-j0.md) |
 | 02/11/2026 | Cortex voit, demande et dit vrai, quel que soit le modèle | Restreinte (7) ; Harari contradicteur | R114 à R118 mises en œuvre sur la demande de la Présidence (« oui lance la, passe la au conseil d'abord »), dans l'ordre du Conseil : dire vrai d'abord | [PV](./seances/2026-11-02-cortex-voit-demande-dit-vrai.md) |
 | 05/11/2026 | L'atelier de la fenêtre : la conversation au centre, les écrans en volets, ce que l'agent sait, l'installateur | Restreinte (5), l'équipe de Jobs, qui tranche par délégation ; Ait Si Abbou contradictrice | R119 à R126 à l'unanimité, validées d'avance par la Présidence (« il prend toute les decision possible, je valide tout directement ») ; construites sans maquette | [PV](./seances/2026-11-05-atelier-fenetre.md) |
+| 08/11/2026 | L'atelier de la sobriété : l'arrivée, « Waiting for you », Progress, le banc des modèles, la voix | Restreinte (7), l'équipe de Jobs, qui tranche par délégation, plus Duflo et Harris ; Harris contradicteur | R127 à R132 à l'unanimité (R131 au second tour), confiées à Jobs par la Présidence (« Jobs et equipe UI/UX dessus ») | [PV](./seances/2026-11-08-atelier-sobriete-banc-voix.md) |
 
 ---
 
 **Points d'entrée :** [🔬 Labo](../README.md) · [📋 Protocole](../CLAUDE.md) · [📓 Journal](../Journal.md) · [🧰 Gabarits](../Gabarits.md)
 
-**Dernière mise à jour :** 05/11/2026 · **v1.3** · Projet Taskforce
+**Dernière mise à jour :** 08/11/2026 · **v1.4** · Projet Taskforce

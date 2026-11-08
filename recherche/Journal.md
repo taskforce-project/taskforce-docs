@@ -24,6 +24,20 @@ related:
 
 ---
 
+## 2026-11-08 : séance n°19, l'atelier de la sobriété
+
+**Fait** : la Présidence a ouvert la 1.12.0 sur l'app desktop 1.9.0 et a demandé « comme raycast ou apple », le micro et un banc des modèles ; Jobs et l'équipe UI/UX tranchent ([PV](./conseil/seances/2026-11-08-atelier-sobriete-banc-voix.md)).
+
+**Trouvé** :
+- `[ÉTABLI]` « Waiting for you » lit les notifications non lues : 16 pour 0 demande ouverte dans la copie de la base de la Présidence prise avant la 1.9.0 (comptes seulement).
+- `[ÉTABLI]` Cette copie se restaure sans un message d'erreur, en une seconde, dans une base jetable effacée ensuite : 79 tables, migration V118, 1 540 lignes, pgvector lu. La restauration n'existe pas dans l'app : elle s'est faite à la main, avec le `pg_restore` livré.
+- `[ÉTABLI]` La suite de capacités (huit cas) dit ce qu'un modèle sait faire, pas ce qu'on peut lui confier ; son code tient en deux questions d'exécution mentale.
+- `[DÉDUIT]` Un nombre faux abîme tout ce qui l'entoure : on apprend à ignorer le compteur, puis la vraie demande.
+
+**Décidé** : R127 à R132 ; E15 commence, E19 s'ouvre. Une correction : le secrétariat avait écrit que le micro attendait une décision ; R76 et R80 sont retenues depuis le 30/10.
+
+**Prochain coup** : la construction (TF-J1-10 à TF-J1-12), la release, la recette complète de la Présidence, puis la revue de J1.
+
 ## 2026-11-05 : séance n°18, l'atelier de la fenêtre
 
 **Fait** : la Présidence a essayé la 1.10.0 sur l'app desktop 1.7.0, puis a demandé une app « same as Claude Code », sans maquette, Jobs tranchant tout et elle validant d'avance ([PV](./conseil/seances/2026-11-05-atelier-fenetre.md)).
