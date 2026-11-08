@@ -3,8 +3,8 @@ id: recherche-conseil-avenir
 title: Conseil d'Avenir, charte et règlement
 doc_type: sop
 statut: active
-version: 1.2
-date: "01/11/2026"
+version: 1.5
+date: "08/11/2026"
 auteur: Pierre MICHEL
 review_cycle: quarterly
 tags: [recherche, conseil, prospective, laboratoire]
@@ -17,7 +17,7 @@ related:
 
 # 🏛️ Conseil d'Avenir
 
-**Version :** 1.2 · **Date :** 01/11/2026 · **Président :** Pierre MICHEL
+**Version :** 1.5 · **Date :** 08/11/2026 · **Président :** Pierre MICHEL
 
 <p class="lead">
 Le conseil du laboratoire : vingt-quatre personnalités, simulées à partir de leurs positions publiques sourcées,
@@ -163,6 +163,7 @@ devenu après sa mort, il ne le sait que par le dossier : le secrétariat signal
 | Formation | Qui | Quand |
 | --- | --- | --- |
 | **Restreinte** (par défaut) | 5 à 7 membres, au moins un par pôle, dont un **contradicteur** désigné | Toute question de version future, d'usage ou de marché |
+| **Élargie** | Entre la restreinte et la plénière : dix ou onze membres jusqu'ici, dont un **contradicteur** désigné | À la demande de la Présidence ou sur proposition du secrétariat, comme la revue de la spécification (n°4) et les recettes (n°7, n°8). Inscrite par la Présidence le 08/11/2026 |
 | **Plénière** | Les vingt-quatre, une intervention courte chacun, puis la confrontation entre les positions les plus éloignées | Vision, positionnement, règle zéro, choix structurant |
 | **Duel** | Deux membres aux positions opposées | Une question précise, quand deux thèses documentées s'affrontent |
 | **Audition** | Un membre, questionné par la Présidence | Approfondir un domaine avant une décision |
@@ -293,4 +294,4 @@ ce qui est irréversible » ([PV](./seances/2026-10-26-premiere-regle.md)).
 
 **Points d'entrée :** [🔬 Labo](../README.md) · [📋 Protocole](../CLAUDE.md) · [📓 Journal](../Journal.md) · [🧰 Gabarits](../Gabarits.md)
 
-**Dernière mise à jour :** 08/11/2026 · **v1.4** · Projet Taskforce
+**Dernière mise à jour :** 08/11/2026 · **v1.5** · Projet Taskforce
