@@ -477,7 +477,7 @@ par la Présidence.
   Les deux fichiers sont versionnés, pour que le runner se construise sans JDK ; la CI les régénère et refuse un écart.
   La copie TypeScript du moteur (`rules.ts`, `glob.ts`, `evidence.ts`) disparaît ; ce qui décrit une action de Claude
   Code en faits (`facts.ts`) reste au runner. Les cas partagés de `contracts/` se rejouent contre le Java et contre le
-  module compilé. Mesuré le 02/11/2026 (TF-J1-1, PR #479, pas encore fusionnée) : 391 Ko (127 Ko compressé), chargé en
+  module compilé. Mesuré le 02/11/2026 (TF-J1-1, PR #479, en prod avec la 1.10.0) : 391 Ko (127 Ko compressé), chargé en
   20 à 27 ms, une décision en 11 à 13 µs à chaud, les mêmes décisions que l'ancien moteur sur les 43 actions réelles
   d'E16.
 - Le paquet ne vient jamais du bac à sable : un fichier de règles modifié par l'agent dans sa copie n'a aucun effet
