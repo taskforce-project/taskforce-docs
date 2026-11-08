@@ -56,7 +56,7 @@ related:
 | [E15](#e15--la-voix-se-transcrit-elle-sur-la-machine-juste-et-vite-) | La voix transcrite sur la machine (Conseil, R80, R132) | ~1 j | oui | en cours (08/11) |
 | [E16](#e16--une-seule-source-pour-le-moteur-de-règles-sans-aller-retour-) | Une seule source pour le moteur de règles (Conseil, R90), en J1 | ~1 j | non | faite : (a) réfutée, (b) tient |
 | [E17](#e17--lindice-de-confiance-se-mesure-t-il-et-monte-t-il-) | L'indice de confiance, mesure de départ à J2 (Conseil, R104) | ~1 j | non | proposée |
-| [E18](#e18--la-fenêtre-raccourcit-elle-le-travail-) | La fenêtre, mesurée avant et après (Conseil, R119 à R124) | ~2 h | non | proposée |
+| [E18](#e18--la-fenêtre-raccourcit-elle-le-travail-) | La fenêtre, mesurée avant et après (Conseil, R119 à R124) | ~2 h | non | en cours (08/11) : écrans 0 puis 0, clics 2 puis 2, éléments 48 puis 34 |
 | [E19](#e19--le-banc-prédit-il-le-travail-réel-) | Le banc des modèles prédit-il le travail réel ? (Conseil, R131) | ~2 h | oui | proposée |
 
 > **L'ordre compte.** E1 avant tout le reste : sans mesure de calibration, **aucune** des autres n'est
@@ -799,7 +799,7 @@ sans questionnaire ; la personne, elle, ne voit plus la phrase fausse.
 
 ## E18 : La fenêtre raccourcit-elle le travail ?
 
-`[statut:: proposée]` · Ouverte le 05/11/2026 · issue du [Conseil, séance n°18](../conseil/seances/2026-11-05-atelier-fenetre.md), R119 à R124
+`[statut:: en cours]` · Ouverte le 05/11/2026 · Mesurée le 08/11/2026 · issue du [Conseil, séance n°18](../conseil/seances/2026-11-05-atelier-fenetre.md), R119 à R124 · résultats [plus bas](#résultats-du-08112026)
 
 **Hypothèse** `[HYPOTHÈSE]` : avec la conversation au centre et les écrans en volets, la boucle de démo se joue sans
 changer d'écran, la première action utile vient en moins de clics, et l'écran d'arrivée porte moins d'éléments.
@@ -818,6 +818,88 @@ première action utile ; les éléments visibles de l'écran d'arrivée. La Pré
 **Limite** : N = 1 ; le secrétariat connaît le chemin, ses comptes sont un plancher.
 
 **Coût** : ~2 h, avant et après.
+
+### Résultats du 08/11/2026
+
+Comptés par le secrétariat sur `taskforce-v1.10.0` (avant) et sur `origin/dev` à `be902e6f`, la 1.12.0, avec les trois
+lots de TF-J1-9 (après). Un changement d'écran : le contenu principal remplacé par la page d'une autre route.
+
+| Nombre | Avant (1.10.0) | Après (1.12.0) |
+| --- | :--: | :--: |
+| 1. Changements d'écran de la boucle, jouée par la conversation | 0 | 0 |
+| La même boucle, en déléguant depuis l'issue | 1 | 0 |
+| 2. Clics jusqu'à la première action utile, une issue créée par Cortex | 2 | 2 |
+| Le chemin le plus court qui crée quelque chose, un projet par sa fenêtre | 1 | 1 |
+| 3. Éléments interactifs de l'arrivée, sur toute la fenêtre, app desktop | 48 | 34, provisoire |
+| Les mêmes, dans la webapp | 49 | 34, provisoire |
+
+**Ce que ces nombres font à l'hypothèse** `[DÉDUIT]` : elle n'est pas réfutée, et elle n'est pas validée.
+- La falsification n'est pas atteinte : à la 1.12.0 la boucle se joue sans changer d'écran, les clics n'augmentent pas et
+  les éléments baissent.
+- « Sans changer d'écran » tient, mais la 1.10.0 le permettait déjà : depuis TF-J1-5 (`taskforce-fullstack` #480), la
+  boucle se jouait entièrement depuis la barre. Sur ce chemin, la fenêtre n'a rien raccourci. Elle gagne sur l'autre :
+  déléguer depuis l'issue ne remplace plus la conversation.
+- « En moins de clics » ne tient pas : le nombre n'a pas bougé, contre ce que l'hypothèse annonçait. Le champ n'a le
+  focus à l'arrivée ni avant ni après, et les trois suggestions de l'arrivée lisent, elles ne créent rien.
+- « Moins d'éléments » tient : 14 de moins, soit 29 %. Le tableau de bord quitte l'arrivée (25 éléments) et la ligne du
+  haut en perd 4 ; la barre de gauche en gagne 5, la conversation 4, la zone de droite 6.
+- Le « après » du nombre 3 est provisoire : l'arrivée est refaite pour la prochaine release, et sera recomptée alors.
+
+**La marche**, lue dans le code de chaque version `[ÉTABLI]` :
+
+| Étape | 1.10.0 | 1.12.0 |
+| --- | --- | --- |
+| Ouverture | `/` va sur `/{slug}/dashboard` (`app/(protected)/page.tsx`) : le tableau de bord, la barre en bas (`CommandBar`), la conversation repliée | `/` va sur `/{slug}` (`homePath`) : la conversation seule avec `Arrival`, le compositeur en bas ; `useLastPlace` rouvre le dernier endroit s'il y en a un |
+| Créer depuis Cortex | clic dans la barre, la phrase, Entrée : `send` déplie la conversation au-dessus de la page ; clic sur « Create issue » (`IssueDraftCard`, `approveAction`) | clic dans le compositeur, la phrase, Entrée : même carte, dans la colonne ; l'adresse gagne `?c=`, la page ne change pas |
+| Déléguer | clic dans la barre, la phrase, Entrée : `delegate_issue` attend l'accord ; clic sur « Approve and run » (`PendingAction`), puis `MissionInChat` | pareil, dans la colonne |
+| Répondre aux demandes | un clic sur « Allow for this mission » par demande (`PendingApproval`), dans la conversation | pareil |
+| Lire le résultat | `MissionResultCard`, dans la conversation | pareil |
+| Apply | clic sur « Apply », sur la carte | pareil |
+| Routes | aucune : ni `router` ni lien interne dans `components/agent/`, `delegate-agent-control`, `mission-result-card`, `run-activity` | aucune sans geste : seuls les liens (`PaneLink`) ouvrent un volet, à côté de la conversation |
+| Déléguer depuis l'issue | « Created OPS-37 » est du texte. La ligne du projet dans la colonne « Operations » ouvre `/projects/{id}`, qui remplace le tableau de bord (1 changement) ; la fiche vient par-dessus (`setSelectedIssue`), puis Assignee et l'agent ; demandes, résultat et Apply sur la fiche | la clé est un lien (`LinkedText`, `openIssue`) : l'issue s'ouvre dans le volet, à côté de la conversation (0 changement) ; le reste sur l'issue |
+| Première action utile | clic dans la barre, la phrase, Entrée, clic sur « Create issue » : 2 clics ; ou « Create an operation », le nom (le focus y est), Entrée : 1 clic | clic dans le compositeur, la phrase, Entrée, clic sur « Create issue » : 2 clics ; ou « + » à côté de Projects, le nom, Entrée : 1 clic |
+
+Une boucle complète coûte les mêmes clics aux deux versions : 5, plus un par demande de l'agent.
+
+**L'arrivée, zone par zone** `[ÉTABLI]` :
+
+| Zone | 1.10.0 | 1.12.0 |
+| --- | :--: | :--: |
+| Barre de gauche | 11 (12 dans la webapp, avec Members) | 16 |
+| Ligne du haut | 6 | 2 |
+| Page : en-tête 2, trois colonnes 9, Analytics 14 | 25 | 0 |
+| Barre du bas, ou conversation | 6 | 10 |
+| Zone de droite | 0 | 6 |
+| **Total** | **48** (webapp **49**) | **34** |
+
+Méthode : le vrai `AppShell` rendu sous vitest, avec les mêmes données des deux côtés (deux projets, deux conversations,
+une mission au travail, un résultat à juger, une demande d'accord) et le même sélecteur (boutons, liens, champs, rôles
+interactifs, hors `hidden`, `aria-hidden` et `inert`). À la 1.10.0, l'arrivée est la vraie page du tableau de bord, avec
+ses quatre cartes par défaut. Le fichier de mesure était temporaire, jamais commité. Le sélecteur seul donne 50 (webapp
+51) à la 1.10.0 : on retire le bouton de recherche pour téléphone, caché à cette largeur, et la page courante du fil
+d'Ariane, qui n'est pas un contrôle. À la 1.12.0, il donne 34, le nombre du lot 3a retrouvé ; deux de ces 34 sont les
+« Delete this conversation », qui n'apparaissent qu'au survol.
+
+Vu dans un navigateur, sur une page temporaire de chaque version (effacée), dans un 2e conteneur, avec ces données, à
+1 440 x 900 : 51 à la 1.10.0, dont 1 caché et 1 qui n'est pas un contrôle, soit 49, dont 1 sous le pli ; 34 à la 1.12.0,
+tous à l'écran. Aux deux versions, le focus reste sur la page, pas sur le champ. À 1 360 x 860, la taille d'ouverture de
+l'app desktop, un volet ouvert à la 1.12.0 laisse la conversation à sa place, sur 552 px.
+
+**Limites de cette mesure** `[ÉTABLI]` :
+- La fenêtre connectée n'a été vue sur aucune version : aucun serveur de connexion ne tournait, et le secrétariat ne
+  saisit pas de mot de passe. Les nombres 1 et 2 sont lus dans le code, pas joués. Reste à faire : la Présidence joue la
+  boucle elle-même, comme le protocole le dit.
+- Le seed de dev est remplacé par des données fixes. Les données comptent : à la 1.10.0, chaque issue en file et chaque
+  signal récent ajoutent un lien ; à la 1.12.0, chaque conversation et chaque mission de la barre de gauche.
+- L'écran compté à la 1.12.0 est celui d'une conversation neuve ; qui revient retrouve sa dernière conversation et son
+  volet (R123).
+- Cortex peut poser une question avant sa carte (R115) : un clic de plus, aux deux versions.
+- Le tour guidé de la 1.10.0 n'est pas compté : il ajoute un clic (ou Échap) à la première arrivée d'un compte qui n'a
+  pas fait le parcours en ligne, et il n'existe plus à la 1.12.0.
+- Au clavier, à la 1.12.0, Ctrl+K puis « Ask Cortex » remplit le compositeur et y met le focus : un clic de moins pour qui
+  connaît le raccourci.
+- Avec moins de 840 px de place, ou en pleine largeur, le volet couvre la conversation : déléguer depuis l'issue coûte
+  alors le changement d'écran gagné plus haut.
 
 ---
 
@@ -843,4 +925,4 @@ première action utile ; les éléments visibles de l'écran d'arrivée. La Pré
 
 **Points d'entrée :** [🔬 R&D](../README.md) · [🤖 Mode recherche](../CLAUDE.md) · [❓ Questions](../Questions-ouvertes.md) · [📖 Notes critiques](../revues/World-Model.md)
 
-**Dernière mise à jour :** 08/11/2026 · **v1.7** · Projet Taskforce, Metz Numeric School 2025-2026
+**Dernière mise à jour :** 08/11/2026 · **v1.8** · Projet Taskforce, Metz Numeric School 2025-2026
