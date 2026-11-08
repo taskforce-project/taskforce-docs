@@ -178,9 +178,9 @@ Variante ciblée : « analyse ça comme *X* », puis « maintenant démonte-le c
 
 ### Le Conseil d'Avenir, à chaque session du labo
 
-Le comité juge une idée ; le **Conseil d'Avenir** cherche ce qu'il faut construire ensuite. Vingt et une
-personnalités, simulées à partir de leurs positions publiques sourcées, en quatre pôles (Impulsion,
-Pont, Harmonie, Science). Règlement complet : [`conseil/README.md`](./conseil/README.md).
+Le comité juge une idée ; le **Conseil d'Avenir** cherche ce qu'il faut construire ensuite. Vingt-quatre
+personnalités, simulées à partir de leurs positions publiques sourcées, en cinq pôles (Impulsion,
+Pont, Harmonie, Science, Design). Règlement complet : [`conseil/README.md`](./conseil/README.md).
 
 - **Il siège à chaque session** : en ouverture si la session pose une question d'avenir, sinon en
   clôture, pour juger ce que la session a produit. Formation restreinte par défaut (5 à 7 membres, un
