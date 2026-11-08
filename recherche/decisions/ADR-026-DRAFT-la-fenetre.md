@@ -28,7 +28,8 @@ Accepté le 05/11/2026. Lot 1 construit le 07/11/2026 (TF-J1-9, branche `feat/wi
 1.11.0) ; lot 2 construit le 07/11/2026 (branche `feat/window-lot2`, PR #496) ; le lot 3 suit sous la même décision,
 en deux moitiés : le volet « Progress » (lot 3b, R125) construit le 08/11/2026 (branche `feat/window-lot3-progress`,
 PR #497), et la conversation (lot 3a, R123 et R124) construite le 08/11/2026 (branche
-`feat/window-lot3-conversation`, PR #498).
+`feat/window-lot3-conversation`, PR #498). Les lots 2 et 3 sont en prod avec la 1.12.0 et la desktop 1.9.0 depuis le
+08/11/2026 (PR #499).
 
 ## Contexte
 
