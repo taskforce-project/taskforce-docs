@@ -66,7 +66,8 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | AnalyticsController | `/api/workspaces/{slug}/analytics` | ✅ |
 | AnalysisController | `/api/workspaces/{slug}` (→ `/analysis`, `/projects/{id}/brief`, `/priorities/{id}`) | ✅ |
 | AssistantController | `/api/workspaces/{slug}/assistant` (→ `POST` une question à Cortex, avec l'écran de la personne depuis R114, `POST /actions/execute` l'accord d'une action qu'il a proposée, `POST /actions/undo` défaire ce qu'il a créé, `POST /actions/answer` la réponse à une question de TaskForce, R115) | ✅ |
-| EvalController | `/api/workspaces/{slug}/evals` (→ la banque d'évaluations de Cortex : ses cas, ses rejeux, son interrupteur) | ✅ |
+| EvalController | `/api/workspaces/{slug}/evals` (→ la banque d'évaluations de Cortex : ses cas, ses rejeux, son interrupteur, son histoire) | ✅ |
+| CortexSourcesController | `/api/workspaces/{slug}/assistant/sources` (→ ce que Cortex peut lire dans l'espace, compté et daté, R125) | ✅ |
 | ModelCapabilityController | `/api/workspaces/{slug}/ai/models` (→ ce que sait faire chaque modèle servi : la table, une mesure cas par cas, le modèle de Cortex choisi dans la webapp ; 04/11/2026, R113) | ✅ |
 | PersonalAccessTokenController | `/api/users/me/tokens` (→ `GET` liste sans valeur, `POST` création, la valeur n'est rendue qu'ici, `DELETE /{id}` révocation) : jetons personnels, refusés partout sauf sur le serveur MCP (lot 5) | ✅ |
 | McpServerController | `/api/workspaces/{slug}/mcp` (→ `POST` JSON-RPC 2.0, `GET` et `DELETE` 405) : serveur MCP de l'instance, 17 outils (les gestes de TF-J1-5 le 02/11/2026 : `update_issue` étendu, `delegate_issue`, `get_mission`, `delete_issue` ; `create_project` avec R115, le 04/11/2026) ; réponse JSON-RPC, pas l'enveloppe `ApiResponse` (lot 5) ; `check_checklist_item` (`projectId`, `issueId`, `itemId`, `done`) coche ou décoche une ligne de la checklist, rejugé comme le `PATCH` de la ligne, et `get_issue` rend la checklist avec les ids (01/11/2026) | ✅ |
@@ -303,6 +304,12 @@ proposé.
 - `POST /runs/{runId}/cases/{caseId}` : rejoue et note un cas, une seule fois ; le quota (409) et le frein de débit
   (429) de l'IA valent comme pour une réponse.
 - `GET /runs/{runId}` : le rejeu et la note de chaque cas, critère par critère.
+- `GET /history` (08/11/2026, R125, volet « Progress ») : `runs`, les cent derniers rejeux du plus ancien au plus
+  récent (`model` demandé, `answeredBy` lu dans la première note d'un rejeu `default`, `startedAt`, `finishedAt`,
+  `total`, `graded`, `passed`) ; `cases`, les cas actifs du plus récent au plus ancien (`question`, `askedOn`,
+  `addedAt`, `mine`, `origin` : `kind` vaut `incident` quand le dossier de la réponse garde l'incident de confiance
+  d'E17, avec `said` et `shown`, `answer` pour une réponse, `unknown` sans dossier ; `grades`, la note du cas à chaque
+  rejeu, dans l'ordre des rejeux). Tout membre de l'espace.
 - `PUT /settings`, corps `{enabled}` : propriétaire ou admin. Coupée, la banque ne prend plus de cas ; les siens
   restent rejouables.
 
@@ -314,8 +321,10 @@ répond 400.
 - `GET` : la table de l'instance : `provider` (`OLLAMA`, `OPENAI`, `ANTHROPIC`, ou null sans IA ; jamais une adresse
   ni une clé), `instanceModel`, `choice` (le modèle de Cortex choisi par la personne), `current`, `suiteVersion`, les
   `capabilities` et les `cases` de la suite, une ligne par modèle de conversation servi (`scores` : `passed`, `measured`,
-  `total`, `capable`, `heldWords` pour le contexte, `measuredAt`), `proposals` (le premier capable de chaque
-  capacité) et `proposed` (le premier capable de tout). La table vaut pour l'instance, pas pour l'espace.
+  `total`, `capable`, `heldWords` pour le contexte, `measuredAt` ; depuis le 08/11/2026, `card`, ce que dit la fiche
+  du modèle chez Ollama : `parameters`, `contextWindow`, `tools`, null ailleurs, une description et jamais une note,
+  R125), `proposals` (le premier capable de chaque capacité) et `proposed` (le premier capable de tout). La table vaut
+  pour l'instance, pas pour l'espace.
 - `POST /runs`, corps `{model}` : ouvre une mesure d'un modèle servi (400 sinon, avec la liste des modèles servis).
 - `POST /runs/{runId}/cases/{caseKey}` : rejoue et note un cas, une seule fois ; le quota (409) et le frein de débit
   (429) de l'IA valent comme pour une réponse ; `promptTokens` dit la taille du prompt.
@@ -326,6 +335,14 @@ TaskForce (R118 ; un modèle servi, sinon 400). La réponse porte `escalation` (
 la banque dit que le modèle de Cortex échoue à ce genre de demande et qu'un autre fait mieux, et `sentTo` après un tel
 clic. `GET /delivery/providers` dit `trial` pour l'agent à l'essai de R51 (`taskforce-agent`), absent de la liste d'un
 projet qui a un dépôt ; un commentaire porte `via`, l'agent qui l'a écrit pour son auteur.
+
+**Ce que Cortex peut lire dans un espace** (08/11/2026, R125, volet « Progress ») : `GET
+/api/workspaces/{slug}/assistant/sources` (`CortexSourcesController`), pour tout membre. `sources`, dans cet ordre :
+`projects`, `issues`, `comments`, `notes`, `documents`, `connectors`, chacune avec `count` et `changedAt` (le
+changement le plus récent, null sans aucune). Les droits sont ceux des lectures de Cortex : les projets que la personne
+voit et ce qu'ils portent (les issues archivées et leurs commentaires ne comptent pas), les notes du Brain OS qu'elle lit
+(`NOTE` pour les notes, les autres types pour les documents), les intégrations natives et les serveurs MCP de l'espace.
+Des contenus, jamais l'activité de l'agent (R57).
 
 **Cycles / Pages / Teams — alignés ✅** (vérifié 28/08/2026) — `CycleController` (`CycleController.java:33`),
 `PageController` (`PageController.java:39`) et `TeamController` (`TeamController.java:33`) portent tous
