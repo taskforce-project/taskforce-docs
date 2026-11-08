@@ -764,7 +764,7 @@ partir de J2.
 d'arrêt de R104).
 
 **Schéma réel** `[ÉTABLI]` : les dossiers de mission gardent les décisions, les accords et les tests ; aucun des neuf
-signaux n'est calculé aujourd'hui. Depuis TF-J1-8 (R116, `taskforce-fullstack` #483, pas encore fusionnée), chaque
+signaux n'est calculé aujourd'hui. Depuis TF-J1-8 (R116, `taskforce-fullstack` #483, en prod avec la 1.10.0), chaque
 phrase de Cortex que TaskForce remplace, parce qu'elle annonçait une action sans son résultat d'outil, entre au dossier
 de la réponse comme incident de confiance : un événement `note` signé du serveur (`incident: trust`, `experiment: E17`),
 avec la phrase fausse, ce que TaskForce a montré et les outils du tour. Ces incidents se comptent depuis les dossiers,
