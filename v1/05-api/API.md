@@ -293,6 +293,14 @@ titre, jokers échappés ; coupé à 100 caractères) et `limit` (8 par défaut,
 exacte d'abord puis les dernières changées ; sans `q`, les dernières changées. Tout membre de l'espace ; un non-membre est
 refusé.
 
+**MAJ 08/11/2026 : ce qui attend vraiment la personne, et les cas ratés d'un modèle** (R128, R130 ; PR #503, pas encore fusionnée).
+Nouvelle lecture : `GET /api/workspaces/{slug}/delivery/approvals/open` (`DeliveryController`) :
+`ApiResponse<List<DeliveryOpenApprovalResponse>>`, `{runId, issueId, issueKey, issueTitle, projectId, requests}`, une
+ligne par mission, celle qui attend depuis le plus longtemps d'abord : les demandes de validation encore ouvertes de la
+personne connectée (qui a délégué), pas échues, sur une mission en cours dont le runner donne signe de vie, dans les
+projets qu'elle voit ; tout membre de l'espace, un non-membre est refusé. `GET /ai/models` : chaque ligne porte
+`failedCases`, les clés des cas ratés à leur dernière note, dans l'ordre de la suite.
+
 **Les besoins des gestes, et créer un projet dans le MCP** (R115). Chaque geste déclare ce qu'il exige (l'issue, le
 texte d'un commentaire, le nom d'un projet) ; ce qui manque sans défaut sûr ou ne se résout pas rend, à un client MCP,
 une erreur d'outil qui dit la question et ses choix (« Which column should TF-12 move to? ... Choices: Backlog, In
