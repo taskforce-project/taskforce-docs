@@ -53,7 +53,7 @@ related:
 | [E12](#e12--un-petit-modèle-affiné-bat-il-le-modèle-de-base-avec-recherche-) | Un petit modèle affiné contre le modèle de base avec recherche (Conseil, R62) | ~1,5 j | oui | proposée |
 | [E13](#e13--le-spécialiste-gagne-t-il-du-temps-sur-un-vrai-dossier-) | Le temps du spécialiste sur un vrai dossier (Conseil, R63), à J8 | ~1 j | oui | proposée |
 | [E14](#e14--la-promesse-se-redit-elle-en-une-phrase-) | La promesse redite en une phrase (Conseil, R65), à J8 | ~2 h | non | proposée |
-| [E15](#e15--la-voix-se-transcrit-elle-sur-la-machine-juste-et-vite-) | La voix transcrite sur la machine (Conseil, R80, R132) | ~1 j | oui | en cours (08/11) |
+| [E15](#e15--la-voix-se-transcrit-elle-sur-la-machine-juste-et-vite-) | La voix transcrite sur la machine (Conseil, R80, R132) | ~1 j | oui | en cours : mesurée sur voix de synthèse (08/11), la recette décide |
 | [E16](#e16--une-seule-source-pour-le-moteur-de-règles-sans-aller-retour-) | Une seule source pour le moteur de règles (Conseil, R90), en J1 | ~1 j | non | faite : (a) réfutée, (b) tient |
 | [E17](#e17--lindice-de-confiance-se-mesure-t-il-et-monte-t-il-) | L'indice de confiance, mesure de départ à J2 (Conseil, R104) | ~1 j | non | proposée |
 | [E18](#e18--la-fenêtre-raccourcit-elle-le-travail-) | La fenêtre, mesurée avant et après (Conseil, R119 à R124) | ~2 h | non | en cours (08/11) : écrans 0 puis 0, clics 2 puis 2, éléments 48 puis 34 |
@@ -577,9 +577,100 @@ machine ; le texte rendu comparé mot pour mot au texte dit.
 
 **Métrique** : l'erreur par mot (WER) sur les vingt commandes, et le délai entre le second clic et le texte affiché.
 
-**Limite** : une seule voix et une seule machine ; le modèle de transcription reste à choisir.
+**Limite** : une seule voix et une seule machine ; le modèle de transcription est choisi plus bas.
 
 **Coût** : ~1 j (le modèle sur la machine, puis la mesure).
+
+### Résultats du 08/11/2026 : voix de synthèse, un plancher et pas le résultat
+
+**Verdict** `[ÉTABLI]` sur voix de synthèse : le seuil tient, avec **Parakeet TDT 0.6b v3 (int8) par `sherpa-onnx-node`**. Le moteur
+est choisi et construit (R132, `desktop/src/voice.ts`). L'expérience reste **en cours** : la mesure qui décide est la dictée
+de la Présidence à la recette, avec sa voix, son micro et sa pièce.
+
+**Ce qui est mesuré** : les vingt commandes ci-dessous, dites par les voix Windows installées (`System.Speech` : Hortense en
+français, Zira et David en anglais, soit 30 fichiers), passées par ffmpeg en 16 kHz mono, avec 0,6 s de silence avant et après.
+Machine de la Présidence : Core 7 240H (16 processeurs logiques), 32 Go, RTX 5070 Laptop, Windows 11. L'erreur compare mot pour
+mot, après minuscules et ponctuation retirée, les accents comptés. D'autres travaux tournaient sur la machine : les délais ne
+sont pas ceux d'une machine au repos, et la seconde série est la plus chargée.
+
+Les dix commandes en français :
+
+1. Crée une issue pour la page de prix, pour vendredi.
+2. Quelles issues sont bloquées ?
+3. Qu'est-ce qui a changé dans le projet site web cette semaine ?
+4. Résume l'issue de connexion : où elle en est et ce qu'il reste à faire.
+5. Où en est la mission sur l'issue de facturation ?
+6. Crée un projet qui s'appelle application mobile.
+7. Assigne le bug du paiement à Marie.
+8. Déplace l'issue de recherche dans terminé.
+9. Ajoute un commentaire sur l'issue d'accueil : il nous faut une nouvelle maquette.
+10. Écris une note sur la réunion avec l'équipe commerciale.
+
+Les dix en anglais :
+
+1. Create an issue for the pricing page, due on Friday.
+2. Which issues are blocked?
+3. What changed in the website project this week?
+4. Summarize the login issue: where it stands and what is left to do.
+5. Where does the mission on the billing issue stand?
+6. Create a project called mobile app.
+7. Assign the checkout bug to Marie.
+8. Move the search issue to done.
+9. Add a comment to the onboarding issue: we need a new design.
+10. Write a note about the meeting with the sales team.
+
+**Les moteurs, modèle déjà chargé** (délai de la transcription seule, processeur seul) :
+
+| Moteur et modèle | Téléchargement | Erreur fr | Erreur en | Délai médian (max), 1re série | 2e série, plus chargée | Mémoire au pic |
+| --- | --- | --- | --- | --- | --- | --- |
+| **sherpa-onnx, Parakeet v3 int8, 4 fils** | 671 Mo | **3,0 %** (3/99) | **1,8 %** (3/168) | **401 ms** (541) | 708 ms (1 341) | 874 Mo |
+| sherpa-onnx, Parakeet v3 int8, 2 fils | idem | 3,0 % | 1,8 % | 532 ms (771) | 798 ms (1 607) | 877 Mo |
+| sherpa-onnx, Parakeet v3 int8, 1 fil | idem | 3,0 % | 1,8 % | 755 ms (1 031) | 1 035 ms (1 348) | 872 Mo |
+| sherpa-onnx, Parakeet v3 int8, 8 fils | idem | 3,0 % | 1,8 % | 593 ms (742) | 903 ms (1 190) | 875 Mo |
+| sherpa-onnx, Whisper small int8, 4 fils | 375 Mo | 11,1 % (11/99) | 0,0 % | 1 301 ms (2 283) | 1 668 ms (3 581) | 812 Mo |
+| sherpa-onnx, Whisper base int8, 4 fils | 161 Mo | 14,1 % (14/99) | 2,4 % | 280 ms (517) | 453 ms (869) | 414 Mo |
+| whisper.cpp 1.9.2, small q5_1, 4 fils | 190 Mo | 11,1 % | 0,0 % | 7 121 ms (8 271), chargement compris | | 481 Mo |
+| whisper.cpp 1.9.2, base q5_1, 4 fils | 60 Mo | 15,2 % | 2,4 % | 2 595 ms (3 149), chargement compris | | 214 Mo |
+| whisper.cpp 1.9.2, large-v3-turbo q5_0, 8 fils, français seul | 574 Mo | 0,0 % (0/99) | non mesuré | 29 791 ms (38 482), chargement compris | | 811 Mo |
+
+Non mesuré : transformers.js dans la fenêtre. `[DÉDUIT]` Whisper small y garderait son erreur française, le modèle étant le même ;
+sans carte graphique, il retombe sur WebAssembly ; et il demande d'ouvrir la politique de contenu de l'app (`wasm-unsafe-eval`, Hugging
+Face en `connect-src`). Les binaires CUDA de whisper.cpp ne servent que les cartes NVIDIA et pèsent jusqu'à 460 Mo : ils n'aident pas
+les ordinateurs des autres.
+
+**Par le vrai chemin de l'app**, le chiffre le plus proche de la recette : le compositeur réel (2e conteneur), la coque réelle
+(`voice.ts`, `voice-worker.ts`, `preload.ts`, un Electron 44 du worktree), chaque fichier joué dans le faux micro de Chromium,
+puis capture, AudioWorklet, filtre vers 16 kHz, IPC et processus de transcription, mesuré du second clic au texte affiché :
+français **3,0 %** (3/99), délai médian **568 ms** (max 692) ; anglais **1,2 %** (2/168), délai
+médian **584 ms** (max 820), modèle chargé pendant l'écoute comme au vrai usage.
+
+**Les autres relevés sur Parakeet** :
+- avec un bruit rose constant (-48 dB en moyenne pour une voix à -22 dB) : la même erreur (3,0 % et 1,8 %) ;
+- le silence pur et le bruit seul rendent un texte vide : aucune phrase inventée ;
+- 148,8 s de dictée en français : 11,1 s de calcul, 2,3 Go au pic. Une écoute se referme donc seule après deux minutes ;
+- chargement du modèle : 1,6 à 3,6 s, 7,9 s une fois à froid. Il se charge au premier clic, pendant que la personne parle ;
+- l'erreur restante est faite d'homophones (« Créer » pour « Crée », « Écrit » pour « Écris », « terminée ») et d'un nom coupé en deux
+  (« A sign »), ce qui se corrige dans le compositeur.
+
+**Pourquoi Parakeet par sherpa-onnx**, au-delà des chiffres :
+- le seul à tenir le seuil en français et en anglais sans réglage ni carte graphique : même sur un seul fil, moins de 1,4 s ;
+- rien de nouveau à exécuter : cinq bibliothèques natives (une N-API, ONNX Runtime) chargées dans un `utilityProcess`, **aucun
+  `.exe`** de plus, contre le paquet de `whisper-cli`, de ses outils et de ses DLL ; l'app n'est pas signée et un antivirus l'a déjà
+  signalée ;
+- ce qu'il ajoute à l'installeur : 23 Mo sur le disque sous Windows, environ 9 Mo compressés ; 32 Mo sous Linux ;
+- ce qu'il coûte : **671 Mo une fois**, au premier clic, la taille dite avant, vérifiés au SHA-256 ; 96 s pour les 628 Mo restants après une reprise,
+  sur la connexion de la Présidence ; 0,75 à 0,9 Go de mémoire pendant l'usage, rendus après trois minutes sans dictée ;
+- Linux : vérifié en conteneur (Node 22) : chargement sans `LD_LIBRARY_PATH` (RUNPATH `$ORIGIN`), glibc 2.32 au moins, une commande
+  française et une anglaise transcrites ;
+- version du Microsoft Store : le paquet se construit, sans micro : il faudrait y déclarer la capacité, ce qui ne s'essaie pas sans
+  l'installer.
+
+**Limite** : voix de synthèse, sans accent et sans hésitation ; une seule machine ; un chiffre juste sur Hortense ne promet rien
+sur une dictée rapide dans une pièce bruyante.
+
+**À faire à la recette** : la Présidence dicte les vingt commandes ; le texte rendu se compare à ces listes, et `desktop.log` porte le
+délai du moteur à chaque dictée (`voice: transcribed 4.2 s of audio in 612 ms`, jamais le texte). Sous le seuil, on garde ; au-dessus,
+la falsification s'applique.
 
 ## E16 : Une seule source pour le moteur de règles, sans aller-retour ?
 

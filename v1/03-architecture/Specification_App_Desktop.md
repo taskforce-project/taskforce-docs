@@ -311,6 +311,16 @@ les vecteurs manquants ou périmés, ce qui couvre le poste où Ollama démarre 
 **Règle de conception.** Tout ce qui n'a pas besoin d'un LLM n'en utilise pas : tri, filtres, analytics, liens,
 historique. L'IA reste une aide, jamais un point de passage obligé.
 
+**La voix (08/11/2026, R80, R132, E15).** Le micro du compositeur enregistre dans la fenêtre ; la transcription tourne sur
+la machine, hors du processus principal et hors de la fenêtre : un `utilityProcess` (`desktop/src/voice-worker.ts`) charge
+`sherpa-onnx-node` (npm, binaires N-API précompilés) et Parakeet TDT 0.6b v3 en int8 (NVIDIA, CC BY 4.0), qui comprend le
+français et l'anglais sans réglage. Le modèle (671 Mo) se télécharge une fois, au premier clic, depuis une révision figée de
+Hugging Face par `net.fetch`, chaque fichier vérifié au SHA-256, repris avec `Range` après une coupure, rangé sous
+`<userData>/voice/<id>` (`desktop/src/voice.ts`). Il se charge au premier clic, pendant que la personne parle, et le processus
+s'arrête après trois minutes sans dictée. Le journal ne garde que des durées (« voice: transcribed 4.2 s of audio in 612 ms »),
+jamais le texte. Les binaires natifs sont dépaquetés de l'archive (`asarUnpack`) ; ni `LD_LIBRARY_PATH` ni `.exe` de plus. La
+version du Microsoft Store n'a pas de micro : le pont `voice` n'y existe pas.
+
 ### 5.5 Agents de code
 
 **Claude Code, lancé directement.** Sur le desktop, l'app et le dépôt sont sur la même machine. Le modèle « pull »
@@ -397,6 +407,9 @@ son jeton, `gh agent-task`).
   par fournisseur (`aiApiKey`, `aiAnthropicKey`) : celle d'un fournisseur ne part jamais chez un autre.
 - **Agents** : réglages du dépôt ignorés (`--setting-sources user`), autorisations demandées dans l'app, refus par
   défaut ; écritures MCP réservées comme sur le serveur (OSS-1.5).
+- **Autorisations du navigateur** (`desktop/src/permissions.ts`, 08/11/2026) : Electron accorde tout par défaut. Seule
+  l'origine de la fenêtre reçoit quelque chose : le micro (cadre principal, jamais la caméra), l'écriture dans le
+  presse-papiers (boutons « copier ») et le plein écran. Le reste, que l'interface n'utilise pas, est refusé et journalisé.
 - **Mises à jour** : paquets signés, vérifiés par l'outil de mise à jour avant installation.
 
 ### 5.8 Paquets, mises à jour, signature
