@@ -53,10 +53,11 @@ related:
 | [E12](#e12--un-petit-modèle-affiné-bat-il-le-modèle-de-base-avec-recherche-) | Un petit modèle affiné contre le modèle de base avec recherche (Conseil, R62) | ~1,5 j | oui | proposée |
 | [E13](#e13--le-spécialiste-gagne-t-il-du-temps-sur-un-vrai-dossier-) | Le temps du spécialiste sur un vrai dossier (Conseil, R63), à J8 | ~1 j | oui | proposée |
 | [E14](#e14--la-promesse-se-redit-elle-en-une-phrase-) | La promesse redite en une phrase (Conseil, R65), à J8 | ~2 h | non | proposée |
-| [E15](#e15--la-voix-se-transcrit-elle-sur-la-machine-juste-et-vite-) | La voix transcrite sur la machine (Conseil, R80) | ~1 j | oui | proposée |
+| [E15](#e15--la-voix-se-transcrit-elle-sur-la-machine-juste-et-vite-) | La voix transcrite sur la machine (Conseil, R80, R132) | ~1 j | oui | en cours (08/11) |
 | [E16](#e16--une-seule-source-pour-le-moteur-de-règles-sans-aller-retour-) | Une seule source pour le moteur de règles (Conseil, R90), en J1 | ~1 j | non | faite : (a) réfutée, (b) tient |
 | [E17](#e17--lindice-de-confiance-se-mesure-t-il-et-monte-t-il-) | L'indice de confiance, mesure de départ à J2 (Conseil, R104) | ~1 j | non | proposée |
 | [E18](#e18--la-fenêtre-raccourcit-elle-le-travail-) | La fenêtre, mesurée avant et après (Conseil, R119 à R124) | ~2 h | non | proposée |
+| [E19](#e19--le-banc-prédit-il-le-travail-réel-) | Le banc des modèles prédit-il le travail réel ? (Conseil, R131) | ~2 h | oui | proposée |
 
 > **L'ordre compte.** E1 avant tout le reste : sans mesure de calibration, **aucune** des autres n'est
 > interprétable. C'est l'inversion proposée dans [`World_Model_Notes.md`](../revues/World-Model.md) §10 —
@@ -558,7 +559,7 @@ dans un ordre tiré au sort ; on note la phrase redite, mot pour mot.
 
 ## E15 : La voix se transcrit-elle sur la machine, juste et vite ?
 
-`[statut:: proposée]` · Ouverte le 30/10/2026 · issue du [Conseil, séance n°13](../conseil/seances/2026-10-30-atelier-ecrans-base.md), R80
+`[statut:: en cours]` · Ouverte le 30/10/2026 · issue du [Conseil, séance n°13](../conseil/seances/2026-10-30-atelier-ecrans-base.md), R80 ; commencée le 08/11/2026 (R132, séance n°19)
 
 **Hypothèse** `[HYPOTHÈSE]` : dans l'app desktop, un modèle de transcription qui tourne sur l'ordinateur comprend les
 commandes qu'on dit à TaskForce avec moins d'une erreur sur dix mots, et rend le texte en moins de deux secondes après
@@ -820,6 +821,26 @@ première action utile ; les éléments visibles de l'écran d'arrivée. La Pré
 
 ---
 
+## E19 : Le banc prédit-il le travail réel ?
+
+`[statut:: proposée]` · Ouverte le 08/11/2026 · issue du [Conseil, séance n°19](../conseil/seances/2026-11-08-atelier-sobriete-banc-voix.md), R131
+
+**Hypothèse** `[HYPOTHÈSE]` : un modèle que les cas fixes du banc marquent « Give it » pour une tâche réussit cette tâche sur le travail réel de la personne.
+
+**Falsification** : pour une tâche où un modèle est marqué « Give it », la personne rejette sa réponse sur au moins deux de cinq issues réelles, ou lui préfère à l'aveugle un modèle marqué « Not yet » sur au moins trois.
+
+**Schéma réel** `[ÉTABLI]` : la suite de capacités (R113) note huit cas sur cinq capacités ; rien ne relie un score à une tâche ; E11 a fait juger cinq tâches par l'agent de développement, pas à l'aveugle.
+
+**Protocole** : le banc passé sur au moins deux modèles ; puis, pour Summarize, Triage, Plan et Write, cinq issues réelles à l'essai à l'aveugle (R131) ; le verdict du banc comparé au choix de la Présidence.
+
+**Métrique** : la part des verdicts du banc que le travail réel confirme, tâche par tâche.
+
+**Limite** : N = 1 ; une personne juge, sur ses propres issues ; trois cas par tâche, le verdict reste indicatif.
+
+**Coût** : ~2 h.
+
+---
+
 **Points d'entrée :** [🔬 R&D](../README.md) · [🤖 Mode recherche](../CLAUDE.md) · [❓ Questions](../Questions-ouvertes.md) · [📖 Notes critiques](../revues/World-Model.md)
 
-**Dernière mise à jour :** 05/11/2026 · **v1.6** · Projet Taskforce, Metz Numeric School 2025-2026
+**Dernière mise à jour :** 08/11/2026 · **v1.7** · Projet Taskforce, Metz Numeric School 2025-2026
