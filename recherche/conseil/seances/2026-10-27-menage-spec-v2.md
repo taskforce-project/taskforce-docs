@@ -100,7 +100,10 @@ marchent ; la Présidence les a gardées, à faire marcher.
 
 ## Décision de la Présidence
 
-En attente : la Présidence relit la spécification et ce procès-verbal.
+En attente le 27/10/2026 : la Présidence relit la spécification et ce procès-verbal.
+
+**Le 28/10/2026** : R10 à R15 retenues, parmi les décisions de la Présidence sur la version 0.2 de la
+[spécification](../../../v1/road_to_v2/Specification_V2_Harnais.md) (voir le [Journal](../../Journal.md)).
 
 ## Notes du secrétariat
 
