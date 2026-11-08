@@ -63,6 +63,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | WorkspaceController | `/api/workspaces` | ✅ |
 | ProjectController | `/api/workspaces/{slug}/projects` | ✅ |
 | IssueController | `/api/workspaces/{slug}/projects/{projectId}/issues` | ✅ |
+| IssueSearchController | `/api/workspaces/{slug}/issues/search` (→ la recherche d'issues de la fenêtre, par clé ou par titre : Ctrl+K, le « @ » et le « + » du compositeur ; 08/11/2026, R123, R124) | ✅ |
 | AnalyticsController | `/api/workspaces/{slug}/analytics` | ✅ |
 | AnalysisController | `/api/workspaces/{slug}` (→ `/analysis`, `/projects/{id}/brief`, `/priorities/{id}`) | ✅ |
 | AssistantController | `/api/workspaces/{slug}/assistant` (→ `POST` une question à Cortex, avec l'écran de la personne depuis R114, `POST /actions/execute` l'accord d'une action qu'il a proposée, `POST /actions/undo` défaire ce qu'il a créé, `POST /actions/answer` la réponse à une question de TaskForce, R115) | ✅ |
@@ -275,6 +276,22 @@ conversation (`GET /ai/conversations/{id}`) rend `model` pour chaque réponse ga
 (`target` d'un appel `delete_issue` au statut `pending`) porte `column`, la colonne de l'issue. Après l'envoi d'une
 carte (`POST /assistant/actions/answer`), les arguments du geste (`input`) portent `answered` : les questions auxquelles
 la personne a répondu, une fois par réponse ; seul le serveur l'écrit.
+
+**MAJ 08/11/2026 : la conversation du lot 3a de la fenêtre** (R123, R124 ; PR #498, pas encore fusionnée).
+`POST /assistant` prend `attach`, trois au plus (400 au-delà) : ce que la personne joint depuis le compositeur, chaque
+élément `{projectId, issueId?}` (entiers positifs) ; une issue (avec son projet) se lit comme avant un résumé, un projet
+(sans issue) montre son tableau comme l'écran, avec les droits de la personne ; une issue sans projet est ignorée. Une
+réponse porte `answer.read`, ce que TaskForce a donné à lire au modèle, compté : `issues` (`key`, `comments` donnés),
+`boards` (`project`, la clé du projet ; `issues` montrées ; `open`, l'issue ouverte ou null), `tools` (`name`, `calls`
+réussis des outils qui lisent), `notes` (les notes du Brain OS servies) ; null pour un repli. Le détail d'une
+conversation (`GET /ai/conversations/{id}`) rend `read` pour chaque réponse gardée (V120 `ai_message.reading`, null
+avant). Un commentaire et une ligne d'activité d'une issue portent `model`, le modèle qui faisait parler l'agent de `via`
+(« qwen3:8b » quand `via` vaut `Cortex`), null sinon (V119). Nouvelle lecture : `GET /api/workspaces/{slug}/issues/search`
+(`IssueSearchController`), `q` (la clé entière ou en partie : « OPS-35 », « ops 35 », « OPS-3 », « OPS » ; ou des mots du
+titre, jokers échappés ; coupé à 100 caractères) et `limit` (8 par défaut, 20 au plus) : `ApiResponse<List<IssueHitResponse>>`,
+`{id, projectId, key, title, status, statusCategory}`, les issues non archivées des projets que la personne voit, la clé
+exacte d'abord puis les dernières changées ; sans `q`, les dernières changées. Tout membre de l'espace ; un non-membre est
+refusé.
 
 **Les besoins des gestes, et créer un projet dans le MCP** (R115). Chaque geste déclare ce qu'il exige (l'issue, le
 texte d'un commentaire, le nom d'un projet) ; ce qui manque sans défaut sûr ou ne se résout pas rend, à un client MCP,
