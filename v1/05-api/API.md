@@ -70,6 +70,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | EvalController | `/api/workspaces/{slug}/evals` (→ la banque d'évaluations de Cortex : ses cas, ses rejeux, son interrupteur, son histoire) | ✅ |
 | CortexSourcesController | `/api/workspaces/{slug}/assistant/sources` (→ ce que Cortex peut lire dans l'espace, compté et daté, R125) | ✅ |
 | ModelCapabilityController | `/api/workspaces/{slug}/ai/models` (→ ce que sait faire chaque modèle servi : la table, une mesure cas par cas, le modèle de Cortex choisi dans la webapp ; 04/11/2026, R113) | ✅ |
+| ModelBenchmarkController | `/api/workspaces/{slug}/ai/benchmark` (→ le banc des modèles : la matrice par tâche, un passage cas par cas, le détail d'un modèle où une note se retourne, l'essai à l'aveugle sur une issue ; 08/11/2026, R131) | ✅ |
 | PersonalAccessTokenController | `/api/users/me/tokens` (→ `GET` liste sans valeur, `POST` création, la valeur n'est rendue qu'ici, `DELETE /{id}` révocation) : jetons personnels, refusés partout sauf sur le serveur MCP (lot 5) | ✅ |
 | McpServerController | `/api/workspaces/{slug}/mcp` (→ `POST` JSON-RPC 2.0, `GET` et `DELETE` 405) : serveur MCP de l'instance, 17 outils (les gestes de TF-J1-5 le 02/11/2026 : `update_issue` étendu, `delegate_issue`, `get_mission`, `delete_issue` ; `create_project` avec R115, le 04/11/2026) ; réponse JSON-RPC, pas l'enveloppe `ApiResponse` (lot 5) ; `check_checklist_item` (`projectId`, `issueId`, `itemId`, `done`) coche ou décoche une ligne de la checklist, rejugé comme le `PATCH` de la ligne, et `get_issue` rend la checklist avec les ids (01/11/2026) | ✅ |
 | AiStatusController | `/api/ai/status` (→ `GET`) : état de l'IA de l'instance (configurée, chat et embeddings joignables, modèles et, sur Ollama, la plus grande fenêtre de contexte de chacun, `contextWindow` et `fastContextWindow`, depuis le 05/11/2026), relu par le backend toutes les 30 s (lot 4, ADR-019) | ✅ |
@@ -354,6 +355,17 @@ répond 400.
 - `POST /runs/{runId}/cases/{caseKey}` : rejoue et note un cas, une seule fois ; le quota (409) et le frein de débit
   (429) de l'IA valent comme pour une réponse ; `promptTokens` dit la taille du prompt.
 - `PUT /choice`, corps `{model}` : le modèle de Cortex pour la personne ; null revient à celui de l'instance.
+
+**Le banc des modèles** (08/11/2026, R131, TF-J1-11) : sous `/api/workspaces/{slug}/ai/benchmark`, pour tout membre ; les résultats valent pour l'espace.
+
+- `GET` : la matrice : `provider`, `current`, `suiteVersion`, `cases`, `tasks` (`key`, `label`, `description`, `cases`, `trial`), une ligne par modèle de conversation servi, le modèle en service d'abord, puis l'ordre d'installation (`lastRunAt`, `estimateSeconds`, `cells` : `task`, `verdict` = `give_it`, `with_review`, `not_yet` ou null, `passed`, `measured`, `total`, `judge` = `you`, `member` ou null).
+- `GET /detail?model=` : par tâche et par cas, `resultId` (null tant qu'il n'est pas passé), `title`, `passed`, `gradedPassed`, `personPassed`, `judge`, `checks`, `calls`, `answer` (6 000 caractères au plus), `durationMs`, `at` ; et `trials`, les essais tranchés de la personne qui lit où ce modèle a répondu.
+- `POST /runs`, corps `{model}` : ouvre un passage d'un modèle servi (400 sinon) ; `cases` dit les cas à jouer.
+- `POST /runs/{runId}/cases/{caseKey}` : joue et note un cas, une seule fois ; le quota (409) et le frein de débit (429) de l'IA valent comme pour une réponse.
+- `PUT /results/{resultId}/verdict`, corps `{passed}` : `true`, `false`, ou `null` pour rendre la note au code ; rend le détail du modèle.
+- `POST /trials`, corps `{projectId, issueId, task, models}` (`summarize`, `triage`, `plan` ou `write` ; deux ou trois modèles servis ; une issue que la personne lit, 404 sinon) : `trialId`, `issueKey`, `letters`, jamais un nom de modèle.
+- `POST /trials/{trialId}/letters/{letter}` : fait répondre le modèle de cette lettre, sans outil, rien d'écrit sur l'issue : `answer`, `durationMs`, pas de modèle. Un essai n'existe que pour la personne qui l'a lancé (404 pour toute autre).
+- `POST /trials/{trialId}/choice`, corps `{letter}` (null : aucune) : une seule fois ; rend `chosenLetter`, `chosenModel` et les réponses avec leurs modèles.
 
 `POST /assistant` prend `model` : le modèle vers lequel la personne envoie la demande, d'un clic sur la proposition de
 TaskForce (R118 ; un modèle servi, sinon 400). La réponse porte `escalation` (`capability`, `from`, `to`, `text`) quand
