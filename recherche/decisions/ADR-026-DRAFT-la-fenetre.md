@@ -27,7 +27,8 @@ related:
 Accepté le 05/11/2026. Lot 1 construit le 07/11/2026 (TF-J1-9, branche `feat/window-lot1`, PR #493, en prod avec la
 1.11.0) ; lot 2 construit le 07/11/2026 (branche `feat/window-lot2`, PR #496) ; le lot 3 suit sous la même décision,
 en deux moitiés : le volet « Progress » (lot 3b, R125) construit le 08/11/2026 (branche `feat/window-lot3-progress`,
-PR #497).
+PR #497), et la conversation (lot 3a, R123 et R124) construite le 08/11/2026 (branche
+`feat/window-lot3-conversation`, PR #498).
 
 ## Contexte
 
@@ -84,8 +85,9 @@ PR #497).
   supposait toute la largeur l'obtient d'un clic. Sous 1 600 px, ouvrir un volet replie la zone de droite ; rouverte à
   la main, elle prend sur le volet. Depuis le lot 2, une poignée règle la largeur du volet, retenue pour la personne, et
   la conversation garde 360 px : en dessous, le volet prend toute la largeur.
-- L'en-tête du volet et celui de la page se répètent encore après le lot 2 (le tableau garde l'en-tête et les onglets de
-  son projet) : à reprendre quand les pages deviennent tout à fait des volets.
+- L'en-tête du volet et celui de la page se répétaient encore après le lot 2 (le tableau gardait l'en-tête et les
+  onglets de son projet) ; le lot 3a ne garde qu'un titre par volet, et l'en-tête d'un projet se réduit à ses onglets et
+  ses gestes.
 - L'app desktop dessine 52 px en haut (la marge de 8 px et la ligne de 44 px) ; les boutons de Windows s'y posent.
 - Les gestes faits sur leurs cartes (une issue préparée puis créée, une action accordée, l'archivage ou la suppression
   depuis la carte de suppression) sont gardés par `useCortexStore` pour « Changes », et « Undo » y a un seul état pour
@@ -106,17 +108,30 @@ PR #497).
   la conversation (`ProgressLink`). Ce qui quitte le premier regard va sous « More » et dans la recherche.
 - Le volet « Progress » lit trois routes en lecture seule (la fiche d'un modèle dans la table, l'histoire de la banque,
   les sources de Cortex) : aucune migration, et rien de l'activité de l'agent (R57).
+- Depuis le lot 3a, l'accueil d'un espace (`/{slug}`) est l'endroit d'où la fenêtre reprend : l'adresse retenue par
+  personne et par espace (`useWindowStore.places`) s'y rouvre au démarrage ; la racine et le menu des espaces y
+  mènent, plus au tableau de bord. L'adresse reste la seule source : retenir l'endroit, c'est retenir l'adresse.
+- La conversation dit ce qu'elle a fait lire : le serveur compte ce qu'il donne au modèle là où il le donne
+  (`AssistantAnswer.read`), et le garde avec la réponse (V120) ; ce que Cortex écrit garde son modèle (V119,
+  `DelegatedAgent.withModel`). Le compositeur joint des issues et des projets (`attach`), lus comme l'écran et comme
+  avant un résumé ; la fenêtre a sa recherche d'issues (`GET /issues/search`), que Ctrl+K, « @ » et « + » partagent
+  par un store (`useSearchStore`).
+- Un titre par volet : la page ne dit plus le sien (`PageHeader` garde sa description et ses gestes). Le tour guidé
+  est parti ; l'arrivée d'une conversation neuve (ce qui attend, trois suggestions tirées de l'espace) le remplace.
+  Ce qui quitte le premier regard se trouve sous « More » et par la recherche, ouvert dans le volet, la conversation
+  gardée.
 - Les tests suivent la fenêtre : la logique dans `lib/window`, le store de la fenêtre, les composants de la fenêtre ;
   les tests des composants retirés partent avec eux.
 
-## Ce qui reste ouvert (lot 3)
+## Ce qui reste ouvert
 
-- L'arrivée (ce qui attend, trois suggestions), la ligne grise sous chaque réponse, le « + » du compositeur, le retrait
-  du tour guidé, et le nom du modèle sous le compositeur comme lien vers « Progress » (lot 3a).
-- La recherche (Ctrl+K) qui cherche aussi les issues ; les en-têtes des pages, qui doublent celui du volet.
+- Le micro du compositeur (R76) : aucune voix dans le code, il attend sa décision ; les fichiers joints, que l'API de
+  l'assistant ne reçoit pas.
+- Le titre de la conversation dans la ligne du haut (renommer, archiver, supprimer, « Le dessin »).
+- La boucle de démo de J2 jouée par la Présidence dans la fenêtre, et la promotion de ce brouillon dans le Journal.
 
 ---
 
 **Points d'entrée :** [Décisions du labo](./) · [📓 Journal](../Journal.md) · [Séance n°18](../conseil/seances/2026-11-05-atelier-fenetre.md)
 
-**Dernière mise à jour :** 08/11/2026 · **v1.2** · Projet Taskforce
+**Dernière mise à jour :** 08/11/2026 · **v1.3** · Projet Taskforce
