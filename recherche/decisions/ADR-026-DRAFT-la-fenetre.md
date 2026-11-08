@@ -25,7 +25,9 @@ related:
 ## Statut
 
 Accepté le 05/11/2026. Lot 1 construit le 07/11/2026 (TF-J1-9, branche `feat/window-lot1`, PR #493, en prod avec la
-1.11.0) ; lot 2 construit le 07/11/2026 (branche `feat/window-lot2`, PR #496) ; le lot 3 suit sous la même décision.
+1.11.0) ; lot 2 construit le 07/11/2026 (branche `feat/window-lot2`, PR #496) ; le lot 3 suit sous la même décision,
+en deux moitiés : le volet « Progress » (lot 3b, R125) construit le 08/11/2026 (branche `feat/window-lot3-progress`,
+PR #497).
 
 ## Contexte
 
@@ -98,17 +100,23 @@ Accepté le 05/11/2026. Lot 1 construit le 07/11/2026 (TF-J1-9, branche `feat/wi
   réponse est un lien vers son volet.
 - Échap referme une chose à la fois (la réponse dépliée, puis l'issue) ; sous `lg`, dans la webapp, les deux barres
   sont des tiroirs et le volet couvre la conversation.
+- Depuis le lot 3b, un volet n'est plus toujours une page d'avant : « Progress » (`/{slug}/progress`, `progressPath`)
+  est né volet, et la table des capacités a quitté les réglages pour lui. Les réglages gardent les choix (le modèle de
+  Cortex), un volet montre ce qui se mesure ; un lien des réglages vers un volet ferme la fenêtre des réglages et garde
+  la conversation (`ProgressLink`). Ce qui quitte le premier regard va sous « More » et dans la recherche.
+- Le volet « Progress » lit trois routes en lecture seule (la fiche d'un modèle dans la table, l'histoire de la banque,
+  les sources de Cortex) : aucune migration, et rien de l'activité de l'agent (R57).
 - Les tests suivent la fenêtre : la logique dans `lib/window`, le store de la fenêtre, les composants de la fenêtre ;
   les tests des composants retirés partent avec eux.
 
 ## Ce qui reste ouvert (lot 3)
 
-- L'arrivée (ce qui attend, trois suggestions), le volet « Progress », la ligne grise sous chaque réponse, le « + » du
-  compositeur, le retrait du tour guidé.
+- L'arrivée (ce qui attend, trois suggestions), la ligne grise sous chaque réponse, le « + » du compositeur, le retrait
+  du tour guidé, et le nom du modèle sous le compositeur comme lien vers « Progress » (lot 3a).
 - La recherche (Ctrl+K) qui cherche aussi les issues ; les en-têtes des pages, qui doublent celui du volet.
 
 ---
 
 **Points d'entrée :** [Décisions du labo](./) · [📓 Journal](../Journal.md) · [Séance n°18](../conseil/seances/2026-11-05-atelier-fenetre.md)
 
-**Dernière mise à jour :** 07/11/2026 · **v1.1** · Projet Taskforce
+**Dernière mise à jour :** 08/11/2026 · **v1.2** · Projet Taskforce
