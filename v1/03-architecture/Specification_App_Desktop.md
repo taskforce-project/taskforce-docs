@@ -314,9 +314,12 @@ historique. L'IA reste une aide, jamais un point de passage obligé.
 **La voix (08/11/2026, R80, R132, E15).** Le micro du compositeur enregistre dans la fenêtre ; la transcription tourne sur
 la machine, hors du processus principal et hors de la fenêtre : un `utilityProcess` (`desktop/src/voice-worker.ts`) charge
 `sherpa-onnx-node` (npm, binaires N-API précompilés) et Parakeet TDT 0.6b v3 en int8 (NVIDIA, CC BY 4.0), qui comprend le
-français et l'anglais sans réglage. Le modèle (671 Mo) se télécharge une fois, au premier clic, depuis une révision figée de
-Hugging Face par `net.fetch`, chaque fichier vérifié au SHA-256, repris avec `Range` après une coupure, rangé sous
-`<userData>/voice/<id>` (`desktop/src/voice.ts`). Il se charge au premier clic, pendant que la personne parle, et le processus
+français et l'anglais sans réglage. Le modèle (671 Mo) se prépare seul (R143, TF-J1-20, 09/11/2026 ; le CEO : « pk je dois dl
+un truc c'est chelou ? ») : une fois, trois minutes après l'ouverture de l'app, en arrière-plan, à 2 Mo/s au plus, sans étape à
+valider, depuis une révision figée de Hugging Face par `net.fetch`, chaque fichier vérifié au SHA-256, repris avec `Range`
+après une coupure, rangé sous `<userData>/voice/<id>` (`desktop/src/voice.ts`) ; un échec se retente au lancement suivant. Un
+clic sur le micro pendant la préparation la rejoint : l'avancement se voit en anneau autour de l'icône et la retenue saute,
+la personne attend ; le micro marche dès que le modèle est là. Il se charge au premier clic, pendant que la personne parle, et le processus
 s'arrête après trois minutes sans dictée. Le journal ne garde que des durées (« voice: transcribed 4.2 s of audio in 612 ms »),
 jamais le texte. Les binaires natifs sont dépaquetés de l'archive (`asarUnpack`) ; ni `LD_LIBRARY_PATH` ni `.exe` de plus. La
 version du Microsoft Store n'a pas de micro : le pont `voice` n'y existe pas.
@@ -450,6 +453,40 @@ son jeton, `gh agent-task`).
   voit plus dans l'installeur : l'app note la version qu'elle installe (`update-pending.json`, dans son dossier) ; au
   lancement suivant, restée sur la version d'avant, elle le dit dans son journal, et le toast de la version prête
   devient « TaskForce x.y.z didn't install », avec « Restart now ». Pas vu en vrai : il faut deux versions publiées.
+- **La mise à jour sans trou** (09/11/2026, R143 de la séance n°20, TF-J1-20) : le CEO, sur la mise à jour vers la 1.10.0 :
+  « ca ferme l'app [...] mais j'ai pas d'ecran de chargement [...] Comme si on restait tjr sur l'app quoi ». Du clic sur
+  « Restart now » à la nouvelle fenêtre, il y a toujours une fenêtre aux couleurs de TaskForce, et ni notification de Windows
+  ni fenêtre de l'installeur. L'écran d'attente de l'app reste pendant que la pile s'arrête ; l'app lance l'installeur depuis
+  un fil à part (`installer-launch.ts` : Windows retient ce lancement 5 à 10 s, et l'écran passerait « Not Responding » si
+  le fil principal attendait), attend que la fenêtre de l'installeur soit là (le fichier `update-screen`, 20 s au plus),
+  puis quitte. L'installeur se dédouble, avec le même fichier : le superviseur (`installer.nsh`, `preInit`) tient la
+  fenêtre, le travailleur (`--update-worker`, avec `/NCRC`) fait l'installation d'electron-builder, inchangée et sans
+  fenêtre. Deux processus parce que le gabarit sort par `Quit` à chaque échec et n'offre aucun crochet après la relance de
+  l'app : le code de sortie du travailleur dit l'échec. La fenêtre vient de ce que NSIS embarque déjà, le greffon `System`
+  et GDI : une commande `STATIC` sans cadre, un bitmap peint à la main (mêmes 420 x 280 points, couleurs et phrases que
+  `static/splash.html`, thème et mise à l'échelle de Windows, coins arrondis de Windows 11, logo tiré de l'icône de
+  l'installeur, barre qui suit « Effets d'animation »). Aucun exécutable de plus, aucun script, ni mshta ni PowerShell :
+  l'app n'est pas signée et un antivirus l'a déjà signalée. En 24 bits : avec les styles visuels, la commande `STATIC`
+  traite comme transparent tout bitmap qui porte de l'alpha, le fond et le texte disparaissaient. Un échec dit « TaskForce
+  x.y.z didn't install », puis l'ancienne version se rouvre (et son toast propose de recommencer) ; si elle n'est plus là,
+  une boîte de dialogue mène au site. La fenêtre se ferme quand la nouvelle version montre sa première fenêtre
+  (`releaseUpdateScreenOnFirstWindow`, qui efface `update-screen` ; 105 s au plus). Une mise à jour installée en quittant
+  l'app reste invisible. Au premier lancement d'une nouvelle version, un toast dans la fenêtre remplace la notification.
+  **Vu en vrai** le 09/11/2026 sur un paquet complet (5 472 fichiers, 719 Mo), avec une identité de brouillon et un dossier
+  à part, jamais l'installation du CEO : la mise à jour réelle (electron-updater, installeur, relance), avec une fenêtre
+  témoin à la place du compte et de la pile ; l'enchaînement à l'écran, photographié, sans trou ; la fenêtre, l'échec et
+  l'ancienne version rouverte ; la mise à jour lancée par une app d'avant ce changement. Pas vu : une vraie pile arrêtée puis
+  relancée derrière cet écran (il faut un compte).
+- **Où passent les minutes d'une mise à jour** (mesure du 09/11/2026, même paquet, poste du CEO, antivirus actif) : 66 s
+  machine calme, 216 s machine chargée, entre la sortie de l'app et le premier journal de la nouvelle version (147 s pour la
+  1.10.0 chez le CEO). Calme : 10 s pour lancer l'installeur et vérifier que l'app est fermée, 9 s d'ancien désinstalleur, 12 s
+  d'extraction, 34 s de copie et d'enregistrement. Chargée : 8 s, 62 s, 93 s, 51 s. C'est le travail par fichier du gabarit
+  d'electron-builder (5 472 fichiers déplacés, extraits dans un dossier temporaire, copiés, effacés) ; son gabarit n'a aucun
+  crochet sur l'extraction. Rien de bon marché ne le raccourcit : `nsis.useZip` éviterait la double écriture mais alourdit
+  le téléchargement, `postgres/empty-cluster` (958 fichiers, seulement pour le Store) demande deux builds. Une piste non
+  prouvée : les mises à jour faites avec fenêtre (jusqu'à la 1.7.0) prenaient 56 à 79 s chez le CEO, celles en silence (depuis
+  la 1.8.0) 150 s environ ; Windows ralentit peut-être un processus sans fenêtre. Une fenêtre à part ne l'aide pas si c'est
+  le cas : `SetProcessInformation` sur le travailleur serait à essayer, machine calme.
 - **Se déconnecter avec une mise à jour prête** (05/11/2026, PR #492) : la déconnexion et la session fermée en ligne
   redémarraient l'app par `app.relaunch()` puis `app.quit()`. Avec une version téléchargée, `autoInstallOnAppQuit`
   lançait alors l'installeur en silence, sans `--force-run` : il fermait de force l'instance relancée, qui tourne depuis

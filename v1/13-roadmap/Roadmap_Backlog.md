@@ -122,7 +122,7 @@ pour l'instant (R91).
 | TF-J1-17 | Les changements sous les yeux et la remise : lignes ajoutées et retirées en direct, diff sans pull request, retour en arrière par fichier, commentaire sur une ligne, remise à la première personne | J1 | 🔄 | R139, R140 |
 | TF-J1-18 | Les listes, les volets et la palette : « Waiting for you » et les alertes en listes (trois groupes, une phrase par ligne), le rail en cartes, une grammaire des dialogues (420, 560, 720 px), Ctrl+K en palette qui cherche aussi dans les commentaires et les notes ; PR #511 ouverte sur `dev`, pas encore en prod | J1 | 🔄 | R133, R141 |
 | TF-J1-19 | Le banc dit ce qu'il mesure : une file, un délai qui est un verdict, des descriptions, un seul onglet, l'essai à un modèle | J1 | 🔄 | R142 |
-| TF-J1-20 | La mise à jour sans trou, la voix préparée seule, les noms (Cortex, le logo de Claude) | J1 | 🔄 | R143, R144 |
+| TF-J1-20 | La mise à jour sans trou, la voix préparée seule, les noms (Cortex, le logo de Claude) | J1 | 🔄 PR #513, attend une release | R143, R144 |
 | TF-J2-1 | Le déroulé de la démo, son communiqué et sa foire aux questions, écrits d'abord | J2 | ⬜ | R105 |
 | TF-J2-2 | Processus v1 : un canevas modifiable, cinq types d'étapes, exécuté par le moteur durable v1 | J2 | ⬜ | R97, ADR-023 |
 | TF-J2-3 | Agents v1 ; la boucle d'agent de TaskForce sur n'importe quel modèle (missions sur un modèle local) | J2 | ⬜ | R92, R51 |
