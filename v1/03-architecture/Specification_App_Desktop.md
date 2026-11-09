@@ -469,7 +469,9 @@ son jeton, `gh agent-task`).
   l'app n'est pas signée et un antivirus l'a déjà signalée. En 24 bits : avec les styles visuels, la commande `STATIC`
   traite comme transparent tout bitmap qui porte de l'alpha, le fond et le texte disparaissaient. Un échec dit « TaskForce
   x.y.z didn't install », puis l'ancienne version se rouvre (et son toast propose de recommencer) ; si elle n'est plus là,
-  une boîte de dialogue mène au site. La fenêtre se ferme quand la nouvelle version montre sa première fenêtre
+  une boîte de dialogue mène au site. Le crochet `customUnInstallCheck` retire pour les mises à jour la boîte système que
+  le gabarit montre même en silence quand l'ancien désinstalleur échoue : elle bloquait l'installation derrière l'écran.
+  La fenêtre se ferme quand la nouvelle version montre sa première fenêtre
   (`releaseUpdateScreenOnFirstWindow`, qui efface `update-screen` ; 105 s au plus). Une mise à jour installée en quittant
   l'app reste invisible. Au premier lancement d'une nouvelle version, un toast dans la fenêtre remplace la notification.
   **Vu en vrai** le 09/11/2026 sur un paquet complet (5 472 fichiers, 719 Mo), avec une identité de brouillon et un dossier
