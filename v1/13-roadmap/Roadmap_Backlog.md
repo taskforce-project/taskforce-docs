@@ -120,7 +120,7 @@ pour l'instant (R91).
 | TF-J1-15 | La conversation : une seule voix, le travail replié, plus de mot « Sources », le cas de test en un geste, `/compact` lisible, le projet demandé quand il manque, le dépôt créé, les longs messages | J1 | 🔄 | R135 à R137, R143 |
 | TF-J1-16 | La mission en déroulé : cinq étapes en phrases, les commandes et la preuve repliées, le résultat qui dit ce qui est rendu, un vrai « Stop ». PR #510 vers `dev` | J1 | 🔄 | R138 |
 | TF-J1-17 | Les changements sous les yeux et la remise : lignes ajoutées et retirées en direct, diff sans pull request, retour en arrière par fichier, commentaire sur une ligne, remise à la première personne | J1 | 🔄 | R139, R140 |
-| TF-J1-18 | Les listes, les volets et la palette : « Waiting for you » et les alertes en listes, le rail de droite, Ctrl+K | J1 | 🔄 | R133, R141 |
+| TF-J1-18 | Les listes, les volets et la palette : « Waiting for you » et les alertes en listes (trois groupes, une phrase par ligne), le rail en cartes, une grammaire des dialogues (420, 560, 720 px), Ctrl+K en palette qui cherche aussi dans les commentaires et les notes ; PR #511 ouverte sur `dev`, pas encore en prod | J1 | 🔄 | R133, R141 |
 | TF-J1-19 | Le banc dit ce qu'il mesure : une file, un délai qui est un verdict, des descriptions, un seul onglet, l'essai à un modèle | J1 | 🔄 | R142 |
 | TF-J1-20 | La mise à jour sans trou, la voix préparée seule, les noms (Cortex, le logo de Claude) | J1 | 🔄 | R143, R144 |
 | TF-J2-1 | Le déroulé de la démo, son communiqué et sa foire aux questions, écrits d'abord | J2 | ⬜ | R105 |
