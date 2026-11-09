@@ -24,6 +24,20 @@ related:
 
 ---
 
+## 2026-11-09 : séance n°20, l'atelier de la recette 1.13
+
+**Fait** : la Présidence a joué la recette 1.13 sur l'app desktop 1.10.0 (42 étapes : 28 OK, 11 KO, 2 sautées) et donné la direction : Claude Desktop et Dust, avec l'expérience du Mac et de Raycast. Jobs et l'équipe UI/UX tranchent ([PV](./conseil/seances/2026-11-09-atelier-recette-113.md)).
+
+**Trouvé** :
+- `[ÉTABLI]` « Sorry, I couldn't answer » cachait un refus de validation : `AssistantController` plafonne un message à 4 000 caractères, avant le budget de contexte de la 1.13.
+- `[ÉTABLI]` Les « unexpected error » du banc sont des délais dépassés vers Ollama, remontés en erreur 500.
+- `[ÉTABLI]` E15, à la dictée réelle : 168 à 222 ms pour 2,6 à 4,3 s de parole ; la Présidence : « le module est vraiment fort ».
+- `[DÉDUIT]` Une erreur muette fait douter de tout le reste : ces deux causes ont coûté plus que leur correction.
+
+**Décidé** : R133 à R144 ; E20 s'ouvre ; rien n'est envoyé aux utilisateurs pour l'instant.
+
+**Prochain coup** : la construction (TF-J1-14 à TF-J1-20), puis le test final de la Présidence sur un vrai projet (E20), avant la release majeure.
+
 ## 2026-11-08 : séance n°19, l'atelier de la sobriété
 
 **Fait** : la Présidence a ouvert la 1.12.0 sur l'app desktop 1.9.0 et a demandé « comme raycast ou apple », le micro et un banc des modèles ; Jobs et l'équipe UI/UX tranchent ([PV](./conseil/seances/2026-11-08-atelier-sobriete-banc-voix.md)).

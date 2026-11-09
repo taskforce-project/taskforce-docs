@@ -53,11 +53,12 @@ related:
 | [E12](#e12--un-petit-modèle-affiné-bat-il-le-modèle-de-base-avec-recherche-) | Un petit modèle affiné contre le modèle de base avec recherche (Conseil, R62) | ~1,5 j | oui | proposée |
 | [E13](#e13--le-spécialiste-gagne-t-il-du-temps-sur-un-vrai-dossier-) | Le temps du spécialiste sur un vrai dossier (Conseil, R63), à J8 | ~1 j | oui | proposée |
 | [E14](#e14--la-promesse-se-redit-elle-en-une-phrase-) | La promesse redite en une phrase (Conseil, R65), à J8 | ~2 h | non | proposée |
-| [E15](#e15--la-voix-se-transcrit-elle-sur-la-machine-juste-et-vite-) | La voix transcrite sur la machine (Conseil, R80, R132) | ~1 j | oui | en cours : mesurée sur voix de synthèse (08/11), la recette décide |
+| [E15](#e15--la-voix-se-transcrit-elle-sur-la-machine-juste-et-vite-) | La voix transcrite sur la machine (Conseil, R80, R132) | ~1 j | oui | en cours : voix de synthèse (08/11), puis dictée de la Présidence (09/11), délai tenu |
 | [E16](#e16--une-seule-source-pour-le-moteur-de-règles-sans-aller-retour-) | Une seule source pour le moteur de règles (Conseil, R90), en J1 | ~1 j | non | faite : (a) réfutée, (b) tient |
 | [E17](#e17--lindice-de-confiance-se-mesure-t-il-et-monte-t-il-) | L'indice de confiance, mesure de départ à J2 (Conseil, R104) | ~1 j | non | proposée |
 | [E18](#e18--la-fenêtre-raccourcit-elle-le-travail-) | La fenêtre, mesurée avant et après (Conseil, R119 à R124) | ~2 h | non | en cours (08/11) : écrans 0 puis 0, clics 2 puis 2, éléments 48 puis 34 |
 | [E19](#e19--le-banc-prédit-il-le-travail-réel-) | Le banc des modèles prédit-il le travail réel ? (Conseil, R131) | ~2 h | oui | proposée |
+| [E20](#e20--taskforce-tient-il-un-vrai-projet-dans-un-domaine-inconnu-) | Un vrai projet dans un domaine que la personne ne connaît pas (Conseil, séance n°20) | quelques jours | oui | proposée |
 
 > **L'ordre compte.** E1 avant tout le reste : sans mesure de calibration, **aucune** des autres n'est
 > interprétable. C'est l'inversion proposée dans [`World_Model_Notes.md`](../revues/World-Model.md) §10 —
@@ -672,6 +673,10 @@ sur une dictée rapide dans une pièce bruyante.
 délai du moteur à chaque dictée (`voice: transcribed 4.2 s of audio in 612 ms`, jamais le texte). Sous le seuil, on garde ; au-dessus,
 la falsification s'applique.
 
+### Résultats du 09/11/2026 : la dictée de la Présidence
+
+`[ÉTABLI]` Le journal de son app (durées seulement, jamais le texte) : 222 ms pour 4,3 s de parole, 202 ms pour 3,8 s, 168 ms pour 2,6 s, 2,7 s pour 44,2 s, 3,9 s pour 58,0 s ; modèle téléchargé en 169 s, chargé en 3,6 s. Le délai de moins de deux secondes tient sur une commande courte. Son avis, sans compter les erreurs : en français « le module est vraiment fort je trouve », en anglais « un tout petit peu plus de faute mais franchement c'est good ». Le taux d'erreur par mot n'a pas été compté : l'expérience reste en cours, et le moteur est gardé.
+
 ## E16 : Une seule source pour le moteur de règles, sans aller-retour ?
 
 `[statut:: faite]` · Ouverte le 01/11/2026 · Faite le 02/11/2026 · issue du [Conseil, séance n°15](../conseil/seances/2026-11-01-feuille-de-route.md), R90 (à l'essai) · résultats [plus bas](#résultats-du-02112026)
@@ -1012,8 +1017,26 @@ l'app desktop, un volet ouvert à la 1.12.0 laisse la conversation à sa place, 
 
 **Coût** : ~2 h.
 
+## E20 : TaskForce tient-il un vrai projet, dans un domaine inconnu ?
+
+`[statut:: proposée]` · Ouverte le 09/11/2026 · issue de la recette 1.13 et du [Conseil, séance n°20](../conseil/seances/2026-11-09-atelier-recette-113.md)
+
+**Hypothèse** `[HYPOTHÈSE]` : une personne mène un vrai projet de bout en bout, dans un domaine qu'elle ne connaît pas, en ne travaillant que par TaskForce et ses agents, et juge le résultat grâce à ce que l'outil lui montre.
+
+**Falsification** : la personne doit quitter TaskForce pour finir une partie du projet, ou accepte un résultat qu'un connaisseur du domaine rejette sur un point majeur.
+
+**Schéma réel** `[ÉTABLI]` : les recettes jouent des gestes isolés, sur des données de démonstration. La Présidence : « je developperais un vrai projet concret, dans un domaine hyper specifique expres que je connais pas pour voir la pertinance ».
+
+**Protocole** : un projet réel choisi par la Présidence ; tout passe par TaskForce ; un carnet note chaque moment où elle a dû sortir de l'outil, et chaque résultat accepté sans reprise ; à la fin, un connaisseur du domaine relit ce qui a été produit.
+
+**Métrique** : le nombre de sorties de l'outil ; la part des résultats acceptés sans reprise ; le jugement du connaisseur.
+
+**Limite** : N = 1, et la personne connaît l'outil (« je connais l'app c'est biaise »).
+
+**Coût** : quelques jours de la Présidence ; c'est le test final avant la release majeure.
+
 ---
 
 **Points d'entrée :** [🔬 R&D](../README.md) · [🤖 Mode recherche](../CLAUDE.md) · [❓ Questions](../Questions-ouvertes.md) · [📖 Notes critiques](../revues/World-Model.md)
 
-**Dernière mise à jour :** 08/11/2026 · **v1.8** · Projet Taskforce, Metz Numeric School 2025-2026
+**Dernière mise à jour :** 09/11/2026 · **v1.9** · Projet Taskforce, Metz Numeric School 2025-2026
