@@ -479,6 +479,48 @@ son jeton, `gh agent-task`).
   témoin à la place du compte et de la pile ; l'enchaînement à l'écran, photographié, sans trou ; la fenêtre, l'échec et
   l'ancienne version rouverte ; la mise à jour lancée par une app d'avant ce changement. Pas vu : une vraie pile arrêtée puis
   relancée derrière cet écran (il faut un compte).
+- **Un seul écran hors de la fenêtre principale** (10/11/2026, PR #518) : le CEO, devant la carte de la mise à jour de
+  la veille (420 x 280) : « c'est possible d'avoir vraiment le mm ecran que l ecran de login [...] pour toute les situation
+  [...] Juste la partie droite qui change quoi classique, on reutilise le code ca duplique pas ». La connexion, le
+  démarrage, la mise à jour, la déconnexion et leurs échecs ont désormais la fenêtre de la connexion (1 000 x 640 points),
+  son panneau peint à gauche, et seule la droite change : une feuille de style (`static/shell.css`) et un panneau
+  construit à un seul endroit (`static/panel.js`), qu'un test vérifie (aucune page n'a son propre style ni son propre
+  panneau). L'écran d'attente (`static/splash.html`) met le logo, l'étape sur une ligne, la barre et la note à des places
+  fixes ; un échec y dit quoi faire avec ses boutons (« Try again », « Open logs », « Quit » ; « Sign in » après une session
+  fermée en ligne), le détail brut à un clic, à la place des boîtes de dialogue du système. Chaque écran s'ouvre là où était
+  le précédent : la connexion laisse sa place au démarrage, la fenêtre principale à la mise à jour ou à la déconnexion
+  (« Signing out », pendant que la pile s'arrête), et une relance donne sa place à l'instance suivante (`--tf-screen-at`).
+  Au premier lancement après une mise à jour, l'écran dit d'abord ce que disait celui de l'installeur (« Opening
+  TaskForce », « The update is installed. », ou la version qui n'a pas pris). Electron, à 125 %, laissait une page de
+  1 004 x 644 points à la taille donnée à la création (la connexion l'avait aussi) : la taille du contenu est donnée
+  ensuite, la page fait exactement l'écran. **L'installeur dessine le même écran** : l'app lui nomme le sien par la poignée
+  de sa fenêtre (`--screen`), il en prend la zone cliente et l'échelle (conscient de chaque écran,
+  `SetProcessDpiAwarenessContext`), et retombe sinon au centre de l'écran principal, comme l'app place les siens. Le
+  panneau vient d'images du vrai (`installer/panel-*.jpg`, rendues par l'Electron de l'app à 100, 125, 150, 175 et 200 %,
+  `npm run screen-panel`, 676 Ko en tout, posées par `File` dans `$PLUGINSDIR` comme le greffon `System` ; GDI+ les
+  dessine pixel pour pixel, ou réduites entre deux échelles, agrandies au-delà de 200 %) ; un test échoue quand le panneau
+  change sans elles. La droite est dessinée aux mesures et aux couleurs de `shell.css` (un test les compare), en Segoe UI
+  Variable comme la page (Segoe UI sous Windows 10) ; les notes de l'installeur ont leurs retours à la ligne dans le texte,
+  parce que GDI ne coupe pas les lignes comme la page. Sa fenêtre paraît d'un coup (`DWMWA_TRANSITIONS_FORCEDISABLED`)
+  et écrit sa place dans `update-screen`, où la nouvelle version ouvre sa première fenêtre ; elle ne part que 300 ms après
+  que celle-ci est apparue (`SETTLE_MS`), le temps de l'animation de Windows. Mesuré au banc, sans rien montrer à l'écran
+  (la fenêtre de l'installeur écrit son dessin, la page est rendue cachée) : le logo, la barre et chaque ligne au même pixel
+  que la page à 100 et 150 %, à un pixel près à 125, 175 et 200 % ; les lignes de texte plus larges ou plus étroites de 0 à
+  10 pixels (GDI arrondit l'avance de chaque lettre, et une taille de 17,5 ou 24,5 pixels) ; le panneau ne diffère que du
+  bruit du JPEG. **Vu en vrai** le 10/11/2026 sur ce poste (écran principal à 125 %, second écran à 100 %) avec des paquets complets de
+  cette branche sous une identité de brouillon (TaskForceScratchH : ses propres dossiers de données et d'installation,
+  jamais ceux du CEO ; les scripts de build et de lancement refusent un paquet qui s'appellerait encore TaskForce), la
+  vraie mise à jour (electron-updater, installeur de 247 Mo, relance) et une fenêtre témoin à la place du compte et de la
+  pile, photographiés chaque seconde fenêtre par fenêtre (chaque fenêtre de brouillon peinte par elle-même, jamais
+  l'écran) : à 125 % en clair, l'écran de démarrage, la fenêtre témoin, l'écran de la mise à jour à la même place, la
+  fenêtre de l'installeur sur sa zone cliente (1 250 x 800 pixels) pendant 25 s, puis la nouvelle version au même endroit
+  (« Opening TaskForce », « The update is installed. », ses étapes) : à chaque image une fenêtre de TaskForce, au relais un
+  panneau qui ne diffère que du bruit du JPEG, le même fond, le même logo, un texte de quelques pixels plus large ; à 100 %,
+  la fenêtre témoin sur le second écran, l'écran de la mise à jour ouvert au centre de celui-ci, l'installeur à sa place
+  exacte (1 000 x 640 pixels), la nouvelle version au même endroit ; à 125 % en sombre, une mise à jour qui échoue (un
+  fichier de l'app tenu ouvert) : « TaskForce 9.3.1 didn't install », l'ancienne version rouverte à la même place avec les
+  mêmes mots, et son journal qui note l'échec pour le toast. Pas vu : l'écran par-dessus d'autres fenêtres du bureau (les
+  essais tournaient pendant que le poste servait), une vraie pile derrière ces écrans (il faut un compte).
 - **Où passent les minutes d'une mise à jour** (mesure du 09/11/2026, même paquet, poste du CEO, antivirus actif) : 66 s
   machine calme, 216 s machine chargée, entre la sortie de l'app et le premier journal de la nouvelle version (147 s pour la
   1.10.0 chez le CEO). Calme : 10 s pour lancer l'installeur et vérifier que l'app est fermée, 9 s d'ancien désinstalleur, 12 s
