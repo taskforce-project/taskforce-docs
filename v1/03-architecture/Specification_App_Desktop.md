@@ -519,8 +519,14 @@ son jeton, `gh agent-task`).
   la fenêtre témoin sur le second écran, l'écran de la mise à jour ouvert au centre de celui-ci, l'installeur à sa place
   exacte (1 000 x 640 pixels), la nouvelle version au même endroit ; à 125 % en sombre, une mise à jour qui échoue (un
   fichier de l'app tenu ouvert) : « TaskForce 9.3.1 didn't install », l'ancienne version rouverte à la même place avec les
-  mêmes mots, et son journal qui note l'échec pour le toast. Pas vu : l'écran par-dessus d'autres fenêtres du bureau (les
-  essais tournaient pendant que le poste servait), une vraie pile derrière ces écrans (il faut un compte).
+  mêmes mots, et son journal qui note l'échec pour le toast. La déconnexion aussi : l'écran « Signing out » au centre de l'écran de la fenêtre principale, puis l'instance
+  relancée à la même place. Lancées par le banc et non d'un clic, ces fenêtres n'avaient pas le premier plan : celle de
+  l'installeur restait sous le navigateur actif, et la nouvelle version, que le gabarit ouvre par l'Explorateur
+  (`ExecShellAsUser`), y serait restée aussi ; tant que sa fenêtre est au premier plan, l'installeur laisse désormais
+  l'app suivante y venir (`AllowSetForegroundWindow`). Sur le second écran (relié à la carte NVIDIA, le premier l'est à
+  celle d'Intel), PrintWindow rendait la fenêtre de l'installeur blanche une image sur trois, alors que sa surface,
+  copiée par GDI, avait son dessin à chaque image : un défaut de la capture, pas de la fenêtre. Pas vu : l'enchaînement
+  sur le bureau après un vrai clic sur « Restart now », une vraie pile derrière ces écrans (il faut un compte).
 - **Où passent les minutes d'une mise à jour** (mesure du 09/11/2026, même paquet, poste du CEO, antivirus actif) : 66 s
   machine calme, 216 s machine chargée, entre la sortie de l'app et le premier journal de la nouvelle version (147 s pour la
   1.10.0 chez le CEO). Calme : 10 s pour lancer l'installeur et vérifier que l'app est fermée, 9 s d'ancien désinstalleur, 12 s
