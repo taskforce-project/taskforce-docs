@@ -24,6 +24,20 @@ related:
 
 ---
 
+## 2026-11-10 : séance n°21, la première version pour une entreprise, et E20
+
+**Fait** : la release 1.14.0 et l'app desktop 1.11.0 sont en production ; la liste de lancement de 1.10.0 à 1.11.0 est verte sur un Windows neuf. La Présidence redéfinit E20 et demande au Conseil où en est la feuille de route ([PV](./conseil/seances/2026-11-10-premier-client-e20.md)).
+
+**Trouvé** :
+- `[ÉTABLI]` J1, prévu pour deux à trois semaines à partir du 02/11, est en production le 10/11 ; J2 n'a pas commencé.
+- `[ÉTABLI]` Sans VPS au 31/12/2026, une nouvelle installation de l'app desktop ne pourra plus se connecter (Q13).
+- `[ÉTABLI]` Un `.exe` ne s'exécute pas sur macOS ; une app Mac non notariée s'ouvre une première fois par « Ouvrir quand même », et ne se met pas à jour seule (Apple et Electron, lus le 10/11).
+- `[DÉDUIT]` La valeur à prouver est ce que TaskForce sait de l'entreprise et ce qu'il empêche : seul un contre-essai la mesure.
+
+**Décidé** : par la Présidence, la runtime Visual C++ dans l'installeur, le logo de Claude sans demande à Anthropic (Q12), le site mis à jour en dernier, les correctifs graves de Dependabot à la prochaine release ; R145 à R151 attendent sa décision.
+
+**Prochain coup** : sa décision sur R145 à R151, l'entretien avec le premier client possible, puis J2 dans l'ordre d'E20.
+
 ## 2026-11-09 : séance n°20, l'atelier de la recette 1.13
 
 **Fait** : la Présidence a joué la recette 1.13 sur l'app desktop 1.10.0 (42 étapes : 28 OK, 11 KO, 2 sautées) et donné la direction : Claude Desktop et Dust, avec l'expérience du Mac et de Raycast. Jobs et l'équipe UI/UX tranchent ([PV](./conseil/seances/2026-11-09-atelier-recette-113.md)).

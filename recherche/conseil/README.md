@@ -17,7 +17,7 @@ related:
 
 # 🏛️ Conseil d'Avenir
 
-**Version :** 1.6 · **Date :** 09/11/2026 · **Président :** Pierre MICHEL
+**Version :** 1.7 · **Date :** 10/11/2026 · **Président :** Pierre MICHEL
 
 <p class="lead">
 Le conseil du laboratoire : vingt-quatre personnalités, simulées à partir de leurs positions publiques sourcées,
@@ -290,9 +290,10 @@ ce qui est irréversible » ([PV](./seances/2026-10-26-premiere-regle.md)).
 | 05/11/2026 | L'atelier de la fenêtre : la conversation au centre, les écrans en volets, ce que l'agent sait, l'installateur | Restreinte (5), l'équipe de Jobs, qui tranche par délégation ; Ait Si Abbou contradictrice | R119 à R126 à l'unanimité, validées d'avance par la Présidence (« il prend toute les decision possible, je valide tout directement ») ; construites sans maquette | [PV](./seances/2026-11-05-atelier-fenetre.md) |
 | 08/11/2026 | L'atelier de la sobriété : l'arrivée, « Waiting for you », Progress, le banc des modèles, la voix | Restreinte (7), l'équipe de Jobs, qui tranche par délégation, plus Duflo et Harris ; Harris contradicteur | R127 à R132 à l'unanimité (R131 au second tour), confiées à Jobs par la Présidence (« Jobs et equipe UI/UX dessus ») | [PV](./seances/2026-11-08-atelier-sobriete-banc-voix.md) |
 | 09/11/2026 | L'atelier de la recette 1.13 : la barre, la conversation, la mission en déroulé, les listes et les volets, le banc | Restreinte (7), l'équipe de Jobs, qui tranche par délégation, plus Ait Si Abbou, Gawande et Nilekani ; Gawande contradicteur | R133 à R144 à l'unanimité (R140 au second tour), confiées à Jobs par la Présidence (« faut demande a Jobs et l'equipe dedie ») | [PV](./seances/2026-11-09-atelier-recette-113.md) |
+| 10/11/2026 | La première version qu'une entreprise peut utiliser : où en est la feuille de route, et E20, le premier client joué de bout en bout | Restreinte (7) ; Duflo contradictrice | R145 à R151 à l'unanimité (R145 et R146 au second tour) ; décision de la Présidence en attente | [PV](./seances/2026-11-10-premier-client-e20.md) |
 
 ---
 
 **Points d'entrée :** [🔬 Labo](../README.md) · [📋 Protocole](../CLAUDE.md) · [📓 Journal](../Journal.md) · [🧰 Gabarits](../Gabarits.md)
 
-**Dernière mise à jour :** 09/11/2026 · **v1.6** · Projet Taskforce
+**Dernière mise à jour :** 10/11/2026 · **v1.7** · Projet Taskforce

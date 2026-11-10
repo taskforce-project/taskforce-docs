@@ -37,10 +37,11 @@ related:
 | [Q9](#q9--quel-flywheel-vend-on-) | Quel flywheel vend-on (F1/F2/F3) ? | P1 | ouverte |
 | [Q10](#q10--mesurer-lattention-humaine--sur-lordinateur-seulement-ou-avec-des-données-envoyées-) | Mesurer l'attention humaine : sur la machine, ou avec des données envoyées ? | P2 | ouverte |
 | [Q11](#q11--un-harnais-embarqué-pour-le-monde-physique-) | Un harnais embarqué pour le monde physique ? | P3 | ouverte |
-| [Q12](#q12--demander-à-anthropic-dafficher-le-logo-de-claude-) | Demander à Anthropic d'afficher le logo de Claude ? | P3 | ouverte |
+| [Q12](#q12--demander-à-anthropic-dafficher-le-logo-de-claude-) | Demander à Anthropic d'afficher le logo de Claude ? | P3 | tranchée (10/11) |
 | [Q13](#q13--les-moyens-de-la-direction--lhébergement-le-temps-un-partenaire-la-source-du-texte) | Les moyens : l'hébergement, le temps, un partenaire, la source du texte | P2 | ouverte |
 | [Q14](#q14--se-brancher-à-n8n-) | Se brancher à n8n ? | P3 | ouverte |
 | [Q15](#q15--quel-modèle-de-revenus-quand-le-produit-cessera-dêtre-gratuit-) | Quel modèle de revenus, quand le produit cessera d'être gratuit ? | P2 | ouverte |
+| [Q16](#q16--macos--quand-et-sans-payer-apple-) | macOS : quand, et sans payer Apple ? | P3 | ouverte |
 
 ---
 
@@ -251,7 +252,7 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 
 ## Q12 : Demander à Anthropic d'afficher le logo de Claude ?
 
-`[statut:: ouverte]` · `[prio:: P3]` · Ouverte le 29/10/2026 · issue du [Conseil, séance n°8](./conseil/seances/2026-10-29-recette-132.md), R53
+`[statut:: tranchée]` · `[prio:: P3]` · Ouverte le 29/10/2026 · issue du [Conseil, séance n°8](./conseil/seances/2026-10-29-recette-132.md), R53
 
 - **La question** : TaskForce montre Claude Code par son seul nom (R53, retenue). Faut-il demander à Anthropic
   l'autorisation d'afficher le logo de Claude, dans l'app et sur le site ?
@@ -261,6 +262,7 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 - **Position actuelle** : `[HYPOTHÈSE]` le nom seul tant qu'aucune autorisation écrite n'existe ; la demande est au choix
   de la Présidence.
 - **Ce qu'il faut pour trancher** : la décision de la Présidence de demander ou non, puis la réponse d'Anthropic.
+- **Tranchée par la Présidence le 10/11/2026** ([séance n°21](./conseil/seances/2026-11-10-premier-client-e20.md)) : « Le logo Anthropic est open source, on peut l'utiliser sans problème. » ; « C'est juste un logo d'information, donc il n'y a pas de problème à ce niveau-là. » Aucune demande à Anthropic ; le logo est dans l'app depuis la 1.14.0.
 
 ## Q13 : Les moyens de la direction : l'hébergement, le temps, un partenaire, la source du texte
 
@@ -302,6 +304,7 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 - `[DÉDUIT]` Le VPS doit être en service avant le 31/12/2026, avec les comptes, la webapp, l'API et les sauvegardes :
   sans lui, une nouvelle installation de l'app desktop ne peut plus se connecter, puisqu'elle passe par la webapp.
 - **Ce qui manque encore** : la date de mise en service du VPS.
+- **10/11/2026** ([séance n°21](./conseil/seances/2026-11-10-premier-client-e20.md), R149) : un premier client en dépend. Le Conseil demande la date du VPS ; s'il n'est pas en service au 15/12/2026, l'app desktop doit pouvoir se connecter sans la webapp.
 
 ## Q14 : Se brancher à n8n ?
 
@@ -330,8 +333,17 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 - **Ce qu'il faut pour trancher** : les réponses des démos de J8 ; une vérification juridique, puisque la double licence
   suppose de détenir les droits sur tout le code.
 
+## Q16 : macOS : quand, et sans payer Apple ?
+
+`[statut:: ouverte]` · `[prio:: P3]` · Ouverte le 10/11/2026 · issue du [Conseil, séance n°21](./conseil/seances/2026-11-10-premier-client-e20.md), R150
+
+- **La question** : faut-il une version macOS de l'app desktop, et quand, tant que la Présidence ne veut pas payer l'adhésion d'Apple ? Ses mots : « temps que je suis pas paye je veux pas passer la certif IoS qui coute un bras pour pouvoir publier quelque chose sur l'Apple store ».
+- **Pourquoi ça compte** : `[ÉTABLI]` un `.exe` ne s'exécute pas sur macOS ; l'adhésion d'Apple coûte 99 dollars par an et donne la notarisation ([Apple](https://developer.apple.com/programs/), lu le 10/11/2026) ; sans elle, l'app s'ouvre une première fois par « Ouvrir quand même » ([Apple](https://support.apple.com/guide/mac-help/open-a-mac-app-from-an-unknown-developer-mh40616/mac), lu le 10/11/2026) et ne se met pas à jour seule ([Electron](https://www.electronjs.org/docs/latest/api/auto-updater), lu le 10/11/2026).
+- **Position actuelle** : R150, en attente de la Présidence : la question va au premier client ; une version non signée pour les Mac à puce Apple s'il travaille sur Mac ; l'adhésion au premier contrat payé.
+- **Ce qu'il faut pour trancher** : les machines du premier client ; la décision de la Présidence sur R150.
+
 ---
 
 **Points d'entrée :** [🔬 R&D](./README.md) · [🤖 Mode recherche](./CLAUDE.md) · [🧪 Expériences](./experiences/Experiences.md) · [📖 Notes critiques](./revues/World-Model.md)
 
-**Dernière mise à jour :** 01/11/2026 · **v1.2** · Projet Taskforce, Metz Numeric School 2025-2026
+**Dernière mise à jour :** 10/11/2026 · **v1.3** · Projet Taskforce, Metz Numeric School 2025-2026
