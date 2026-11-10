@@ -47,7 +47,9 @@ Le Conseil partage cette vision et la rend mesurable :
 - J1 se ferme sur « continuer ». J2 est estimé à trois ou quatre semaines `[HYPOTHÈSE]`, ce qui place E20 dans la seconde quinzaine
   de décembre.
 
-Sept recommandations, R145 à R151, à l'unanimité des sept, R145 et R146 au second tour.
+Sept recommandations, R145 à R151, à l'unanimité des sept, R145 et R146 au second tour. La Présidence les tranche le jour même :
+J1 clos, J2 commence dans l'ordre d'E20, élargi à l'outillage de l'entreprise et à ses propres règles ; E20 à la fin de J2 ;
+l'hébergement après J2 ; pas de version Mac non signée pour le premier client.
 
 ## Saisine, formation, règle de vote
 
@@ -318,8 +320,34 @@ complète vers la fin de mai 2027, la mise sur le marché en juin 2027.
 
 ## Décision de la Présidence
 
-En attente. Le secrétariat lui demande de trancher R145 à R151 : retenue, à l'essai, écartée ou reportée, avec sa raison, dans ses
-mots.
+Tranchée le 10/11/2026, en conversation, à la relecture du PV.
+
+- **R145, retenue, à la fin de J2** : « E20 devient le premier client joué de bout en bout, donc ça oui, on verra ça donc après. À la
+  fin de J2, du coup, je suppose, si c'est vraiment la fin de cette première version client. »
+- **R146, retenue, amendée : une démo avant l'entretien** : « je ferai un entretien avec […], mais avant ça, je lui enverrai une
+  démo, donc il faudra qu'on tourne une vidéo de démo de l'outil. On pourra faire une vidéo de démo principale et puis une vidéo de
+  démo des différentes features ou des différents domaines d'application de l'outil. » Avec « vraiment la preuve, tu vois, en
+  direct, le résultat », et « peut-être aussi les benchmarks techniques, avec les modèles que moi j'utilise ».
+- **R147, retenue et élargie** : « Donc la première version entreprise, ben voilà, c'est bon. » La Présidence y ajoute :
+  - se brancher à ce que l'entreprise a déjà : « l'idée, ce serait de pouvoir connecter Google Drive directement, et puis que après,
+    quand ils importent leurs documents, au lieu que ça aille en stockage local, par exemple, et bien que ça parte sur leur Google
+    Drive » ; « pas imposer un stockage local, pas imposer un stockage sur Drive non plus » ; TaskForce comprend l'organisation des
+    documents et « demande toujours un petit peu l'accord » ;
+  - les règles de l'entreprise, par couches, au-dessus des nôtres : « créer ses propres règles elle-même pour différentes choses,
+    peut-être différents niveaux aussi de permission, différentes couches, les projets, l'organisation, un utilisateur, enfin moi
+    j'en sais rien, un process » ; « toujours encadré par quelque chose que nous, on contrôle, et donc c'est ça, nos règles qui sont
+    écrites dans notre code » ;
+  - le dossier signé : « il faudra que ce soit à fond ».
+- **R148, retenue** : « il faudra corriger l'ensemble » ; « vraiment, vraiment algorithmique, que tout soit juste, qu'il n'y ait pas
+  de faille ».
+- **R149, reportée après J2 et les vidéos** : « on verra une fois que J2 sera sorti, ok ? Parce qu'on a largement le temps, et puis
+  c'est surtout pas une nécessité ». L'hébergement : « on n'ira peut-être pas sur un VPS, mais plutôt sur... enfin, c'est
+  l'équivalent, mais sur GCP, peut-être Azure ou AWS » ; « GCP, ça me paraît correct » ; « Juste côté base de données, faut voir,
+  parce que ça coûte un petit peu, je crois. »
+- **R150, modifiée** : pas de version non signée pour le premier client, « parce que j'ai pas envie d'aller leur faire désactiver
+  des trucs dans leurs paramètres » ; l'adhésion d'Apple quand il montre une vraie intention : « si je vois qu'ils accrochent
+  vraiment au truc, qu'il y a vraiment une vraie intention derrière, bah je prendrai la licence Mac ».
+- **R151, retenue** : « c'est très cool si J1 est clos, voilà. Et puis bah là on attaque du coup J2 ».
 
 ## Notes du secrétariat
 
@@ -337,6 +365,19 @@ mots.
   distribution discutée. Le secrétariat est tenu par un modèle d'Anthropic, dont le logo est en question : la décision est celle de
   la Présidence.
 - **Les durées** de J2 et la date d'E20 sont des `[HYPOTHÈSE]`.
+- **L'hébergement et l'app desktop** (après la décision) : l'app desktop se connecte par ce serveur (`desktop/src/account.ts` : la
+  page `/auth/desktop` de la webapp, puis `/api/auth/desktop/token`, et `/api/auth/desktop/session` pour garder la session). Le
+  report de R149 ne lève donc pas l'échéance du 31/12/2026 : sans serveur à cette date, personne ne peut plus se connecter à l'app
+  desktop, le premier client compris.
+- **Le Mac App Store** (après la décision) impose le bac à sable (règle 2.4.5 (i)) et interdit de télécharger des ressources qui
+  ajoutent une fonction (2.4.5 (iv)), comme le modèle de voix ([Apple](https://developer.apple.com/app-store/review/guidelines/),
+  lu le 10/11/2026). La même adhésion permet la distribution directe, notarisée : sans avertissement, avec la mise à jour
+  automatique.
+- **Les règles sont déjà des données** : un paquet versionné par espace (`harness_rule_sets`, migration V102), 38 règles par défaut
+  (`harness/default.rules.json`), chacune avec son action, sa classe, son effet (permettre, demander, refuser) et sa raison ; chaque
+  mission note la version et l'empreinte des règles reçues. Manquent l'éditeur, les couches et un socle que l'entreprise ne peut
+  pas relâcher.
+- **Les noms** du contact chez le premier client possible et de son entreprise sont retirés des citations (« […] »).
 
 ## Suites
 

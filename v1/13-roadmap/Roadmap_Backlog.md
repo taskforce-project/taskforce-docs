@@ -24,6 +24,12 @@ Logo projet        : assets/images/logo_taskforce.png
 **Date :** 08/06/2026  
 **Auteur(s) :** Pierre MICHEL
 
+> **▶ 10/11/2026 :** J1 est clos (release 1.14.0, [séance n°21](../../recherche/conseil/seances/2026-11-10-premier-client-e20.md),
+> R151). J2 commence, dans l'ordre d'E20 (R147), élargi par la Présidence : le contexte de l'entreprise lu là où il est (Google
+> Drive d'abord) et rangé où elle le choisit ; la fiche d'environnement ; le processus ; les règles de l'entreprise, par couches,
+> au-dessus d'un socle que nous gardons ; le dossier signé ; les erreurs bêtes prévenues par le code. E20 se joue à la fin de J2 ;
+> les vidéos de démo précèdent l'entretien avec le premier client possible ; l'hébergement se décide après J2.
+>
 > **▶ 01/11/2026 :** le chantier en cours est la feuille de route jusqu'à la démo complète, J0 à J9, décidée par la
 > Présidence après les séances n°14 et n°15 du Conseil ([PV](../../recherche/conseil/seances/2026-11-01-feuille-de-route.md)).
 > Elle est au [§0](#0-la-feuille-de-route-jusquà-la-démo-complète-j0-à-j9) ; chaque jalon se valide avant le suivant.
@@ -123,14 +129,17 @@ pour l'instant (R91).
 | TF-J1-18 | Les listes, les volets et la palette : « Waiting for you » et les alertes en listes (trois groupes, une phrase par ligne), le rail en cartes, une grammaire des dialogues (420, 560, 720 px), Ctrl+K en palette qui cherche aussi dans les commentaires et les notes. Fait (#511), en prod avec la 1.14.0 et la desktop 1.11.0 le 10/11 (#519) ; reste l'essai de la Présidence sur un vrai projet (E20) | J1 | 🟡 | R133, R141 |
 | TF-J1-19 | Le banc dit ce qu'il mesure : une file, un délai qui est un verdict, des descriptions, un seul onglet, l'essai à un modèle. Fait (#514), en prod avec la 1.14.0 et la desktop 1.11.0 le 10/11 (#519, migration V123) ; reste l'essai de la Présidence sur un vrai projet (E20) | J1 | 🟡 | R142 |
 | TF-J1-20 | La mise à jour sans trou, la voix préparée seule, les noms (Cortex, le logo de Claude) : fait (#513). Puis, à la demande de la Présidence le 10/11 (« Juste la partie droite qui change »), chaque écran hors de la fenêtre principale est celui de la connexion, l'installeur compris (#518). En prod avec la 1.14.0 et la desktop 1.11.0 le 10/11 (#519). La mise à jour depuis la 1.10.0 passe encore par l'ancien départ (sa carte, une notification), puis l'installeur de la 1.11.0 montre le nouvel écran au centre de l'écran principal ; la liste de lancement de 1.10.0 à 1.11.0 est verte sur un Windows neuf (installation, mise à jour qui garde la base, sans runtime Visual C++, désinstallation) ; reste l'essai de la Présidence sur un vrai projet (E20) | J1 | 🟡 | R143, R144 |
-| TF-J2-1 | Le déroulé de la démo, son communiqué et sa foire aux questions, écrits d'abord | J2 | ⬜ | R105 |
+| TF-J2-1 | Le déroulé de la démo, son communiqué et sa foire aux questions, écrits d'abord ; puis les vidéos : une démo principale et une par fonction ou par domaine, les preuves en direct, le banc des modèles (Présidence, 10/11, [séance n°21](../../recherche/conseil/seances/2026-11-10-premier-client-e20.md)) | J2 | ⬜ | R105, R146 |
 | TF-J2-2 | Processus v1 : un canevas modifiable, cinq types d'étapes, exécuté par le moteur durable v1 | J2 | ⬜ | R97, ADR-023 |
 | TF-J2-3 | Agents v1 ; la boucle d'agent de TaskForce sur n'importe quel modèle (missions sur un modèle local) | J2 | ⬜ | R92, R51 |
-| TF-J2-4 | Règles v1 éditables : la table V102 écrite, la classe appliquée, les actions sans code retirées, des cas par règle | J2 | ⬜ | R94, R98 |
-| TF-J2-5 | Contexte v1 : des documents importés avec version, responsable et date de validité, cités au passage près | J2 | ⬜ | R96 |
+| TF-J2-4 | Règles v1 éditables : la table V102 écrite, la classe appliquée, les actions sans code retirées, des cas par règle ; l'entreprise écrit ses propres règles, par couches (organisation, projet, processus, personne), au-dessus d'un socle écrit dans notre code qu'aucune de ses règles ne relâche (Présidence, 10/11) | J2 | ⬜ | R94, R98, R147 |
+| TF-J2-5 | Contexte v1 : les documents de l'entreprise lus là où ils sont, par des connecteurs (Google Drive d'abord), avec version, responsable et date de validité, cités au passage près ; le stockage au choix de l'entreprise (sa machine, son Drive, le serveur), et TaskForce demande avant d'écrire (Présidence, 10/11) | J2 | ⬜ | R96, R147 |
 | TF-J2-6 | La vue du travail v1 ; les surfaces Travail, Processus et Règles, avec l'assistant | J2 | ⬜ | R95 |
-| TF-J2-7 | Dossier v1 : il survit à la suppression, il est signé et vérifié ; le journal des actions d'IA ; un échec devient un cas | J2 | ⬜ | R93, R100, R101 |
-| TF-J2-8 | Deux packs (livraison logicielle ; rédaction et revue de document), zéro code par pack ; mesure de départ de l'indice de confiance | J2 | ⬜ | R103, E17 |
+| TF-J2-7 | Dossier v1 : il survit à la suppression, il est signé et vérifié sans TaskForce ; le journal des actions d'IA ; un échec devient un cas (Présidence : « il faudra que ce soit à fond ») | J2 | ⬜ | R93, R100, R101, R147 |
+| TF-J2-8 | Deux packs (livraison logicielle ; rédaction et revue de document), zéro code par pack ; mesure de départ de l'indice de confiance ; le second pack après E20, sauf si le premier client en a besoin (R147) | J2 | ⬜ | R103, E17 |
+| TF-J2-9 | La fiche d'environnement du projet : installer, construire, tester, lancer ; les conventions du métier ; ce qu'on ne touche pas. TaskForce la propose depuis le dépôt et les documents de l'entreprise, une personne la valide, chaque mission la lit ; elle reste visible et corrigeable | J2 | ⬜ | R147 |
+| TF-J2-10 | Les erreurs bêtes : trois points de pause (avant une mission, avant d'appliquer, avant de livrer), des listes de moins de dix lignes, et des contraintes vérifiées par le code plutôt que par le modèle (Présidence : « vraiment algorithmique ») | J2 | ⬜ | R148 |
+| TF-J2-11 | E20, le premier client joué de bout en bout, à la fin de J2 : l'entretien avec le premier client possible, après les vidéos ; un logiciel de gestion public ; le contre-essai et le lecteur extérieur du dossier | J2 | ⬜ | R145, R146 |
 | TF-J3 | Le profil de l'espace, le vocabulaire, les types d'objets, les règles complètes (seuils, double signature, séparation des rôles, charte), les packs, le français et l'anglais, la maquette du parcours d'arrivée, le troisième pack | J3 | ⬜ | R94, R98, R102 |
 | TF-J4 | Le contexte : tous les formats, les droits prouvés, la recherche hybride, les citations, l'agent qui demande, la surface Connaissances, le manifeste d'ingestion | J4 | ⬜ | R96, R99 |
 | TF-J5 | Des agents robustes : le moteur durable complet, le vérificateur indépendant, l'aperçu des effets, le bac à sable, les paliers d'autonomie, le registre et le routage des modèles | J5 | ⬜ | R92, R97 |

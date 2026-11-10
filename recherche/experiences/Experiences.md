@@ -58,7 +58,7 @@ related:
 | [E17](#e17--lindice-de-confiance-se-mesure-t-il-et-monte-t-il-) | L'indice de confiance, mesure de départ à J2 (Conseil, R104) | ~1 j | non | proposée |
 | [E18](#e18--la-fenêtre-raccourcit-elle-le-travail-) | La fenêtre, mesurée avant et après (Conseil, R119 à R124) | ~2 h | non | en cours (08/11) : écrans 0 puis 0, clics 2 puis 2, éléments 48 puis 34 |
 | [E19](#e19--le-banc-prédit-il-le-travail-réel-) | Le banc des modèles prédit-il le travail réel ? (Conseil, R131) | ~2 h | oui | proposée |
-| [E20](#e20--taskforce-tient-il-un-vrai-projet-dans-un-domaine-inconnu-) | Le premier client joué de bout en bout : son outil de base, un nouveau module (Présidence, 10/11 ; Conseil, séances n°20 et n°21) | quelques jours | oui | proposée : le protocole de la séance n°21 attend la Présidence |
+| [E20](#e20--taskforce-tient-il-un-vrai-projet-dans-un-domaine-inconnu-) | Le premier client joué de bout en bout : son outil de base, un nouveau module (Présidence, 10/11 ; Conseil, séances n°20 et n°21) | quelques jours | oui | retenue par la Présidence (10/11) : à la fin de J2 |
 
 > **L'ordre compte.** E1 avant tout le reste : sans mesure de calibration, **aucune** des autres n'est
 > interprétable. C'est l'inversion proposée dans [`World_Model_Notes.md`](../revues/World-Model.md) §10 —
@@ -1021,7 +1021,7 @@ l'app desktop, un volet ouvert à la 1.12.0 laisse la conversation à sa place, 
 
 `[statut:: proposée]` · Ouverte le 09/11/2026 · issue de la recette 1.13 et du [Conseil, séance n°20](../conseil/seances/2026-11-09-atelier-recette-113.md)
 
-**Redéfinie par la Présidence le 10/11/2026** ([séance n°21](../conseil/seances/2026-11-10-premier-client-e20.md)) : « Pour moi, c'est le test qui viendra vraiment quand tu me diras « Ok, là, on a une application qu'on peut vendre, on peut aller voir un client avec ça, lui proposer l'application. » » Une entreprise, son outil de base, un nouveau module à intégrer : TaskForce connaît l'outil, sa documentation, son environnement, ses contraintes et ses processus, et aide tout le travail « de manière réglementée, de manière tracée, de manière auditable, et surtout en évitant de faire des erreurs bêtes ». Le protocole proposé par le Conseil (R145, R146) attend sa décision :
+**Redéfinie par la Présidence le 10/11/2026** ([séance n°21](../conseil/seances/2026-11-10-premier-client-e20.md)) : « Pour moi, c'est le test qui viendra vraiment quand tu me diras « Ok, là, on a une application qu'on peut vendre, on peut aller voir un client avec ça, lui proposer l'application. » » Une entreprise, son outil de base, un nouveau module à intégrer : TaskForce connaît l'outil, sa documentation, son environnement, ses contraintes et ses processus, et aide tout le travail « de manière réglementée, de manière tracée, de manière auditable, et surtout en évitant de faire des erreurs bêtes ». Le protocole du Conseil (R145, R146), retenu par la Présidence le 10/11 pour la fin de J2, avec une démo en vidéo avant l'entretien :
 - avant : un entretien avec le premier client possible ; un logiciel de gestion public, choisi au plus près de son cas ; dix questions sur l'outil ; la liste des erreurs bêtes guettées ; les seuils ;
 - pendant et après : les sorties de l'outil, les erreurs bêtes évitées et commises, la part des résultats acceptés sans reprise, le dossier lu par une personne qui ne connaît pas TaskForce ;
 - le contre-essai : trois tâches du module refaites par le même agent, sur le même modèle, sans le contexte, les règles ni les listes de TaskForce ;

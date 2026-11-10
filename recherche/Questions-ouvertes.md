@@ -305,6 +305,7 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   sans lui, une nouvelle installation de l'app desktop ne peut plus se connecter, puisqu'elle passe par la webapp.
 - **Ce qui manque encore** : la date de mise en service du VPS.
 - **10/11/2026** ([séance n°21](./conseil/seances/2026-11-10-premier-client-e20.md), R149) : un premier client en dépend. Le Conseil demande la date du VPS ; s'il n'est pas en service au 15/12/2026, l'app desktop doit pouvoir se connecter sans la webapp.
+- **Réponse de la Présidence, le 10/11/2026** : R149 reportée après J2 et les vidéos de démo (« on verra une fois que J2 sera sorti ») ; plutôt un grand fournisseur qu'un VPS : « GCP, ça me paraît correct », la base de données à chiffrer. `[ÉTABLI]` L'app desktop se connecte par ce serveur (`desktop/src/account.ts`) : l'échéance du 31/12/2026 tient pour elle aussi.
 
 ## Q14 : Se brancher à n8n ?
 
@@ -332,6 +333,7 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   testent pendant les démos ; le cœur reste sous AGPL (R106).
 - **Ce qu'il faut pour trancher** : les réponses des démos de J8 ; une vérification juridique, puisque la double licence
   suppose de détenir les droits sur tout le code.
+- **La Présidence, le 10/11/2026** : le coût du serveur viendra avec le monde (« ça va commencer à chiffrer s'il y a beaucoup de monde qui vont dessus »), sans revenu à ce stade ; le prix se discute au moment d'ouvrir l'app à tous, après J2 et les vidéos.
 
 ## Q16 : macOS : quand, et sans payer Apple ?
 
@@ -341,6 +343,7 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 - **Pourquoi ça compte** : `[ÉTABLI]` un `.exe` ne s'exécute pas sur macOS ; l'adhésion d'Apple coûte 99 dollars par an et donne la notarisation ([Apple](https://developer.apple.com/programs/), lu le 10/11/2026) ; sans elle, l'app s'ouvre une première fois par « Ouvrir quand même » ([Apple](https://support.apple.com/guide/mac-help/open-a-mac-app-from-an-unknown-developer-mh40616/mac), lu le 10/11/2026) et ne se met pas à jour seule ([Electron](https://www.electronjs.org/docs/latest/api/auto-updater), lu le 10/11/2026).
 - **Position actuelle** : R150, en attente de la Présidence : la question va au premier client ; une version non signée pour les Mac à puce Apple s'il travaille sur Mac ; l'adhésion au premier contrat payé.
 - **Ce qu'il faut pour trancher** : les machines du premier client ; la décision de la Présidence sur R150.
+- **Décision de la Présidence, le 10/11/2026** (R150 modifiée) : le premier client possible travaille sur Mac, mais ne recevra pas de version non signée (« j'ai pas envie d'aller leur faire désactiver des trucs dans leurs paramètres ») ; une démo d'abord, puis l'adhésion d'Apple s'il montre une vraie intention. `[ÉTABLI]` Le Mac App Store impose le bac à sable et interdit de télécharger des ressources qui ajoutent une fonction ([Apple](https://developer.apple.com/app-store/review/guidelines/), règle 2.4.5, lue le 10/11/2026) ; la même adhésion permet la distribution directe, notarisée.
 
 ---
 

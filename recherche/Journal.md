@@ -24,6 +24,19 @@ related:
 
 ---
 
+## 2026-11-10 : la Présidence tranche la séance n°21
+
+**Fait** : la Présidence a relu le PV de la séance n°21 et tranché R145 à R151 ([PV](./conseil/seances/2026-11-10-premier-client-e20.md)).
+
+**Trouvé** :
+- `[ÉTABLI]` Les règles sont déjà des données : un paquet versionné par espace (`harness_rule_sets`, V102), 38 règles par défaut, et chaque mission note la version et l'empreinte des règles reçues. Manquent l'éditeur, les couches et un socle que l'entreprise ne peut pas relâcher.
+- `[ÉTABLI]` L'app desktop se connecte par le serveur de la webapp (`desktop/src/account.ts`) : l'échéance du 31/12/2026 la concerne aussi.
+- `[ÉTABLI]` Le Mac App Store impose le bac à sable et interdit de télécharger des ressources qui ajoutent une fonction (Apple, règle 2.4.5, lue le 10/11).
+
+**Décidé** : R145, R147, R148 et R151 retenues ; R146 amendée (une démo en vidéo avant l'entretien) ; R147 élargie (se brancher à l'outillage de l'entreprise, Google Drive d'abord, le stockage à son choix, ses propres règles par couches) ; R149 reportée après J2 et les vidéos, GCP envisagé ; R150 modifiée (pas de version non signée pour le premier client, l'adhésion d'Apple quand il montre une vraie intention).
+
+**Prochain coup** : les critères de sortie de J2 et le déroulé de la démo, puis un atelier du Conseil sur la façon de se brancher à l'entreprise et sur les règles par couches.
+
 ## 2026-11-10 : séance n°21, la première version pour une entreprise, et E20
 
 **Fait** : la release 1.14.0 et l'app desktop 1.11.0 sont en production ; la liste de lancement de 1.10.0 à 1.11.0 est verte sur un Windows neuf. La Présidence redéfinit E20 et demande au Conseil où en est la feuille de route ([PV](./conseil/seances/2026-11-10-premier-client-e20.md)).
