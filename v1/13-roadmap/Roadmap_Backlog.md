@@ -24,6 +24,16 @@ Logo projet        : assets/images/logo_taskforce.png
 **Date :** 08/06/2026  
 **Auteur(s) :** Pierre MICHEL
 
+> **▶ 11/11/2026 :** J2 se construit ([séance n°22](../../recherche/conseil/seances/2026-11-11-se-brancher-a-l-entreprise.md),
+> R152 à R158, retenues). Il se termine quand ces critères sont tenus, mesurés sur l'app desktop : (1) chaque outil de la
+> première vague se branche par un flux clair, sans copier de jeton, en moins d'une minute hors étape de l'administrateur ;
+> (2) dix questions sur l'outil de base de l'essai, au moins huit réponses justes et citées avec la version ; (3) un document
+> rangé dans le stockage choisi, après accord, le dossier disant où ; (4) la fiche d'environnement validée, trois missions
+> qui emploient ses commandes ; (5) une règle écrite en mots passe ses cas, une règle qui relâche le socle est refusée ;
+> (6) le processus « intégrer un module » de bout en bout, repris après un redémarrage ; (7) le dossier signé vérifié hors de
+> TaskForce ; (8) deux erreurs semées sur trois missions, attrapées ; (9) un document piégé ne fait rien sortir ; (10) le
+> rituel de R105 et la mesure de départ de l'indice de confiance. Puis E20.
+>
 > **▶ 10/11/2026 :** J1 est clos (release 1.14.0, [séance n°21](../../recherche/conseil/seances/2026-11-10-premier-client-e20.md),
 > R151). J2 commence, dans l'ordre d'E20 (R147), élargi par la Présidence : le contexte de l'entreprise lu là où il est (Google
 > Drive d'abord) et rangé où elle le choisit ; la fiche d'environnement ; le processus ; les règles de l'entreprise, par couches,
@@ -133,13 +143,16 @@ pour l'instant (R91).
 | TF-J2-2 | Processus v1 : un canevas modifiable, cinq types d'étapes, exécuté par le moteur durable v1 | J2 | ⬜ | R97, ADR-023 |
 | TF-J2-3 | Agents v1 ; la boucle d'agent de TaskForce sur n'importe quel modèle (missions sur un modèle local) | J2 | ⬜ | R92, R51 |
 | TF-J2-4 | Règles v1 éditables : la table V102 écrite, la classe appliquée, les actions sans code retirées, des cas par règle ; l'entreprise écrit ses propres règles, par couches (organisation, projet, processus, personne), au-dessus d'un socle écrit dans notre code qu'aucune de ses règles ne relâche (Présidence, 10/11) | J2 | ⬜ | R94, R98, R147 |
-| TF-J2-5 | Contexte v1 : les documents de l'entreprise lus là où ils sont, par des connecteurs (Google Drive d'abord), avec version, responsable et date de validité, cités au passage près ; le stockage au choix de l'entreprise (sa machine, son Drive, le serveur), et TaskForce demande avant d'écrire (Présidence, 10/11) | J2 | ⬜ | R96, R147 |
+| TF-J2-5 | Contexte v1 : les documents de l'entreprise lus là où ils sont, par des connecteurs, avec version, responsable et date de validité, cités au passage près ; lus en direct par défaut, indexés seulement avec l'accord de l'entreprise et si l'éditeur le permet ; les droits de la source suivent la personne ; les agents de code atteignent les outils par TaskForce, sous les mêmes règles (R155, [séance n°22](../../recherche/conseil/seances/2026-11-11-se-brancher-a-l-entreprise.md)) | J2 | ⬜ | R96, R147, R155 |
 | TF-J2-6 | La vue du travail v1 ; les surfaces Travail, Processus et Règles, avec l'assistant | J2 | ⬜ | R95 |
 | TF-J2-7 | Dossier v1 : il survit à la suppression, il est signé et vérifié sans TaskForce ; le journal des actions d'IA ; un échec devient un cas (Présidence : « il faudra que ce soit à fond ») | J2 | ⬜ | R93, R100, R101, R147 |
 | TF-J2-8 | Deux packs (livraison logicielle ; rédaction et revue de document), zéro code par pack ; mesure de départ de l'indice de confiance ; le second pack après E20, sauf si le premier client en a besoin (R147) | J2 | ⬜ | R103, E17 |
 | TF-J2-9 | La fiche d'environnement du projet : installer, construire, tester, lancer ; les conventions du métier ; ce qu'on ne touche pas. TaskForce la propose depuis le dépôt et les documents de l'entreprise, une personne la valide, chaque mission la lit ; elle reste visible et corrigeable | J2 | ⬜ | R147 |
 | TF-J2-10 | Les erreurs bêtes : trois points de pause (avant une mission, avant d'appliquer, avant de livrer), des listes de moins de dix lignes, et des contraintes vérifiées par le code plutôt que par le modèle (Présidence : « vraiment algorithmique ») | J2 | ⬜ | R148 |
 | TF-J2-11 | E20, le premier client joué de bout en bout, à la fin de J2 : l'entretien avec le premier client possible, après les vidéos ; un logiciel de gestion public ; le contre-essai et le lecteur extérieur du dossier | J2 | ⬜ | R145, R146 |
+| TF-J2-12 | Se brancher à l'entreprise : le catalogue par catégories, à partir du [Registre des outils](../02-produit/Registre_des_outils.md) ; un flux clair, cohérent et accessible pour chaque chemin (l'auto-inscription, notre application, l'application de l'entreprise après son administrateur, une clé guidée) ; une connexion par personne, avec ses droits ; la déconnexion qui révoque ; aucun jeton relayé par le serveur. Première vague, essayée de bout en bout : GitHub, GitLab, OneDrive, Notion, Confluence, Jira, Slack, Teams, Linear, Docker Hub, Excalidraw, Figma, Stripe, Zoho, Asana, et Google Drive (R153, R154) | J2 | ⬜ | R153, R154 |
+| TF-J2-13 | La sécurité des connecteurs : la lecture par défaut, des portées strictement utiles, l'écriture demandée outil par outil ; un contenu lu n'est jamais une consigne ; jamais à la fois un contenu non fiable, des données sensibles et une sortie sans une personne ; la liste des outils figée à la connexion ; TaskForce classe lui-même chaque outil ; un essai d'attaque avant qu'un outil soit visible (R158) | J2 | ⬜ | R158 |
+| TF-J2-14 | Ranger où l'entreprise le choisit : par espace, et par projet s'il le veut, la machine, le stockage de l'entreprise (Google Drive, OneDrive ou SharePoint, Box, Dropbox, Nextcloud) ou le serveur ; TaskForce demande avant d'écrire chez elle, et le dossier dit où vit chaque document (R156) | J2 | ⬜ | R156, R93 |
 | TF-J3 | Le profil de l'espace, le vocabulaire, les types d'objets, les règles complètes (seuils, double signature, séparation des rôles, charte), les packs, le français et l'anglais, la maquette du parcours d'arrivée, le troisième pack | J3 | ⬜ | R94, R98, R102 |
 | TF-J4 | Le contexte : tous les formats, les droits prouvés, la recherche hybride, les citations, l'agent qui demande, la surface Connaissances, le manifeste d'ingestion | J4 | ⬜ | R96, R99 |
 | TF-J5 | Des agents robustes : le moteur durable complet, le vérificateur indépendant, l'aperçu des effets, le bac à sable, les paliers d'autonomie, le registre et le routage des modèles | J5 | ⬜ | R92, R97 |

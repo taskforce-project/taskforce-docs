@@ -48,8 +48,8 @@ TaskForce, c'est branché. Derrière, quatre chemins, selon ce que l'éditeur pe
 | **D, à vérifier** | L'éditeur dit « tout client », sans dire comment s'inscrire | À essayer | Un essai avant de classer |
 | **Aucun** | Pas de serveur MCP officiel ouvert à une application tierce | Une API, quand elle existe | Un lecteur déclaratif (R99) |
 
-La vague proposée par la séance n°22 (R153) est en attente de la Présidence : **1** = J2, **2** = la vague suivante,
-**plus tard** = à la demande d'un client.
+La vague, retenue par la Présidence le 11/11/2026 (R153) : **1** = J2, avec les outils où la Présidence peut se connecter,
+**2** = la vague suivante, **plus tard** = à la demande d'un client.
 
 ## Le classement d'adoption
 
@@ -88,7 +88,7 @@ La vague proposée par la séance n°22 (R153) est en attente de la Présidence 
 | --- | --- | :--: | --- | :--: | --- |
 | Jira (et Jira Service Management) | Torii n°19 | A | Supprimer et administrer restent coupés tant que l'administrateur ne les ouvre pas | 1 | [Atlassian](https://github.com/atlassian/atlassian-mcp-server) |
 | Linear | essayé dans TaskForce | A | Aucune revue | 1 (fait) | [Linear](https://linear.app/docs/mcp) |
-| Asana | non classé | B | Pas d'auto-inscription : une application MCP enregistrée, avec identifiant et secret | 2 | [Asana](https://developers.asana.com/docs/integrating-with-asanas-mcp-server) |
+| Asana | non classé | B | Pas d'auto-inscription : une application MCP enregistrée, avec identifiant et secret | 1 | [Asana](https://developers.asana.com/docs/integrating-with-asanas-mcp-server) |
 | monday.com | non classé | A puis C | L'auto-inscription existe, mais chaque nouveau client attend l'administrateur du compte | 2 | [monday.com](https://developer.monday.com/api-reference/docs/mcp-dynamic-client-registration) |
 | ClickUp | non classé | A `[HYPOTHÈSE]` | L'auto-inscription est annoncée, mais l'éditeur parle d'une liste de clients vérifiés | 2 | [ClickUp](https://clickup.com/blog/how-to-use-clickup-mcp-server/) |
 | Smartsheet | non classé | B | Un secret et des retours HTTPS seulement | plus tard | [Smartsheet](https://developers.smartsheet.com/api/smartsheet/guides/advanced-topics/oauth) |
@@ -98,8 +98,8 @@ La vague proposée par la séance n°22 (R153) est en attente de la Présidence 
 
 | Outil | Adoption | Chemin | Ce qu'il faut | Vague | Source |
 | --- | --- | :--: | --- | :--: | --- |
-| Slack | Okta n°6 | B ou C | Le serveur MCP n'accepte que les applications publiées (revue jusqu'à dix semaines) ou internes à l'entreprise ; les conditions interdisent l'entraînement d'un modèle et les copies durables des données d'autres organisations | 2 | [Slack](https://docs.slack.dev/ai/slack-mcp-server/) |
-| Microsoft Teams | Torii n°12 | C | `Chat.Read` hors du consentement par défaut ; le serveur Work IQ se paie en crédits Copilot | 2 | [Microsoft](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/api-overview) |
+| Slack | Okta n°6 | B ou C | Le serveur MCP n'accepte que les applications publiées (revue jusqu'à dix semaines) ou internes à l'entreprise ; les conditions interdisent l'entraînement d'un modèle et les copies durables des données d'autres organisations | 1 | [Slack](https://docs.slack.dev/ai/slack-mcp-server/) |
+| Microsoft Teams | Torii n°12 | C | `Chat.Read` hors du consentement par défaut ; le serveur Work IQ se paie en crédits Copilot | 1 | [Microsoft](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/api-overview) |
 | Outlook | Torii n°18 | C | `Mail.Read` et `Calendars.Read` hors du consentement par défaut | 2 | [Microsoft](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/manage-app-consent-policies) |
 | Google Calendar | Okta n°2 (Workspace) | B | Des portées sans doute sensibles `[HYPOTHÈSE]` | 2 | [Google](https://developers.google.com/workspace/guides/configure-mcp-servers) |
 | Gmail | Okta n°2 (Workspace) | B | `gmail.readonly` est restreinte : vérification et audit | plus tard | [Google](https://developers.google.com/workspace/gmail/api/auth/scopes) |
@@ -113,6 +113,7 @@ La vague proposée par la séance n°22 (R153) est en attente de la Présidence 
 | GitLab | Ramp n°5 (nouvelles dépenses) | A, après l'administrateur | L'administrateur autorise MCP ; une inscription par instance auto-hébergée `[HYPOTHÈSE]` | 1 | [GitLab](https://docs.gitlab.com/user/gitlab_duo/model_context_protocol/mcp_server/) |
 | Bitbucket Cloud | non classé | A | L'espace doit être relié à une organisation Atlassian | 2 | [Atlassian](https://github.com/atlassian/atlassian-mcp-server) |
 | Azure DevOps | non classé | C | Une application Entra avec le consentement de l'administrateur | plus tard | [Microsoft](https://learn.microsoft.com/en-us/azure/devops/mcp-server/remote-mcp-server?view=azure-devops) |
+| Docker Hub | non classé | à vérifier | Ajouté par la Présidence le 11/11/2026 ; à vérifier : serveur MCP, connexion, portées | 1 | à vérifier |
 
 ## Ventes et relation client
 
@@ -121,8 +122,9 @@ La vague proposée par la séance n°22 (R153) est en attente de la Présidence 
 | Salesforce | Okta n°4 | C | L'administrateur crée l'application et active chaque serveur ; la création d'applications connectées est coupée par défaut depuis Spring '26 | 2 | [Salesforce](https://www.salesforce.com/blog/?p=136995) |
 | HubSpot | Cledara n°19 | B puis C | Un administrateur du compte connecte d'abord ; une application non listée s'installe 25 fois au plus | 2 | [HubSpot](https://developers.hubspot.com/changelog/new-marketplace-distribution-app-install-limits) |
 | Pipedrive | non classé | D | Un serveur MCP depuis le 30/06/2026 ; l'inscription n'est pas décrite | plus tard | [Pipedrive](https://www.pipedrive.com/en/newsroom/pipedrive-launches-native-mcp-server-bringing-crm-workflows-directly-into-ai-assistants) |
-| Zoho CRM | non classé | C | Chaque entreprise crée son propre serveur MCP | plus tard | [Zoho](https://help.zoho.com/portal/en/kb/mcp/implementation-guide/articles/zoho-mcp-implementation-guide) |
+| Zoho CRM | non classé | C | Chaque entreprise crée son propre serveur MCP | 1 | [Zoho](https://help.zoho.com/portal/en/kb/mcp/implementation-guide/articles/zoho-mcp-implementation-guide) |
 | Dynamics 365 | non classé | C | L'administrateur active MCP et chaque client | plus tard | [Microsoft](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/data-platform-mcp-disable) |
+| Stripe | non classé | à vérifier | Ajouté par la Présidence le 11/11/2026 (« Stripe aussi important ») ; déjà parmi les préréglages MCP de TaskForce ; à vérifier : connexion, portées | 1 | à vérifier |
 
 ## Support et services informatiques
 
@@ -148,9 +150,10 @@ La vague proposée par la séance n°22 (R153) est en attente de la Présidence 
 
 | Outil | Adoption | Chemin | Ce qu'il faut | Vague | Source |
 | --- | --- | :--: | --- | :--: | --- |
-| Figma | Okta n°11 | B | Les nouveaux clients MCP passent par une liste d'attente | plus tard | [Figma](https://developers.figma.com/docs/figma-mcp-server/remote-server-installation) |
+| Figma | Okta n°11 | B | Les nouveaux clients MCP passent par une liste d'attente | 1 (liste d'attente) | [Figma](https://developers.figma.com/docs/figma-mcp-server/remote-server-installation) |
 | Canva | Zylo n°3 | B | Une application créée chez Canva ; les clients sans secret sur liste d'attente | plus tard | [Canva](https://www.canva.dev/blog/developers/canva-mcp-ga/) |
 | Miro | Cledara n°28 | A | MCP parfois coupé en Enterprise jusqu'à l'administrateur | 2 | [Miro](https://developers.miro.com/docs/miro-mcp-server-frequently-asked-questions) |
+| Excalidraw | non classé | à vérifier | Ajouté par la Présidence le 11/11/2026 ; à vérifier : serveur MCP, connexion, portées | 1 | à vérifier |
 
 ## Autres
 

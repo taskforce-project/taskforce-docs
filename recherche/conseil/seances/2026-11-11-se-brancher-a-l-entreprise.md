@@ -47,7 +47,8 @@ Le Conseil adopte sept recommandations :
 - la sécurité des connecteurs.
 
 Yoshua Bengio, contradicteur, a obtenu qu'aucun outil ne devienne visible avant son essai d'attaque. R153 et R154 ont
-passé au second tour.
+passé au second tour. La Présidence les retient toutes le jour même : le flux peut demander une étape à l'entreprise,
+pourvu qu'il soit clair ; la première vague s'élargit aux outils où elle peut se connecter.
 
 ## Saisine, formation, règle de vote
 
@@ -315,8 +316,18 @@ tous les agents) ; R147, élargie par la Présidence le 10/11, et R148 ; la trif
 
 ## Décision de la Présidence
 
-En attente. Le secrétariat lui demande de trancher R152 à R158 : retenue, à l'essai, écartée ou reportée, avec sa raison, dans
-ses mots.
+Tranchée le 11/11/2026, en conversation : « Je retiens les 7 reco c'est ok ».
+
+- **R152, retenue** : « Chiffre alors oui va falloir chiffrer les resultats attendue ».
+- **R153, retenue et élargie** : le registre par catégories (« Et oui les separer en categorie c'est top ») ; la première
+  vague s'étend aux outils où la Présidence peut se connecter, pour les essayer de bout en bout : « on peut essayer avec des
+  outils sur lesquel je peux me connecter, donc Github, Gitlab, OneDrive, Notion, Conflu, Jira, Slack, Teams ?, Linear, Docker
+  Hub ?, Excalidraw ?, Jira, ... Figma ?, Bref voila pas mal de truc, Stripe aussi important, Zoho ca devrait etre facile je
+  pense, Asana, ... ».
+- **R154, retenue et amendée** : le clic n'est pas une fin en soi, la clarté l'est : « pas de pb si la personne doit gerer un
+  truc de son cote sur les app microsoft ou autre, c'est normal, mais faut que le flux soit clair, coherent et accessible
+  c'est tout, et que avec taskforce on puisse communiquer avec le reste donc c'est ok si c'est pas forcement un clique ».
+- **R155 à R158, retenues.**
 
 ## Notes du secrétariat
 

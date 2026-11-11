@@ -31,7 +31,7 @@ Logo projet        : assets/images/logo_taskforce.png
 - [Fiche Frontend](./Frontend.md) · [Fiche Backend](./Backend.md)
 - [Fiche Landing](./Landing.md) · [Fiche IA](./IA.md) · [Fiche Infra](./Infra.md)
 - [Couverture du chat](./Couverture_du_chat.md) : les gestes de l'app, et la part que le chat sait faire (TF-J1-6)
-- [Registre des outils](./Registre_des_outils.md) : les 46 outils d'entreprise les plus utilisés, et comment TaskForce s'y branche (séance n°22)
+- [Registre des outils](./Registre_des_outils.md) : les outils d'entreprise les plus utilisés (49 au 11/11/2026), et comment TaskForce s'y branche (séance n°22)
 - [Backlog technique](../13-roadmap/Roadmap_Backlog.md) · [Problèmes connus](../09-audits/Problemes_Connus.md)
 
 **Tags :** `#produit` `#suivi` `#parite` `#plane`

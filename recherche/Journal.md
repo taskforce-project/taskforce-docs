@@ -24,6 +24,14 @@ related:
 
 ---
 
+## 2026-11-11 : la Présidence tranche la séance n°22
+
+**Fait** : la Présidence retient R152 à R158 ([PV](./conseil/seances/2026-11-11-se-brancher-a-l-entreprise.md)).
+
+**Décidé** : les critères de sortie de J2 sont chiffrés ; le registre est rangé par catégories ; la première vague devient les outils où la Présidence peut se connecter (GitHub, GitLab, OneDrive, Notion, Confluence, Jira, Slack, Teams, Linear, Docker Hub, Excalidraw, Figma, Stripe, Zoho, Asana) ; une étape côté entreprise est acceptable si le flux est clair, cohérent et accessible.
+
+**Prochain coup** : la construction de J2, en lots : se brancher (la couche de connexion et la première vague), les règles par couches, et le guide de branchement de chaque outil.
+
 ## 2026-11-11 : séance n°22, se brancher à l'entreprise
 
 **Fait** : la Présidence lance J2 et demande de se brancher à n'importe quel outil de l'entreprise, en un clic, en commençant par la liste exhaustive des outils les plus utilisés. Le secrétariat a dressé le [Registre des outils](../v1/02-produit/Registre_des_outils.md) (46 outils) et réuni le Conseil ([PV](./conseil/seances/2026-11-11-se-brancher-a-l-entreprise.md)).
