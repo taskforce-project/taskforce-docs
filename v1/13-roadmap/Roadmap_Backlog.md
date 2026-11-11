@@ -26,7 +26,7 @@ Logo projet        : assets/images/logo_taskforce.png
 
 > **▶ 11/11/2026 :** J2 se construit ([séance n°22](../../recherche/conseil/seances/2026-11-11-se-brancher-a-l-entreprise.md),
 > R152 à R158, retenues). Il se termine quand ces critères sont tenus, mesurés sur l'app desktop : (1) chaque outil de la
-> première vague se branche par un flux clair, sans copier de jeton, en moins d'une minute hors étape de l'administrateur ;
+> première vague se branche par un flux clair, sans copier de jeton (sauf Docker Hub, en exception), en moins d'une minute hors étape de l'administrateur ;
 > (2) dix questions sur l'outil de base de l'essai, au moins huit réponses justes et citées avec la version ; (3) un document
 > rangé dans le stockage choisi, après accord, le dossier disant où ; (4) la fiche d'environnement validée, trois missions
 > qui emploient ses commandes ; (5) une règle écrite en mots passe ses cas, une règle qui relâche le socle est refusée ;

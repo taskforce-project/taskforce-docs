@@ -116,7 +116,7 @@ La vague, retenue par la Présidence le 11/11/2026 (R153) : **1** = J2, avec les
 | GitLab | Ramp n°5 (nouvelles dépenses) | A | GA depuis la 19.5, sur tous les plans ; l'auto-inscription crée une application sur l'instance ; l'accès MCP est ouvert par défaut aux groupes de premier niveau, sauf si un propriétaire l'a fermé ; en auto-hébergé, l'administrateur de l'instance l'ouvre | 1 | [GitLab](https://docs.gitlab.com/user/group/access_and_permissions/) |
 | Bitbucket Cloud | non classé | A | L'espace doit être relié à une organisation Atlassian | 2 | [Atlassian](https://github.com/atlassian/atlassian-mcp-server) |
 | Azure DevOps | non classé | C | Une application Entra avec le consentement de l'administrateur | plus tard | [Microsoft](https://learn.microsoft.com/en-us/azure/devops/mcp-server/remote-mcp-server?view=azure-devops) |
-| Docker Hub | non classé | Aucun | Ajouté par la Présidence le 11/11/2026. Pas de serveur distant : le serveur officiel tourne sur le poste (stdio, ou HTTP local protégé par un jeton) et lit Docker Hub avec un jeton d'accès personnel, sans OAuth ; branchable sur l'app desktop seulement, par une adresse locale et un jeton copié | 1, app desktop par un jeton (hors du clic) | [Docker](https://github.com/docker/hub-mcp) |
+| Docker Hub | non classé | Aucun | Ajouté par la Présidence le 11/11/2026. Pas de serveur distant : le serveur officiel tourne sur le poste (stdio, ou HTTP local protégé par un jeton) et lit Docker Hub avec un jeton d'accès personnel, sans OAuth ; branchable sur l'app desktop seulement, par une adresse locale et un jeton copié | 1, en exception : un jeton copié sur l'app desktop (Présidence, 11/11/2026) | [Docker](https://github.com/docker/hub-mcp) |
 
 ## Ventes et relation client
 

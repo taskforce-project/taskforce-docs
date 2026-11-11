@@ -328,6 +328,8 @@ Tranchée le 11/11/2026, en conversation : « Je retiens les 7 reco c'est ok ».
   truc de son cote sur les app microsoft ou autre, c'est normal, mais faut que le flux soit clair, coherent et accessible
   c'est tout, et que avec taskforce on puisse communiquer avec le reste donc c'est ok si c'est pas forcement un clique ».
 - **R155 à R158, retenues.**
+- **Docker Hub, gardé en exception** au premier critère de R152 (sans copier de jeton), une fois le guide de branchement lu :
+  « on garde docker hub en exception, je copierai le jeton ». Il se branche sur l'app desktop par la passerelle locale de Docker et un jeton copié.
 
 ## Notes du secrétariat
 
