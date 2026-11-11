@@ -24,6 +24,20 @@ related:
 
 ---
 
+## 2026-11-11 : séance n°22, se brancher à l'entreprise
+
+**Fait** : la Présidence lance J2 et demande de se brancher à n'importe quel outil de l'entreprise, en un clic, en commençant par la liste exhaustive des outils les plus utilisés. Le secrétariat a dressé le [Registre des outils](../v1/02-produit/Registre_des_outils.md) (46 outils) et réuni le Conseil ([PV](./conseil/seances/2026-11-11-se-brancher-a-l-entreprise.md)).
+
+**Trouvé** :
+- `[ÉTABLI]` La connexion en un clic existe déjà pour MCP côté serveur, mais une connexion vaut pour tout l'espace, les agents de code n'atteignent aucun outil, et le stockage se choisit une fois par installation.
+- `[ÉTABLI]` Sept éditeurs laissent toute application s'inscrire seule ; Google exige six semaines et un audit annuel pour lire tout un Drive, Microsoft 365 l'accord de l'administrateur.
+- `[ÉTABLI]` Aucune plateforme de connecteurs ouverte et neutre ; l'injection par un contenu lu n'est résolue nulle part.
+- `[DÉDUIT]` Sans connexion par personne, TaskForce lit avec les droits de qui a branché : ni la confiance ni l'audit ne tiennent.
+
+**Décidé** : R152 à R158 recommandées ; elles attendent la Présidence.
+
+**Prochain coup** : sa décision, puis la construction de J2 en lots, la connexion en un clic et la première vague d'abord.
+
 ## 2026-11-10 : la Présidence tranche la séance n°21
 
 **Fait** : la Présidence a relu le PV de la séance n°21 et tranché R145 à R151 ([PV](./conseil/seances/2026-11-10-premier-client-e20.md)).
