@@ -50,7 +50,7 @@ autre, c'est normal, mais faut que le flux soit clair, coherent et accessible »
 | Outil | Ce que fait la Présidence | Dans TaskForce |
 | --- | --- | --- |
 | Notion | Un clic | Préréglage prêt, à essayer |
-| Linear | Un clic | Essayé, le seul préréglage montré d'office |
+| Linear | Un clic | Essayé, le seul préréglage qui porte `tried` |
 | Stripe | Un clic ; ouvrir l'accès MCP de l'équipe s'il est fermé | Préréglage prêt, à essayer |
 | GitLab | Un clic ; cocher l'accès MCP du groupe s'il a été fermé | Préréglage prêt, à essayer |
 | Confluence, Jira | Deux connexions, un clic chacune ; sur l'app web, ajouter d'abord le domaine de TaskForce chez Atlassian | Préréglages prêts, à essayer |
@@ -293,11 +293,15 @@ sinon le consentement répond « Your organization admin must authorize access f
 (`delete_jira`, `manage_jira`) restent coupés tant qu'un administrateur ne les ouvre pas ; Jira Service Management ne passe
 que par un jeton d'API ([Atlassian](https://github.com/atlassian/atlassian-mcp-server)).
 
+- Jira et Confluence servent sans demander les outils que la page d'Atlassian range en lecture, Teamwork Graph et la
+  recherche de code compris ([Atlassian](https://support.atlassian.com/atlassian-rovo-mcp-server/docs/supported-tools/),
+  relue le 12/11/2026) ; `executeRead`, qui lance n'importe quel outil différé, demande : la page ne le limite pas à la
+  lecture.
 - Non vérifié : un premier accord d'un administrateur du site, rapporté seulement par la communauté.
 
 ### Linear
 
-**Un clic, déjà essayé**, le seul préréglage que le catalogue montre d'office (`tried` du 03/09/2026). Auto-inscription et
+**Un clic, déjà essayé**, le seul préréglage qui porte `tried` (03/09/2026) ; comme chaque préréglage, il se montre. Auto-inscription et
 CIMD, PKCE ([métadonnées](https://mcp.linear.app/.well-known/oauth-authorization-server)). Sans « Also let Cortex propose
 changes », TaskForce se branche sur l'adresse en lecture seule, `https://mcp.linear.app/mcp/readonly`
 ([Linear](https://linear.app/docs/mcp)).
@@ -308,6 +312,10 @@ changes », TaskForce se branche sur l'adresse en lecture seule, `https://mcp.li
 
 - Si l'espace Linear approuve les applications tierces, un administrateur approuve TaskForce : Settings > Administration >
   Security > Third-party application approvals (texte du préréglage).
+- Linear ne publie pas la liste de ses outils : seuls ceux que son [journal des changements](https://linear.app/changelog)
+  dit en lecture servent sans demander (`list_issues`, `list_issue_labels`, `list_comments`, `list_cycles`,
+  `list_projects`, `get_project`, `list_teams`, `get_team`, `list_users`, `get_user`, `list_customer_needs`, relu le
+  12/11/2026) ; chaque autre outil demande avant de servir (R158, séance n°23).
 - Non vérifié : le retour sur tout port de bouclage.
 
 ### Asana
@@ -328,7 +336,9 @@ d'autorisation n'admet qu'un client avec secret (métadonnées de `app.asana.com
 5. Chez Asana : accepter ; retour.
 
 - En Enterprise, un administrateur d'Asana autorise aussi l'application (texte du préréglage).
-- Asana ne publie pas le nom de ses outils : chacun demande avant de servir, jusqu'à ce que l'essai les classe.
+- Asana publie ses outils ([MCP Tools Reference](https://developers.asana.com/docs/mcp-tools-reference), relue le
+  12/11/2026) : les 25 qu'Asana dit en lecture servent sans demander ; les écritures et les trois outils interactifs
+  demandent.
 - Non vérifié : si PKCE dispense du secret.
 
 ## Messagerie, mail et réunions
@@ -624,8 +634,8 @@ sauf ceux que l'éditeur dit en lecture seule (tl;dv, Gong, Expensify, la requê
 3. **Stripe** : la liste des adresses de retour admises, citée sur une page de place de marché ; un choix de lecture seule à
    la connexion.
 4. **Docker** : le port, le chemin et les options de jeton de la passerelle.
-5. **Asana, Slack et Zoho** : le nom de leurs outils, que les éditeurs ne publient pas ; tous demandent jusqu'à ce que l'essai
-   les classe.
+5. **Slack, Zoho et Linear** : le nom de leurs outils, que ces éditeurs ne publient pas (Linear en nomme quelques-uns dans
+   son journal des changements) ; les autres demandent jusqu'à ce que l'éditeur les documente. Asana publie les siens.
 6. **Les ports de bouclage** : la règle de Notion, d'Atlassian (l'entrée `127.0.0.1` par défaut) et des GitHub Apps.
 7. **Excalidraw** : ce que rend `create_view` à un client sans MCP Apps.
 8. **Le reste** : la disponibilité générale de Notion, un premier accord d'un administrateur de site chez Atlassian, le
