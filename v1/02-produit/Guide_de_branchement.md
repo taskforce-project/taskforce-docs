@@ -124,7 +124,9 @@ Zoom et PagerDuty (« Les outils du répertoire de Claude », plus bas).
   desktop, ce sont des variables de l'utilisateur Windows, que la coque passe au backend local. Jamais dans le dépôt.
 - **L'application de l'entreprise** (chemin C) : un propriétaire ou un administrateur la saisit dans Settings >
   Integrations > l'outil, écran « Your company's app » : « Client ID », « Client secret », « Save and connect ». Le secret est rangé
-  chiffré, pour l'espace (`connector_app`).
+  chiffré, pour l'espace (`connector_app`). Pour un outil dont l'entreprise tient le serveur (Glean, Zoho),
+  le serveur auquel ce propriétaire ou cet administrateur se connecte d'abord par elle est retenu : chacun se
+  connecte ensuite par la même application, à ce serveur seulement.
 - **Une clé, ou l'adresse d'un serveur** : « Connect with a key instead », ou « Your server's address » pour Zoho ; masquée,
   rangée chiffrée, jamais réaffichée.
 
