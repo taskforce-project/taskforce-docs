@@ -24,6 +24,13 @@ Logo projet        : assets/images/logo_taskforce.png
 **Date :** 08/06/2026  
 **Auteur(s) :** Pierre MICHEL
 
+> **▶ 12/11/2026 :** J2 est fait au tiers ; la revue complète ([séance n°23](../../recherche/conseil/seances/2026-11-12-revue-de-j2.md),
+> R159 à R162, retenues, R162 amendée) a trouvé des défauts de sécurité, de qualité et d'écrans dans les lots déjà fusionnés.
+> Avant le lot suivant : leurs correctifs, puis la 1.16.0 (R160). Désormais, un lot qui touche aux connexions, aux droits, aux
+> accords, aux règles ou aux données passe une relecture indépendante avant sa fusion (R159), et un lot qui touche un écran
+> une revue de ses écrans (R161). Les essais de bout en bout se font à la main par la Présidence, puis en production sur l'app
+> desktop, sans la CI (R162 amendée).
+>
 > **▶ 11/11/2026 :** J2 se construit ([séance n°22](../../recherche/conseil/seances/2026-11-11-se-brancher-a-l-entreprise.md),
 > R152 à R158, retenues). Il se termine quand ces critères sont tenus, mesurés sur l'app desktop : (1) chaque outil de la
 > première vague se branche par un flux clair, sans copier de jeton (sauf Docker Hub, en exception), en moins d'une minute hors étape de l'administrateur ;
