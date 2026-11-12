@@ -3,7 +3,7 @@ id: produit-guide-branchement
 title: Guide de branchement de la première vague
 doc_type: runbook
 statut: active
-version: 1.1
+version: 1.2
 date: "12/11/2026"
 auteur: Pierre MICHEL
 review_cycle: quarterly
@@ -21,7 +21,7 @@ Logo projet        : assets/images/logo_taskforce.png
 
 # Guide de branchement
 
-**Version :** 1.1 · **Date :** 12/11/2026 · **Auteur :** Pierre MICHEL
+**Version :** 1.2 · **Date :** 12/11/2026 · **Auteur :** Pierre MICHEL
 
 > **Avant l'essai, une release.** Les deux lots de J2 en cours, la connexion aux outils (PR
 > [#523](https://github.com/taskforce-project/taskforce-fullstack/pull/523)) et les règles par couches (PR
@@ -97,7 +97,9 @@ a token instead » ; tous ses outils sont des écritures qui demandent (R158).
 
 ### Les adresses de retour à déclarer
 
-Seuls les éditeurs sans auto-inscription les demandent : ici Asana, Slack et une application OAuth de GitHub.
+Seuls les éditeurs sans auto-inscription les demandent : ici Asana, Slack et une application OAuth de GitHub ; depuis le
+12/11/2026, nos applications chez HubSpot, Dropbox, Xero, Docusign et Canva, et les applications d'entreprise de Box, Wrike,
+Zoom et PagerDuty (« Les outils du répertoire de Claude », plus bas).
 
 - **App web** : `https://api.taskforce-project.fr/api/mcp/oauth/callback` (`McpOAuthSettings`) ; la route répond sur ce
   domaine depuis le 11/11/2026.
@@ -117,7 +119,8 @@ Seuls les éditeurs sans auto-inscription les demandent : ici Asana, Slack et un
 
 - **Notre application** (chemin B) : `TF_MCP_<CLÉ>_CLIENT_ID` et `TF_MCP_<CLÉ>_CLIENT_SECRET`, la clé du préréglage en
   majuscules et tout autre signe changé en `_`, soit `TF_MCP_ASANA_CLIENT_ID` ou `TF_MCP_GITHUB_MCP_CLIENT_ID`
-  (`McpClientRegistrar`). Sur le serveur, le fichier compose de production ne transmet que ces deux paires ; sur l'app
+  (`McpClientRegistrar`). Sur le serveur, les fichiers compose ne transmettent que les paires déclarées : Asana, GitHub MCP, et depuis le 12/11/2026
+  HubSpot, Dropbox, Xero (l'identifiant seul), Docusign et Canva ; sur l'app
   desktop, ce sont des variables de l'utilisateur Windows, que la coque passe au backend local. Jamais dans le dépôt.
 - **L'application de l'entreprise** (chemin C) : un propriétaire ou un administrateur la saisit dans Settings >
   Integrations > l'outil, écran « Your company's app » : « Client ID », « Client secret », « Save and connect ». Le secret est rangé
@@ -515,6 +518,60 @@ personnelles dans les réglages de l'espace ([Excalidraw+](https://plus.excalidr
 
 - R158 : le préréglage classe ses outils ; créer, modifier, supprimer ou partager une scène sont des écritures.
 - Non vérifié : le plan requis, une clé en lecture seule.
+
+## Les outils du répertoire de Claude (12/11/2026)
+
+La Présidence, le 12/11/2026 : « regarde un peu ce que propose par exemple Claude en extension non communautaire [...] Et
+puis on fait la même ». Le catalogue reprend les connecteurs d'entreprise du répertoire de Claude : 71 outils de plus, 102
+préréglages en 13 catégories (PR [#527](https://github.com/taskforce-project/taskforce-fullstack/pull/527)). Leurs faits,
+lus le 12/11/2026 sur les pages des éditeurs et dans leurs métadonnées OAuth publiques, sont au
+[Registre des outils](./Registre_des_outils.md), avec une source par ligne ; les outils laissés de côté y sont, chacun avec sa
+raison. Ici, ce que la Présidence fait une fois comme éditeur de TaskForce, puis ce que chaque personne fait.
+
+### Ce que la Présidence enregistre une fois, comme éditeur
+
+Les adresses de retour à déclarer sont celles d'en haut : l'app web,
+`https://api.taskforce-project.fr/api/mcp/oauth/callback`, et les quatre de l'app desktop, de
+`http://127.0.0.1:47816/mcp/callback` à `http://127.0.0.1:47819/mcp/callback`. Les variables vont dans le `.env` du serveur de
+production, jamais dans un dépôt. Tant qu'une variable est vide, l'outil passe par l'application de l'entreprise : son
+administrateur la crée et la saisit dans Settings.
+
+| Éditeur | La console | Les variables | L'app desktop sans livrer de secret |
+| --- | --- | --- | --- |
+| HubSpot | Un compte développeur HubSpot, Development, MCP Auth Apps : une application avec les deux jeux d'adresses ; une application non listée s'installe dans 25 comptes au plus (10/11/2026) | `TF_MCP_HUBSPOT_CLIENT_ID`, `TF_MCP_HUBSPOT_CLIENT_SECRET` | Non : HubSpot remet un secret et ne décrit pas de client sans secret `[HYPOTHÈSE]` |
+| Dropbox | App Console, Create app, accès « scoped » ; les permissions de lecture des fichiers et des partages (et d'écriture si l'on veut proposer des changements) ; les adresses exactes ; l'approbation de production dans les deux semaines après 50 personnes | `TF_MCP_DROPBOX_CLIENT_ID` (la clé de l'application), `TF_MCP_DROPBOX_CLIENT_SECRET` | Oui en principe : Dropbox admet PKCE pour un client public ; mais TaskForce lit l'identifiant dans l'environnement de la personne, pas dans l'app |
+| Xero | Le portail développeur de Xero, New app, type PKCE (sans secret) ; le plan développeur Core ou plus pour de vraies organisations (Starter : l'organisation de démonstration) | `TF_MCP_XERO_CLIENT_ID` seulement | Oui, sans secret |
+| Docusign | Apps and Keys, une clé d'intégration (PKCE ou secret), puis le formulaire MCP de Docusign pour la production et la revue Go-Live, de 24 à 48 h | `TF_MCP_DOCUSIGN_CLIENT_ID` (et `_CLIENT_SECRET` si la clé en a un) | Oui avec une clé PKCE `[HYPOTHÈSE]` pour MCP |
+| Canva | Developer Portal, une intégration, « Canva MCP » sous « Outside Canva », l'adresse web ; le secret ne se montre qu'une fois | `TF_MCP_CANVA_CLIENT_ID`, `TF_MCP_CANVA_CLIENT_SECRET` | Non : un client sans secret passe par la liste d'attente de Canva |
+
+Les demandes à faire une fois, sans application à créer :
+
+- **Square** : entrer dans la liste des clients MCP de Square (forum des développeurs de Square, catégorie MCP). D'ici là,
+  Square dit « Not available yet ».
+- **Workable** : faire admettre les adresses de retour de TaskForce par le support de Workable. D'ici là, « Not available yet ».
+- **Pipedrive** : faire admettre l'adresse de retour web (communauté des développeurs de Pipedrive) ; l'app desktop passe
+  déjà `[TIERS]`.
+- **Intercom** : faire admettre l'adresse de retour web par le support d'Intercom, une demande pour les serveurs américain et
+  européen ; l'app desktop passe déjà (retour local sur tout port, lu le 10/11).
+- **Facultatif** : une General app de TaskForce chez Zoom, soumise à la revue de Zoom, rendrait Zoom accessible en un clic à
+  chaque compte ; aujourd'hui, l'administrateur de chaque entreprise crée la sienne. Une application de TaskForce chez
+  PagerDuty, si PagerDuty la laisse servir d'autres comptes `[HYPOTHÈSE]`.
+
+### Ce que fait chaque personne
+
+| Chemin | Outils | Ce que fait la personne | Ce que fait l'administrateur de l'outil, une fois |
+| --- | --- | --- | --- |
+| Un clic | Trello, Productboard, Plane, Guru, Fireflies, Fathom, Granola, Otter.ai, tl;dv, Calendly, Netlify, Railway, CircleCI, Postman, MongoDB Atlas, PlanetScale, Jam, Datadog, New Relic, Honeycomb, incident.io, Rootly, Better Stack, Amplitude, Mixpanel, PostHog, Hex, ChartMogul, Supermetrics, Pipedrive, Close, Apollo.io, Clay, ZoomInfo, Gong, Klaviyo, Ramp, Brex, Mercury, Qonto, Expensify, FreshBooks, Airwallex, Deel, Gusto, Remote, Greenhouse, Miro, Lucid, Framer, Contentful, Vanta, Drata, Make, PandaDoc | « Connect », le navigateur, « Connected as … » ; « Also let Cortex propose changes » quand l'éditeur sépare la lecture de l'écriture | Rien d'ordinaire ; une note « If … refuses the connection: » dit sinon quoi faire : ouvrir MCP (Productboard, MongoDB Atlas, Mixpanel, Lucid, Miro en Enterprise), admettre l'adresse de retour (Datadog), installer l'application MCP dans chaque espace (Contentful), créer l'intégration (Gong) ou la configuration OAuth (Drata), choisir les portées (Greenhouse), activer Honeycomb Intelligence, accepter le contrat Developer API (Brex) |
+| Notre application | HubSpot, Dropbox, Xero, Docusign (et Canva, Asana, GitHub MCP) | Un clic, une fois la Présidence passée chez l'éditeur | Rien ; sans nos variables, l'application de l'entreprise |
+| L'application de l'entreprise | Box, Wrike, Zoom, PagerDuty | Un clic, après l'administrateur ; « Waiting for your admin » avant | La créer chez l'éditeur et la saisir une fois dans Settings, écran « Your company's app » |
+| Une clé | Smartsheet, Render, Brevo (et les clés de secours de Fireflies, Postman, Jam, Rootly, Supermetrics, Deel, Cloudflare, Wrike, PagerDuty) | Créer la clé chez l'éditeur et la coller ; elle est rangée chiffrée | Rien ; la clé de Brevo a tous les droits du compte, celle de Render tous ses espaces |
+| L'adresse du serveur de l'entreprise | Glean, Metabase (et Zoho) | Coller l'adresse, puis se connecter | Ouvrir MCP (Metabase : Admin, AI, MCP) |
+| Fermé, avec la raison | Square, Workable (les listes ci-dessus) ; Snowflake, Databricks, Salesforce (une application et une adresse d'entreprise ensemble, que TaskForce ne prend pas encore) ; Figma (liste d'attente) | Rien : la carte dit « Not available yet », la fiche dit pourquoi | Rien aujourd'hui |
+
+Une adresse européenne (Datadog, New Relic, Honeycomb, PagerDuty, Amplitude, Mixpanel, Vanta, Contentful, PandaDoc, Postman,
+Smartsheet) se branche par « Connect an MCP server » et son adresse : le préréglage porte l'adresse américaine. Les noms des
+outils de presque tous ces serveurs ne sont pas publiés : chacun demande avant d'agir tant qu'il n'est pas classé (R158),
+sauf ceux que l'éditeur dit en lecture seule (tl;dv, Gong, Expensify, la requête de lecture de PlanetScale).
 
 ## Ce qui reste à vérifier à l'essai
 
