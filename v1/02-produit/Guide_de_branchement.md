@@ -3,7 +3,7 @@ id: produit-guide-branchement
 title: Guide de branchement de la première vague
 doc_type: runbook
 statut: active
-version: 1.2
+version: 1.3
 date: "12/11/2026"
 auteur: Pierre MICHEL
 review_cycle: quarterly
@@ -21,7 +21,7 @@ Logo projet        : assets/images/logo_taskforce.png
 
 # Guide de branchement
 
-**Version :** 1.2 · **Date :** 12/11/2026 · **Auteur :** Pierre MICHEL
+**Version :** 1.3 · **Date :** 12/11/2026 · **Auteur :** Pierre MICHEL
 
 > **Avant l'essai, une release.** Les deux lots de J2 en cours, la connexion aux outils (PR
 > [#523](https://github.com/taskforce-project/taskforce-fullstack/pull/523)) et les règles par couches (PR
@@ -62,9 +62,9 @@ autre, c'est normal, mais faut que le flux soit clair, coherent et accessible »
 | Zoho | Créer son serveur MCP chez Zoho, une fois, puis coller son adresse | Préréglage prêt, à essayer |
 | Docker Hub | L'exception de la Présidence : lancer la passerelle de Docker et copier son jeton, sur l'app desktop | Le chemin d'un serveur local est prêt |
 | Figma | Rien pour le serveur distant ; sur l'app desktop, le serveur de l'app Figma (plan payant) | « Not available yet » : liste d'attente de Figma |
-| Teams | Rien dans ce lot | Lot suivant, payant chez Microsoft |
-| OneDrive | Rien dans ce lot | Lot suivant (fichiers) |
-| Google Drive | Rien dans ce lot | Lot suivant (fichiers) |
+| Teams | Rien de plus que l'application Entra de OneDrive | Lire les canaux et les conversations, poster après l'accord (TF-J2-14), à essayer |
+| OneDrive, SharePoint | Enregistrer une fois notre application dans Entra ; chez une entreprise dont la politique le veut, l'accord de son administrateur | Connexion « Microsoft 365 », lecture en direct, rangement (TF-J2-14), à essayer |
+| Google Drive | Enregistrer une fois notre application chez Google (un client, la clé du sélecteur) | Connexion, sélecteur de Google, lecture en direct, rangement (TF-J2-14), à essayer |
 
 ## Ce qui vaut pour tous
 
@@ -147,53 +147,94 @@ Zoom et PagerDuty (« Les outils du répertoire de Claude », plus bas).
 
 ### Google Drive
 
-**Rien dans ce lot.** La PR #523 laisse Google Drive au lot suivant (« fichiers : lire et ranger »), par l'API Drive plutôt
-que par MCP.
+**Une étape de la Présidence, une fois : notre application chez Google ; puis un clic pour chaque personne.** Google
+n'offre ni auto-inscription ni document de métadonnées client, et son serveur MCP de Drive est en Developer Preview, réservé
+aux membres du programme ([Google](https://developers.google.com/workspace/guides/configure-mcp-servers)) : TaskForce parle
+l'API Drive lui-même, derrière la même connexion que tout autre outil (TF-J2-14, PR [#528](https://github.com/taskforce-project/taskforce-fullstack/pull/528)). La seule portée
+demandée est `drive.file` : TaskForce n'atteint que les fichiers que la personne choisit dans le sélecteur de Google, et
+ceux qu'il range lui-même. Elle n'est pas sensible, donc ni vérification restreinte ni évaluation de sécurité ; `drive` et
+`drive.readonly` le seraient ([Google](https://developers.google.com/workspace/drive/api/guides/api-specific-auth)).
 
-- Pas d'auto-inscription : un projet Google Cloud, un client OAuth « Web application » et son secret ; le serveur MCP de
-  Drive, `https://drivemcp.googleapis.com/mcp/v1`, est en Developer Preview, réservé aux membres du programme
-  ([Google](https://developers.google.com/workspace/guides/configure-mcp-servers)).
-- La portée `drive.file` (les fichiers que la personne ouvre avec l'app ou qu'elle crée) n'est pas sensible ;
-  `drive.readonly` et `drive` sont restreintes : une vérification, et une évaluation de sécurité si les données passent par
-  un serveur ([Google](https://developers.google.com/workspace/drive/api/guides/api-specific-auth)). R154 retient
-  `drive.file`.
-- Une application « External » en test : 100 testeurs au plus, et chaque autorisation expire au bout de sept jours
-  ([Google](https://support.google.com/cloud/answer/15549945)).
+Ce que fait la Présidence, sur console.cloud.google.com :
 
-Ce qu'elle fera au lot suivant `[HYPOTHÈSE]`, à confirmer par ce lot :
-1. console.cloud.google.com : un projet, l'API Google Drive activée.
-2. L'écran de consentement : l'audience « External », elle-même parmi les testeurs, la portée `drive.file`.
-3. Un client OAuth, avec l'adresse de retour que donnera le lot suivant ; l'identifiant et le secret dans TaskForce, là où ce
-   lot le dira.
+1. Un projet (« TaskForce »), puis APIs & Services > Library : activer **Google Drive API** et **Google Picker API**.
+2. Google Auth Platform (l'écran de consentement) : Branding, le nom « TaskForce » et l'e-mail d'assistance ; Audience,
+   **External** ; tant que l'application est en « Testing », ajouter ses comptes dans **Test users** (100 au plus, et une
+   autorisation y expire après sept jours, [Google](https://support.google.com/cloud/answer/15549945)) ; Data access, les
+   portées `openid`, `email` et `.../auth/drive.file`.
+3. Clients > Create client > **Web application** (le serveur) : Authorized redirect URIs
+   `https://api.taskforce-project.fr/api/mcp/oauth/callback` (une installation auto-hébergée : `<APP_API_URL>/api/mcp/oauth/callback`).
+   Garder l'identifiant et le secret.
+4. Clients > Create client > **Desktop app** (l'app desktop) : aucune adresse à saisir, Google admet le retour sur
+   `http://127.0.0.1` à tout port pour ce type de client ([Google](https://developers.google.com/identity/protocols/oauth2/native-app)).
+   Garder l'identifiant et le secret, que Google ne tient pas pour secret pour une app de bureau.
+5. APIs & Services > Credentials > Create credentials > **API key**, pour le sélecteur : Application restrictions
+   « Websites », l'adresse de l'app web (`FRONTEND_URL` de `.env.prod`) et, pour l'app desktop, `http://127.0.0.1` ;
+   API restrictions, **Google Picker API** seule.
+6. Le numéro du projet (IAM & Admin > Settings > Project number) : c'est `TF_GOOGLE_APP_ID`, que le sélecteur exige avec
+   `drive.file` ([Google](https://developers.google.com/workspace/drive/picker/guides/overview)).
+7. **Sur le serveur** : dans `.env.prod`, `TF_GOOGLE_CLIENT_ID` et `TF_GOOGLE_CLIENT_SECRET` (le client « Web
+   application »), `TF_GOOGLE_API_KEY` et `TF_GOOGLE_APP_ID` ; `docker-compose.prod.yml` les passe au backend, qu'on recrée pour qu'il les lise. **Sur l'app desktop** :
+   les mêmes noms en variables de l'utilisateur Windows, avec l'identifiant et le secret du client « Desktop app » ; la coque
+   les passe au backend local (`desktop/src/backend.ts`). Jamais dans le dépôt.
+8. **Dans TaskForce** : Settings > Integrations > Google Drive > « Connect » ; chez Google, choisir son compte et accepter ;
+   retour, « Connected as … ». Puis, dans la même fiche, « Choose files » : le sélecteur de Google s'ouvre, les fichiers
+   choisis sont ceux que Cortex lira. Enfin Settings > Storage > « Change » > Google Drive > « Choose a folder ».
 
-### OneDrive (et SharePoint)
+Ce qu'elle verra : Cortex lit un fichier en direct (`google-drive__read_file`) et le cite avec sa version, son responsable
+et sa date ; ranger un document demande son accord, puis le fichier arrive dans le dossier, et Settings > Storage dit où il
+vit, avec son lien et sa version. Déconnecter révoque chez Google (`https://oauth2.googleapis.com/revoke`).
 
-**Rien dans ce lot.** Laissé au lot suivant (« fichiers »), par Microsoft Graph. Le code ajoute une raison : TaskForce
-refuse un serveur de connexion qui n'annonce pas PKCE S256, et les métadonnées d'Entra ne l'annoncent pas
-([Entra](https://login.microsoftonline.com/organizations/v2.0/.well-known/openid-configuration)).
+Non vérifié : le sélecteur dans la fenêtre de l'app desktop ; la clé du navigateur restreinte à `http://127.0.0.1` (le port
+du proxy de la coque change à chaque lancement) ; l'avertissement « Google hasn't verified this app » tant que l'application
+n'a pas passé la vérification de sa marque ; un retour avec un chemin (`/mcp/callback`) pour un client « Desktop app ».
 
-- Microsoft Entra n'offre pas non plus d'auto-inscription : ses métadonnées n'ont pas de `registration_endpoint` (même
-  page) ; il faut une application enregistrée dans Entra.
-- Sur un compte professionnel, la politique de consentement par défaut laisse la personne accepter `Files.Read` (ses
-  fichiers), mais retire `Files.Read.All` et `Sites.Read.All` : l'administrateur
-  ([Microsoft](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/manage-app-consent-policies)).
-- Une application multilocataire dont l'éditeur n'est pas vérifié est bloquée au consentement des autres entreprises quand
-  leur consentement par palier de risque est actif ; la vérification passe par le Microsoft AI Cloud Partner Program
-  ([Microsoft](https://learn.microsoft.com/en-us/entra/identity-platform/publisher-verification-overview)). L'application de
-  l'entreprise, enregistrée dans son propre locataire, échappe à ce blocage `[HYPOTHÈSE]`.
-- Une adresse de retour `http://localhost` ignore le port ; `http://127.0.0.1` ne s'ajoute que par le manifeste de
-  l'application ; avec les comptes personnels, aucun paramètre dans l'adresse
-  ([Microsoft](https://learn.microsoft.com/en-us/entra/identity-platform/reply-url)).
-- Work IQ, le serveur MCP de Microsoft 365, couvre OneDrive et SharePoint, mais pour les comptes professionnels seulement et
-  en crédits Copilot (voir Teams).
+### OneDrive et SharePoint (Microsoft 365)
 
-Ce qu'elle fera au lot suivant `[HYPOTHÈSE]` :
-1. entra.microsoft.com > App registrations > New registration : son organisation seulement, ou « tous les annuaires et les
-   comptes Microsoft personnels » pour un OneDrive personnel.
-2. Authentication : les adresses de retour du lot suivant (« Web » pour le serveur, « Mobile and desktop applications » pour
-   l'app desktop).
-3. API permissions > Microsoft Graph > Delegated : `Files.Read`, `offline_access`, `User.Read`.
-4. L'identifiant de l'application, et un secret pour le serveur, dans TaskForce, là où le lot suivant le dira.
+**Une étape de la Présidence, une fois : notre application dans Entra ; puis, chez une entreprise dont la politique le
+veut, l'accord de son administrateur.** Une seule connexion « Microsoft 365 » par personne sert OneDrive, SharePoint et
+Teams, par Microsoft Graph, avec des droits délégués et PKCE S256 (TF-J2-14). Pas Work IQ, qui se paie en crédits Copilot
+(voir Teams). Entra accepte S256 sans l'annoncer dans ses métadonnées, et nomme son émetteur `{tenantid}` pour `common` :
+TaskForce l'admet pour les seuls émetteurs d'Entra, sur `login.microsoftonline.com`, quand la métadonnée se tait ; pour tout
+autre serveur, la vérification reste entière (`McpOAuthDiscovery`, `EntraDiscoveryTest`).
+
+Ce que fait la Présidence, sur entra.microsoft.com :
+
+1. Identity > Applications > App registrations > New registration : le nom « TaskForce » ; Supported account types,
+   **Accounts in any organizational directory and personal Microsoft accounts** (multilocataire) ; Redirect URI, plateforme
+   **Web**, `https://api.taskforce-project.fr/api/mcp/oauth/callback`.
+2. Pour l'app desktop : Manifest, dans `replyUrlsWithType`, les quatre adresses `http://127.0.0.1:47816/mcp/callback` à
+   `http://127.0.0.1:47819/mcp/callback`, de type `InstalledClient` ; une adresse `127.0.0.1` ne s'ajoute que par le
+   manifeste ([Microsoft](https://learn.microsoft.com/en-us/entra/identity-platform/reply-url)). Authentication : laisser
+   « Allow public client flows » éteint.
+3. Certificates & secrets > New client secret : la valeur, montrée une seule fois, pour le serveur seulement.
+4. API permissions > Add a permission > Microsoft Graph > **Delegated permissions** : `openid`, `profile`, `email`,
+   `offline_access`, `User.Read`, `Files.Read.All`, `Sites.Read.All`, `Team.ReadBasic.All`, `Channel.ReadBasic.All`,
+   `ChannelMessage.Read.All`, `Chat.Read` ; et pour l'écriture `Files.ReadWrite.All`, `ChannelMessage.Send`,
+   `ChatMessage.Send`. Dans son propre locataire : « Grant admin consent for … ».
+5. Plus tard, pour les autres entreprises : Branding & properties > Publisher verification, par le Microsoft AI Cloud
+   Partner Program ; sans elle, une entreprise dont le consentement par palier de risque est actif bloque l'accord des
+   personnes ([Microsoft](https://learn.microsoft.com/en-us/entra/identity-platform/publisher-verification-overview)).
+6. **Sur le serveur** : dans `.env.prod`, `TF_MICROSOFT_CLIENT_ID`, `TF_MICROSOFT_CLIENT_SECRET` et
+   `TF_MICROSOFT_TENANT=common` (une installation avec une application d'un seul locataire met l'identifiant de son
+   locataire). **Sur l'app desktop** : `TF_MICROSOFT_CLIENT_ID` (et `TF_MICROSOFT_TENANT`) en variables de l'utilisateur
+   Windows, jamais le secret : pour Entra, l'app desktop est un client public, et la coque ne le passe pas.
+7. **Dans TaskForce** : Settings > Integrations > Microsoft 365 > « Connect », en cochant « Also let Cortex propose
+   changes » pour ranger dans OneDrive et poster dans Teams ; chez Microsoft, accepter ; retour. Puis Settings > Storage >
+   « Change » > OneDrive or SharePoint > « Choose a folder » : son OneDrive, puis les bibliothèques des sites qu'elle suit.
+
+Chez une entreprise dont la politique réserve `Files.Read.All`, `Sites.Read.All` ou `Chat.Read` à l'administrateur (c'est
+la politique par défaut de Microsoft, [Microsoft](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/manage-app-consent-policies)),
+Microsoft répond AADSTS65001, 90094, 90095 ou 900941 `[DÉDUIT]`, et TaskForce affiche l'étape de l'administrateur : « Your admin
+needs to act first », le message à lui envoyer, et la page de l'administrateur,
+`https://login.microsoftonline.com/organizations/adminconsent?client_id=<l'identifiant de notre application>`
+([Microsoft](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/grant-admin-consent)) ; une fois l'accord
+donné, « Try again ». Déconnecter ne révoque pas chez Microsoft, qui n'offre pas de révocation d'un jeton : TaskForce le dit
+et indique où retirer l'accès.
+
+Non vérifié : un compte Microsoft personnel devant les permissions de SharePoint et de Teams ; la page de l'administrateur
+avec l'autorité `organizations` ; le retour sur `127.0.0.1` ajouté par le manifeste ; la version d'un fichier de OneDrive
+personnel.
 
 ## Savoir et documentation
 
@@ -323,27 +364,26 @@ l'entreprise, interne à son espace.
 
 ### Microsoft Teams
 
-**Bloqué dans ce lot** : la PR #523 le laisse au lot suivant, et le chemin de Microsoft coûte.
+**Sur la même connexion « Microsoft 365 » que OneDrive** (TF-J2-14) : rien de plus à enregistrer que l'application Entra
+décrite plus haut, avec ses permissions de Teams. Pas Work IQ, le serveur MCP de Microsoft 365, qui se paie à l'usage en
+crédits Copilot et qu'un administrateur global doit activer avec un plan de facturation
+([Microsoft](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/enable-work-iq)) : TaskForce
+parle Microsoft Graph lui-même.
 
-- Work IQ, le serveur MCP de Microsoft 365, `https://workiq.svc.cloud.microsoft/mcp`, lit et écrit le mail, l'agenda, les
-  discussions Teams, OneDrive et SharePoint ([Microsoft](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/mcp/overview)) ;
-  ses métadonnées renvoient à `login.microsoftonline.com/organizations`, donc aux seuls comptes professionnels `[DÉDUIT]`.
-- Ses trois permissions demandent le consentement de l'administrateur
-  ([Microsoft](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/permissions)) ; il se paie à
-  l'usage, en crédits Copilot ([Microsoft](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/api-overview)) ;
-  un administrateur global l'active une fois, avec un plan de facturation à l'usage dans Copilot Studio relié à un
-  abonnement Azure ([Microsoft](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/enable-work-iq)).
-- Par Microsoft Graph, `Chat.Read` est retiré du consentement par défaut : l'administrateur
-  ([Microsoft](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/manage-app-consent-policies)).
-- Et TaskForce refuserait aujourd'hui le serveur de connexion d'Entra, qui n'annonce pas PKCE S256 (voir OneDrive).
+- **Lire** : Cortex liste les équipes et les canaux de la personne (`microsoft-365__list_teams`), ses conversations
+  (`list_chats`), et lit un canal ou une conversation en direct (`read_channel`, `read_chat`), les vingt derniers messages,
+  cités avec leur auteur et leur date, comme un contenu du dehors (R158). Les droits sont les siens : ce qu'elle ne lit pas
+  dans Teams, Cortex ne le lit pas.
+- **Écrire** : poster dans un canal ou une conversation (`post_channel_message`, `post_chat_message`) est une sortie : le
+  moteur demande toujours une personne, et la carte dit où le message part.
+- **Permissions** : `Team.ReadBasic.All`, `Channel.ReadBasic.All`, `ChannelMessage.Read.All`, `Chat.Read` pour lire ;
+  `ChannelMessage.Send` et `ChatMessage.Send` pour poster, demandées quand la personne coche « Also let Cortex propose
+  changes ». La politique par défaut de Microsoft réserve `Chat.Read` à l'administrateur
+  ([Microsoft](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/manage-app-consent-policies)) : chez une
+  entreprise qui la garde, l'étape de l'administrateur de OneDrive vaut pour Teams.
 
-Ce qu'elle fera, quand le lot suivant le construira `[HYPOTHÈSE]` :
-1. Dans son locataire Microsoft 365 : enregistrer l'application comme pour OneDrive, avec la permission déléguée de Work IQ
-   (`WorkIQ.Read`) ou de Graph (`Chat.Read`), puis « Grant admin consent ».
-2. Pour Work IQ seulement : en administrateur global, activer Work IQ et lui relier un plan de facturation.
-3. L'identifiant de l'application dans TaskForce, là où le lot suivant le dira.
-
-Avec un compte Microsoft personnel, Work IQ ne sert pas : il ne connaît que les comptes professionnels `[DÉDUIT]`.
+Avec un compte Microsoft personnel, Teams ne sert pas : Graph ne donne ses canaux et conversations qu'aux comptes
+professionnels `[DÉDUIT]`.
 
 ## Code
 
