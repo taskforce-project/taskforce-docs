@@ -36,6 +36,7 @@ Enterprise Grade qui sont les plus utilisées [...] on peut commencer par ça »
   de la contrainte qui compte. Une case suivie de `[HYPOTHÈSE]` n'est pas écrite sur une page lue.
 - **Les seize outils de la première vague** ont été relus le 11/11/2026, avec leurs métadonnées OAuth publiques. Ce que la
   Présidence fait pour brancher chacun, et le détail des liens, est au [Guide de branchement](./Guide_de_branchement.md).
+- **L'état chez nous** se lit dans la colonne de la vague (12/11/2026, PR [#523](https://github.com/taskforce-project/taskforce-fullstack/pull/523)) : « préréglage prêt, à essayer » veut dire que l'outil est dans le fichier des préréglages de TaskForce (`connectors/presets.json` : sa catégorie, son serveur, son chemin, les portées utiles, l'étape de l'administrateur, la classe de ses outils) et se connecte par le geste « Connect » ; il ne se montre dans l'app qu'après son essai de bout en bout (R15, R153), noté `tried` dans le même fichier.
 - **Revue** : chaque trimestre, et à chaque outil essayé.
 
 ## Les chemins de connexion
@@ -82,16 +83,16 @@ La vague, retenue par la Présidence le 11/11/2026 (R153) : **1** = J2, avec les
 
 | Outil | Adoption | Chemin | Ce qu'il faut | Vague | Source |
 | --- | --- | :--: | --- | :--: | --- |
-| Notion | Okta Japon n°9 | A | Auto-inscription (DCR ou CIMD) et PKCE, aucune revue écrite ; le serveur se dit en bêta dans ses métadonnées ; l'espace Enterprise peut n'accepter que des clients approuvés ; la connexion tient 180 jours au plus | 1 | [Notion](https://developers.notion.com/guides/mcp/build-mcp-client) |
-| Confluence | Torii n°3 (Atlassian) | A | Un seul serveur Atlassian, GA, pour Confluence et Jira ; l'organisation n'admet que les retours de sa liste : `127.0.0.1` et `localhost` par défaut, le domaine de l'app web s'ajoute par l'administrateur | 1 | [Atlassian](https://support.atlassian.com/security-and-access-policies/docs/available-atlassian-rovo-mcp-server-domains/) |
+| Notion | Okta Japon n°9 | A | Auto-inscription (DCR ou CIMD) et PKCE, aucune revue écrite ; le serveur se dit en bêta dans ses métadonnées ; l'espace Enterprise peut n'accepter que des clients approuvés ; la connexion tient 180 jours au plus | 1 (préréglage prêt, à essayer) | [Notion](https://developers.notion.com/guides/mcp/build-mcp-client) |
+| Confluence | Torii n°3 (Atlassian) | A | Un seul serveur Atlassian, GA, pour Confluence et Jira ; l'organisation n'admet que les retours de sa liste : `127.0.0.1` et `localhost` par défaut, le domaine de l'app web s'ajoute par l'administrateur | 1 (préréglage prêt, à essayer) | [Atlassian](https://support.atlassian.com/security-and-access-policies/docs/available-atlassian-rovo-mcp-server-domains/) |
 
 ## Tickets et projets
 
 | Outil | Adoption | Chemin | Ce qu'il faut | Vague | Source |
 | --- | --- | :--: | --- | :--: | --- |
-| Jira (et Jira Service Management) | Torii n°19 | A | Le serveur de Confluence ; supprimer et administrer restent coupés tant que l'administrateur ne les ouvre pas ; Jira Service Management par jeton d'API seulement | 1 | [Atlassian](https://github.com/atlassian/atlassian-mcp-server) |
+| Jira (et Jira Service Management) | Torii n°19 | A | Le serveur de Confluence ; supprimer et administrer restent coupés tant que l'administrateur ne les ouvre pas ; Jira Service Management par jeton d'API seulement | 1 (préréglage prêt, à essayer) | [Atlassian](https://github.com/atlassian/atlassian-mcp-server) |
 | Linear | essayé dans TaskForce | A | Aucune revue ; DCR et CIMD ; une adresse en lecture seule | 1 (fait) | [Linear](https://linear.app/docs/mcp) |
-| Asana | non classé | B ou C | Pas d'auto-inscription : une « MCP app » créée dans la console d'Asana, avec identifiant et secret, diffusée à des espaces choisis ou à tous ; toute portée autre que `default` est refusée | 1 (une étape) | [Asana](https://developers.asana.com/docs/integrating-with-asanas-mcp-server) |
+| Asana | non classé | B ou C | Pas d'auto-inscription : une « MCP app » créée dans la console d'Asana, avec identifiant et secret, diffusée à des espaces choisis ou à tous ; toute portée autre que `default` est refusée | 1 (une étape ; préréglage prêt, à essayer) | [Asana](https://developers.asana.com/docs/integrating-with-asanas-mcp-server) |
 | monday.com | non classé | A puis C | L'auto-inscription existe, mais chaque nouveau client attend l'administrateur du compte | 2 | [monday.com](https://developer.monday.com/api-reference/docs/mcp-dynamic-client-registration) |
 | ClickUp | non classé | A `[HYPOTHÈSE]` | L'auto-inscription est annoncée, mais l'éditeur parle d'une liste de clients vérifiés | 2 | [ClickUp](https://clickup.com/blog/how-to-use-clickup-mcp-server/) |
 | Smartsheet | non classé | B | Un secret et des retours HTTPS seulement | plus tard | [Smartsheet](https://developers.smartsheet.com/api/smartsheet/guides/advanced-topics/oauth) |
@@ -101,7 +102,7 @@ La vague, retenue par la Présidence le 11/11/2026 (R153) : **1** = J2, avec les
 
 | Outil | Adoption | Chemin | Ce qu'il faut | Vague | Source |
 | --- | --- | :--: | --- | :--: | --- |
-| Slack | Okta n°6 | B ou C | Le serveur MCP n'accepte que les applications publiées (revue jusqu'à dix semaines) ou internes à l'entreprise, avec identifiant et secret, sans auto-inscription, MCP allumé application par application ; les conditions interdisent l'entraînement d'un modèle et les copies durables des données d'autres organisations | 1 (l'application interne) | [Slack](https://docs.slack.dev/ai/slack-mcp-server/) |
+| Slack | Okta n°6 | B ou C | Le serveur MCP n'accepte que les applications publiées (revue jusqu'à dix semaines) ou internes à l'entreprise, avec identifiant et secret, sans auto-inscription, MCP allumé application par application ; les conditions interdisent l'entraînement d'un modèle et les copies durables des données d'autres organisations | 1 (l'application interne ; préréglage prêt, à essayer) | [Slack](https://docs.slack.dev/ai/slack-mcp-server/) |
 | Microsoft Teams | Torii n°12 | C | Work IQ (MCP) : comptes professionnels seulement ; un administrateur global l'active avec une facturation à l'usage en crédits Copilot, et ses permissions demandent l'administrateur. Par Graph, `Chat.Read` hors du consentement par défaut. Construit au lot suivant | 1 (lot suivant, payant) | [Microsoft](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/enable-work-iq) |
 | Outlook | Torii n°18 | C | `Mail.Read` et `Calendars.Read` hors du consentement par défaut | 2 | [Microsoft](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/manage-app-consent-policies) |
 | Google Calendar | Okta n°2 (Workspace) | B | Des portées sans doute sensibles `[HYPOTHÈSE]` | 2 | [Google](https://developers.google.com/workspace/guides/configure-mcp-servers) |
@@ -112,11 +113,11 @@ La vague, retenue par la Présidence le 11/11/2026 (R153) : **1** = J2, avec les
 
 | Outil | Adoption | Chemin | Ce qu'il faut | Vague | Source |
 | --- | --- | :--: | --- | :--: | --- |
-| GitHub | Okta n°8 | B | Déjà intégré (application OAuth ; GitHub CLI dans l'app desktop) ; les organisations récentes restreignent les applications OAuth : le propriétaire approuve ; le serveur MCP distant demande une application par hôte, ou un jeton | 1 (existant) | [GitHub](https://docs.github.com/en/organizations/managing-oauth-access-to-your-organizations-data/about-oauth-app-access-restrictions) |
-| GitLab | Ramp n°5 (nouvelles dépenses) | A | GA depuis la 19.5, sur tous les plans ; l'auto-inscription crée une application sur l'instance ; l'accès MCP est ouvert par défaut aux groupes de premier niveau, sauf si un propriétaire l'a fermé ; en auto-hébergé, l'administrateur de l'instance l'ouvre | 1 | [GitLab](https://docs.gitlab.com/user/group/access_and_permissions/) |
+| GitHub | Okta n°8 | B | Déjà intégré (application OAuth ; GitHub CLI dans l'app desktop) ; les organisations récentes restreignent les applications OAuth : le propriétaire approuve ; le serveur MCP distant demande une application par hôte, ou un jeton | 1 (existant ; son serveur MCP en préréglage prêt, à essayer) | [GitHub](https://docs.github.com/en/organizations/managing-oauth-access-to-your-organizations-data/about-oauth-app-access-restrictions) |
+| GitLab | Ramp n°5 (nouvelles dépenses) | A | GA depuis la 19.5, sur tous les plans ; l'auto-inscription crée une application sur l'instance ; l'accès MCP est ouvert par défaut aux groupes de premier niveau, sauf si un propriétaire l'a fermé ; en auto-hébergé, l'administrateur de l'instance l'ouvre | 1 (préréglage prêt, à essayer) | [GitLab](https://docs.gitlab.com/user/group/access_and_permissions/) |
 | Bitbucket Cloud | non classé | A | L'espace doit être relié à une organisation Atlassian | 2 | [Atlassian](https://github.com/atlassian/atlassian-mcp-server) |
 | Azure DevOps | non classé | C | Une application Entra avec le consentement de l'administrateur | plus tard | [Microsoft](https://learn.microsoft.com/en-us/azure/devops/mcp-server/remote-mcp-server?view=azure-devops) |
-| Docker Hub | non classé | Aucun | Ajouté par la Présidence le 11/11/2026. Pas de serveur distant : le serveur officiel tourne sur le poste (stdio, ou HTTP local protégé par un jeton) et lit Docker Hub avec un jeton d'accès personnel, sans OAuth ; branchable sur l'app desktop seulement, par une adresse locale et un jeton copié | 1, en exception : un jeton copié sur l'app desktop (Présidence, 11/11/2026) | [Docker](https://github.com/docker/hub-mcp) |
+| Docker Hub | non classé | Aucun | Ajouté par la Présidence le 11/11/2026. Pas de serveur distant : le serveur officiel tourne sur le poste (stdio, ou HTTP local protégé par un jeton) et lit Docker Hub avec un jeton d'accès personnel, sans OAuth ; branchable sur l'app desktop seulement, par une adresse locale et un jeton copié | 1, en exception : un jeton copié sur l'app desktop (Présidence, 11/11/2026) ; le chemin d'un serveur local, accordé par la personne, est prêt | [Docker](https://github.com/docker/hub-mcp) |
 
 ## Ventes et relation client
 
@@ -125,9 +126,9 @@ La vague, retenue par la Présidence le 11/11/2026 (R153) : **1** = J2, avec les
 | Salesforce | Okta n°4 | C | L'administrateur crée l'application et active chaque serveur ; la création d'applications connectées est coupée par défaut depuis Spring '26 | 2 | [Salesforce](https://www.salesforce.com/blog/?p=136995) |
 | HubSpot | Cledara n°19 | B puis C | Un administrateur du compte connecte d'abord ; une application non listée s'installe 25 fois au plus | 2 | [HubSpot](https://developers.hubspot.com/changelog/new-marketplace-distribution-app-install-limits) |
 | Pipedrive | non classé | D | Un serveur MCP depuis le 30/06/2026 ; l'inscription n'est pas décrite | plus tard | [Pipedrive](https://www.pipedrive.com/en/newsroom/pipedrive-launches-native-mcp-server-bringing-crm-workflows-directly-into-ai-assistants) |
-| Zoho CRM | non classé | C | Chaque entreprise crée son propre serveur MCP dans la console de Zoho, avec les outils choisis ; son URL vaut une clé (« Regenerate API Key ») ; ensuite OAuth 2.1, chaque personne avec son compte par défaut | 1 (une étape) | [Zoho](https://www.zoho.com/mail/help/mcp/mcp-server-configuration.html) |
+| Zoho CRM | non classé | C | Chaque entreprise crée son propre serveur MCP dans la console de Zoho, avec les outils choisis ; son URL vaut une clé (« Regenerate API Key ») ; ensuite OAuth 2.1, chaque personne avec son compte par défaut | 1 (une étape ; préréglage prêt, à essayer) | [Zoho](https://www.zoho.com/mail/help/mcp/mcp-server-configuration.html) |
 | Dynamics 365 | non classé | C | L'administrateur active MCP et chaque client | plus tard | [Microsoft](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/data-platform-mcp-disable) |
-| Stripe | non classé | A | Ajouté par la Présidence le 11/11/2026 (« Stripe aussi important »). Auto-inscription (DCR), PKCE, révocation, portée `mcp` ; la personne choisit à la connexion ses comptes, réels ou de test, et leurs droits ; un administrateur peut couper MCP pour l'équipe ; déjà parmi les préréglages MCP de TaskForce | 1 | [Stripe](https://docs.stripe.com/mcp) |
+| Stripe | non classé | A | Ajouté par la Présidence le 11/11/2026 (« Stripe aussi important »). Auto-inscription (DCR), PKCE, révocation, portée `mcp` ; la personne choisit à la connexion ses comptes, réels ou de test, et leurs droits ; un administrateur peut couper MCP pour l'équipe ; déjà parmi les préréglages MCP de TaskForce | 1 (préréglage prêt, à essayer) | [Stripe](https://docs.stripe.com/mcp) |
 
 ## Support et services informatiques
 
@@ -156,7 +157,7 @@ La vague, retenue par la Présidence le 11/11/2026 (R153) : **1** = J2, avec les
 | Figma | Okta n°11 | B | Seuls les clients du catalogue de Figma ; les nouveaux passent par une liste d'attente. Le serveur de l'app Figma (`127.0.0.1:3845`), sans connexion, demande un siège Dev ou Full sur un plan payant et n'écrit pas | hors de la vague 1 (liste d'attente, R153) ; le serveur local sur l'app desktop | [Figma](https://developers.figma.com/docs/figma-mcp-server/remote-server-installation) |
 | Canva | Zylo n°3 | B | Une application créée chez Canva ; les clients sans secret sur liste d'attente | plus tard | [Canva](https://www.canva.dev/blog/developers/canva-mcp-ga/) |
 | Miro | Cledara n°28 | A | MCP parfois coupé en Enterprise jusqu'à l'administrateur | 2 | [Miro](https://developers.miro.com/docs/miro-mcp-server-frequently-asked-questions) |
-| Excalidraw | non classé | A | Ajouté par la Présidence le 11/11/2026. Serveur officiel public, sans compte ni OAuth ; ses dessins ne s'affichent que dans un client qui gère les MCP Apps ; un outil publie le dessin sur excalidraw.com | 1 (branchable, dessins non affichés) | [Excalidraw](https://github.com/excalidraw/excalidraw-mcp) |
+| Excalidraw | non classé | A | Ajouté par la Présidence le 11/11/2026. Serveur officiel public, sans compte ni OAuth ; ses dessins ne s'affichent que dans un client qui gère les MCP Apps ; un outil publie le dessin sur excalidraw.com | 1 (branchable, dessins non affichés ; préréglages Excalidraw et Excalidraw+ prêts, à essayer) | [Excalidraw](https://github.com/excalidraw/excalidraw-mcp) |
 
 ## Autres
 
