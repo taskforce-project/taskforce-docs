@@ -292,9 +292,10 @@ ce qui est irréversible » ([PV](./seances/2026-10-26-premiere-regle.md)).
 | 09/11/2026 | L'atelier de la recette 1.13 : la barre, la conversation, la mission en déroulé, les listes et les volets, le banc | Restreinte (7), l'équipe de Jobs, qui tranche par délégation, plus Ait Si Abbou, Gawande et Nilekani ; Gawande contradicteur | R133 à R144 à l'unanimité (R140 au second tour), confiées à Jobs par la Présidence (« faut demande a Jobs et l'equipe dedie ») | [PV](./seances/2026-11-09-atelier-recette-113.md) |
 | 10/11/2026 | La première version qu'une entreprise peut utiliser : où en est la feuille de route, et E20, le premier client joué de bout en bout | Restreinte (7) ; Duflo contradictrice | R145 à R151 à l'unanimité (R145 et R146 au second tour) ; tranchées le 10/11 : R145, R147, R148 et R151 retenues, R146 amendée (une démo d'abord), R147 élargie (l'outillage et les règles de l'entreprise), R149 reportée après J2, R150 modifiée | [PV](./seances/2026-11-10-premier-client-e20.md) |
 | 11/11/2026 | Le lancement de J2 : se brancher à l'entreprise (ses outils en un clic, son stockage, ses règles par couches) et les critères de sortie | Restreinte (7) ; Bengio contradicteur | R152 à R158 à l'unanimité (R153 et R154 au second tour) ; le registre des 46 outils ; toutes retenues le 11/11, R153 élargie (la première vague, les outils de la Présidence), R154 amendée (un flux clair plutôt qu'un clic à tout prix) | [PV](./seances/2026-11-11-se-brancher-a-l-entreprise.md) |
+| 12/11/2026 | La revue complète de J2 à mi-chemin, et la relecture indépendante dans la définition de « fini » | Restreinte (7) ; Musk contradicteur | R159 à R162 à l'unanimité (R159 au second tour, réservée aux lots sensibles) ; en attente de la Présidence | [PV](./seances/2026-11-12-revue-de-j2.md) |
 
 ---
 
 **Points d'entrée :** [🔬 Labo](../README.md) · [📋 Protocole](../CLAUDE.md) · [📓 Journal](../Journal.md) · [🧰 Gabarits](../Gabarits.md)
 
-**Dernière mise à jour :** 11/11/2026 · **v1.8** · Projet Taskforce
+**Dernière mise à jour :** 12/11/2026 · **v1.9** · Projet Taskforce
