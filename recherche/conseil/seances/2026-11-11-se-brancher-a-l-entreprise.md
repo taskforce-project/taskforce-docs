@@ -330,6 +330,14 @@ Tranchée le 11/11/2026, en conversation : « Je retiens les 7 reco c'est ok ».
 - **R155 à R158, retenues.**
 - **Docker Hub, gardé en exception** au premier critère de R152 (sans copier de jeton), une fois le guide de branchement lu :
   « on garde docker hub en exception, je copierai le jeton ». Il se branche sur l'app desktop par la passerelle locale de Docker et un jeton copié.
+- **Le 12/11/2026, après la PR #523** :
+  - **chaque outil du catalogue se montre**, essayé ou non, sans variable à poser : « t'imagines, ça veut dire que
+    l'utilisateur devra faire ça? Attends, là c'est hardcore là ». L'essai d'attaque par outil de R158 passe à la fin de J2,
+    avec les essais de la Présidence ;
+  - **le catalogue reprend les connecteurs d'entreprise de l'annuaire de Claude** : « regarde un peu ce que propose par
+    exemple Claude en extension non communautaire [...] Et puis on fait la même » ;
+  - **le lot des fichiers commence** (Google Drive, OneDrive, SharePoint, Teams), et les connexions s'essaient à la fin :
+    « On pourra tout tester à la fin ».
 
 ## Notes du secrétariat
 

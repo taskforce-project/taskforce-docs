@@ -68,19 +68,11 @@ autre, c'est normal, mais faut que le flux soit clair, coherent et accessible »
 
 ## Ce qui vaut pour tous
 
-### Montrer les outils pas encore essayés
+### Tous les outils se montrent
 
-Le catalogue ne montre d'office que les intégrations natives (GitHub, Slack, Plane) et les préréglages essayés de bout en
-bout, aujourd'hui Linear seul (R15, R153 ; `ConnectorCatalog.isShown`). Pour l'essai, `TF_CATALOG_SHOW_UNTRIED=true` les
-montre tous :
-
-- **App desktop** : une variable d'environnement de l'utilisateur Windows, puis relancer l'app ; la coque la passe au backend
-  local (`desktop/src/backend.ts`).
-- **Serveur** : la variable dans l'environnement du fichier compose de production, qui la transmet au backend
-  (`docker-compose.prod.yml`) ; tous les espaces de l'instance voient alors les préréglages pas encore essayés.
-
-Après l'essai réussi d'un outil, sa date et sa preuve entrent dans son champ `tried`, dans le fichier des préréglages : il se
-montre alors à tous, sans la variable.
+Le catalogue montre chaque outil, essayé ou non, sans rien à régler (décision de la Présidence, 12/11/2026 :
+« t'imagines, ça veut dire que l'utilisateur devra faire ça? »). Après l'essai réussi d'un outil, sa date et sa preuve
+entrent dans son champ `tried`, dans le fichier des préréglages : ce champ garde la preuve, il ne cache rien.
 
 ### Le geste
 
@@ -527,8 +519,8 @@ personnelles dans les réglages de l'espace ([Excalidraw+](https://plus.excalidr
 ## Ce qui reste à vérifier à l'essai
 
 1. **Une vraie connexion chez chaque éditeur** : la PR #523 a tout prouvé contre un faux éditeur, pas sur un compte réel ;
-   seul Linear a été essayé, en septembre. Chaque outil s'essaie sur les comptes de la Présidence, après la release ; il ne
-   se montre qu'avec son `tried` (date, preuve) et son essai d'attaque (R153, R158).
+   seul Linear a été essayé, en septembre. Chaque outil s'essaie sur les comptes de la Présidence, après la release ; son
+   `tried` (date, preuve) et son essai d'attaque (R158) viennent à la fin de J2, avec ces essais.
 2. **Slack** : s'il accepte un retour sur `127.0.0.1`.
 3. **Stripe** : la liste des adresses de retour admises, citée sur une page de place de marché ; un choix de lecture seule à
    la connexion.
