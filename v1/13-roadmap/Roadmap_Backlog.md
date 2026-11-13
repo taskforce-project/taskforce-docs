@@ -24,6 +24,13 @@ Logo projet        : assets/images/logo_taskforce.png
 **Date :** 08/06/2026  
 **Auteur(s) :** Pierre MICHEL
 
+> **▶ 13/11/2026 :** les correctifs de la revue de J2 sont en prod avec la 1.16.0 et la desktop 1.13.0 (release [#533](https://github.com/taskforce-project/taskforce-fullstack/pull/533)) :
+> les garanties de la revue du code ([#530](https://github.com/taskforce-project/taskforce-fullstack/pull/530), V128 à V130), les écrans ([#531](https://github.com/taskforce-project/taskforce-fullstack/pull/531)) et ce qu'il faut à une entreprise pour faire
+> confiance à J2 ([#532](https://github.com/taskforce-project/taskforce-fullstack/pull/532)), chacun après sa relecture indépendante (R159) et, pour les écrans, leur revue (R161) ; avec eux,
+> le catalogue repris de l'annuaire de Claude ([#527](https://github.com/taskforce-project/taskforce-fullstack/pull/527), [#529](https://github.com/taskforce-project/taskforce-fullstack/pull/529)) et les fichiers de l'entreprise ([#528](https://github.com/taskforce-project/taskforce-fullstack/pull/528), V127). R160 est
+> tenue. Avant le lot suivant : la recette de la Présidence sur l'app desktop (R162 amendée), puis un lot de nettoyage des
+> défauts moyens et faibles que les revues ont laissés.
+>
 > **▶ 12/11/2026 :** J2 est fait au tiers ; la revue complète ([séance n°23](../../recherche/conseil/seances/2026-11-12-revue-de-j2.md),
 > R159 à R162, retenues, R162 amendée) a trouvé des défauts de sécurité, de qualité et d'écrans dans les lots déjà fusionnés.
 > Avant le lot suivant : leurs correctifs, puis la 1.16.0 (R160). Désormais, un lot qui touche aux connexions, aux droits, aux
