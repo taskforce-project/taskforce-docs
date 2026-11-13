@@ -15,6 +15,8 @@ related:
   - "./2026-10-31-souverainete-operationnelle.md"
   - "../../decisions/ADR-022-DRAFT-infrastructure-pas-les-regles.md"
   - "../../decisions/ADR-023-DRAFT-execution-durable-postgresql.md"
+  - "../../decisions/ADR-027-DRAFT-modele-des-processus.md"
+  - "./2026-11-13-le-workflow-pilotable.md"
   - "../../../v1/13-roadmap/Roadmap_Backlog.md"
 ---
 
@@ -31,6 +33,11 @@ related:
 > et de refuser les deux cadres proposés. Le concurrent n°1 n'est pas tranché : sur la cible écrite, Microsoft et n8n sont plus
 > proches que Camunda. Huit recommandations, R163 à R170, toutes à 90 % au moins, quatre au second tour. Gwynne Shotwell,
 > contradictrice, a obtenu que rien de Camunda n'entre dans J2 s'il ne sert pas le processus d'E20.
+>
+> **Le soir même**, la Présidence les retient toutes, avec ses amendements : se repositionner sur l'expérience de Claude Code,
+> où l'on pilote, plus des applications embarquées ; un sous-ensemble de BPMN qui sert aussi à afficher et à éditer nos
+> processus, des workflows par défaut, et l'IA qui juge ce qui est de trop ; une vue inspirée de Camunda, sans ses symboles et
+> sans maquette préalable ; un moteur refait chez nous, sans fork d'Operaton. Elle repasse le chantier au Conseil (séance n°25).
 
 - **Saisine** (Présidence, 13/11/2026, en conversation, mot pour mot) :
   - « Oula la, c'est moi ou Camunda font exactement ce qu'on souhaite faire ??? Fais analyser ca par le conseil stp. On en est
@@ -807,20 +814,115 @@ et son signal d'arrêt. La contradictrice attaque avant chaque vote ; une recomm
    processus Camunda, comme la question posée pour n8n (Q14) ?
 6. **La maquette de la vue** (R166) : la voir avant de trancher R166, ou trancher d'abord ?
 
-## Décision
+## Décision de la Présidence
 
-**Décision de la Présidence** : à venir.
+Tranchée le 13/11/2026 au soir, en conversation, en un seul message. Sur l'ensemble : « Ce qu'il faut trancher avec ma
+recommandation. Donc R163 à 170, donc je retiens, hein, prends en compte tout ce que je viens de te dire pour le process, et puis
+peut-être que tu peux valider ça avec le conseil, mais moi je suis plutôt convaincu de ce que je dis. » Et, à la fin du message :
+« On repasse ça au conseil pour valider, mais moi je suis à peu près sûr de ce que je dis, donc go. »
 
-| Recommandation | Décision | Raison de la Présidence |
-| --- | --- | --- |
-| R163 | | |
-| R164 | | |
-| R165 | | |
-| R166 | | |
-| R167 | | |
-| R168 | | |
-| R169 | | |
-| R170 | | |
+- **R163, retenue et amendée : se repositionner.** « Écoute, le R163, oui, bah, je crois qu'on l'avait déjà fait, mais écoute, on
+  peut essayer de se repositionner peut-être. » Le repositionnement vient de sa réponse à la deuxième question, plus bas :
+  l'expérience de Claude Code, où l'on pilote, plus des applications embarquées.
+- **R164, retenue : la cible, « à peu près ».** « R164, bah, c'est la même chose. » Sur la ligne de la cible : « Bon bah la cible en
+  une ligne, tu l'as aussi, à peu près, hein. » Cette ligne, que l'agent lui avait proposée en conversation et qu'elle tient « à peu
+  près » : « des entreprises de 10 à 500 personnes, sans développeur dédié pour configurer, dont le premier travail est la
+  livraison logicielle et les documents ». Puis des marchés plus complexes :
+  - « Parce que voilà, eux aussi, c'est partir de l'objectif, mais du coup, on peut peut-être faire la même chose, mais nous partir
+    sur vraiment des marchés un petit peu plus complexes. » ;
+  - « Très intéressant s'ils n'ont pas de IQ, OQ, PQ, parce que ça va rester, et surtout j'ai déjà un petit peu d'expérience
+    là-dessus, donc on pourra limite presque tester en fait. »
+
+  Sur Camunda comme concurrent : « Et puis après, bah voilà, hein, si on est concurrent par rapport à Camunda, c'est pas non plus
+  dégueu. Ils ont 700 clients, mais il y a certainement des millions d'entreprises encore qui n'ont pas ce genre de choses et qui
+  demandent ce genre de choses. » La question du marché, qui ouvre le message, va à la séance n°26.
+- **R165, retenue et élargie.** « R165, effectivement, donc voilà, un sous-ensemble de BPMN pour nos processus, donc il faut déjà
+  pouvoir réussir à qualifier nos processus. » Les élargissements, dans ses mots :
+  - **pas seulement l'échange** : « Après, voilà, import-export seulement, bah, effectivement on peut rajouter un import-export,
+    mais pas seulement, du coup, hein, je pense qu'on peut en proposer un par défaut. » ;
+  - **des workflows par défaut** : « par exemple un workflow par défaut qu'on peut créer qui nous paraît très bien pour n'importe
+    quel développeur, n'importe quelle personne qui souhaiterait créer quelque chose ou simplement voilà éditer un document,
+    etc. » ; « On peut en faire un par type d'action » ;
+  - **nos agents les créent selon des règles, des conventions et des exemples** : « Est-ce que nos agents peuvent créer des BPMN en
+    fonction des règles, des conventions? Est-ce que voilà, il y a différentes règles pour pouvoir créer des BPMN? Est-ce qu'il y a
+    des exemples? Est-ce qu'on peut entraîner un agent exprès là-dessus, etc. » La question de l'entraînement va à la séance n°25 ;
+  - **l'IA juge ce qui est de trop** : « je pense que ce serait top avec vraiment l'IA qui dit ok, bon bah ça c'est overkill, on le
+    fait pas, donc on va passer uniquement là-dedans dans le workflow. Ou alors voilà, ça c'est un truc un peu spécifique, donc on
+    va utiliser l'ensemble du workflow » ;
+  - **des workflows créés et paramétrés par les utilisateurs, l'exemple du LIMS** : « des workflows du coup plus spécifiques que
+    même les utilisateurs pourraient eux-mêmes créer, paramétrer. Par exemple, je dis n'importe quoi, je développe une
+    application, un LIMS, et ben là, il me faudrait vraiment un workflow dédié pour ça, avec peut-être justement moi qui vais
+    construire la partie IQ, OQ, PQ qui manque, la partie vraiment aller chercher les bons documents, GAMP, 21 CFR partie 11,
+    etc. » ; « Donc je vais venir rajouter ça au workflow proposé par exemple par l'IA. Par notre modèle. » ;
+  - **affichés et édités dans TaskForce, par les ingénieurs et par les PM** : « Jamais affiché à l'écran, ça je sais pas, je pense
+    que ça devrait s'intégrer à nous les workflows qu'on va pouvoir afficher et éditer par les ingénieurs, les utilisateurs, etc.
+    Et puis par les PM aussi, hein, qui peuvent très bien faire des agents de gestion de projet exprès, s'ils ont des règles à
+    afficher. » ;
+  - **les types d'étapes** : « 5 types d'étapes, ok, ça je te laisse faire, il y en a peut-être plus, je ne sais pas, mais en vrai
+    je pense pas. Ça me paraît ok. » ;
+  - **pas orienté full code** : « Attention, on n'est pas orienté full code, hein. Ça c'est peut-être une erreur, mais voilà, faut
+    bien définir ça. » ;
+  - **définir, exécuter, exploiter, la version, et ce qui attend** : « Donc séparation, définir, exécuter, exploiter, et la version
+    de chaque processus, effectivement. Et puis la gestion, effectivement aussi, des incidents, des waiting lists, des approvals,
+    et ce genre de choses. Des manques aussi, hein, s'il manque des documents que l'IA est en attente ou autre. »
+
+  L'amendement voté par le Conseil (J2 ne prend que ce qu'exige le processus « intégrer un module ») n'est pas touché ; la séance
+  n°25 dit ce qui entre dans J2.
+- **R166, retenue et amendée : s'inspirer de Camunda, sans ses symboles.** « Alors, bah là, je pense qu'il faudrait s'inspirer
+  quand même de Camunda. Peut-être le simplifier au niveau UX, mais enfin le simplifier. Je suis pas en train de faire des schémas
+  d'ELEC, hein, eux ils ont des symboles assez particuliers, enfin vachement mathématiques, hein, ou informatiques avec les
+  conditions, donc nous on va pas faire ça, on va quand même simplifier ça. Mais je pense que c'est quand même important d'avoir
+  ça, et puis comme je te dis, si on peut piloter les workflows, ça peut vraiment être très cool. » Le public :
+  - « Moi, mon but, c'est aussi qu'un CEO puisse absolument comprendre ce qui se passe là-dedans et puisse en faire quelque chose.
+    Qu'un PM puisse aussi utiliser cet outil absolument sans problème » ;
+  - pour la partie technique, « parce qu'il faut qu'on soit très précis » ;
+  - garder la simplicité d'aujourd'hui et y ajouter volontairement : « garder ce qu'on a actuellement, qui est quand même
+    relativement simple, entre guillemets, qui nécessiterait peut-être d'être simplifié au niveau de l'UI/UX pour les PM, ou pour
+    des gens en tout cas de ce niveau d'hiérarchie-là, qui sont un peu moins hands-on, et puis le complexifier volontairement avec
+    ce que Camunda, par exemple, propose ».
+
+  La maquette ne précède pas la décision (sixième question, plus bas).
+- **R167, retenue et amendée : pas de fork d'Operaton.** « Voilà, ensuite R167 pour le moteur durable comparé Operaton, un moteur
+  fait maison, sur les mêmes essais de coupure. Effectivement, on peut essayer ça. Ok, alors après faire un fork, je suis
+  peut-être pas fan, mais on peut s'en inspirer en tout cas, hein. Donc tu peux aller voir le code sans problème, et t'en inspirer.
+  Mais faire un fork direct, ça je suis pas fan. Parce que ça fait vraiment copier-coller pour le coup. » Et sur l'essai : « Et puis
+  l'essai d'Opératon. Alors, oui, mais je préfère que tu copies le code plutôt que tu fasses, enfin, que tu copies, que tu
+  t'inspires du code, que tu ailles voir vraiment les fichiers, comment ça fonctionne, que tu reproduises la même chose chez nous,
+  adapté évidemment à chez nous, plutôt que tu fasses un fork directement. Donc c'est peut-être plus de boulot, mais je préfère
+  largement. » ADR-023 est amendé dans ce sens.
+- **R168, retenue.** « R168, ne dire au-dessus de Camunda que ce qui est prouvé. Oui, effectivement. »
+- **R169, retenue, Jobs sur l'UX.** « R169, l'objectif repose un brouillon de processus. Une personne la règle, le moteur exécute.
+  Bon, ça tu vois, faudrait peut-être mettre Jobs sur la partie UX, encore une fois. »
+- **R170, retenue**, avec les autres : « Donc R163 à 170, donc je retiens ».
+
+**Les réponses aux six questions du Conseil :**
+
+1. **La cible** : voir R164.
+2. **Le « Claude » de « Claude x Camunda »** : l'expérience, pas le modèle.
+   - « Alors, le Claude de Claude X Camunda, je pensais plutôt à l'expérience, plutôt que le modèle. Voilà, c'est-à-dire que c'est
+     vraiment expérience Claude Code, c'est-à-dire qu'on pilote vraiment, on a vraiment l'impression de piloter quelque chose, et à
+     côté, voilà, on a des fenêtres spécifiques qui permettent de nous montrer par exemple le board, par exemple les workflows, et
+     de pouvoir, dans le board évidemment, piloter un board comme si on était sur Linear, piloter des workflows comme si on était
+     sur Camunda. »
+   - « c'est vraiment un espèce de Claude vide, avec des agents que nous on possède, hein, donc sans Opus par exemple, tout ça, on
+     peut brancher Claude dessus, mais c'est vraiment expérience Claude, plus des applications embarquées en fait, si tu veux, c'est
+     vraiment ça. On fait vraiment de l'applicatif embarqué là, si tu veux. »
+3. **La pièce** : « Et l'assistant qui a écrit ma pièce, non, il n'avait pas les documents parce que c'était sur ChatGPT, voilà,
+   très rapidement. »
+4. **Le moteur** : voir R167 : l'essai, oui ; le fork, non.
+5. **Se brancher à Camunda** (Q18) : oui, plus tard.
+   - « Donc se brancher à Camunda, effectivement, plus tard, pour essayer de récupérer un petit peu ce qu'ils font de bien aussi, et
+     ce que nous, bah, on va pas refaire non plus. » ; « Donc se brancher à Camuda, ça tu le feras plus tard. »
+   - Le but : « pourquoi pas s'intégrer après à Camunda pour vraiment faire la séparation entre les deux et vraiment montrer ce que
+     nous, on apporte en plus à Camunda et ce qui représente effectivement une partie supérieure à Camunda qui ne le ferait pas, par
+     exemple. »
+6. **La maquette** : pas avant de trancher. « La maquette avant de trancher, non, tu peux faire tout d'un coup. Enfin, discute avec
+   Jobs et tout, essaye de faire une UX sympa. Essaye d'aller t'inspirer peut-être voilà, d'écrans qui existent déjà, de reprendre la
+   DA aussi évidemment, de reprendre aussi ce que fait Claude au niveau de ses différents embarquements d'applications entre
+   guillemets. Hein. Mais voilà, je pense qu'on n'a pas besoin de maquette directement. »
+
+**La méthode** : le chantier suit le message entier (« prends en compte tout ce que je viens de te dire pour le process »), et le
+Conseil le revoit avant la construction (« On repasse ça au conseil pour valider ») : c'est la séance n°25, tenue le même soir.
 
 ## Notes du secrétariat
 
@@ -856,6 +958,22 @@ et son signal d'arrêt. La contradictrice attaque avant chaque vote ; une recomm
   du Magic Quadrant BOAT (la page de Gartner refuse la lecture) ; le modèle des secrets des connecteurs de Camunda ; le niveau de
   maturité des fonctions agentiques de la 8.10 ; chez les voisins, l'hébergement et les prix de ServiceNow et d'Appian, et les
   annonces d'Ignite 2026, qui se tient après la séance.
+- **Après la décision** (13/11/2026 au soir) :
+  - **la pièce** : écrite sur ChatGPT, sans les documents de TaskForce, d'après la Présidence ; cela explique qu'elle décrive une
+    vision plutôt que l'état réel ;
+  - **IQ, OQ et PQ** : la Présidence dit en avoir l'expérience, et les place avec un LIMS, GAMP et 21 CFR Part 11 ; le sens noté
+    `[DÉDUIT]` à Q13 le 30/10 (la qualification d'un équipement ou d'un système dans les industries réglementées) est confirmé ;
+  - **« pas de fork » et la licence** : Operaton est sous Apache 2.0 ([dépôt](https://github.com/operaton/operaton), lu le 13/11/2026) ;
+    l'ASF tient les deux licences pour incompatibles dans un seul sens : du code sous Apache 2.0 peut entrer dans un projet sous
+    GPLv3, pas l'inverse ([ASF](https://www.apache.org/licenses/GPL-compatibility.html), lu le 13/11/2026). `[DÉDUIT]` Reprendre un
+    fichier d'Operaton dans TaskForce, sous AGPL v3, reste possible s'il garde sa mention de droit d'auteur, la licence et le fichier
+    NOTICE (Apache 2.0, §4) ; la Présidence préfère reproduire le mécanisme, adapté ;
+  - **les cinq types d'étapes** : la Présidence laisse la main au secrétariat et au Conseil, et dit que cinq lui paraissent
+    suffire (« en vrai je pense pas » qu'il y en ait plus) ;
+  - **la ligne de la cible** n'est pas des mots de la Présidence : c'est celle que l'agent lui avait proposée, et qu'elle tient « à
+    peu près » ;
+  - **le conflit d'intérêts** du secrétariat s'étend : l'expérience que la Présidence retient porte le nom d'un produit d'Anthropic,
+    Claude Code ; le choix de cette référence est le sien, et les agents de TaskForce restent sur n'importe quel modèle (R92).
 - **L'avis du secrétariat**, après la clôture : le mien, pas celui du Conseil.
   - `[DÉDUIT]` Camunda ne fait pas exactement ce que TaskForce veut faire. Il orchestre des processus, très bien, pour les grandes
     organisations, et y met des agents depuis un an. TaskForce délègue du travail à des agents sous des règles, avec une preuve,
@@ -872,13 +990,19 @@ et son signal d'arrêt. La contradictrice attaque avant chaque vote ; une recomm
 
 - Le PV dans `seances/`, une ligne au registre de la charte (§12) et le récit au Journal.
 - Deux questions ouvertes : Q17 (le concurrent n°1 et la cible), Q18 (se brancher à Camunda).
-- Après la décision de la Présidence :
-  - les preuves en dix jours retenues dans `experiences/Experiences.md` : E14 élargie (la phrase, et les noms des concurrents
-    cités), l'essai de coupure comparé de R167, le brouillon d'E20 de R169 ;
-  - un brouillon d'ADR pour le modèle de processus (R165, R169), et un amendement d'ADR-023 (R167) ;
-  - à la roadmap, en mode développement : TF-J2-2, TF-J2-6, TF-J2-1 et TF-J2-11 précisés ;
+- Après la décision de la Présidence, rangé le 13/11/2026 au soir :
+  - au registre de la charte (§12) et au Journal : « la Présidence tranche la séance n°24 » ;
+  - à `Questions-ouvertes.md` : Q17 en cours (la cible, tenue « à peu près ») ; Q18 tranchée (se brancher à Camunda, plus tard) ;
+  - à `experiences/Experiences.md`, les preuves en dix jours retenues : E14 élargie (la phrase, et les noms des concurrents cités) ;
+    E21, l'essai de coupure, Operaton en témoin (R167 amendée) ; E22, le brouillon d'E20 (R169) ; E23, le processus d'E20 dans le
+    sous-ensemble, aller et retour (R165) ; E24, la vue lue en une minute à ses trois lectures (R166 amendée) ;
+  - ADR-023 amendé (R167 : les mécanismes de Temporal et d'Operaton refaits chez nous, sans fork) ; ADR-027 ouvert en brouillon,
+    le modèle des processus (R165, R169) ;
+  - le chantier repassé au Conseil : la [séance n°25](./2026-11-13-le-workflow-pilotable.md), le workflow pilotable ; le marché,
+    à la séance n°26 ;
+  - à la roadmap, en mode développement : TF-J2-2, TF-J2-6, TF-J2-1 et TF-J2-11 précisés après la séance n°25 ;
   - la page de comparaison (R163) et la table des avances (R168) dans les notes du produit ;
-  - la maquette de la vue du workflow (R166).
+  - la maquette de la vue du workflow (R166) : retirée par la Présidence (sixième question).
 - Rien ne migre vers `v1/` sans tâche ni ADR (quarantaine, [`CLAUDE.md`](../../CLAUDE.md) §2).
 
 ---

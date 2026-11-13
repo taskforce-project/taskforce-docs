@@ -52,13 +52,17 @@ related:
 | [E11](#e11--un-petit-modèle-local-rend-il-une-tâche-en-commentaire-acceptable-) | Un petit modèle local pour les tâches en commentaire (Conseil, R51) | ~1,5 j | oui | en cours : 4 sur 5 à l'essai de J1 (04/11) |
 | [E12](#e12--un-petit-modèle-affiné-bat-il-le-modèle-de-base-avec-recherche-) | Un petit modèle affiné contre le modèle de base avec recherche (Conseil, R62) | ~1,5 j | oui | proposée |
 | [E13](#e13--le-spécialiste-gagne-t-il-du-temps-sur-un-vrai-dossier-) | Le temps du spécialiste sur un vrai dossier (Conseil, R63), à J8 | ~1 j | oui | proposée |
-| [E14](#e14--la-promesse-se-redit-elle-en-une-phrase-) | La promesse redite en une phrase (Conseil, R65), à J8 | ~2 h | non | proposée |
+| [E14](#e14--la-promesse-se-redit-elle-en-une-phrase-) | La promesse redite en une phrase (Conseil, R65), élargie par R163 et R164 : la phrase de règles et de preuve, et les noms des concurrents cités | ~2 h | non | proposée, élargie le 13/11 |
 | [E15](#e15--la-voix-se-transcrit-elle-sur-la-machine-juste-et-vite-) | La voix transcrite sur la machine (Conseil, R80, R132) | ~1 j | oui | en cours : voix de synthèse (08/11), puis dictée de la Présidence (09/11), délai tenu |
 | [E16](#e16--une-seule-source-pour-le-moteur-de-règles-sans-aller-retour-) | Une seule source pour le moteur de règles (Conseil, R90), en J1 | ~1 j | non | faite : (a) réfutée, (b) tient |
 | [E17](#e17--lindice-de-confiance-se-mesure-t-il-et-monte-t-il-) | L'indice de confiance, mesure de départ à J2 (Conseil, R104) | ~1 j | non | proposée |
 | [E18](#e18--la-fenêtre-raccourcit-elle-le-travail-) | La fenêtre, mesurée avant et après (Conseil, R119 à R124) | ~2 h | non | en cours (08/11) : écrans 0 puis 0, clics 2 puis 2, éléments 48 puis 34 |
 | [E19](#e19--le-banc-prédit-il-le-travail-réel-) | Le banc des modèles prédit-il le travail réel ? (Conseil, R131) | ~2 h | oui | proposée |
 | [E20](#e20--taskforce-tient-il-un-vrai-projet-dans-un-domaine-inconnu-) | Le premier client joué de bout en bout : son outil de base, un nouveau module (Présidence, 10/11 ; Conseil, séances n°20 et n°21) | quelques jours | oui | retenue par la Présidence (10/11) : à la fin de J2 |
+| [E21](#e21--le-moteur-maison-tient-il-les-coupures-face-à-operaton-) | Le moteur maison face aux coupures, Operaton en témoin (Conseil, R167 amendée), en J2 | ~3 j | non | proposée |
+| [E22](#e22--le-brouillon-de20-sert-il-) | Le brouillon d'E20 accepté étape par étape (Conseil, R169), en J2 | ~2 h | oui | proposée |
+| [E23](#e23--le-processus-de20-tient-il-dans-le-sous-ensemble-aller-et-retour-) | Le processus d'E20 dans le sous-ensemble de BPMN, aller et retour (Conseil, R165), en J2 | ~0,5 j | non | proposée |
+| [E24](#e24--la-vue-se-lit-elle-en-une-minute-à-chacune-de-ses-trois-lectures-) | La vue du workflow lue en une minute par un dirigeant, un chef de projet et un ingénieur (Conseil, R166 amendée), en J2 | ~1 h et le recrutement | non | proposée |
 
 > **L'ordre compte.** E1 avant tout le reste : sans mesure de calibration, **aucune** des autres n'est
 > interprétable. C'est l'inversion proposée dans [`World_Model_Notes.md`](../revues/World-Model.md) §10 —
@@ -538,7 +542,44 @@ spécialiste.
 
 ## E14 : La promesse se redit-elle en une phrase ?
 
-`[statut:: proposée]` · Ouverte le 29/10/2026 · issue du [Conseil, séance n°10](../conseil/seances/2026-10-29-intelligence-possedee.md), R65
+`[statut:: proposée]` · Ouverte le 29/10/2026 · issue du [Conseil, séance n°10](../conseil/seances/2026-10-29-intelligence-possedee.md), R65 · élargie le 13/11/2026 ([séance n°24](../conseil/seances/2026-11-13-depasser-camunda.md), R163 et R164, retenues)
+
+**Élargie le 13/11/2026.** La Présidence retient R163 (se repositionner) et R164 (la cible d'abord, puis demandée à la cible). E14
+teste désormais la phrase de règles et de preuve de R163, et demande à chacun à quoi il compare TaskForce, avant de lui montrer
+la moindre formule. La définition du 29/10 suit, inchangée.
+
+**Hypothèse** `[HYPOTHÈSE]` : après la même démonstration de deux minutes, qui ne nomme aucun autre produit, au moins trois
+personnes de la cible sur cinq redisent juste, en une phrase, la phrase de R163 : « Vos règles s'appliquent à chaque action, d'une
+personne ou d'un agent, et chaque résultat laisse une preuve qu'un tiers vérifie sans nous. » Et moins de trois sur cinq comparent
+spontanément TaskForce à Camunda.
+
+**Falsification** :
+- moins de trois sur cinq redisent la phrase juste, ou trois au moins décrivent TaskForce comme « un Camunda avec de l'IA » : la
+  phrase se réécrit avant le pitch (le signal d'arrêt de R163) ;
+- trois au moins citent Camunda à « à quoi le compareriez-vous ? » : Camunda devient le concurrent n°1, et le pitch se réécrit
+  contre lui (le signal d'arrêt de R164).
+
+**Schéma réel** `[ÉTABLI]` : aucun entretien mené. La cible tenue « à peu près » par la Présidence le 13/11 : des entreprises de 10
+à 500 personnes, sans développeur dédié pour configurer, dont le premier travail est la livraison logicielle et les documents. Le
+site ne porte aucune des formules. Les mots de la cible, d'après la Présidence (30/10/2026) : audit, traçabilité, IQ, OQ, PQ,
+réglementation, référentiel.
+
+**Protocole** :
+- cinq personnes de la cible, dont deux au moins qui connaissent un moteur de processus et deux hors du réseau de la Présidence ;
+- la démonstration de deux minutes, sur l'app desktop, sans nommer Claude, Camunda, Linear ni aucun autre produit ;
+- dans cet ordre : « redites en une phrase ce que fait cet outil » ; puis « à quoi le compareriez-vous ? » ; puis seulement les
+  formules, dans un ordre tiré au sort : la phrase de R163, « posséder son intelligence », « infrastructure de conformité native
+  IA » ;
+- on note mot pour mot la phrase redite et les noms cités.
+
+**Métrique** : les phrases justes sur cinq, par formule ; les noms cités, comptés par produit.
+
+**Limite** : cinq personnes, que la Présidence recrute ; la démonstration est faite par elle ; une phrase redite juste ne dit pas
+qu'on achèterait.
+
+**Coût** : ~2 h d'entretiens, plus le recrutement.
+
+La définition du 29/10/2026 :
 
 **Hypothèse** `[HYPOTHÈSE]` : après la même présentation de deux minutes, au moins trois personnes de la cible sur cinq
 redisent la promesse en une phrase juste, pour l'une des deux formules : « posséder son intelligence », ou
@@ -1042,6 +1083,140 @@ La définition du 09/11 suit, inchangée.
 **Limite** : N = 1, et la personne connaît l'outil (« je connais l'app c'est biaise »).
 
 **Coût** : quelques jours de la Présidence ; c'est le test final avant la release majeure.
+
+## E21 : Le moteur maison tient-il les coupures, face à Operaton ?
+
+`[statut:: proposée]` · Ouverte le 13/11/2026 · issue du [Conseil, séance n°24](../conseil/seances/2026-11-13-depasser-camunda.md), R167, retenue et amendée par la Présidence (pas de fork d'Operaton) ; [ADR-023](../decisions/ADR-023-DRAFT-execution-durable-postgresql.md), amendé
+
+**Hypothèse** `[HYPOTHÈSE]` : le moteur d'exécution durable refait chez nous (ADR-023 amendé : le journal et la reprise de
+Temporal, les états d'attente, la table des travaux, les reprises et l'incident d'Operaton) tient, sur le processus d'E20, chaque
+coupure provoquée sans perdre une étape ni faire un effet deux fois, et repart aussi vite qu'Operaton à 50 % près, en restant sous
+le seuil d'empreinte de l'app desktop.
+
+**Falsification** : sur l'ensemble des essais, une étape perdue, ou un effet fait deux fois (une écriture, un appel d'agent ou
+d'outil vu deux fois au dossier pour la même clé) ; ou une reprise qui ne se fait pas seule ; ou l'empreinte au-dessus du seuil
+écrit avant l'essai. Un seul cas suffit : c'est le signal d'arrêt de R167.
+
+**Schéma réel** `[ÉTABLI]` :
+- aucun moteur : une mission avance quand on la lit ; le travail de fond est `@Async` plus la réclamation et le battement du
+  runner ; aucun processus, seulement `RuleScope.PROCESS` et un champ de processus toujours vide (carte du code de `origin/dev`,
+  13/11/2026) ;
+- Operaton, issu de Camunda 7 Community, sous Apache 2.0, embarquable dans une application Java, sur PostgreSQL entre autres
+  ([dépôt](https://github.com/operaton/operaton), lu le 13/11/2026). Son exécuteur de travaux lit la table `ACT_RU_JOB`, verrouille
+  les travaux dus par `LOCK_OWNER_` et `LOCK_EXP_TIME_`, sous un verrou optimiste par `REV_` ; un travail échoué est repris deux
+  fois (trois exécutions en tout) ; à zéro, l'exécution s'arrête et un incident se crée
+  ([exécuteur de travaux](https://docs.operaton.org/docs/documentation/user-guide/process-engine/the-job-executor),
+  [incidents](https://docs.operaton.org/docs/documentation/user-guide/process-engine/incidents), lus le 13/11/2026).
+- Piège : Operaton exécute du BPMN avec ses propres délégués Java ; le processus d'E20 doit y être rejoué par son export BPMN (E23)
+  et des délégués de banc d'essai qui imitent les effets, sans toucher à TaskForce.
+
+**Protocole** :
+- les seuils, écrits avant (R167 et la séance n°25, R177) : aucune étape perdue ; aucun effet en double ; l'instance repart seule
+  dans les 30 secondes qui suivent le retour du backend ou le réveil de la machine ; au repos, le moteur ajoute au plus 50 Mo de
+  mémoire et 1 % d'un cœur à l'app desktop ;
+- le même processus, celui d'E20, sur notre moteur dans l'app desktop, et sur Operaton dans un banc d'essai, jamais livré, à
+  version figée ;
+- trois coupures : le runner tué, le backend tué, la machine mise en veille ; chacune au milieu d'une étape d'agent, d'une tâche
+  humaine et d'une attente ; dix passages par cas ;
+- on lit le dossier : les étapes faites, les clés d'idempotence, les reprises, les incidents.
+
+**Métrique** : les étapes perdues et les effets en double (cible : zéro) ; le temps de reprise, par coupure, pour les deux
+moteurs ; la mémoire et le processeur au repos, avant et après le moteur.
+
+**Limite** : une machine, Windows, le processus d'E20 seul ; dix passages ne prouvent pas l'absence de défaut rare ; le témoin
+tourne hors de l'app, ses chiffres d'empreinte ne se comparent pas.
+
+**Coût** : ~3 j, dans le lot du moteur (W3 de la séance n°25) ; pendant ce temps, rien d'autre du workflow ne se construit.
+
+## E22 : Le brouillon d'E20 sert-il ?
+
+`[statut:: proposée]` · Ouverte le 13/11/2026 · issue du [Conseil, séance n°24](../conseil/seances/2026-11-13-depasser-camunda.md), R169, retenue (Jobs sur l'UX)
+
+**Hypothèse** `[HYPOTHÈSE]` : sur l'objectif d'E20, « intégrer un module » décrit en mots, le brouillon que propose l'IA, vérifié
+par du code, est accepté étape par étape par la Présidence avec moins de la moitié des étapes réécrites, et chaque étape acceptée
+s'explique encore le lendemain.
+
+**Falsification** : plus de la moitié des étapes réécrites ; ou une étape acceptée que la Présidence ne sait pas expliquer le
+lendemain ; ou une étape verrouillée (un point de pause de TF-J2-10) absente du brouillon montré. C'est le signal d'arrêt de R169.
+
+**Schéma réel** `[ÉTABLI]` : aucun brouillon ni processus dans le code ; la mission suit cinq étapes fixes en phrases (Understand,
+Plan, Do, Check, Hand over, `lib/delivery/mission-sequence.ts`) ; Cortex tourne sur n'importe quel modèle (TF-J1-2) ; Ollama
+accepte un schéma JSON qui contraint la sortie ([Ollama](https://docs.ollama.com/capabilities/structured-outputs), lu le 13/11/2026).
+
+**Protocole** :
+- l'objectif écrit par la Présidence, en mots, sans aide ;
+- le brouillon proposé deux fois : par le modèle local de la Présidence, puis par un modèle hébergé ; chaque brouillon passe le
+  vérificateur du sous-ensemble avant d'être montré ;
+- la Présidence répond aux questions du brouillon, puis accepte, change ou retire chaque étape, sans « tout accepter » ;
+- le lendemain, trois étapes tirées au sort : elle dit ce que chacune fait, qui en répond, et pourquoi elle est là.
+
+**Métrique** : les étapes changées, retirées, ajoutées, sur le total ; les questions posées ; les explications justes du lendemain.
+
+**Limite** : N = 1, la Présidence connaît l'outil et le domaine du module ; deux modèles seulement.
+
+**Coût** : ~2 h, après le lot du brouillon (W4 de la séance n°25).
+
+## E23 : Le processus d'E20 tient-il dans le sous-ensemble, aller et retour ?
+
+`[statut:: proposée]` · Ouverte le 13/11/2026 · issue du [Conseil, séance n°24](../conseil/seances/2026-11-13-depasser-camunda.md), R165, retenue et élargie
+
+**Hypothèse** `[HYPOTHÈSE]` : le processus « intégrer un module » s'écrit avec les seuls éléments du sous-ensemble de BPMN 2.0
+de J2 ; exporté, il s'ouvre sans erreur dans un modeleur BPMN, puis revient à l'identique.
+
+**Falsification** : le processus exige un élément hors du sous-ensemble ; ou le modeleur signale une erreur ; ou le processus
+réimporté diffère de l'original (son empreinte change, ou l'extension `tf:` s'est perdue). Le premier cas est le signal d'arrêt de
+R165 : le choix de BPMN se revoit avant d'ajouter un élément.
+
+**Schéma réel** `[ÉTABLI]` :
+- aucun modèle de processus dans le code ;
+- BPMN 2.0.2 définit trois sous-classes de conformité de la modélisation, dont « Common Executable », pour les modèles exécutables,
+  qui exige XML Schema, WSDL et XPath ; la zone ad hoc n'en fait pas partie
+  ([OMG, BPMN 2.0.2, formal/2013-12-09, chapitre 2](https://www.omg.org/spec/BPMN/2.0.2/PDF), lu le 13/11/2026) ;
+- le Desktop Modeler de Camunda est sous licence MIT (séance n°24, dossier, point 7).
+
+**Protocole** :
+- le processus d'E20 écrit dans le sous-ensemble (W2 de la séance n°25), avec ses extensions `tf:` (qui répond, l'agent, les
+  règles, le verrou, la signification de la signature) ;
+- l'export BPMN 2.0, ouvert dans le Desktop Modeler, sans rien y changer, puis enregistré ;
+- le fichier réimporté dans TaskForce ; on compare les empreintes et les extensions ;
+- trois éléments hors du sous-ensemble importés exprès : chacun refusé, avec sa raison en mots.
+
+**Métrique** : le nombre d'éléments hors du sous-ensemble exigés (cible : zéro) ; l'égalité des empreintes ; les refus justes sur
+trois.
+
+**Limite** : un processus, un modeleur ; un modeleur qui réécrit le fichier peut changer l'ordre des éléments, l'empreinte doit
+porter sur le contenu, pas sur le texte.
+
+**Coût** : ~0,5 j, dans le lot du modèle (W2).
+
+## E24 : La vue se lit-elle en une minute, à chacune de ses trois lectures ?
+
+`[statut:: proposée]` · Ouverte le 13/11/2026 · issue du [Conseil, séance n°24](../conseil/seances/2026-11-13-depasser-camunda.md), R166, retenue et amendée par la Présidence (le public, pas de maquette) ; précisée par la séance n°25 (R173)
+
+**Hypothèse** `[HYPOTHÈSE]` : sur les données vivantes d'un vrai projet, sans explication préalable, trois personnes répondent
+juste, chacune en une minute au plus, à la question de sa lecture :
+- un profil de dirigeant : « Le projet tiendra-t-il sa date, qu'est-ce qui bloque, et qui doit décider ? » ;
+- un profil de chef de projet : « Que pouvez-vous débloquer maintenant, et pour qui ? » ;
+- un ingénieur : « Qu'a fait exactement cette étape, sous quelle règle, et comment la relancer ? ».
+
+**Falsification** : une des trois réponses fausse ou au-delà d'une minute ; ou quelqu'un demande ce que veut dire un symbole ; ou
+un nœud montre une donnée fictive (le signal d'arrêt de R166).
+
+**Schéma réel** `[ÉTABLI]` : le canevas d'aujourd'hui, en lecture seule, ne s'ouvre qu'en dialogue et ne montre ni issue, ni
+dépendance, ni accord ; le projet n'a ni but, ni date visée, ni critères (`Project.java` sur `origin/dev`, 13/11/2026). La Présidence
+a jugé la vue actuelle « horrible » (séance n°24).
+
+**Protocole** :
+- l'application Workflow (W1 de la séance n°25), sur le projet de la Présidence, en production sur l'app desktop ;
+- trois personnes, dont au moins une hors du réseau de la Présidence ; le dirigeant et le chef de projet ne font pas de logiciel ;
+- chacune devant l'écran, sa question lue à voix haute, un chronomètre ; personne ne l'aide ;
+- on note la réponse, le temps, et chaque hésitation sur un mot ou une marque.
+
+**Métrique** : les réponses justes sur trois ; le temps de chacune ; les mots ou marques qui ont arrêté quelqu'un.
+
+**Limite** : N = 3 ; le projet est celui de la Présidence ; une minute mesure la lecture, pas l'usage sur des semaines.
+
+**Coût** : ~1 h, plus le recrutement, dans les dix jours qui suivent W1.
 
 ---
 

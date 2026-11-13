@@ -42,8 +42,11 @@ related:
 | [Q14](#q14--se-brancher-à-n8n-) | Se brancher à n8n ? | P3 | ouverte |
 | [Q15](#q15--quel-modèle-de-revenus-quand-le-produit-cessera-dêtre-gratuit-) | Quel modèle de revenus, quand le produit cessera d'être gratuit ? | P2 | ouverte |
 | [Q16](#q16--macos--quand-et-sans-payer-apple-) | macOS : quand, et sans payer Apple ? | P3 | ouverte |
-| [Q17](#q17--qui-est-le-concurrent-n1-de-taskforce-et-pour-quelle-cible-) | Qui est le concurrent n°1 de TaskForce, et pour quelle cible ? | P1 | ouverte |
-| [Q18](#q18--se-brancher-à-camunda-) | Se brancher à Camunda ? | P3 | ouverte |
+| [Q17](#q17--qui-est-le-concurrent-n1-de-taskforce-et-pour-quelle-cible-) | Qui est le concurrent n°1 de TaskForce, et pour quelle cible ? | P1 | en cours : la cible tenue « à peu près » (13/11) |
+| [Q18](#q18--se-brancher-à-camunda-) | Se brancher à Camunda ? | P3 | tranchée (13/11) : oui, plus tard |
+| [Q19](#q19--montrer-les-applications-de-taskforce-dans-dautres-hôtes-par-mcp-apps-) | Montrer les applications de TaskForce dans d'autres hôtes, par MCP Apps ? | P3 | ouverte |
+| [Q20](#q20--la-signature-électronique-au-sens-de-21-cfr-11200--quand-et-comment-) | La signature électronique au sens de 21 CFR 11.200 : quand, et comment ? | P2 | ouverte |
+| [Q21](#q21--un-fournisseur-dune-personne-passe-t-il-lévaluation-fournisseur-dun-client-gxp-) | Un fournisseur d'une personne passe-t-il l'évaluation fournisseur d'un client GxP ? | P1 | ouverte |
 
 ---
 
@@ -308,6 +311,12 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 - **Ce qui manque encore** : la date de mise en service du VPS.
 - **10/11/2026** ([séance n°21](./conseil/seances/2026-11-10-premier-client-e20.md), R149) : un premier client en dépend. Le Conseil demande la date du VPS ; s'il n'est pas en service au 15/12/2026, l'app desktop doit pouvoir se connecter sans la webapp.
 - **Réponse de la Présidence, le 10/11/2026** : R149 reportée après J2 et les vidéos de démo (« on verra une fois que J2 sera sorti ») ; plutôt un grand fournisseur qu'un VPS : « GCP, ça me paraît correct », la base de données à chiffrer. `[ÉTABLI]` L'app desktop se connecte par ce serveur (`desktop/src/account.ts`) : l'échéance du 31/12/2026 tient pour elle aussi.
+- **13/11/2026** ([séance n°26](./conseil/seances/2026-11-13-le-marche-a-prendre.md), R182, R183, R184) : le partenaire de
+  conception a désormais un profil : l'éditeur ou l'intégrateur de logiciel de laboratoire ou de dispositif médical, de 10 à 50
+  personnes, ou un cabinet de validation qui vend au forfait. Le réseau GxP de la Présidence ouvre les premiers entretiens, quatre
+  sur dix au moins hors de lui. `[DÉDUIT]` Les objectifs du premier trimestre (trois partenaires actifs en janvier) dépendent d'un
+  serveur en service avant le 31/12/2026, puisque l'app desktop se connecte par lui. R63 fixait trente jours pour trouver un
+  partenaire dans un secteur régulé : le délai tombe le 28/11/2026, à trancher par la Présidence.
 
 ## Q14 : Se brancher à n8n ?
 
@@ -336,6 +345,15 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 - **Ce qu'il faut pour trancher** : les réponses des démos de J8 ; une vérification juridique, puisque la double licence
   suppose de détenir les droits sur tout le code.
 - **La Présidence, le 10/11/2026** : le coût du serveur viendra avec le monde (« ça va commencer à chiffrer s'il y a beaucoup de monde qui vont dessus »), sans revenu à ce stade ; le prix se discute au moment d'ouvrir l'app à tous, après J2 et les vidéos.
+- **13/11/2026** ([séance n°26](./conseil/seances/2026-11-13-le-marche-a-prendre.md), R185) : quatre hypothèses posées, rien de
+  payant avant J9. H1, le cœur reste gratuit sous AGPL ; H2, la part payante éventuelle porte sur la preuve et le soutien du
+  fournisseur (un pack de validation par version, un canal de support), par entreprise et par an, pas par siège ; H3,
+  l'installation et l'aide à la validation par la Présidence, que sa capacité borne ; H4, une version hébergée plus tard.
+  `[ÉTABLI]` Les repères publics, lus le 13/11/2026 : Qualio « Plans start at $25,000 per year » ([Qualio](https://www.qualio.com/pricing)) ;
+  Ketryx gratuit pour les entreprises avant mise sur le marché qui ont levé moins de 2 M$ ([Ketryx](https://www.ketryx.com/pricing)) ;
+  Linear 10 et 16 $ par personne et par mois ([Linear](https://linear.app/pricing)) ; aucun prix public chez Camunda, Kneat ou
+  ValGenesis. Deux questions entrent dans chaque entretien : ce que coûte aujourd'hui la validation d'une modification, et si un
+  pack de validation se paierait.
 
 ## Q16 : macOS : quand, et sans payer Apple ?
 
@@ -350,7 +368,7 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 
 ## Q17 : Qui est le concurrent n°1 de TaskForce, et pour quelle cible ?
 
-`[statut:: ouverte]` · `[prio:: P1]` · Ouverte le 13/11/2026 · issue du [Conseil, séance n°24](./conseil/seances/2026-11-13-depasser-camunda.md), R164
+`[statut:: en-cours]` · `[prio:: P1]` · Ouverte le 13/11/2026 · issue du [Conseil, séance n°24](./conseil/seances/2026-11-13-depasser-camunda.md), R164
 
 - **La question** : la Présidence tient Camunda pour le concurrent n°1 (« je pense que c'est notre concurrent n1 en fait »). Sur
   quelle cible ? Les documents disent « n'importe quelle entreprise » (R103, ADR-022), choisissent le catalogue pour « une
@@ -362,15 +380,32 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   Forrester le juge le mieux adapté aux grandes entreprises ([Camunda](https://camunda.com/press_release/camunda-named-a-leader-in-adaptive-process-orchestration-software-evaluation-q3-2026/), 25/09/2026) ;
   sa page des prix n'en affiche aucun ([Camunda](https://camunda.com/pricing/), lu le 13/11/2026). Microsoft et n8n publient leurs
   prix ([Copilot Studio](https://www.microsoft.com/en-us/microsoft-365-copilot/pricing/copilot-studio), [n8n](https://n8n.io/pricing/), lus le 13/11/2026).
-- **Position actuelle** : `[HYPOTHÈSE]` sur la cible écrite, Microsoft et n8n sont plus proches que Camunda ; sur le scénario
-  d'E20, la plateforme où vit le code ; Camunda devient le concurrent n°1 si la cible devient la grande organisation régulée qui a
-  des développeurs (R164, en attente de la Présidence).
-- **Ce qu'il faut pour trancher** : la cible en une ligne, écrite par la Présidence (la taille, qui configure, la première nature
-  de travail) ; E14 avec la question « à quoi le compareriez-vous ? », et les noms cités.
+- **Réponse de la Présidence, le 13/11/2026 au soir** (R164 retenue) :
+  - la cible en une ligne, que l'agent lui avait proposée, et qu'elle tient « à peu près » : « des entreprises de 10 à 500
+    personnes, sans développeur dédié pour configurer, dont le premier travail est la livraison logicielle et les documents » ;
+    ses mots : « Bon bah la cible en une ligne, tu l'as aussi, à peu près, hein. » ;
+  - des marchés plus complexes ensuite : « on peut peut-être faire la même chose, mais nous partir sur vraiment des marchés un
+    petit peu plus complexes » ; sur IQ, OQ et PQ : « j'ai déjà un petit peu d'expérience là-dessus, donc on pourra limite presque
+    tester en fait » ;
+  - sur Camunda : « si on est concurrent par rapport à Camunda, c'est pas non plus dégueu. Ils ont 700 clients, mais il y a
+    certainement des millions d'entreprises encore qui n'ont pas ce genre de choses et qui demandent ce genre de choses. »
+- **Position actuelle** : `[DÉDUIT]` sur la cible tenue « à peu près », sans développeur dédié pour configurer, Camunda, dont le code
+  est le « cœur » et le low-code une option ([billet du 08/12/2023](https://camunda.com/blog/2023/12/pro-code-low-code-role-of-camunda/)),
+  reste la barre de la rigueur d'exécution, pas le concurrent le plus proche ; Microsoft et n8n le restent. `[HYPOTHÈSE]` Il le
+  redevient sur les marchés plus complexes, si leurs clients ont des développeurs.
+- **Ce qu'il faut pour trancher** : E14, élargie le 13/11, avec la question « à quoi le compareriez-vous ? » posée avant toute
+  formule, et les noms cités ; le marché, ses chiffres et la part visée, à la séance n°26.
+- **13/11/2026** : la Présidence tient « à peu près » la cible proposée : « des entreprises de 10 à 500 personnes, sans
+  développeur dédié pour configurer, dont le premier travail est la livraison logicielle et les documents », les métiers régulés
+  ensuite. `[ÉTABLI]` Elle compte 47 477 entreprises du logiciel de 10 à 249 personnes dans l'UE et 5 703 en France
+  ([Eurostat](https://ec.europa.eu/eurostat/databrowser/view/sbs_sc_ovw/default/table?lang=en), 2024) ; la classe de 250 à 499
+  n'est pas publiée. `[HYPOTHÈSE]` Sur la niche régulée, le concurrent n'est pas Camunda, qui n'en dit rien sur ses pages, mais le
+  spécialiste validé (Veeva, Kneat, ValGenesis, Qualio), le cabinet de validation, et les documents faits à la main ; sur le
+  logiciel des dispositifs médicaux, Ketryx ([séance n°26](./conseil/seances/2026-11-13-le-marche-a-prendre.md), R181).
 
 ## Q18 : Se brancher à Camunda ?
 
-`[statut:: ouverte]` · `[prio:: P3]` · Ouverte le 13/11/2026 · issue du [Conseil, séance n°24](./conseil/seances/2026-11-13-depasser-camunda.md), confrontation 3
+`[statut:: tranchée]` · `[prio:: P3]` · Ouverte le 13/11/2026 · issue du [Conseil, séance n°24](./conseil/seances/2026-11-13-depasser-camunda.md), confrontation 3
 
 - **La question** : faut-il instruire TaskForce comme couche de règles et de preuve qu'un processus Camunda appelle par MCP, et
   l'import des processus d'un client qui a déjà Camunda ?
@@ -379,11 +414,75 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   d'audit ne décrit aucune garantie d'intégrité ([Camunda](https://docs.camunda.io/docs/components/audit-log/overview/), lu le
   13/11/2026). `[DÉDUIT]` Se brancher ferait de TaskForce la règle et la preuve des agents de Camunda chez ses clients ; ne pas le
   faire garde TaskForce entière, sans dépendre d'un éditeur dont la production auto-hébergée est payante.
-- **Position actuelle** : Nadella le recommande (séance n°24) ; le Conseil l'a laissé ouvert. Pour n8n, la Présidence a répondu
-  « On va pas se brancher a n8n je pense, enfin jsp a voir » (Q14). R99 prévoit un point de décision ouvert à tout moteur d'agents
-  extérieur, en J5.
-- **Ce qu'il faut pour trancher** : le point de décision ouvert de R99 ; l'export et l'import BPMN de R165 ; puis une demande
-  réelle d'un client qui utilise Camunda.
+- **Tranchée par la Présidence le 13/11/2026 au soir** (séance n°24, sa cinquième question) : oui, plus tard, une fois notre propre
+  système de workflow en place.
+  - « Donc se brancher à Camunda, effectivement, plus tard, pour essayer de récupérer un petit peu ce qu'ils font de bien aussi, et
+    ce que nous, bah, on va pas refaire non plus. » ; « Donc se brancher à Camuda, ça tu le feras plus tard. »
+  - Le but : « pourquoi pas s'intégrer après à Camunda pour vraiment faire la séparation entre les deux et vraiment montrer ce que
+    nous, on apporte en plus à Camunda et ce qui représente effectivement une partie supérieure à Camunda qui ne le ferait pas, par
+    exemple. »
+- **Ce qui reste** : le moment et la forme. `[HYPOTHÈSE]` Après J2 : l'import d'un processus Camunda dans notre sous-ensemble de
+  BPMN (R165), et TaskForce appelée par MCP depuis un processus Camunda, avec le point de décision ouvert de R99 (J5). La séance
+  n°25 en fait un lot, après J2.
+
+## Q19 : Montrer les applications de TaskForce dans d'autres hôtes, par MCP Apps ?
+
+`[statut:: ouverte]` · `[prio:: P3]` · Ouverte le 13/11/2026 · issue du [Conseil, séance n°25](./conseil/seances/2026-11-13-le-workflow-pilotable.md), R172 et R178 (lot W8)
+
+- **La question** : TaskForce expose déjà ses gestes par son serveur MCP (ADR-024). Faut-il offrir aussi ses applications
+  embarquées (la carte d'un nœud, d'un accord, d'un brouillon, puis l'application Workflow) comme des applications MCP, pour que
+  Claude, Claude Desktop, VS Code GitHub Copilot ou Microsoft 365 Copilot les rendent dans leurs conversations ?
+- **Pourquoi ça compte** : `[ÉTABLI]` avec MCP Apps, un outil déclare une ressource `ui://`, que l'hôte rend dans un cadre isolé,
+  dans la conversation ; l'application et l'hôte se parlent en JSON-RPC par `postMessage` ; elle peut appeler des outils et mettre
+  à jour le contexte du modèle ; l'hôte contrôle ce qu'elle peut faire, et passe par le consentement de la personne
+  ([MCP](https://modelcontextprotocol.io/extensions/apps/overview), lu le 13/11/2026). `[DÉDUIT]` Ce serait, pour l'expérience, ce
+  que Q18 est pour Camunda : les règles et la preuve de TaskForce dans la conversation d'un autre outil. Le risque : un accord rendu
+  par un hôte tiers ; les règles doivent le juger côté serveur, comme aujourd'hui, et la signification de la signature doit
+  survivre au passage.
+- **Position actuelle** : `[HYPOTHÈSE]` après J2, avec le lot W8 (J5), une fois la surface MCP de TaskForce complète (ADR-024).
+- **Ce qu'il faut pour trancher** : une demande réelle d'un client qui travaille dans un de ces hôtes ; la version de MCP Apps que
+  les hôtes prennent en charge ; un essai d'attaque sur les appels d'outils de l'application (R158).
+
+## Q20 : La signature électronique au sens de 21 CFR 11.200 : quand, et comment ?
+
+`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 13/11/2026 · issue du [Conseil, séance n°25](./conseil/seances/2026-11-13-le-workflow-pilotable.md), R179
+
+- **La question** : dans TaskForce, un accord se donne d'un clic, dans une session ouverte. Faut-il, pour un workflow marqué
+  régulé, redemander l'identité de la personne au moment de signer, et quand le construire ?
+- **Pourquoi ça compte** : `[ÉTABLI]` 21 CFR 11.200 demande, hors d'une session continue, chaque signature avec tous ses éléments,
+  et, dans une session, la première avec tous ses éléments ; 11.50 veut le nom imprimé du signataire, la date, l'heure et la
+  signification de la signature ; 11.70 la lie à son enregistrement
+  ([Cornell LII](https://www.law.cornell.edu/cfr/text/21/11.200), lu le 13/11/2026). `[ÉTABLI]` Un accord de TaskForce porte qui
+  peut décider, les signatures, s'il engage, son échéance, et entre au dossier, chaîné et scellé, pas encore signé (TF-J2-7).
+  `[DÉDUIT]` Sans identité redemandée, un accord n'est pas une signature électronique au sens de Part 11, et le LIMS de la
+  Présidence en aurait besoin. Un agent ne tape jamais d'identifiant : la nouvelle demande d'identité reste à la personne.
+- **Position actuelle** : `[HYPOTHÈSE]` après J2, avec les workflows régulés (W6) et la séance n°26 sur le marché ; dans J2,
+  seulement la signification de la signature sur chaque tâche humaine (R179). Le service de connexion déjà en place pourrait
+  redemander l'identité avant une action : à vérifier.
+- **Ce qu'il faut pour trancher** : l'expérience de la validation de la Présidence ; un premier projet régulé réel ; la façon de
+  redemander l'identité, vérifiée sur l'app desktop.
+
+## Q21 : Un fournisseur d'une personne passe-t-il l'évaluation fournisseur d'un client GxP ?
+
+`[statut:: ouverte]` · `[prio:: P1]` · Ouverte le 13/11/2026 · issue du [Conseil, séance n°26](./conseil/seances/2026-11-13-le-marche-a-prendre.md), R181
+
+- **La question** : une entreprise régulée qui valide un système évalue son fournisseur. TaskForce est fait par une personne et
+  des agents, sans système qualité, sans support et sans certification. Peut-il passer cette évaluation pour un pilote, et à
+  quelles conditions ?
+- **Pourquoi ça compte** : la niche de R181 en dépend. `[ÉTABLI]` Pour une application Power Platform en GxP, Microsoft demande
+  de qualifier la plateforme, dont une évaluation du fournisseur, avant de valider l'application
+  ([Microsoft Learn](https://learn.microsoft.com/en-us/dynamics365/mixed-reality/guides/gxp-guidance/purpose-of-validation-and-traceability), 15/01/2026) ;
+  GAMP 5, seconde édition, encourage à s'appuyer sur la documentation des fournisseurs et traite de l'open source
+  ([ISPE](https://ispe.org/publications/guidance-documents/gamp-5-guide-2nd-edition), 07/2022) ; la FDA a accepté et reproduit des
+  soumissions faites en R, open source ([R Consortium](https://r-consortium.org/posts/news-from-r-submissions-working-group-pilot-3/), 26/08/2024).
+- **Position actuelle** : `[HYPOTHÈSE]` un dossier fournisseur public (le code sous AGPL, la façon de publier, les essais, les
+  versions signées, la gestion des incidents, et ce qu'une personne seule peut garantir et ne peut pas) suffit pour un pilote
+  sur un travail de documentation et de livraison de logiciel, pas pour un système BPF critique ; un partenaire qui porte la
+  qualité (un cabinet de validation) peut combler le reste.
+- **Ce qu'il faut pour trancher** : les cinq entretiens GxP de R186, avec la question « qu'est-ce qui vous ferait refuser un
+  fournisseur ? » ; le sommaire du dossier fournisseur lu par une personne d'assurance qualité. Signal d'arrêt de R181 : trois
+  personnes GxP sur cinq qui excluent un fournisseur d'une personne.
+
 ---
 
 **Points d'entrée :** [🔬 R&D](./README.md) · [🤖 Mode recherche](./CLAUDE.md) · [🧪 Expériences](./experiences/Experiences.md) · [📖 Notes critiques](./revues/World-Model.md)

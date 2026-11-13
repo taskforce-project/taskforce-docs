@@ -24,6 +24,56 @@ related:
 
 ---
 
+## 2026-11-13 : séance n°26, le marché à prendre
+
+**Fait** : après la séance n°24, la Présidence demande si nos documents avaient estimé le marché, quelle part TaskForce peut prendre, comment y accéder, ce qui se prend le premier mois, les objectifs pas à pas et par quelle entreprise commencer ; elle relève qu'une niche sans IQ, OQ ni PQ l'intéresse, parce qu'elle y a de l'expérience. Le secrétariat a constitué le dossier sur des pages publiques seulement (cabinets, Eurostat, régulateurs, fédérations, éditeurs), puis réuni le Conseil en restreinte de sept, Jennifer Doudna contradictrice ([PV](./conseil/seances/2026-11-13-le-marche-a-prendre.md)). La séance n°25, tenue en même temps sur le chantier du workflow, garde les numéros qui suivent R170 ; ce PV commence à R180.
+
+**Trouvé** :
+- `[ÉTABLI]` Nos documents de 02/2026 estimaient le marché des logiciels de gestion de projet ; leurs « 120 000 PME en France et 2,5 M dans l'UE » de 50 à 250 personnes ne se retrouvent pas dans Eurostat (25 798 et 250 765 en 2024), et trois séries de projections se contredisent.
+- `[ÉTABLI]` Le marché total, chez Gartner : près de 7 Md$ pour l'orchestration et l'automatisation en 2025, plus de 21 Md$ en 2029 ; 16,5 Md$ de dépenses en agents et assistants en 2025. Les cabinets divergent du simple au triple sur l'horizon.
+- `[ÉTABLI]` La cible écrite compte 47 477 entreprises du logiciel de 10 à 249 personnes dans l'UE et 5 703 en France (Eurostat, 2024), dont deux sur trois utilisent déjà l'IA (2025) ; la classe de 250 à 499 n'est pas publiée.
+- `[DÉDUIT]` La niche régulée compte de 720 à 2 200 entreprises des sciences de la vie de 10 personnes et plus en France (Eurostat, Snitem, France Biotech et EY).
+- `[ÉTABLI]` Part 11 exige la validation des systèmes ; la CSA de la FDA est finale (09/2025, réalignée en 02/2026) ; l'annexe 11 de 2011 s'applique encore, sa révision et l'annexe 22 ne sont pas publiées au 11/11/2026. L'obligation reste, le papier diminue.
+- `[ÉTABLI]` Camunda, n8n, Linear et monday.com ne disent rien du GxP ; Microsoft, Appian, Pega, ServiceNow, UiPath et Atlassian fournissent des briques et laissent la validation au client ; Kneat (racheté par Thoma Bravo le 11/08/2026), ValGenesis et Veeva servent surtout les grands ; Qualio commence à 25 000 $ par an ; Ketryx est le voisin le plus proche, dans le logiciel des dispositifs médicaux.
+
+**Décidé** : R180 à R187 recommandées, toutes à l'unanimité des sept (R181, R183 et R185 au second tour) ; elles attendent la Présidence. La part se prend à la rencontre de la cible et de la niche, la livraison logicielle régulée ; le premier mois ne prend aucune part de marché mais dix entretiens, une démo, une page et deux partenaires de conception ; aider à prouver, jamais « conforme ». Aucune fiche rafraîchie : toutes ont moins de 30 jours. Q13, Q15 et Q17 complétées ; une question nouvelle, Q21.
+
+**Prochain coup** : la décision de la Présidence ; les dix entretiens et la question du coût de la validation ; la démo GxP parmi les vidéos de TF-J2-1, en mode développement ; un serveur avant le 31/12/2026 ; R63, dont le délai tombe le 28/11/2026.
+
+## 2026-11-13 : séance n°25, le workflow pilotable
+
+**Fait** : à la demande de la Présidence (« On repasse ça au conseil pour valider »), le Conseil siège en élargie (11), Margaret Hamilton contradictrice, valide ses amendements un par un et fixe le chantier : l'expérience, la vue, le modèle des processus, l'IA qui les propose, le moteur et l'ordre des lots ([PV](./conseil/seances/2026-11-13-le-workflow-pilotable.md)). Jobs tranche le dessin par délégation, sans maquette : une spécification d'UX et un plan de dix lots sont joints au PV.
+
+**Trouvé** :
+- `[ÉTABLI]` BPMN 2.0.2 définit lui-même des sous-classes de conformité, dont « Common Executable » pour les modèles exécutables ; la zone ad hoc n'en fait pas partie.
+- `[ÉTABLI]` 21 CFR 11.10(f) demande des contrôles qui imposent l'ordre permis des étapes : une propriété de moteur de processus. Le projet d'annexe 22 des BPF de l'UE écarte les LLM des usages critiques ; l'EMA en examinait encore les suites à son atelier des 30/06 et 01/07/2026.
+- `[ÉTABLI]` Les connecteurs interactifs de Claude (26/01/2026) reposent sur MCP Apps, une extension ouverte : une application rendue dans la conversation, dans un cadre isolé, qui appelle des outils sous le consentement de la personne.
+- `[ÉTABLI]` Le projet n'a ni but, ni date visée, ni critères (`Project.java`) : l'objectif en tête de la vue demande trois champs, que R56 prévoyait sans qu'ils soient construits.
+- `[DÉDUIT]` Le risque du chantier n'est pas l'écran : c'est le moteur refait en cinq semaines, puis l'IA qui écarte des étapes.
+
+**Décidé** : R171 à R179 recommandées, toutes à 90 % au moins, six au second tour ; elles attendent la Présidence, dont le go valait pour ses amendements. Deux questions ouvertes, Q19 et Q20. E25 à déclarer après la décision.
+
+**Prochain coup** : la décision de la Présidence sur R171 à R179 ; W0 fini, puis W1 (l'application Workflow sur les données vivantes) et W2 (le modèle et son vérificateur), en mode développement.
+
+## 2026-11-13 : la Présidence tranche la séance n°24
+
+**Fait** : le 13/11 au soir, en un seul message, la Présidence retient R163 à R170 avec ses amendements (« Donc R163 à 170, donc je retiens »), et repasse le chantier au Conseil (« On repasse ça au conseil pour valider, mais moi je suis à peu près sûr de ce que je dis, donc go ») ([PV](./conseil/seances/2026-11-13-depasser-camunda.md)). Le secrétariat range les suites : Q17 en cours, Q18 tranchée, E14 élargie, E21 à E24 ouvertes, ADR-023 amendé, ADR-027 ouvert en brouillon.
+
+**Trouvé** :
+- `[ÉTABLI]` La pièce de la séance n°24 a été écrite sur ChatGPT, sans les documents de TaskForce (la Présidence).
+- `[ÉTABLI]` La Présidence a l'expérience de la qualification IQ, OQ, PQ, et la place avec un LIMS, GAMP et 21 CFR Part 11 : le sens réglementé noté à Q13 le 30/10 est confirmé.
+- `[ÉTABLI]` Operaton est sous Apache 2.0 ; l'ASF tient cette licence pour compatible avec la GPLv3 dans un seul sens : du code sous Apache 2.0 peut entrer dans un projet sous GPLv3 ([ASF](https://www.apache.org/licenses/GPL-compatibility.html), lu le 13/11/2026).
+
+**Décidé** :
+- R163 retenue et amendée : se repositionner. Le « Claude » de « Claude x Camunda » est l'expérience de Claude Code, pas le modèle : on pilote, et des applications embarquées s'ouvrent à côté, le board comme dans Linear, les workflows comme dans Camunda, avec nos propres agents.
+- R164 retenue : la cible tenue « à peu près » (des entreprises de 10 à 500 personnes, sans développeur dédié pour configurer, dont le premier travail est la livraison logicielle et les documents), puis des marchés plus complexes ; le marché va à la séance n°26.
+- R165 retenue et élargie : un sous-ensemble de BPMN pour nos processus, pas seulement pour l'échange ; des workflows par défaut, un par type de travail ; nos agents les créent selon des règles, des conventions et des exemples ; l'IA juge ce qui est de trop ; des workflows créés par les utilisateurs (l'exemple du LIMS) ; affichés et édités dans TaskForce par les ingénieurs et les PM ; pas orienté full code ; cinq types d'étapes, qui lui paraissent suffire ; définir, exécuter, exploiter, la version, les incidents, les attentes, les accords et les manques.
+- R166 retenue et amendée : s'inspirer de Camunda sans ses symboles, et piloter les workflows ; un CEO comprend tout, un PM s'en sert sans peine, l'ingénieur a toute la précision ; pas de maquette avant de construire, Jobs sur l'UX.
+- R167 retenue et amendée : l'essai, oui ; le fork d'Operaton, non : lire son code, comprendre ses mécanismes, les reproduire chez nous, adaptés.
+- R168, R169 (Jobs sur l'UX) et R170 retenues. Se brancher à Camunda, plus tard (Q18).
+
+**Prochain coup** : la séance n°25 (le chantier du workflow pilotable) et la séance n°26 (le marché), le même soir ; W0, les données vivantes du projet, continue en mode développement.
+
 ## 2026-11-13 : séance n°24, dépasser Camunda
 
 **Fait** : la Présidence demande si Camunda fait exactement ce que TaskForce veut faire, à quel point nous en sommes proches, comment lui prendre ce qu'il fait de mieux et passer au-dessus, et s'il est notre concurrent n°1 ; elle apporte une analyse écrite par un assistant d'IA. Le secrétariat a constitué le dossier sur les seules pages publiques de Camunda et de ses voisins, puis réuni le Conseil en plénière, Gwynne Shotwell contradictrice ([PV](./conseil/seances/2026-11-13-depasser-camunda.md)).
