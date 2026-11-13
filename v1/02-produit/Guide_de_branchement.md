@@ -296,7 +296,8 @@ que par un jeton d'API ([Atlassian](https://github.com/atlassian/atlassian-mcp-s
 - Jira et Confluence servent sans demander les outils que la page d'Atlassian range en lecture, Teamwork Graph et la
   recherche de code compris ([Atlassian](https://support.atlassian.com/atlassian-rovo-mcp-server/docs/supported-tools/),
   relue le 12/11/2026) ; `executeRead`, qui lance n'importe quel outil différé, demande : la page ne le limite pas à la
-  lecture.
+  lecture. Relue le 13/11/2026 : une lecture sur la description de chaque outil ; `exportConfluenceContent` (un export
+  et son lien) et `getJiraWorkflowEditorLink` demandent.
 - Non vérifié : un premier accord d'un administrateur du site, rapporté seulement par la communauté.
 
 ### Linear
@@ -312,10 +313,11 @@ changes », TaskForce se branche sur l'adresse en lecture seule, `https://mcp.li
 
 - Si l'espace Linear approuve les applications tierces, un administrateur approuve TaskForce : Settings > Administration >
   Security > Third-party application approvals (texte du préréglage).
-- Linear ne publie pas la liste de ses outils : seuls ceux que son [journal des changements](https://linear.app/changelog)
-  dit en lecture servent sans demander (`list_issues`, `list_issue_labels`, `list_comments`, `list_cycles`,
-  `list_projects`, `get_project`, `list_teams`, `get_team`, `list_users`, `get_user`, `list_customer_needs`, relu le
-  12/11/2026) ; chaque autre outil demande avant de servir (R158, séance n°23).
+- Linear ne publie pas la liste de ses outils, mais écrit que l'adresse en lecture seule « only ever exposes read tools »
+  ([Linear](https://linear.app/docs/mcp), relue le 13/11/2026) : sans l'écriture, chaque outil sert sans demander. Avec
+  l'écriture, sur l'adresse entière, seuls ceux que son [journal des changements](https://linear.app/changelog) dit en
+  lecture servent sans demander (`list_issues`, `list_issue_labels`, `list_comments`, `list_cycles`, `list_projects`,
+  `get_project`, `list_teams`, `get_team`, `list_users`, `get_user`, `list_customer_needs`) ; les autres demandent.
 - Non vérifié : le retour sur tout port de bouclage.
 
 ### Asana
@@ -552,7 +554,8 @@ Sur l'app desktop, avec un plan payant :
 2. Elle verra « Connected with your account ». Rien à faire chez Excalidraw.
 
 - R158 : le préréglage classe en écriture `export_to_excalidraw` (il envoie le dessin sur excalidraw.com et rend un lien de
-  partage) et `save_checkpoint` ; `read_me`, `create_view` et `read_checkpoint` lisent.
+  partage), `save_checkpoint` et `create_view` (il garde chaque dessin sur le serveur, `src/server.ts` relu le
+  13/11/2026) ; `read_checkpoint` n'est pas classé ; seul `read_me` lit sans demander.
 - Limite : le client MCP de TaskForce ne lit que du texte, ni ressources ni MCP Apps ; il appelle les outils sans afficher le
   dessin `[DÉDUIT]`.
 - Non vérifié : ce que `create_view` rend à un client sans MCP Apps.
