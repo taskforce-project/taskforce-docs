@@ -42,6 +42,8 @@ related:
 | [Q14](#q14--se-brancher-à-n8n-) | Se brancher à n8n ? | P3 | ouverte |
 | [Q15](#q15--quel-modèle-de-revenus-quand-le-produit-cessera-dêtre-gratuit-) | Quel modèle de revenus, quand le produit cessera d'être gratuit ? | P2 | ouverte |
 | [Q16](#q16--macos--quand-et-sans-payer-apple-) | macOS : quand, et sans payer Apple ? | P3 | ouverte |
+| [Q17](#q17--qui-est-le-concurrent-n1-de-taskforce-et-pour-quelle-cible-) | Qui est le concurrent n°1 de TaskForce, et pour quelle cible ? | P1 | ouverte |
+| [Q18](#q18--se-brancher-à-camunda-) | Se brancher à Camunda ? | P3 | ouverte |
 
 ---
 
@@ -345,6 +347,43 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 - **Ce qu'il faut pour trancher** : les machines du premier client ; la décision de la Présidence sur R150.
 - **Décision de la Présidence, le 10/11/2026** (R150 modifiée) : le premier client possible travaille sur Mac, mais ne recevra pas de version non signée (« j'ai pas envie d'aller leur faire désactiver des trucs dans leurs paramètres ») ; une démo d'abord, puis l'adhésion d'Apple s'il montre une vraie intention. `[ÉTABLI]` Le Mac App Store impose le bac à sable et interdit de télécharger des ressources qui ajoutent une fonction ([Apple](https://developer.apple.com/app-store/review/guidelines/), règle 2.4.5, lue le 10/11/2026) ; la même adhésion permet la distribution directe, notarisée.
 
+
+## Q17 : Qui est le concurrent n°1 de TaskForce, et pour quelle cible ?
+
+`[statut:: ouverte]` · `[prio:: P1]` · Ouverte le 13/11/2026 · issue du [Conseil, séance n°24](./conseil/seances/2026-11-13-depasser-camunda.md), R164
+
+- **La question** : la Présidence tient Camunda pour le concurrent n°1 (« je pense que c'est notre concurrent n1 en fait »). Sur
+  quelle cible ? Les documents disent « n'importe quelle entreprise » (R103, ADR-022), choisissent le catalogue pour « une
+  entreprise de 10 à 500 personnes » (12/11) et jouent E20 sur l'intégration d'un module dans un logiciel ; ils ne disent pas qui
+  configure TaskForce, avec ou sans développeur.
+- **Pourquoi ça compte** : le pitch (TF-J2-1), la page de comparaison (R163) et l'ordre des emprunts (R165) en dépendent.
+  `[ÉTABLI]` Camunda vise les grandes organisations : ses nouveaux clients de plus de 10 000 salariés sont son segment le plus
+  rapide ([Camunda](https://camunda.com/press-releases/camunda-closing-in-on-200m-in-arr-doubling-revenue-in-record-time/), 04/08/2026) ;
+  Forrester le juge le mieux adapté aux grandes entreprises ([Camunda](https://camunda.com/press_release/camunda-named-a-leader-in-adaptive-process-orchestration-software-evaluation-q3-2026/), 25/09/2026) ;
+  sa page des prix n'en affiche aucun ([Camunda](https://camunda.com/pricing/), lu le 13/11/2026). Microsoft et n8n publient leurs
+  prix ([Copilot Studio](https://www.microsoft.com/en-us/microsoft-365-copilot/pricing/copilot-studio), [n8n](https://n8n.io/pricing/), lus le 13/11/2026).
+- **Position actuelle** : `[HYPOTHÈSE]` sur la cible écrite, Microsoft et n8n sont plus proches que Camunda ; sur le scénario
+  d'E20, la plateforme où vit le code ; Camunda devient le concurrent n°1 si la cible devient la grande organisation régulée qui a
+  des développeurs (R164, en attente de la Présidence).
+- **Ce qu'il faut pour trancher** : la cible en une ligne, écrite par la Présidence (la taille, qui configure, la première nature
+  de travail) ; E14 avec la question « à quoi le compareriez-vous ? », et les noms cités.
+
+## Q18 : Se brancher à Camunda ?
+
+`[statut:: ouverte]` · `[prio:: P3]` · Ouverte le 13/11/2026 · issue du [Conseil, séance n°24](./conseil/seances/2026-11-13-depasser-camunda.md), confrontation 3
+
+- **La question** : faut-il instruire TaskForce comme couche de règles et de preuve qu'un processus Camunda appelle par MCP, et
+  l'import des processus d'un client qui a déjà Camunda ?
+- **Pourquoi ça compte** : `[ÉTABLI]` Camunda est client et serveur MCP, et un point d'arrêt humain peut retenir l'appel d'un outil
+  ([Camunda](https://camunda.com/blog/2026/08/three-ways-camunda-speaks-mcp-and-why-the-direction-matters/), 18/08/2026) ; son journal
+  d'audit ne décrit aucune garantie d'intégrité ([Camunda](https://docs.camunda.io/docs/components/audit-log/overview/), lu le
+  13/11/2026). `[DÉDUIT]` Se brancher ferait de TaskForce la règle et la preuve des agents de Camunda chez ses clients ; ne pas le
+  faire garde TaskForce entière, sans dépendre d'un éditeur dont la production auto-hébergée est payante.
+- **Position actuelle** : Nadella le recommande (séance n°24) ; le Conseil l'a laissé ouvert. Pour n8n, la Présidence a répondu
+  « On va pas se brancher a n8n je pense, enfin jsp a voir » (Q14). R99 prévoit un point de décision ouvert à tout moteur d'agents
+  extérieur, en J5.
+- **Ce qu'il faut pour trancher** : le point de décision ouvert de R99 ; l'export et l'import BPMN de R165 ; puis une demande
+  réelle d'un client qui utilise Camunda.
 ---
 
 **Points d'entrée :** [🔬 R&D](./README.md) · [🤖 Mode recherche](./CLAUDE.md) · [🧪 Expériences](./experiences/Experiences.md) · [📖 Notes critiques](./revues/World-Model.md)

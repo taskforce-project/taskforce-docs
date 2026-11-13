@@ -24,6 +24,33 @@ related:
 
 ---
 
+## 2026-11-13 : séance n°24, dépasser Camunda
+
+**Fait** : la Présidence demande si Camunda fait exactement ce que TaskForce veut faire, à quel point nous en sommes proches, comment lui prendre ce qu'il fait de mieux et passer au-dessus, et s'il est notre concurrent n°1 ; elle apporte une analyse écrite par un assistant d'IA. Le secrétariat a constitué le dossier sur les seules pages publiques de Camunda et de ses voisins, puis réuni le Conseil en plénière, Gwynne Shotwell contradictrice ([PV](./conseil/seances/2026-11-13-depasser-camunda.md)).
+
+**Trouvé** :
+- `[ÉTABLI]` Camunda 8.10 (13/10/2026) exécute des processus BPMN et y met des agents IA depuis la 8.8 : le modèle choisit ses outils dans un sous-processus ad hoc ; MCP dans les deux sens ; ProcessOS, en accès anticipé, part d'un résultat décrit en mots, et une personne approuve avant la production.
+- `[ÉTABLI]` Près de 200 M$ de revenu récurrent, plus de 700 organisations, d'abord la banque, l'assurance et le secteur public ; aucun prix public ; la production auto-hébergée sous licence payante depuis la 8.6 ; Camunda 7 Community sans version depuis le 14/10/2025 ; Operaton, son fork sous Apache 2.0, publie encore.
+- `[ÉTABLI]` Rien sur ses pages sur la pharmacie validée (BPF, IQ, OQ, PQ) ; Forrester le juge le mieux adapté aux grandes entreprises, IDC peu fait pour une offre toute prête par secteur.
+- `[ÉTABLI]` Aucun voisin ne revendique une preuve vérifiée hors de l'outil par un tiers, ni des règles en mots au-dessus d'un socle ; seul Dapr signe ses historiques, en préversion.
+- `[DÉDUIT]` En produit livré, TaskForce n'a aucune des briques de processus de Camunda ; il n'est devant que sur des pièces étroites (les règles sur chaque action, le dossier chaîné, le local, l'AGPL). Sur la cible écrite, Microsoft et n8n sont plus proches que Camunda, et la cible elle-même reste floue dans les documents.
+
+**Décidé** : R163 à R170 recommandées, toutes à 90 % au moins (R163, R165, R167 et R169 au second tour) ; elles attendent la Présidence. Aucune fiche rafraîchie : toutes ont moins de 30 jours. Deux questions ouvertes, Q17 et Q18.
+
+**Prochain coup** : la décision de la Présidence ; la ligne de la cible et E14 ; la maquette de la vue du workflow ; l'essai de coupure comparé de R167, en mode développement.
+
+## 2026-11-12 : séance n°23, la revue complète de J2 (entrée ajoutée le 13/11)
+
+**Fait** : à la demande de la Présidence, une revue complète de J2 à mi-chemin, par trois agents neufs (sécurité et logique, qualité, écrans), puis le Conseil en restreinte, Musk contradicteur ([PV](./conseil/seances/2026-11-12-revue-de-j2.md)).
+
+**Trouvé** :
+- `[ÉTABLI]` Dans des lots tous verts en CI : 13 défauts de sécurité et de logique et 4 manques, 1 défaut de qualité haut et 7 moyens, 8 défauts d'écrans hauts et 18 moyens.
+- `[DÉDUIT]` Les essais d'un auteur confirment son intention, pas les cas qu'il n'a pas imaginés.
+
+**Décidé** : R159 à R162, retenues par la Présidence le 12/11 ; R162 amendée : les essais de bout en bout se font à la main par la Présidence, puis en production sur l'app desktop, sans la CI. Les correctifs de R160 sont passés par #530, #531 et #532, chacun après sa relecture indépendante, et sont en prod avec la 1.16.0 le 13/11.
+
+**Prochain coup** : la recette 1.16 de la Présidence sur l'app desktop, puis un lot de nettoyage des défauts moyens et faibles laissés par les revues.
+
 ## 2026-11-11 : la Présidence tranche la séance n°22
 
 **Fait** : la Présidence retient R152 à R158 ([PV](./conseil/seances/2026-11-11-se-brancher-a-l-entreprise.md)).

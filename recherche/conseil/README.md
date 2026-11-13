@@ -293,9 +293,10 @@ ce qui est irréversible » ([PV](./seances/2026-10-26-premiere-regle.md)).
 | 10/11/2026 | La première version qu'une entreprise peut utiliser : où en est la feuille de route, et E20, le premier client joué de bout en bout | Restreinte (7) ; Duflo contradictrice | R145 à R151 à l'unanimité (R145 et R146 au second tour) ; tranchées le 10/11 : R145, R147, R148 et R151 retenues, R146 amendée (une démo d'abord), R147 élargie (l'outillage et les règles de l'entreprise), R149 reportée après J2, R150 modifiée | [PV](./seances/2026-11-10-premier-client-e20.md) |
 | 11/11/2026 | Le lancement de J2 : se brancher à l'entreprise (ses outils en un clic, son stockage, ses règles par couches) et les critères de sortie | Restreinte (7) ; Bengio contradicteur | R152 à R158 à l'unanimité (R153 et R154 au second tour) ; le registre des 46 outils ; toutes retenues le 11/11, R153 élargie (la première vague, les outils de la Présidence), R154 amendée (un flux clair plutôt qu'un clic à tout prix) | [PV](./seances/2026-11-11-se-brancher-a-l-entreprise.md) |
 | 12/11/2026 | La revue complète de J2 à mi-chemin, et la relecture indépendante dans la définition de « fini » | Restreinte (7) ; Musk contradicteur | R159 à R162 à l'unanimité (R159 au second tour, réservée aux lots sensibles) ; toutes retenues le 12/11, R162 amendée (les essais de bout en bout à la main par la Présidence, puis confirmés en production sur l'app desktop, sans la CI) | [PV](./seances/2026-11-12-revue-de-j2.md) |
+| 13/11/2026 | Camunda fait-il ce que TaskForce veut faire ? À quel point en est-on proche, que lui prendre, où passer au-dessus, et est-il le concurrent n°1 ? | Plénière (24) ; Shotwell contradictrice | R163 à R170 recommandées, toutes à 90 % au moins (R163, R165, R167 et R169 au second tour) ; en attente de la Présidence | [PV](./seances/2026-11-13-depasser-camunda.md) |
 
 ---
 
 **Points d'entrée :** [🔬 Labo](../README.md) · [📋 Protocole](../CLAUDE.md) · [📓 Journal](../Journal.md) · [🧰 Gabarits](../Gabarits.md)
 
-**Dernière mise à jour :** 12/11/2026 · **v1.9** · Projet Taskforce
+**Dernière mise à jour :** 13/11/2026 · **v1.10** · Projet Taskforce
