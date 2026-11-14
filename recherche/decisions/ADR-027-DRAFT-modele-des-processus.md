@@ -21,8 +21,8 @@ related:
 # ADR-027 (brouillon) : le modèle des processus, un sous-ensemble de BPMN 2.0 montré et édité dans TaskForce sans ses symboles
 
 > **Brouillon, sans autorité avant sa promotion** ([Gabarits](../Gabarits.md) §6). Il naît de R165 et de R169, retenues par la
-> Présidence le 13/11/2026 au soir (séance n°24), R165 élargie. Son détail suit la séance n°25 (R174 à R176), dont les
-> recommandations attendent la Présidence. Il entre dans
+> Présidence le 13/11/2026 au soir (séance n°24), R165 élargie. Son détail suit la séance n°25 (R174 à R176), dont la Présidence
+> a retenu les recommandations, R171 à R179, le même soir. Il entre dans
 > [`v1/12-decisions/Journal_Decisions_ADR.md`](../../v1/12-decisions/Journal_Decisions_ADR.md) sous le n° 027 après sa
 > ratification.
 

@@ -28,7 +28,8 @@ related:
 ## Statut
 
 Accepté le 01/11/2026 ; amendé le 13/11/2026. La version 1 se mesure en J2, par les essais de coupure (E21), face à Operaton
-pris comme témoin. Les seuils de l'essai sont recommandés par la séance n°25 (R177) et attendent la Présidence.
+pris comme témoin. Les seuils, recommandés par la [séance n°25](../conseil/seances/2026-11-13-le-workflow-pilotable.md) (R177),
+sont gardés pour l'essai : la Présidence retient R171 à R179 le 13/11/2026 au soir (« Tout me convient »).
 
 ## Contexte
 
@@ -124,10 +125,10 @@ les refait.
   notre moteur dans l'app desktop, et sur Operaton dans un banc d'essai seulement, à version figée, jamais livré ni modifié.
 - **Les mêmes coupures** : le runner tué, le backend tué, la machine mise en veille, au milieu d'une étape d'agent, d'une tâche
   humaine et d'une attente.
-- **Les seuils, écrits avant l'essai** (R167 et ses amendements ; recommandés par la séance n°25, R177, en attente de la
-  Présidence) : aucune étape perdue ; aucun effet fait deux fois ; l'instance repart seule dans les 30 secondes qui suivent le
-  retour du backend ou le réveil de la machine ; au repos, le moteur ajoute au plus 50 Mo de mémoire et 1 % d'un cœur à l'app
-  desktop.
+- **Les seuils, écrits avant l'essai** (R167 et ses amendements ; recommandés par la séance n°25, R177, et gardés pour l'essai
+  par la Présidence le 13/11/2026) : aucune étape perdue ; aucun effet fait deux fois ; l'instance repart seule dans les 30
+  secondes qui suivent le retour du backend ou le réveil de la machine ; au repos, le moteur ajoute au plus 50 Mo de mémoire et
+  1 % d'un cœur à l'app desktop.
 - **Ce que le témoin fait mieux** s'écrit, et le mécanisme qui fait la différence se reprend chez nous.
 - L'activité du projet Operaton, critère de la séance n°24 pour choisir une dépendance, devient sans objet : Operaton n'est pas
   une dépendance de TaskForce.

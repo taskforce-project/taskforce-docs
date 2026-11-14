@@ -11,9 +11,10 @@ related:
 
 # Le plan d'accès au marché
 
-> Issu de la [séance n°26](./2026-11-13-le-marche-a-prendre.md) du Conseil (13/11/2026), R180 à R187, en
-> attente de la décision de la Présidence. Chaque chiffre porte sa source ; un chiffre sans source est une `[HYPOTHÈSE]` et ne
-> fonde rien (charte, §7.2).
+> Issu de la [séance n°26](./2026-11-13-le-marche-a-prendre.md) du Conseil (13/11/2026), R180 à R187, retenues par la Présidence
+> le 13/11/2026 au soir, sauf les délais : le client test passe d'abord (§5), et les trois preuves en dix jours de R186 (§7) sont
+> reportées après lui. Chaque chiffre porte sa source ; un chiffre sans source est une `[HYPOTHÈSE]` et ne fonde rien (charte,
+> §7.2).
 
 ## 1. Le marché, compté
 
@@ -60,11 +61,18 @@ Jamais une décision BPF critique : le projet d'annexe 22 ferme ces usages aux m
 
 ## 5. Les objectifs
 
+> **Les dates ne courent plus** (décision de la Présidence, 13/11/2026 au soir) : le client test passe d'abord, quand l'app est
+> livrée et tient de gros volumes de données ; la Présidence revient avec ses retours, et le Conseil en discute. R183 passe à
+> l'essai pour son ordre : les objectifs et leurs règles de comptage restent, mais le premier mois, le premier trimestre et la
+> première année ne partent qu'après le client test, et leurs dates se refont alors. Deux échéances courent toujours, parce
+> qu'elles n'attendent pas le client test : R63, à trancher avant le 28/11/2026, et un serveur en service avant le 31/12/2026
+> (Q13).
+
 | Horizon | Ce qui se prend | Se compte par |
 | --- | --- | --- |
-| **Premier mois**, du 14/11 au 13/12/2026 | Aucune part de marché : 10 entretiens (5 de la cible, 5 GxP, 4 hors du réseau) ; la démo GxP enregistrée parmi les vidéos de TF-J2-1 ; la page en ligne ; 2 partenaires de conception d'accord pour janvier ; R63 tranchée avant le 28/11 | Les notes d'entretien, la vidéo, la page, un accord d'une page |
-| **Premier trimestre**, au 13/02/2027 | E20 joué ; 3 partenaires actifs sur un vrai projet, dont 1 GxP ; le post publié ; 25 entretiens au total ; un serveur en service avant le 31/12/2026 (Q13) | Une mission par semaine ; les téléchargements avant et après le post ; les comptes créés |
-| **Première année**, au 13/11/2027 | 25 entreprises actives, dont 5 GxP ; une modification d'un système GxP validée chez un partenaire, sa preuve acceptée par son assurance qualité ; un partenaire qui s'en sert pour deux clients ; le modèle de revenus tranché en J9 (Q15) | Quatre semaines d'affilée avec une mission ; l'écrit de l'assurance qualité ; les démos de J8 |
+| **Premier mois**, après le client test (la séance le datait du 14/11 au 13/12/2026) | Aucune part de marché : 10 entretiens (5 de la cible, 5 GxP, 4 hors du réseau) ; la démo GxP enregistrée parmi les vidéos de TF-J2-1 ; la page en ligne ; 2 partenaires de conception d'accord pour janvier ; R63 tranchée avant le 28/11 | Les notes d'entretien, la vidéo, la page, un accord d'une page |
+| **Premier trimestre**, après le client test (la séance le datait au 13/02/2027) | E20 joué ; 3 partenaires actifs sur un vrai projet, dont 1 GxP ; le post publié ; 25 entretiens au total ; un serveur en service avant le 31/12/2026 (Q13) | Une mission par semaine ; les téléchargements avant et après le post ; les comptes créés |
+| **Première année**, après le client test (la séance la datait au 13/11/2027) | 25 entreprises actives, dont 5 GxP ; une modification d'un système GxP validée chez un partenaire, sa preuve acceptée par son assurance qualité ; un partenaire qui s'en sert pour deux clients ; le modèle de revenus tranché en J9 (Q15) | Quatre semaines d'affilée avec une mission ; l'écrit de l'assurance qualité ; les démos de J8 |
 
 Les objectifs GxP dépendent de TF-J2-7 (le dossier signé) et de TF-J2-2 (les processus) : sans eux à la fin du trimestre, le
 pilote GxP ne porte que sur la documentation, et l'objectif de l'année glisse.

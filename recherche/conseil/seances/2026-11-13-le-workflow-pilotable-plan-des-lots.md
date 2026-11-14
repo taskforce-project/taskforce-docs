@@ -15,9 +15,9 @@ related:
 
 # Le plan des lots du workflow pilotable
 
-> Joint au PV de la [séance n°25](./2026-11-13-le-workflow-pilotable.md) (R178, en attente de la Présidence). Dix lots, W0 à W9 :
-> W0 à W5 dans J2, réduits à ce qu'exige le processus « intégrer un module » d'E20 ; W6 à W9 après J2. Les durées sont des
-> `[HYPOTHÈSE]`.
+> Joint au PV de la [séance n°25](./2026-11-13-le-workflow-pilotable.md) (R178, retenue par la Présidence le 13/11/2026 au soir).
+> Dix lots, W0 à W9. J2 s'arrête à W5 : W0 à W5, pour le seul processus « intégrer un module » d'E20, chacun réduit à ce qu'il
+> exige ; W6 à W9 après J2. Les durées sont des `[HYPOTHÈSE]`.
 
 ## Les règles de tous les lots
 
