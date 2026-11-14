@@ -62,6 +62,7 @@ Vérité terrain (valeurs `@RequestMapping`, dans `backend/tf-api/src/main/java/
 | UserController | `/api/users` (désactiver la double vérification, `DELETE /me/2fa`, demande le code en cours `{code}` depuis le 29/10/2026, R42 ; la remise en place, `POST /me/2fa/setup`, est refusée tant qu'elle est active, depuis la 1.6.3) | ✅ |
 | WorkspaceController | `/api/workspaces` | ✅ |
 | ProjectController | `/api/workspaces/{slug}/projects` | ✅ |
+| ProcessController | `/api/workspaces/{slug}` (→ `GET /processes/defaults` les workflows par défaut, chacun avec son modèle et son empreinte, `GET /processes/defaults/{key}/bpmn` l'un d'eux en BPMN 2.0 ; `GET /projects/{projectId}/processes` les processus du projet dans leur version en vigueur et `canPublish`, `POST /projects/{projectId}/processes` (`{model}`) publier une version, 201, ou 422 avec les refus du vérificateur, `POST /projects/{projectId}/processes/check` (`{model}`) vérifier sans écrire, `POST /projects/{projectId}/processes/import` (`{xml}`, 1 000 000 caractères au plus) lire un fichier BPMN 2.0 et le vérifier sans rien publier, `GET /projects/{projectId}/processes/{key}` la version en vigueur et toutes les versions, `GET /projects/{projectId}/processes/{key}/versions/{n}` une version et son modèle, `GET /projects/{projectId}/processes/{key}/versions/{n}/bpmn` son export, en téléchargement ; 14/11/2026, ADR-027, voir plus bas) | ✅ |
 | IssueController | `/api/workspaces/{slug}/projects/{projectId}/issues` (→ `GET /relations` les liens entre les issues du projet, en une lecture, 13/11/2026, R166) | ✅ |
 | IssueSearchController | `/api/workspaces/{slug}/issues/search` (→ la recherche d'issues de la fenêtre, par clé ou par titre : Ctrl+K, le « @ » et le « + » du compositeur ; 08/11/2026, R123, R124 ; `GET /search/comments?q=&limit=` : les issues trouvées par leurs commentaires, sur les projets que la personne voit, une ligne par issue, `{issueId, projectId, key, title, excerpt}`, 5 par défaut, 20 au plus ; 09/11/2026, R141) | ✅ |
 | AnalyticsController | `/api/workspaces/{slug}/analytics` | ✅ |
@@ -131,6 +132,29 @@ abonnement y est refusé). Le front s'y abonne pour un projet ouvert (`useProjec
 workflow est actif. `POST /analysis` sur un projet que la personne ne voit pas répond 404.
 > Remplace l'ancien `POST /projects/{projectId}/decision` (synchrone, non persisté), **supprimé** le 10/07/2026 avec `DecisionController`.
 > `GET /analysis/{jobId}` est retiré le 18/10/2026 (lot 3) : le panneau lit la liste.
+
+**Les processus ✅** (14/11/2026, séance n°25, R174 à R176, ADR-027) : `process-service` et `useProcessStore` ↔ `ProcessController`.
+Un processus est une définition versionnée d'étapes, dans la sémantique d'un sous-ensemble de BPMN 2.0 ; sa forme de référence est le modèle de TaskForce, `taskforce-process/1`, en JSON : `{format, key, name, description?, derivedFrom?, steps, flows}`, une étape `{id, type, name, answeredBy, lock?, agent?, human?, wait?, rules?, documents?, issue?, steps?, flows?}`, un chemin `{id, from, to, name?, otherwise?, condition?: {text, step, outcome}}`. Le XML de BPMN 2.0 n'est qu'un format d'échange : l'export écrit le sous-ensemble, l'extension `tf:` et un dessin calculé ; l'import lit l'un et l'autre et ignore le dessin. La liste écrite du sous-ensemble (24 éléments, figés sur le processus d'E20, et les refus avec leur raison) et l'extension `tf:` (namespace `https://taskforce-project.fr/schema/process/1`) sont dans `contracts/process/README.md` du dépôt de code, avec le schéma `taskforce-process-1.xsd` ; en bref :
+
+| Élément de BPMN 2.0 | Dans le modèle |
+| --- | --- |
+| `startEvent` sans déclencheur ; `endEvent`, avec `terminateEventDefinition` au niveau du processus seulement | `start` ; `end`, `terminate` |
+| `subProcess` intégré, au niveau du processus | `stage`, une colonne de la vue |
+| `adHocSubProcess`, qui ne tient que des `serviceTask` | `zone`, l'agent y choisit l'ordre, sous ses règles |
+| `serviceTask` dans une zone ; `userTask` | `agent` ; `human` (accord, saisie typée, liste de contrôle de moins de dix lignes, signification de la signature) |
+| `exclusiveGateway` avec `default` ; `parallelGateway` | `decision` ; `parallel` |
+| `intermediateCatchEvent` avec une minuterie (`timeDuration`) ou un message (`message`) | `wait` : une durée, ou ce qu'une personne fournit |
+| `boundaryEvent` avec une minuterie qui interrompt, ou une erreur | `deadline` ; `failure` |
+| `sequenceFlow` et son `conditionExpression` | un chemin ; les mots de la condition, et `tf:condition` ce que du code juge |
+
+| Extension `tf:` | Ce qu'elle porte |
+| --- | --- |
+| `tf:process` `format` `derivedFrom` | le format du modèle, le workflow par défaut d'où il dérive |
+| `tf:step` `answeredBy` `lock` `lockRef` `issue` | qui répond de l'étape (`person:<id>`, `role:owner`, `role:admin`, `project-lead`), le verrou et sa source (`floor`, `rule`, `author`, `pause-point` et lequel), l'issue portée |
+| `tf:agent` (`tf:tool`), `tf:human` (`tf:item`, `tf:field`, `tf:choice`), `tf:wait` `from`, `tf:rule` `ref` `version`, `tf:document` `name` | l'agent, son modèle, ses outils, ses tentatives (trois au plus) et son délai ; qui fait la tâche humaine, sa sorte, sa question, ce que signifie sa signature, ses lignes, ses champs ; qui fournit ce qu'une attente attend ; les règles et leur version ; les documents attendus |
+| `tf:condition` `step` `outcome` | l'issue d'une étape qui précède la décision : `approved`, `refused` (un accord), `succeeded`, `failed` (un agent) |
+
+Un seul vérificateur (`ProcessValidator`) pour tout ce qui entre : un refus est `{code, stepId, step, message}`, le message une phrase à montrer telle quelle, le code stable (`noOwner`, `agentOutsideZone`, `agentWithoutRules`, `lockedStepMissing`, `lockedStepUnlocked`, `pausePointMissing`, `pausePointMisplaced`, `decisionWithoutCondition`, `waitWithoutWhat`, `noEnd`, `notInSubset`... 55 en tout ; le service y ajoute `unchanged` et `unreadable`). `Check` = `{passed, digest, problems}` ; `Import` = `{passed, digest, model, problems, notes}`, `notes` disant ce qui a été laissé de côté (le dessin, les notes dessinées, les réglages d'un autre outil) ; une publication rend `{version, refused}`, l'un des deux rempli. L'empreinte (`digest`, `sha256:...`) porte sur le modèle, jamais sur le texte du fichier : un modeleur qui le réécrit ne la change pas. Une version ne change jamais, en base comme dans le service (V132), et ne s'efface qu'avec sa définition, son projet ou son espace. Lire : quiconque voit le projet (404 pour un projet privé qu'on ne voit pas, 403 hors de l'espace) ; publier : le responsable du projet, un propriétaire ou un administrateur de l'espace (403 sinon), jugé par le moteur des règles comme `harness.change` d'une personne, au journal (`PROCESS_PUBLISHED`). Le schéma de sortie d'un brouillon pour les modèles (W4) : `resources/process/taskforce-process-draft-1.schema.json` du backend.
 
 **Hôte MCP ✅** (12/07/2026) — `McpActionController` (`/api/workspaces/{slug}/mcp`). TaskForce **consomme** des
 serveurs MCP externes : un connecteur du workspace portant un `mcpUrl` (config chiffrée) expose ses outils à
