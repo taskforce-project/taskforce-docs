@@ -10,10 +10,12 @@ tags: [recherche, conseil, seance, marche, tam-sam-som, gxp, validation, lims, a
 related:
   - "../README.md"
   - "./2026-11-13-depasser-camunda.md"
+  - "./2026-11-13-le-workflow-pilotable.md"
   - "./2026-11-10-premier-client-e20.md"
   - "./2026-11-01-feuille-de-route.md"
   - "./2026-10-31-souverainete-operationnelle.md"
   - "./2026-10-29-intelligence-possedee.md"
+  - "../../decisions/ADR-022-DRAFT-infrastructure-pas-les-regles.md"
   - "../../Questions-ouvertes.md"
   - "../../experiences/Experiences.md"
   - "../../../v1/01-projet/Etude_business.md"
@@ -37,6 +39,11 @@ related:
 > recommandations, R180 à R187, toutes à l'unanimité des sept, trois au second tour. Jennifer Doudna, contradictrice, a obtenu
 > que la niche n'entre que par la livraison logicielle, jamais par une décision BPF critique, et qu'un dossier fournisseur précède
 > tout pilote GxP.
+>
+> **Le soir même**, la Présidence les retient, sauf les délais : elle commence par le client test, le premier client possible,
+> quand l'app est livrée et tient de gros volumes de données, et revient au Conseil avec ses retours. R183 passe à l'essai pour son
+> ordre, R186 est reportée après le client test, et le prix reste à l'état d'hypothèses. TaskForce ne livre rien de propre au
+> GxP : il fournit l'infrastructure, et c'est le client qui contraint le modèle.
 
 - **Saisine** (Présidence, 13/11/2026 au soir, après la séance n°24, mot pour mot) :
   - « Ok, donc ça veut dire qu'on a certainement une part du marché à aller chercher. Est-ce que dans notre documentation, on
@@ -717,20 +724,74 @@ chaque vote ; une recommandation passe avec 7 oui sur 7.
 8. **L'hébergement** (R183, Q13) : un serveur en service avant le 31/12/2026, sans quoi aucun partenaire ne se connecte en
    janvier ?
 
-## Décision
+## Décision de la Présidence
 
-**Décision de la Présidence** : à venir.
+Tranchée le 13/11/2026 au soir, en conversation, en un seul message qui répond aux séances n°25 et n°26. Le message, mot pour
+mot :
 
-| Recommandation | Décision | Raison de la Présidence |
-| --- | --- | --- |
-| R180 | | |
-| R181 | | |
-| R182 | | |
-| R183 | | |
-| R184 | | |
-| R185 | | |
-| R186 | | |
-| R187 | | |
+> « oui mais attention je repete, nous on a rien a faire techniquement pour GxP, c'est le client qui devra contraindre le model a
+> ca, parce que notre app le permet, voila XD, on donne rien dans notre app, on fournis l infra et l archi qui permette de faire ca
+> quoi right ??
+>
+> Bon ok ensuite ecoute je suis plutot d'accord, mais je vais commencer avec […] first, ce sera mon cas client test stv, une fois
+> fait je te donnerais les retour et on en discutera avec le conseil
+>
+> Effectivement le prix faudra voir.
+>
+> Tout me convient, sauf les delais on passe d abord par le client test […], je te redis des que c est fait mais me faut l'app
+> avant evidemment qu'on testera avec des gros batch de donnees »
+
+Le premier paragraphe précise le GxP et vaut pour toute la suite ; le deuxième et le troisième portent sur cette séance ; le
+dernier vaut pour les deux. La décision sur la séance n°25 est dans son [PV](./2026-11-13-le-workflow-pilotable.md).
+
+- **R180, retenue** : « Tout me convient ». Le marché se compte en entreprises, sources à l'appui ; les comptes et les projections
+  de février 2026 ne se citent plus.
+- **R181, retenue, avec la précision sur le GxP** : « nous on a rien a faire techniquement pour GxP, c'est le client qui devra
+  contraindre le model a ca, parce que notre app le permet ». La part se prend à la rencontre de la cible et de la niche, la
+  livraison logicielle régulée, et TaskForce n'y livre aucun contenu GxP. Il fournit l'infrastructure et l'architecture : le
+  moteur, les règles par couches, les accords et leurs signatures, les versions immuables, le dossier, les étapes verrouillées.
+  C'est le client qui contraint le modèle et écrit ses workflows, son IQ, son OQ et son PQ
+  ([ADR-022](../../decisions/ADR-022-DRAFT-infrastructure-pas-les-regles.md), R187). R103 tient.
+- **R182, retenue** : « Tout me convient ». L'accès garde son ordre, et commence après le client test : « on passe d abord par le
+  client test […] ».
+- **R183, à l'essai pour son ordre** : « Tout me convient, sauf les delais on passe d abord par le client test […], je te redis
+  des que c est fait mais me faut l'app avant evidemment qu'on testera avec des gros batch de donnees ». Le premier mois, le
+  premier trimestre et la première année cèdent la place au client test d'abord, quand l'app est livrée et tient de gros volumes
+  de données. La Présidence revient avec ses retours, et le Conseil en discute : « une fois fait je te donnerais les retour et on
+  en discutera avec le conseil ». Les objectifs et leurs règles de comptage restent ; leurs dates ne courent pas.
+- **R184, retenue** : « je vais commencer avec […] first, ce sera mon cas client test stv ». Le premier client possible passe
+  d'abord, comme client test ; le profil, et ce qu'on lui montre, servent ensuite.
+- **R185, retenue, à l'état d'hypothèses** : « Effectivement le prix faudra voir. » H1 à H4 restent des hypothèses, rien de payant
+  ne se construit avant J9, et les deux questions de prix attendent les entretiens.
+- **R186, reportée après le client test** : « sauf les delais on passe d abord par le client test […], je te redis des que c est
+  fait ». Les trois preuves en dix jours (les entretiens, la démo d'un workflow GxP, l'essai de page) ne s'ouvrent pas.
+- **R187, retenue** : « on donne rien dans notre app, on fournis l infra et l archi qui permette de faire ca ». Aider à prouver,
+  jamais « conforme » : la précision de la Présidence va dans le même sens.
+
+**Les délais** : aucune échéance de la séance ne court avant le client test. Les preuves en dix jours des autres recommandations,
+quand elles passent par les entretiens, la démo, la page ou le post, attendent avec R186.
+
+**Les huit questions du Conseil** restent ouvertes, avec Q21. Six attendent le client test, et vont à Q22 ; deux ont leur propre
+échéance.
+
+1. **La cible** (R180) : attend le client test. Les codes d'activité, et « sans développeur dédié pour configurer », s'éprouvent
+   dans les entretiens, qui viennent après lui.
+2. **Le premier client possible** (R184) : attend le client test. S'il travaille sous GxP, la Présidence le dira avec ses retours.
+3. **Le réseau GxP** (R182, R186) : attend le client test. Il sert les entretiens, qui viennent après lui.
+4. **Son expérience** (R181, R187) : attend le client test. Ce qu'on en dit en public sert la page et le post, qui viennent après
+   lui.
+5. **Le post LinkedIn** (R182) : attend le client test. Il suit la démo et la page ; la date des résultats du diplôme (OSS-J.5)
+   reste à donner.
+6. **R63** : n'attend pas. Son délai de trente jours tombe le 28/11/2026, avant le client test : la tenir, la relancer après lui,
+   ou la clore avec R103, à trancher d'ici là.
+7. **Le prix** (R185, Q15) : attend le client test. « Effectivement le prix faudra voir », et ses deux questions attendent les
+   entretiens.
+8. **L'hébergement** (R183, Q13) : n'attend pas. Un serveur en service avant le 31/12/2026 ; `[DÉDUIT]` le client test en dépend
+   aussi, puisque l'app desktop se connecte par lui.
+
+Q21 attend le client test, elle aussi : les cinq entretiens GxP de R186 devaient la trancher.
+
+**La méthode** : le marché repasse au Conseil avec les retours du client test (« on en discutera avec le conseil »).
 
 ## Notes du secrétariat
 
@@ -792,6 +853,19 @@ chaque vote ; une recommandation passe avec 7 oui sur 7.
   communauté SENAITE), non ouverts, non utilisés ; l'eCFR et le registre fédéral américain renvoient vers une page anti-robot, non
   contournée (Part 11 lu sur LII, Cornell) ; la page de consultation de la Commission a refusé la lecture (trop de requêtes), lue
   sur la PIC/S et sur EudraLex.
+- **Après la décision** (13/11/2026 au soir) :
+  - Le secrétariat remplace un nom par […], le premier client possible ne se nomme pas dans un dépôt public.
+  - **Le client test** : le premier client possible passe avant les dix entretiens, la démo d'un workflow GxP et l'essai de page.
+    La Présidence y met une condition : l'app livrée, et essayée sur de gros volumes de données. Ses retours reviennent au Conseil.
+  - **R181 et la précision** : R181 disait le pack GxP « de la configuration, écrite par une personne du métier, la Présidence » ;
+    la précision le donne au client, et TaskForce ne livre aucun pack GxP. `[DÉDUIT]` L'expérience de la Présidence reste un atout
+    pour aider à valider (H3 de R185), hors de l'app.
+  - **Le dossier fournisseur** : `[DÉDUIT]` si le client test travaille sous GxP (deuxième question), R181 demande ce dossier
+    avant lui, puisqu'il précède tout pilote GxP.
+  - **R63** : `[DÉDUIT]` son délai de trente jours tombe le 28/11/2026, avant le client test ; sans décision d'ici là, son signal
+    d'arrêt (« pas de partenaire dans trente jours ») sera atteint.
+  - **Le serveur** : `[DÉDUIT]` l'app desktop se connecte par le serveur de la webapp, et les machines de l'école s'arrêtent le
+    31/12/2026 : le client test en dépend s'il commence après cette date (Q13).
 - **L'avis du secrétariat**, après la clôture : le mien, pas celui du Conseil.
   - `[DÉDUIT]` Les documents avaient un marché, mais pas celui d'aujourd'hui, et leurs comptes ne tiennent pas : il fallait
     recompter, et le compte ramène des millions à des dizaines de milliers d'entreprises, ce qui suffit largement à une personne.
@@ -810,13 +884,19 @@ chaque vote ; une recommandation passe avec 7 oui sur 7.
 - Le PV dans `seances/`, une ligne au registre de la charte (§12) et le récit au Journal.
 - Aux questions ouvertes : Q13, Q15 et Q17 complétées ; une question nouvelle, Q21 : un fournisseur d'une personne passe-t-il
   l'évaluation fournisseur d'un client GxP ? (la séance n°25, tenue en même temps, a pris Q19 et Q20).
-- Après la décision de la Présidence :
-  - les preuves en dix jours retenues dans `experiences/Experiences.md` : E14 élargie (la grille de R186) et une expérience
-    nouvelle pour la niche (les entretiens GxP, la démo, la page) ;
-  - à la roadmap, en mode développement : le bandeau « archivé » sur les trois documents de février 2026 (R180) ; la démo GxP
-    parmi les vidéos de TF-J2-1 (R186) ; le dossier fournisseur (R181) ; la page d'essai (R186) ; le post récrit (OSS-J.5, R182) ;
-  - le plan d'accès au marché dans les notes du produit, s'il est retenu ;
-  - aucun ADR : le pack GxP reste de la configuration, et R103 tient.
+- Après la décision de la Présidence, rangé le 13/11/2026 au soir :
+  - au registre de la charte (§12) et au Journal : « la Présidence tranche les séances n°25 et n°26 » ;
+  - à `Questions-ouvertes.md` : Q17 en cours, la cible passe d'abord par le client test ; Q21 ouverte, elle attend le client test ;
+    Q22 ouverte, les six questions de la séance qui attendent le client test ;
+  - à `experiences/Experiences.md` : rien. R186 est reportée : E14 élargie (la grille de R186) et l'expérience de la niche (les
+    entretiens GxP, la démo, la page) ne s'ouvrent pas avant le retour du client test.
+- Restent, après ce rangement :
+  - à la roadmap, en mode développement : le bandeau « archivé » sur les trois documents de février 2026 (R180) ; le dossier
+    fournisseur (R181), avant le client test s'il travaille sous GxP ; la démo GxP, la page d'essai (R186) et le post récrit
+    (OSS-J.5, R182), après le client test ;
+  - le plan d'accès au marché reste joint au PV : ses délais se rediscutent au Conseil avec les retours du client test, avant
+    d'entrer dans les notes du produit ;
+  - aucun ADR : TaskForce ne livre aucun pack GxP, le client écrit le sien par configuration, et R103 tient.
 - Rien ne migre vers `v1/` sans tâche ni ADR (quarantaine, [`CLAUDE.md`](../../CLAUDE.md) §2).
 
 ---

@@ -24,6 +24,20 @@ related:
 
 ---
 
+## 2026-11-13 : la Présidence tranche les séances n°25 et n°26
+
+**Fait** : le 13/11 au soir, la Présidence a lu la séance n°25 et les recommandations du secrétariat sur ses six questions ; elle tranche les deux séances en un seul message : « Tout me convient, sauf les delais » ([PV n°25](./conseil/seances/2026-11-13-le-workflow-pilotable.md), [PV n°26](./conseil/seances/2026-11-13-le-marche-a-prendre.md)). Le secrétariat range les suites : Q17, Q19, Q20 et Q21 mises à jour, Q22 ouverte (les questions du marché qui attendent le client test), E25 déclarée ; les preuves de R186, reportées, ne s'ouvrent pas.
+
+**Trouvé** :
+- `[ÉTABLI]` La Présidence le répète : TaskForce n'a rien à faire techniquement pour le GxP. Il fournit l'infrastructure et l'architecture, et c'est le client qui contraint le modèle : « on donne rien dans notre app, on fournis l infra et l archi qui permette de faire ca ». C'est ADR-022 (01/11) et R187.
+- `[ÉTABLI]` Le client test, le premier client possible, passe avant le marché, à une condition : « me faut l'app avant evidemment qu'on testera avec des gros batch de donnees ».
+
+**Décidé** :
+- Séance n°25 : R171 à R179 retenues. Les seuils du moteur gardés pour l'essai (30 secondes, 50 Mo, 1 % d'un cœur) ; Operaton, témoin du banc d'essai seulement, jamais livré ; J2 ne prend que W0 à W5, pour le seul processus d'E20 ; les trois lecteurs d'E24, pas tranchés, le client test d'abord ; les quatre yeux d'un workflow régulé, une option générique de l'infrastructure que le client choisit, pas un contenu GxP.
+- Séance n°26 : R180 à R187 retenues, sauf les délais. R183 à l'essai pour son ordre : le premier mois, le premier trimestre et la première année cèdent la place au client test, quand l'app est livrée et tient de gros volumes de données ; la Présidence revient avec ses retours, et le Conseil en discute. R186 reportée après le client test ; R185 à l'état d'hypothèses (« Effectivement le prix faudra voir. ») ; R181 lue avec la précision : aucun pack GxP livré, le client écrit le sien. Les huit questions de la séance restent ouvertes, avec Q21 : six attendent le client test (Q22) ; R63 (28/11/2026) et le serveur (31/12/2026, Q13) ont leur propre échéance.
+
+**Prochain coup** : W0 fini, puis W1 et W2, en mode développement ; l'app livrée et essayée sur de gros volumes de données, puis le client test ; R63 à trancher avant le 28/11/2026 ; un serveur avant le 31/12/2026.
+
 ## 2026-11-13 : séance n°26, le marché à prendre
 
 **Fait** : après la séance n°24, la Présidence demande si nos documents avaient estimé le marché, quelle part TaskForce peut prendre, comment y accéder, ce qui se prend le premier mois, les objectifs pas à pas et par quelle entreprise commencer ; elle relève qu'une niche sans IQ, OQ ni PQ l'intéresse, parce qu'elle y a de l'expérience. Le secrétariat a constitué le dossier sur des pages publiques seulement (cabinets, Eurostat, régulateurs, fédérations, éditeurs), puis réuni le Conseil en restreinte de sept, Jennifer Doudna contradictrice ([PV](./conseil/seances/2026-11-13-le-marche-a-prendre.md)). La séance n°25, tenue en même temps sur le chantier du workflow, garde les numéros qui suivent R170 ; ce PV commence à R180.

@@ -10,12 +10,15 @@ tags: [recherche, conseil, seance, workflow, processus, bpmn, ux, moteur, applic
 related:
   - "../README.md"
   - "./2026-11-13-depasser-camunda.md"
+  - "./2026-11-13-le-marche-a-prendre.md"
   - "./2026-11-09-atelier-recette-113.md"
   - "./2026-11-05-atelier-fenetre.md"
+  - "../../decisions/ADR-022-DRAFT-infrastructure-pas-les-regles.md"
   - "../../decisions/ADR-023-DRAFT-execution-durable-postgresql.md"
   - "../../decisions/ADR-026-DRAFT-la-fenetre.md"
   - "../../decisions/ADR-027-DRAFT-modele-des-processus.md"
   - "../../experiences/Experiences.md"
+  - "../../Questions-ouvertes.md"
   - "../../../v1/13-roadmap/Roadmap_Backlog.md"
 ---
 
@@ -41,6 +44,11 @@ related:
 >
 > Neuf recommandations, R171 à R179, toutes à 90 % au moins, six au second tour. Margaret Hamilton, contradictrice, a obtenu la
 > liste de ce qu'on lâche d'abord si E20 glisse, et des seuils écrits avant l'essai du moteur.
+>
+> **Le soir même**, la Présidence les retient toutes (« Tout me convient »), avec une précision qui vaut pour toute la suite :
+> TaskForce n'a rien à faire techniquement pour le GxP ; il fournit l'infrastructure et l'architecture, et c'est le client qui
+> contraint le modèle. Les seuils du moteur sont gardés pour l'essai, Operaton reste le témoin du banc d'essai, et J2 ne prend
+> que W0 à W5 ; les trois lecteurs d'E24 attendent le client test.
 
 - **Saisine** (Présidence, 13/11/2026 au soir, dans le message qui tranche la séance n°24, mot pour mot) :
   - « prends en compte tout ce que je viens de te dire pour le process, et puis peut-être que tu peux valider ça avec le conseil,
@@ -820,23 +828,66 @@ L'essentiel :
 
 ## Décision de la Présidence
 
-**À venir.** Avant la séance, la Présidence a donné son go sur ses amendements (« On repasse ça au conseil pour valider, mais moi je
-suis à peu près sûr de ce que je dis, donc go ») et confié l'UX à Jobs (« faudrait peut-être mettre Jobs sur la partie UX, encore une
-fois » ; « Enfin, discute avec Jobs et tout, essaye de faire une UX sympa »). Le dessin est donc tranché par Jobs, par délégation,
-comme aux séances n°18 et n°20, et elle garde le dernier mot. Le secrétariat ne tient pas ce go pour une décision sur R171 à R179 :
-la Présidence les tranche à la lecture de ce PV.
+Avant la séance, la Présidence avait donné son go sur ses amendements (« donc go ») et confié l'UX à Jobs, qui a tranché le dessin
+par délégation, comme aux séances n°18 et n°20 ; elle garde le dernier mot. Ce go ne valait pas décision sur R171 à R179.
 
-| Recommandation | Décision | Raison de la Présidence |
-| --- | --- | --- |
-| R171 | | |
-| R172 | | |
-| R173 | | |
-| R174 | | |
-| R175 | | |
-| R176 | | |
-| R177 | | |
-| R178 | | |
-| R179 | | |
+Tranchée le 13/11/2026 au soir, en conversation, en un seul message qui répond aux séances n°25 et n°26. La Présidence avait lu ce
+PV et les recommandations du secrétariat sur ses six questions. Le message, mot pour mot :
+
+> « oui mais attention je repete, nous on a rien a faire techniquement pour GxP, c'est le client qui devra contraindre le model a
+> ca, parce que notre app le permet, voila XD, on donne rien dans notre app, on fournis l infra et l archi qui permette de faire ca
+> quoi right ??
+>
+> Bon ok ensuite ecoute je suis plutot d'accord, mais je vais commencer avec […] first, ce sera mon cas client test stv, une fois
+> fait je te donnerais les retour et on en discutera avec le conseil
+>
+> Effectivement le prix faudra voir.
+>
+> Tout me convient, sauf les delais on passe d abord par le client test […], je te redis des que c est fait mais me faut l'app
+> avant evidemment qu'on testera avec des gros batch de donnees »
+
+Le premier paragraphe précise le GxP : il vaut pour R179, pour la sixième question et pour toute la suite. Le deuxième et le
+troisième portent sur la séance n°26 ([PV](./2026-11-13-le-marche-a-prendre.md)). Le dernier vaut pour les deux séances ; ici,
+« sauf les delais » ne touche que les lecteurs d'E24 (cinquième question).
+
+- **R171, retenue** : « Tout me convient ». Les amendements de la Présidence, validés un par un, A6 et A14 avec leurs conditions :
+  l'IA ne juge ce qui est de trop qu'au brouillon, jamais sur une étape verrouillée ; « tout d'un coup » se construit sur une
+  spécification d'UX écrite, revue à l'écran et lue en une minute.
+- **R172, retenue** : « Tout me convient ». On pilote dans la conversation ; Board, Workflow et Documents s'ouvrent à côté,
+  Documents après J2.
+- **R173, retenue** : « Tout me convient ». La vue du workflow : le plan du projet en étapes, des nœuds réels, trois densités pour
+  le CEO, le PM et l'ingénieur, aucun symbole de BPMN.
+- **R174, retenue** : « Tout me convient ». Cinq types d'étapes, un sous-ensemble écrit de BPMN 2.0, des versions immuables,
+  définir à part d'exécuter.
+- **R175, retenue** : « Tout me convient ». L'IA propose avec des conventions, des exemples, un vérificateur en code et la banque
+  d'évaluations, sans rien entraîner ; E25, la banque du brouillon, est déclarée.
+- **R176, retenue** : « Tout me convient ». « Pas orienté full code » : qui configure quoi, sans script ni expression à écrire.
+- **R177, retenue** : « Tout me convient ». Le moteur refait chez nous, prouvé par les coupures ; ses seuils sont gardés pour
+  l'essai, et Operaton reste le témoin du banc d'essai (deuxième et troisième questions).
+- **R178, retenue** : « Tout me convient ». L'ordre des lots, et ce qu'on lâche d'abord ; J2 ne prend que W0 à W5, pour le seul
+  processus d'E20 (quatrième question).
+- **R179, retenue, avec la précision de la Présidence** : « nous on a rien a faire techniquement pour GxP, c'est le client qui
+  devra contraindre le model a ca, parce que notre app le permet ». TaskForce ne livre rien de propre au GxP. Il fournit
+  l'infrastructure et l'architecture : le moteur, les règles par couches, les accords et leurs signatures, les versions
+  immuables, le dossier, les étapes verrouillées. C'est le client qui contraint le modèle et écrit ses workflows, son IQ, son OQ
+  et son PQ. C'est [ADR-022](../../decisions/ADR-022-DRAFT-infrastructure-pas-les-regles.md) (« l'infrastructure, pas les
+  règles ») et R187. `[DÉDUIT]` Lu ainsi, ce que R179 met dans le modèle dès J2 (l'ordre des étapes imposé par le moteur, la
+  signification de la signature, l'accord lié à son objet) est de l'infrastructure, utile à tout workflow ; la carte des
+  exigences dit ce que cette infrastructure permet, sans rien revendiquer (R168).
+
+**Les réponses aux six questions du Conseil :**
+
+1. **Trancher R171 à R179** : toutes retenues, « Tout me convient ».
+2. **Les seuils du moteur** (R177) : gardés pour l'essai. L'instance repart seule dans les 30 secondes ; au repos, le moteur ajoute
+   au plus 50 Mo de mémoire et 1 % d'un cœur à l'app desktop. C'était la recommandation du secrétariat, que « Tout me convient »
+   couvre ; E21 les mesure.
+3. **Operaton en témoin** (R177) : oui, témoin du banc d'essai seulement, à version figée, jamais livré.
+4. **La coupe de J2** (R178) : oui. W0 à W5 pour le seul processus d'E20 ; les workflows des utilisateurs (le LIMS) et
+   l'application Documents après J2, avec W6.
+5. **Les trois lecteurs d'E24** : pas tranché. Le client test passe d'abord : « on passe d abord par le client test […] ».
+6. **Les workflows régulés** (R175, R179) : à lire avec la précision. Deux personnes pour publier, dont aucune n'a préparé la
+   version, et aucun écart de l'IA : c'est une option générique de l'infrastructure, que le client choisit pour ses workflows,
+   pas un contenu GxP livré par TaskForce (« parce que notre app le permet »).
 
 ## Notes du secrétariat
 
@@ -869,6 +920,17 @@ la Présidence les tranche à la lecture de ce PV.
   07/11/2026).
 - **Numérotation** : R171 à R179, la séance n°26 commençant à R180. Q19, Q20 et E25 sont à vérifier à la fusion avec la séance
   n°26, tenue le même soir.
+- **Après la décision** (13/11/2026 au soir) :
+  - Le secrétariat remplace un nom par […], le premier client possible ne se nomme pas dans un dépôt public.
+  - **Les seuils** ne sont pas des mots de la Présidence : c'est la recommandation du secrétariat, que « Tout me convient » couvre.
+    Ils restent des cibles écrites avant l'essai, et E21 les mesure.
+  - **La précision sur le GxP**, la Présidence la répète : elle l'avait posée le 01/11/2026 (ADR-022 : « nous on creer l'infra, pas
+    les regles en elles mm »).
+  - **R179 et la suite** : `[DÉDUIT]` R179 plaçait après J2 « la signature qui redemande l'identité au moment de signer (11.200,
+    Q20), les workflows régulés (W6), le LIMS ». Lus avec la précision, les workflows régulés et le LIMS sont ceux du client ;
+    TaskForce y apporte les options (les quatre yeux, aucun écart de l'IA, la signature de Q20), pas leur contenu.
+  - **La numérotation** : E25 garde son numéro, la séance n°26 n'ayant ouvert aucune expérience ; la décision ouvre Q22, les
+    questions de la séance n°26 qui attendent le client test.
 - **L'avis du secrétariat**, après la clôture : le mien, pas celui du Conseil.
   - `[DÉDUIT]` Le risque du chantier n'est pas l'écran, que la recherche du 13/11 et la grammaire de R133 cadrent bien : c'est le
     moteur refait en cinq semaines (R177), puis l'IA qui écarte des étapes (R175).
@@ -883,12 +945,17 @@ la Présidence les tranche à la lecture de ce PV.
 - Le PV dans `seances/`, une ligne au registre de la charte (§12) et le récit au Journal.
 - À `Questions-ouvertes.md` : Q19 (montrer les applications de TaskForce dans d'autres hôtes, par MCP Apps) ; Q20 (la signature
   électronique au sens de 21 CFR 11.200).
-- Après la décision de la Présidence :
+- Après la décision de la Présidence, rangé le 13/11/2026 au soir :
+  - au registre de la charte (§12) et au Journal : « la Présidence tranche les séances n°25 et n°26 » ;
+  - à `Questions-ouvertes.md` : Q19 reste ouverte, après J2, avec le lot W8 ; Q20 reste ouverte, lue avec la précision sur le
+    GxP : une option des accords, que le client choisit, après J2 ;
   - à `experiences/Experiences.md` : E25 déclarée, la banque du brouillon (R175) ; E24, rangée avec les suites de la n°24, porte
-    déjà les trois questions de R173 ;
-  - ADR-027 complété par R174 à R176 ; ADR-023 par les seuils de R177 ;
+    déjà les trois questions de R173, et ses trois lecteurs attendent le client test.
+- Restent, après ce rangement :
+  - ADR-027 complété par R174 à R176 ; ADR-023 par les seuils de R177, gardés pour l'essai ;
   - à la roadmap, en mode développement : les lots W0 à W5 dans J2, W6 à W9 après ; TF-J2-2, TF-J2-6, TF-J2-1 et TF-J2-11 précisés ;
-  - la spécification d'UX jointe au PV, dans la tâche du lot W1 ; la carte des exigences (R179) dans les notes du produit.
+  - la spécification d'UX jointe au PV, dans la tâche du lot W1 ; la carte des exigences (R179) dans les notes du produit, lue
+    avec la précision de la Présidence : ce que l'infrastructure permet, rien de revendiqué.
 - Rien ne migre vers `v1/` sans tâche ni ADR (quarantaine, [`CLAUDE.md`](../../CLAUDE.md) §2).
 
 ---

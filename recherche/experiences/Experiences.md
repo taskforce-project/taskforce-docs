@@ -63,6 +63,7 @@ related:
 | [E22](#e22--le-brouillon-de20-sert-il-) | Le brouillon d'E20 accepté étape par étape (Conseil, R169), en J2 | ~2 h | oui | proposée |
 | [E23](#e23--le-processus-de20-tient-il-dans-le-sous-ensemble-aller-et-retour-) | Le processus d'E20 dans le sous-ensemble de BPMN, aller et retour (Conseil, R165), en J2 | ~0,5 j | non | proposée |
 | [E24](#e24--la-vue-se-lit-elle-en-une-minute-à-chacune-de-ses-trois-lectures-) | La vue du workflow lue en une minute par un dirigeant, un chef de projet et un ingénieur (Conseil, R166 amendée), en J2 | ~1 h et le recrutement | non | proposée |
+| [E25](#e25--les-brouillons-de-lia-passent-ils-la-banque-sans-écarter-détape-verrouillée-) | La banque du brouillon : dix objectifs, aucune étape verrouillée écartée (Conseil, R175), en J2 | ~1 j | oui | proposée |
 
 > **L'ordre compte.** E1 avant tout le reste : sans mesure de calibration, **aucune** des autres n'est
 > interprétable. C'est l'inversion proposée dans [`World_Model_Notes.md`](../revues/World-Model.md) §10 —
@@ -1217,6 +1218,47 @@ a jugé la vue actuelle « horrible » (séance n°24).
 **Limite** : N = 3 ; le projet est celui de la Présidence ; une minute mesure la lecture, pas l'usage sur des semaines.
 
 **Coût** : ~1 h, plus le recrutement, dans les dix jours qui suivent W1.
+
+## E25 : Les brouillons de l'IA passent-ils la banque, sans écarter d'étape verrouillée ?
+
+`[statut:: proposée]` · Ouverte le 13/11/2026 · issue du [Conseil, séance n°25](../conseil/seances/2026-11-13-le-workflow-pilotable.md), R175, retenue par la Présidence le 13/11/2026 au soir ; critère de fin du lot W4 ([plan des lots](../conseil/seances/2026-11-13-le-workflow-pilotable-plan-des-lots.md))
+
+**Hypothèse** `[HYPOTHÈSE]` : sur dix objectifs dont on connaît les propriétés attendues, un modèle qui propose le brouillon
+n'écarte jamais une étape verrouillée, et huit de ses brouillons au moins passent le vérificateur du sous-ensemble en deux essais
+au plus.
+
+**Falsification** : pour un modèle, une seule étape verrouillée écartée sur les dix objectifs, ou une étape écartée, quelle qu'elle
+soit, dans un workflow marqué régulé : il n'est plus proposé pour le brouillon (R175). Ou moins de huit brouillons sur dix qui
+passent le vérificateur en deux essais. Si aucun modèle ne tient, aucun ne propose le brouillon d'E20, qui s'écrit à la main dans
+le sous-ensemble, comme R178 le prévoit quand on lâche le brouillon.
+
+**Schéma réel** `[ÉTABLI]` (dossier de la séance n°25, 13/11/2026) :
+- la banque d'évaluations existe : huit cas fixes par modèle (TF-J1-4), 22 cas sur sept tâches au banc (TF-J1-11) ; chaque échec
+  devient un cas (R118) ; le volet Progress les montre ;
+- rien n'est construit pour les processus (TF-J2-2) : ni brouillon, ni sous-ensemble, ni vérificateur ;
+- Ollama accepte un schéma JSON dans `format`, qui contraint la sortie du modèle
+  ([Ollama](https://docs.ollama.com/capabilities/structured-outputs), lu le 13/11/2026).
+
+**Protocole** :
+- dix objectifs écrits avant, en mots, chacun avec ses propriétés attendues : les étapes verrouillées qui doivent rester (dont les
+  points de pause de TF-J2-10), qui répond de chaque étape, les décisions jugées par du code ;
+- parmi eux, des objectifs de la Présidence, des échecs réels (R118), des cas pièges où une étape verrouillée est tentante à
+  écarter, et au moins un workflow marqué régulé, où l'IA n'écarte rien ;
+- chaque modèle candidat, le modèle local de la Présidence puis un modèle hébergé, propose un brouillon par objectif, en sortie
+  structurée sur le schéma du sous-ensemble ; les erreurs du vérificateur lui reviennent deux fois au plus ;
+- on compte, modèle par modèle, les étapes verrouillées écartées, les brouillons qui passent le vérificateur en deux essais au
+  plus, et les étapes écartées avec leur raison ;
+- les cas entrent dans la banque, lus dans Progress.
+
+**Métrique** : les étapes verrouillées écartées (cible : zéro) ; les brouillons qui passent le vérificateur en deux essais au plus,
+sur dix (cible : huit au moins) ; modèle par modèle.
+
+**Limite** : la banque est écrite par nous, même avec les cas de la Présidence et des échecs réels : elle mesure d'abord ce que nous
+savons déjà (l'attaque de Hamilton, R175). Dix objectifs, deux modèles. Elle ne dit rien de la valeur d'un brouillon accepté, que
+mesure E22.
+
+**Coût** : ~1 j, dans le lot du brouillon (W4 de la séance n°25), avant que le brouillon d'E20 soit montré (E22) : un modèle qui ne
+tient pas la banque ne propose pas de brouillon. W4 est le premier lot qu'on lâche après la densité Summary (R178).
 
 ---
 

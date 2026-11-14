@@ -42,11 +42,12 @@ related:
 | [Q14](#q14--se-brancher-à-n8n-) | Se brancher à n8n ? | P3 | ouverte |
 | [Q15](#q15--quel-modèle-de-revenus-quand-le-produit-cessera-dêtre-gratuit-) | Quel modèle de revenus, quand le produit cessera d'être gratuit ? | P2 | ouverte |
 | [Q16](#q16--macos--quand-et-sans-payer-apple-) | macOS : quand, et sans payer Apple ? | P3 | ouverte |
-| [Q17](#q17--qui-est-le-concurrent-n1-de-taskforce-et-pour-quelle-cible-) | Qui est le concurrent n°1 de TaskForce, et pour quelle cible ? | P1 | en cours : la cible tenue « à peu près » (13/11) |
+| [Q17](#q17--qui-est-le-concurrent-n1-de-taskforce-et-pour-quelle-cible-) | Qui est le concurrent n°1 de TaskForce, et pour quelle cible ? | P1 | en cours : la cible, le client test d'abord (13/11) |
 | [Q18](#q18--se-brancher-à-camunda-) | Se brancher à Camunda ? | P3 | tranchée (13/11) : oui, plus tard |
-| [Q19](#q19--montrer-les-applications-de-taskforce-dans-dautres-hôtes-par-mcp-apps-) | Montrer les applications de TaskForce dans d'autres hôtes, par MCP Apps ? | P3 | ouverte |
-| [Q20](#q20--la-signature-électronique-au-sens-de-21-cfr-11200--quand-et-comment-) | La signature électronique au sens de 21 CFR 11.200 : quand, et comment ? | P2 | ouverte |
-| [Q21](#q21--un-fournisseur-dune-personne-passe-t-il-lévaluation-fournisseur-dun-client-gxp-) | Un fournisseur d'une personne passe-t-il l'évaluation fournisseur d'un client GxP ? | P1 | ouverte |
+| [Q19](#q19--montrer-les-applications-de-taskforce-dans-dautres-hôtes-par-mcp-apps-) | Montrer les applications de TaskForce dans d'autres hôtes, par MCP Apps ? | P3 | ouverte : après J2, avec le lot W8 (13/11) |
+| [Q20](#q20--la-signature-électronique-au-sens-de-21-cfr-11200--quand-et-comment-) | La signature électronique au sens de 21 CFR 11.200 : quand, et comment ? | P2 | ouverte : une option des accords, que le client choisit, après J2 (13/11) |
+| [Q21](#q21--un-fournisseur-dune-personne-passe-t-il-lévaluation-fournisseur-dun-client-gxp-) | Un fournisseur d'une personne passe-t-il l'évaluation fournisseur d'un client GxP ? | P1 | ouverte : attend le client test (13/11) |
+| [Q22](#q22--les-questions-du-marché-qui-attendent-le-client-test) | Les questions du marché qui attendent le client test | P1 | ouverte : six questions de la séance n°26 (13/11) |
 
 ---
 
@@ -402,6 +403,11 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   n'est pas publiée. `[HYPOTHÈSE]` Sur la niche régulée, le concurrent n'est pas Camunda, qui n'en dit rien sur ses pages, mais le
   spécialiste validé (Veeva, Kneat, ValGenesis, Qualio), le cabinet de validation, et les documents faits à la main ; sur le
   logiciel des dispositifs médicaux, Ketryx ([séance n°26](./conseil/seances/2026-11-13-le-marche-a-prendre.md), R181).
+- **Décision de la Présidence, le 13/11/2026 au soir** ([séance n°26](./conseil/seances/2026-11-13-le-marche-a-prendre.md), R180 à
+  R187 retenues sauf les délais) : la cible passe d'abord par le client test, le premier client possible, quand l'app est livrée et
+  tient de gros volumes de données. Ses mots : « Tout me convient, sauf les delais » ; « me faut l'app avant evidemment qu'on
+  testera avec des gros batch de donnees ». La Présidence revient avec ses retours, et le Conseil en discute. E14 et les entretiens
+  de R186, qui devaient trancher Q17, attendent ce retour (Q22).
 
 ## Q18 : Se brancher à Camunda ?
 
@@ -442,6 +448,9 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 - **Position actuelle** : `[HYPOTHÈSE]` après J2, avec le lot W8 (J5), une fois la surface MCP de TaskForce complète (ADR-024).
 - **Ce qu'il faut pour trancher** : une demande réelle d'un client qui travaille dans un de ces hôtes ; la version de MCP Apps que
   les hôtes prennent en charge ; un essai d'attaque sur les appels d'outils de l'application (R158).
+- **13/11/2026 au soir** : R172 et R178 retenues par la Présidence, « Tout me convient »
+  ([séance n°25](./conseil/seances/2026-11-13-le-workflow-pilotable.md)). J2 ne prend que W0 à W5, pour le seul processus d'E20 ;
+  Q19 reste ouverte, après J2, avec le lot W8.
 
 ## Q20 : La signature électronique au sens de 21 CFR 11.200 : quand, et comment ?
 
@@ -461,6 +470,12 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   redemander l'identité avant une action : à vérifier.
 - **Ce qu'il faut pour trancher** : l'expérience de la validation de la Présidence ; un premier projet régulé réel ; la façon de
   redemander l'identité, vérifiée sur l'app desktop.
+- **13/11/2026 au soir** : R179 retenue, avec la précision de la Présidence
+  ([séance n°25](./conseil/seances/2026-11-13-le-workflow-pilotable.md)) : « nous on a rien a faire techniquement pour GxP, c'est le
+  client qui devra contraindre le model a ca, parce que notre app le permet ». TaskForce fournit l'infrastructure, dont les accords
+  et leurs signatures ; le client contraint le modèle. `[DÉDUIT]` La signature qui redemande l'identité serait donc une option
+  générique des accords, que le client choisit pour ses workflows, comme les quatre yeux d'un workflow régulé ; pas un mode
+  « Part 11 ». Elle reste après J2. Le premier projet régulé réel peut être celui du client test, s'il travaille sous GxP (Q22).
 
 ## Q21 : Un fournisseur d'une personne passe-t-il l'évaluation fournisseur d'un client GxP ?
 
@@ -482,6 +497,35 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 - **Ce qu'il faut pour trancher** : les cinq entretiens GxP de R186, avec la question « qu'est-ce qui vous ferait refuser un
   fournisseur ? » ; le sommaire du dossier fournisseur lu par une personne d'assurance qualité. Signal d'arrêt de R181 : trois
   personnes GxP sur cinq qui excluent un fournisseur d'une personne.
+- **13/11/2026 au soir** : R181 retenue ; R186 reportée après le client test
+  ([séance n°26](./conseil/seances/2026-11-13-le-marche-a-prendre.md)). Les cinq entretiens GxP qui devaient trancher Q21 attendent
+  ce retour (Q22). `[DÉDUIT]` Si le client test travaille sous GxP, le dossier fournisseur de R181 passe avant lui.
+
+## Q22 : Les questions du marché qui attendent le client test
+
+`[statut:: ouverte]` · `[prio:: P1]` · Ouverte le 13/11/2026 · issue du [Conseil, séance n°26](./conseil/seances/2026-11-13-le-marche-a-prendre.md), ses questions à la Présidence, et de sa décision du 13/11/2026 au soir
+
+- **La question** : la Présidence retient R180 à R187, sauf les délais. Le client test passe d'abord, quand l'app est livrée et
+  tient de gros volumes de données ; elle revient avec ses retours, et le Conseil en discute. Six des huit questions de la séance
+  attendent ce retour :
+  - la cible (R180) : les codes d'activité qui la comptent (J62 et J58.2 ; M69, M70.2, M71 et M72), et « sans développeur dédié
+    pour configurer », éprouvé en entretien ;
+  - le premier client possible (R184) : travaille-t-il sous GxP ? Oui ou non, sans nom ;
+  - le réseau GxP (R182, R186) : combien de personnes joignables, dans quels rôles, combien hors du réseau de la Présidence ;
+  - son expérience (R181, R187) : ce qu'on peut en dire en public, sans nom d'entreprise ;
+  - le post LinkedIn (R182) : après la démo et la page, ou le jour des résultats du diplôme (OSS-J.5), et à quelle date ;
+  - le prix (R185, Q15) : la disposition à payer demandée dès les entretiens, rien de payant avant J9.
+- **Pourquoi ça compte** : les objectifs pas à pas (R183, à l'essai pour son ordre) et les trois preuves en dix jours (R186,
+  reportée) partent de ces réponses ; E14 élargie et l'expérience de la niche aussi. La Présidence, le 13/11/2026 au soir : « ce
+  sera mon cas client test stv, une fois fait je te donnerais les retour et on en discutera avec le conseil » ; « Effectivement le
+  prix faudra voir. »
+- **Position actuelle** : les six restent ouvertes, comme Q21, qui attend les entretiens GxP de R186. `[DÉDUIT]` Si le client test
+  travaille sous GxP (la deuxième question), le dossier fournisseur de R181 passe avant lui.
+- **Ce qui n'attend pas** : les deux autres questions de la séance ont leur propre échéance. R63, dont le délai de trente jours tombe
+  le 28/11/2026 (Q13, le partenaire) ; un serveur en service avant le 31/12/2026 (Q13, l'hébergement), dont le client test dépend
+  aussi `[DÉDUIT]`, puisque l'app desktop se connecte par lui.
+- **Ce qu'il faut pour trancher** : l'app livrée et essayée sur de gros volumes de données (« me faut l'app avant evidemment qu'on
+  testera avec des gros batch de donnees ») ; le cas du client test fait ; ses retours, discutés au Conseil.
 
 ---
 
