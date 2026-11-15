@@ -61,7 +61,7 @@ related:
 | [E20](#e20--taskforce-tient-il-un-vrai-projet-dans-un-domaine-inconnu-) | Le premier client joué de bout en bout : son outil de base, un nouveau module (Présidence, 10/11 ; Conseil, séances n°20 et n°21) | quelques jours | oui | retenue par la Présidence (10/11) : à la fin de J2 |
 | [E21](#e21--le-moteur-maison-tient-il-les-coupures-face-à-operaton-) | Le moteur maison face aux coupures, Operaton en témoin (Conseil, R167 amendée), en J2 | ~3 j | non | proposée |
 | [E22](#e22--le-brouillon-de20-sert-il-) | Le brouillon d'E20 accepté étape par étape (Conseil, R169), en J2 | ~2 h | oui | proposée |
-| [E23](#e23--le-processus-de20-tient-il-dans-le-sous-ensemble-aller-et-retour-) | Le processus d'E20 dans le sous-ensemble de BPMN, aller et retour (Conseil, R165), en J2 | ~0,5 j | non | proposée |
+| [E23](#e23--le-processus-de20-tient-il-dans-le-sous-ensemble-aller-et-retour-) | Le processus d'E20 dans le sous-ensemble de BPMN, aller et retour (Conseil, R165), en J2 | ~0,5 j | non | faite : tient (15/11), dans le Web Modeler de Camunda |
 | [E24](#e24--la-vue-se-lit-elle-en-une-minute-à-chacune-de-ses-trois-lectures-) | La vue du workflow lue en une minute par un dirigeant, un chef de projet et un ingénieur (Conseil, R166 amendée), en J2 | ~1 h et le recrutement | non | proposée |
 | [E25](#e25--les-brouillons-de-lia-passent-ils-la-banque-sans-écarter-détape-verrouillée-) | La banque du brouillon : dix objectifs, aucune étape verrouillée écartée (Conseil, R175), en J2 | ~1 j | oui | proposée |
 
@@ -1159,7 +1159,7 @@ accepte un schéma JSON qui contraint la sortie ([Ollama](https://docs.ollama.co
 
 ## E23 : Le processus d'E20 tient-il dans le sous-ensemble, aller et retour ?
 
-`[statut:: proposée]` · Ouverte le 13/11/2026 · issue du [Conseil, séance n°24](../conseil/seances/2026-11-13-depasser-camunda.md), R165, retenue et élargie
+`[statut:: faite]` · Ouverte le 13/11/2026 · Faite le 15/11/2026 · issue du [Conseil, séance n°24](../conseil/seances/2026-11-13-depasser-camunda.md), R165, retenue et élargie
 
 **Hypothèse** `[HYPOTHÈSE]` : le processus « intégrer un module » s'écrit avec les seuls éléments du sous-ensemble de BPMN 2.0
 de J2 ; exporté, il s'ouvre sans erreur dans un modeleur BPMN, puis revient à l'identique.
@@ -1189,6 +1189,21 @@ trois.
 porter sur le contenu, pas sur le texte.
 
 **Coût** : ~0,5 j, dans le lot du modèle (W2).
+
+**Résultat du 15/11/2026** (`taskforce-fullstack` [#538](https://github.com/taskforce-project/taskforce-fullstack/pull/538), lot W2 ; le Web Modeler de Camunda 8.10, en ligne, à la place
+du Desktop Modeler : tous deux dessinent avec bpmn-js) : **l'hypothèse tient.**
+- `[ÉTABLI]` Le processus d'E20 s'écrit dans le sous-ensemble sans élément de plus, et un test le fige sur lui. W2 y a ajouté une
+  attente de sept jours (« Watch the module in use »), pour que l'attente d'une durée fasse partie du sous-ensemble figé.
+- `[ÉTABLI]` L'export est valide pour le XSD de BPMN 2.0 et pour celui de `tf:`.
+- `[ÉTABLI]` La Présidence l'a ouvert dans le Web Modeler, sans erreur d'ouverture. Camunda l'a dessiné en huit phases, a lu les
+  étapes d'agent comme des sous-processus ad hoc et a listé 40 problèmes d'exécution pour son moteur, attendus. Téléchargé sans
+  rien changer, le fichier garde chaque élément BPMN et les 112 éléments `tf:` ; Camunda n'ajoute que sa signature (`exporter`,
+  `modeler:executionPlatform`). Réimporté, il a la même empreinte (`ProcessContractTest`, 7 tests verts). Il est gardé dans
+  `contracts/process/round-trip/`, et la CI le rejoue.
+- `[ÉTABLI]` bpmn-moddle, la bibliothèque des modeleurs de Camunda, lit et réécrit l'export de même.
+- Les refus : 31 éléments hors du sous-ensemble, chacun avec sa raison en mots, au lieu des trois du protocole, selon les tests du
+  lot, verts en CI ; la relecture indépendante de la PR (R159) est en cours.
+- **Limite** : un processus et un modeleur en ligne ; le Desktop Modeler lui-même n'a pas été ouvert.
 
 ## E24 : La vue se lit-elle en une minute, à chacune de ses trois lectures ?
 

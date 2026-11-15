@@ -889,6 +889,19 @@ troisième portent sur la séance n°26 ([PV](./2026-11-13-le-marche-a-prendre.m
    version, et aucun écart de l'IA : c'est une option générique de l'infrastructure, que le client choisit pour ses workflows,
    pas un contenu GxP livré par TaskForce (« parce que notre app le permet »).
 
+**Complément du 15/11/2026.** La Présidence a ouvert dans le Web Modeler de Camunda (8.10) l'export d'« intégrer un module »
+produit par W2 (E23). Camunda l'a lu et dessiné, et il a listé ce qui manquerait à son moteur pour l'exécuter ; son onglet Test,
+lui, ne joue ni les sous-processus ad hoc, où Camunda range nos étapes d'agent, ni les minuteries. Le secrétariat a recommandé
+d'ajouter à W6 un test à blanc, absent du plan. La Présidence répond, mot pour mot :
+
+> « oui ajoute le test à blanc à W6. On peut faire mieux, et on va faire mieux que ca »
+
+- **W6 gagne le test à blanc** : jouer un workflow dans un bac à sable avant de le publier, étapes d'agent et délais compris,
+  puis garder ce jeu comme cas de test, écrit en mots et rejoué sur chaque version. Le contenu et le critère sont au
+  [plan des lots](./2026-11-13-le-workflow-pilotable-plan-des-lots.md).
+- `[DÉDUIT]` **W3 le prépare sans élargir J2** : l'horloge du moteur et ses effets passent par des ports qu'on remplace, ce que
+  le banc des coupures demande déjà pour ses minuteries.
+
 ## Notes du secrétariat
 
 - **Le dossier** : seulement des pages publiques, lues le 13/11/2026. Le projet d'annexe 22 et la spécification de BPMN 2.0.2 ont
@@ -956,6 +969,8 @@ troisième portent sur la séance n°26 ([PV](./2026-11-13-le-marche-a-prendre.m
   - à la roadmap, en mode développement : les lots W0 à W5 dans J2, W6 à W9 après ; TF-J2-2, TF-J2-6, TF-J2-1 et TF-J2-11 précisés ;
   - la spécification d'UX jointe au PV, dans la tâche du lot W1 ; la carte des exigences (R179) dans les notes du produit, lue
     avec la précision de la Présidence : ce que l'infrastructure permet, rien de revendiqué.
+- Rangé le 15/11/2026, après le complément de la Présidence : le test à blanc dans W6 et sa préparation dans W3, au plan des
+  lots ; une ligne au registre de la charte (§12) ; E23 faite ; le récit au Journal.
 - Rien ne migre vers `v1/` sans tâche ni ADR (quarantaine, [`CLAUDE.md`](../../CLAUDE.md) §2).
 
 ---

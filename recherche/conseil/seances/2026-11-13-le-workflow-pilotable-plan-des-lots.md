@@ -44,7 +44,7 @@ related:
 | W3 | Le moteur durable v1 et ses coupures | W2 ; le dossier signé (TF-J2-7) avant | R159 | J2 |
 | W4 | Le brouillon de l'IA et le premier workflow par défaut | W1, W2 | R159, R161 | J2 |
 | W5 | Piloter le processus : incidents, attentes, manques | W1, W3 ; W4 pour le brouillon | R159, R161 | J2, puis E20 |
-| W6 | Éditer et créer ses workflows ; le LIMS ; Documents | W4, W5 | R159, R161 | Après J2 (J3) |
+| W6 | Éditer, créer et essayer à blanc ses workflows ; le LIMS ; Documents | W4, W5 | R159, R161 | Après J2 (J3) |
 | W7 | Exploiter : modifier, migrer, compenser, relancer depuis une étape | W3, W5 | R159, R161 | Après J2 (J5) |
 | W8 | S'ouvrir : Camunda, MCP Apps, un processus appelable | W2, W5 | R159 | Après J2 (J5) |
 | W9 | Améliorer : l'analyse sur la même carte | W5, le dossier | R161 | Après J2 (J7) |
@@ -146,7 +146,10 @@ related:
     optimiste ; trois tentatives au plus, puis l'incident ; les clés d'idempotence des effets ; les minuteries, les messages, les
     accords en signaux ; chaque geste par les règles et au dossier ;
   - le banc des coupures, avec Operaton en témoin, à version figée, dans les tests seulement ;
-  - les seuils, confirmés par la Présidence avant l'essai.
+  - les seuils, confirmés par la Présidence avant l'essai ;
+  - `[DÉDUIT]` ajouté le 15/11/2026 : l'horloge du moteur et ses effets derrière des ports qu'on remplace, pour que W6 joue
+    un workflow à blanc sans rien refaire ; le banc des coupures en a déjà besoin pour ses minuteries, et J2 ne prend rien
+    d'autre de W6.
 - **Dépend de** : W2 ; le dossier signé (TF-J2-7) passe avant, dans l'ordre de R170.
 - **Fini quand** :
   1. E21 tenue : trois coupures, trois types d'étapes, dix passages chacun ; aucune étape perdue ; aucun effet en double, vérifié
@@ -218,17 +221,32 @@ related:
 
 ### W6 : éditer et créer ses workflows
 
-- **But** : les ingénieurs et les PM éditent et créent leurs workflows dans TaskForce ; l'exemple du LIMS ; l'application Documents.
+- **But** : les ingénieurs et les PM éditent, créent et essaient à blanc leurs workflows dans TaskForce ; l'exemple du LIMS ;
+  l'application Documents.
 - **Contenu** : le mode « Edit » complet (ajouter, retirer, réordonner, grouper des étapes en blocs, écrire une condition en mots,
   nommer qui répond et qui décide, verrouiller, demander des documents) ; les workflows de l'espace, dérivés d'un défaut ; les
   workflows marqués régulés (deux personnes pour publier, aucun écart de l'IA) ; la signature qui redemande l'identité, si Q20 est
   tranchée ; les deux autres workflows par défaut (la rédaction et la revue d'un document ; le traitement de demandes) ; les agents
   de gestion de projet, avec leurs règles (R94) ; l'application Documents (ce que le projet range, attend et a fait accorder).
+- **Le test à blanc**, ajouté par la Présidence le 15/11/2026 (« On peut faire mieux, et on va faire mieux que ca ») : jouer un
+  workflow dans un bac à sable avant de le publier, puis garder ce jeu comme cas de test. L'onglet Test de Camunda ne joue ni les
+  sous-processus ad hoc, où Camunda range nos étapes d'agent, ni les minuteries ; W6 va plus loin :
+  - les étapes d'agent jouées pour de vrai dans le bac à sable (aucun push, aucun message, aucune écriture chez un outil), ou
+    rejouées depuis les réponses gardées d'un essai précédent, pour un résultat reproductible ;
+  - le temps avancé en un geste : une attente de sept jours ou un délai passe, et ce qui en dépend se déclenche ;
+  - les étapes humaines et les accords répondus par la personne qui essaie, sous un bandeau « Test », et les règles jugées comme
+    en production ;
+  - les chemins pris montrés sur la carte de la vue du workflow, et ceux qu'aucun essai n'a pris, signalés ;
+  - le cas de test écrit en mots (ses entrées, le chemin attendu), sans code (R176), rejoué sur chaque nouvelle version avant sa
+    publication ;
+  - le dossier de l'essai, à part du dossier réel et jamais montré comme réel ; le client peut en faire une pièce de ses propres
+    essais, son OQ par exemple, et TaskForce ne dit jamais qu'un workflow est conforme (R179, R187).
 - **Dépend de** : W4, W5.
 - **Fini quand** : une personne qui ne fait pas de logiciel dérive « rédaction et revue d'un document », ajoute une étape, une
   personne qui décide et une règle en mots, et publie, en quinze minutes au plus ; la Présidence construit son workflow de LIMS (IQ,
   OQ, PQ, les documents de GAMP, une revue au titre de 21 CFR Part 11) sans une ligne de code ; publier un workflow régulé demande
-  deux personnes ; les relectures.
+  deux personnes ; la Présidence joue à blanc le workflow d'E20, étapes d'agent et attente de sept jours comprises, sans aucun
+  effet hors du bac à sable, et le cas gardé repasse sur la version suivante avant sa publication ; les relectures.
 - **Relectures** : R159, R161.
 - **Quand** : après J2 (J3).
 

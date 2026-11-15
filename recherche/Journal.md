@@ -24,6 +24,19 @@ related:
 
 ---
 
+## 2026-11-15 : la Présidence ajoute le test à blanc à W6
+
+**Fait** : la Présidence a ouvert dans le Web Modeler de Camunda (8.10) l'export d'« intégrer un module » produit par W2 ([#538](https://github.com/taskforce-project/taskforce-fullstack/pull/538)), l'a téléchargé sans rien changer, puis a regardé son onglet Test. Le secrétariat a réimporté dans TaskForce le fichier écrit par Camunda.
+
+**Trouvé** :
+- `[ÉTABLI]` L'aller et retour tient (E23) : Camunda garde chaque élément BPMN et chaque élément `tf:`, n'ajoute que sa signature, et le fichier revient avec la même empreinte. Il est gardé dans `contracts/process/round-trip/`, et la CI le rejoue.
+- `[ÉTABLI]` Camunda lit nos étapes d'agent comme des sous-processus ad hoc, la forme qu'il donne à ses propres agents. Ses 40 problèmes sont ce qui manquerait à son moteur pour exécuter le processus, pas des défauts du fichier.
+- `[ÉTABLI]` Son onglet Test ne joue ni les sous-processus ad hoc ni les minuteries : 9 limites sur ce processus. Le plan des lots, de W0 à W9, n'avait pas de test à blanc.
+
+**Décidé** : « oui ajoute le test à blanc à W6. On peut faire mieux, et on va faire mieux que ca » ([PV n°25](./conseil/seances/2026-11-13-le-workflow-pilotable.md), complément du 15/11). W6 gagne le test à blanc : les étapes d'agent jouées dans un bac à sable ou rejouées, le temps avancé en un geste, les chemins pris sur la carte, le cas de test en mots rejoué sur chaque version, un dossier d'essai à part du réel. `[DÉDUIT]` W3 le prépare sans élargir J2 : l'horloge du moteur et ses effets derrière des ports qu'on remplace.
+
+**Prochain coup** : W3 garde ces deux ports ; le test à blanc vient avec W6, après J2.
+
 ## 2026-11-13 : la Présidence tranche les séances n°25 et n°26
 
 **Fait** : le 13/11 au soir, la Présidence a lu la séance n°25 et les recommandations du secrétariat sur ses six questions ; elle tranche les deux séances en un seul message : « Tout me convient, sauf les delais » ([PV n°25](./conseil/seances/2026-11-13-le-workflow-pilotable.md), [PV n°26](./conseil/seances/2026-11-13-le-marche-a-prendre.md)). Le secrétariat range les suites : Q17, Q19, Q20 et Q21 mises à jour, Q22 ouverte (les questions du marché qui attendent le client test), E25 déclarée ; les preuves de R186, reportées, ne s'ouvrent pas.
