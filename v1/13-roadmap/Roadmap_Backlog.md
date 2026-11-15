@@ -24,6 +24,12 @@ Logo projet        : assets/images/logo_taskforce.png
 **Date :** 08/06/2026  
 **Auteur(s) :** Pierre MICHEL
 
+> **▶ 15/11/2026 :** la 1.16.1 est en prod (release [#539](https://github.com/taskforce-project/taskforce-fullstack/pull/539)) : les flux temps réel n'acceptent plus qu'une destination que
+> l'app utilise, vérifiée pour la personne qui s'abonne, et seul le serveur y publie ([#537](https://github.com/taskforce-project/taskforce-fullstack/pull/537)). Backend seul : pas de
+> migration, pas de route, et la desktop 1.13.0 reste la version courante. Le chantier en cours est le workflow pilotable des
+> séances n°24 à 26 ([plan des lots](../../recherche/conseil/seances/2026-11-13-le-workflow-pilotable-plan-des-lots.md)) : W0,
+> les données live ([#535](https://github.com/taskforce-project/taskforce-fullstack/pull/535)), W1, l'application Workflow, et W2, le modèle des processus ([#538](https://github.com/taskforce-project/taskforce-fullstack/pull/538)), puis W3 à W5.
+>
 > **▶ 13/11/2026 :** les correctifs de la revue de J2 sont en prod avec la 1.16.0 et la desktop 1.13.0 (release [#533](https://github.com/taskforce-project/taskforce-fullstack/pull/533)) :
 > les garanties de la revue du code ([#530](https://github.com/taskforce-project/taskforce-fullstack/pull/530), V128 à V130), les écrans ([#531](https://github.com/taskforce-project/taskforce-fullstack/pull/531)) et ce qu'il faut à une entreprise pour faire
 > confiance à J2 ([#532](https://github.com/taskforce-project/taskforce-fullstack/pull/532)), chacun après sa relecture indépendante (R159) et, pour les écrans, leur revue (R161) ; avec eux,
