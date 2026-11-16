@@ -24,6 +24,23 @@ related:
 
 ---
 
+## 2026-11-15 : séance n°27, le run sur la machine et les petits modèles de décision
+
+**Fait** : la Présidence demande si l'on voit déjà un run qui tourne (son numéro, son état, son étape, ses fichiers, ses tests, une estimation), et si un environnement de run peut vivre sur la machine de l'utilisateur, avec Docker, sans payer de cloud. Puis, sur MANTA, comment se fait un petit modèle de décision, si elle doit entraîner sur sa machine des modèles faits pour TaskForce, et si chaque entreprise peut créer le sien avec ce qu'elle y met ; elle ajoute un post sur Harness². Le secrétariat a constitué le dossier sur le code de `dev` (`3da4f4a8`), les relevés du 15/11 et des pages publiques seulement, puis réuni le Conseil en plénière de vingt-quatre, Yann LeCun contradicteur ([PV](./conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md)).
+
+**Trouvé** :
+- `[ÉTABLI]` La vue d'une mission montre déjà l'état, l'étape en cours parmi cinq, calculée par le serveur, le temps écoulé, les fichiers comptés en direct et les tests une fois passés. Aucune estimation du temps restant n'existe ; et rien ne se dit pendant que les tests tournent, jusqu'à 15 minutes, le runner n'envoyant leur événement qu'à la fin.
+- `[ÉTABLI]` Le runner fait travailler Claude Code dans un worktree, sous un hook qui juge les règles avant chaque action, garde fermée ; ni conteneur ni bac à sable du système. L'app desktop embarque la base, le backend, l'interface et le runner, sous Windows et Linux.
+- `[ÉTABLI]` MANTA (Gevaert Lab, Stanford, 10/11/2026, Apache 2.0) adapte Qwen3.8-27B et Qwen3.5-4B par LoRA et leur ajoute une tête de décision reprise de Cloudflare Clef, apprise sur 8,5 millions de décisions étiquetées ; une ECE publiée, aucun Brier ; sa recette attend le rapport technique. `[DÉDUIT]` Un apprentissage supervisé au sens large ; Clef, d'où vient la tête, ajoute une perte de Brier.
+- `[ÉTABLI]` Docker Desktop est gratuit sous 250 salariés et 10 M$ de chiffre d'affaires ; Podman, Rancher Desktop et les conteneurs de WSL sont ouverts ; le GPU ne traverse un conteneur qu'avec une carte NVIDIA sous WSL2 ; le bac à sable de Claude Code n'existe pas sous Windows natif.
+- `[ÉTABLI]` Sur la machine de la Présidence (8 Go), un modèle de 8 milliards tient sur la carte ; un de 14 tourne à 44 % sur le processeur. Les minimums publiés placent le QLoRA d'un modèle de 8 milliards à 6 Go.
+- `[ÉTABLI]` Harness² est un dépôt de recherche de Google Research sous Apache 2.0, pas un produit de Google ; il apprend des contrastes entre runs, sans vérité terrain, et ses garde-fous sont modifiables.
+- `[ÉTABLI]` Smart Assign pèse la réussite passée des personnes pour proposer à qui confier une issue. `[DÉDUIT]` C'est un usage à haut risque de l'AI Act à partir du 02/12/2027, sous le projet de lignes directrices du 19/05/2026.
+
+**Décidé** : R188 à R195 recommandées, toutes à 90 % au moins (R188, R189, R191, R193 et R194 au second tour) ; elles attendent la Présidence. Les tests en cours dans W5, une fourchette honnête dans W9 ; le conteneur en option d'isolement, jamais en prérequis ; un modèle de décision existant essayé avant tout entraînement ; R175 amendée pour le labo seulement ; aucun modèle qui juge des personnes ; les modèles et les leçons d'une entreprise chez elle ; une leçon de harnais devenue proposition de règle, acceptée par une personne et rejouée par la banque, dans un lot W10 après J2. Aucune fiche rafraîchie : toutes ont moins de 30 jours. Quatre questions (Q23 à Q26) et quatre expériences (E26 à E29) proposées, avec E12 amendée.
+
+**Prochain coup** : la décision de la Présidence ; E28 (une requête sur le dossier) et E26 au labo ; l'état des tests en cours dans W5, en mode développement ; Smart Assign instruit avec la lecture d'un juriste.
+
 ## 2026-11-15 : la Présidence ajoute le test à blanc à W6
 
 **Fait** : la Présidence a ouvert dans le Web Modeler de Camunda (8.10) l'export d'« intégrer un module » produit par W2 ([#538](https://github.com/taskforce-project/taskforce-fullstack/pull/538)), l'a téléchargé sans rien changer, puis a regardé son onglet Test. Le secrétariat a réimporté dans TaskForce le fichier écrit par Camunda.

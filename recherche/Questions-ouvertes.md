@@ -48,6 +48,10 @@ related:
 | [Q20](#q20--la-signature-électronique-au-sens-de-21-cfr-11200--quand-et-comment-) | La signature électronique au sens de 21 CFR 11.200 : quand, et comment ? | P2 | ouverte : une option des accords, que le client choisit, après J2 (13/11) |
 | [Q21](#q21--un-fournisseur-dune-personne-passe-t-il-lévaluation-fournisseur-dun-client-gxp-) | Un fournisseur d'une personne passe-t-il l'évaluation fournisseur d'un client GxP ? | P1 | ouverte : attend le client test (13/11) |
 | [Q22](#q22--les-questions-du-marché-qui-attendent-le-client-test) | Les questions du marché qui attendent le client test | P1 | ouverte : six questions de la séance n°26 (13/11) |
+| [Q23](#q23--quelle-décision-de-taskforce-mérite-un-modèle-de-décision-et-sur-quelles-étiquettes-lapprendre-sans-données-de-client-) | Quelle décision de TaskForce mérite un modèle de décision, et sur quelles étiquettes l'apprendre sans données de client ? | P2 | ouverte |
+| [Q24](#q24--qui-répond-dun-adaptateur-ou-dune-leçon-appris-chez-une-entreprise-au-sens-du-rgpd-et-de-lai-act-) | Qui répond d'un adaptateur ou d'une leçon appris chez une entreprise, au sens du RGPD et de l'AI Act ? | P2 | ouverte |
+| [Q25](#q25--comment-isoler-une-mission-sous-windows-natif-sans-prérequis-) | Comment isoler une mission sous Windows natif, sans prérequis ? | P2 | ouverte |
+| [Q26](#q26--ce-quune-leçon-du-harnais-peut-proposer-de-changer-et-ce-quelle-ne-touche-jamais) | Ce qu'une leçon du harnais peut proposer de changer, et ce qu'elle ne touche jamais | P2 | ouverte |
 
 ---
 
@@ -526,6 +530,74 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   aussi `[DÉDUIT]`, puisque l'app desktop se connecte par lui.
 - **Ce qu'il faut pour trancher** : l'app livrée et essayée sur de gros volumes de données (« me faut l'app avant evidemment qu'on
   testera avec des gros batch de donnees ») ; le cas du client test fait ; ses retours, discutés au Conseil.
+
+## Q23 : Quelle décision de TaskForce mérite un modèle de décision, et sur quelles étiquettes l'apprendre sans données de client ?
+
+`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 15/11/2026 · issue du [Conseil, séance n°27](./conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md), R190 à R192
+
+- **La question** : MANTA montre une recette désormais commune : une base ouverte, adaptée par LoRA, une tête qui note chaque
+  option, des millions de décisions étiquetées. La Présidence est prête à entraîner sur sa machine et à publier des modèles faits
+  pour TaskForce, sur un cas précis. Lequel, et avec quelles étiquettes, quand C1 tient (N ≈ 1, aucune donnée de client) ?
+- **Pourquoi ça compte** : R191 (un adaptateur au labo) et toute publication d'un modèle en dépendent. Des données synthétiques
+  simulent nos propres croyances ([`CLAUDE.md`](./CLAUDE.md), §3) ; des étiquettes tirées des accords et des refus apprennent ce que
+  les personnes acceptent, pas ce qui est juste (Norman, Harris, séance n°27).
+- **Position actuelle** : `[HYPOTHÈSE]` le tri d'une issue (la priorité, le type, les étiquettes, parmi ce que le projet offre) :
+  des options fermées ; une faiblesse mesurée des petits modèles génératifs (Triage, 1 cas sur 3 pour qwen3:8b et 2 sur 3 pour
+  qwen3.5:9b au banc, le 08/11/2026 ; le tri manqué d'E11, le 04/11/2026) ; des étiquettes que les personnes corrigent. Jamais
+  « à qui la confier » (R192).
+- **Ce qu'il faut pour trancher** : E26 (un modèle de décision existant contre le génératif, une règle écrite et le taux de base),
+  puis E12 amendée si E26 désigne le cas ; la licence, le nom et le lieu de publication, demandés à la Présidence.
+
+## Q24 : Qui répond d'un adaptateur ou d'une leçon appris chez une entreprise, au sens du RGPD et de l'AI Act ?
+
+`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 15/11/2026 · issue du [Conseil, séance n°27](./conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md), R193 et R194
+
+- **La question** : l'entreprise entraîne chez elle, sur ses données, avec la recette, le format d'export et la banque de TaskForce.
+  Est-elle seule responsable du traitement, ou TaskForce en devient-il coresponsable parce qu'il en fixe des moyens essentiels ? Qui
+  est fournisseur du système qu'elle met en service ? Et que devient l'effacement d'une personne dans des poids appris ?
+- **Pourquoi ça compte** : R193 en dépend, comme la fiche d'un adaptateur et ce qu'un client peut signer. Le premier client test
+  pourrait mettre dans TaskForce des décisions de ses salariés (question n°5 du PV à la Présidence).
+- **Position actuelle** : `[HYPOTHÈSE]` l'entreprise est responsable de ce traitement et fournisseur du système qu'elle met en
+  service ; TaskForce, qui ne voit ni ses données ni ses poids, fournit un outil. Un LoRA sur un petit modèle reste loin du tiers du
+  calcul initial : l'entreprise ne devient pas fournisseur d'un modèle à usage général (lignes directrices de la Commission,
+  18/07/2025). Les leçons, lisibles et effaçables, passent avant les poids ; l'effacement dans des poids passe par un réentraînement
+  périodique ou un filtre démontré sur les sorties (CNIL, fiche 10, 07/02/2025).
+- **Ce qu'il faut pour trancher** : la lecture d'un juriste ou d'un délégué à la protection des données sur le schéma de R193 ; l'avis
+  28/2024 de l'EDPB et les fiches 10 et 13 de la CNIL ; les recommandations de la CNIL sur l'IA au travail, annoncées pour 2026,
+  quand elles paraîtront.
+
+## Q25 : Comment isoler une mission sous Windows natif, sans prérequis ?
+
+`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 15/11/2026 · issue du [Conseil, séance n°27](./conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md), R189
+
+- **La question** : le worktree isole la branche, pas le poste. Sous Windows natif, la plateforme principale de l'app desktop, le bac
+  à sable de Claude Code n'existe pas ; WSL2 demande les droits d'administrateur au premier lancement ; Hyper-V manque à Windows
+  Famille ; Docker Desktop est payant au-delà de 250 salariés ou de 10 M$ de chiffre d'affaires. Quel chemin tient sur le poste
+  d'une entreprise de 10 à 249 personnes : WSL2 et le bac à sable de Claude Code, Podman, le moteur dans WSL2, les conteneurs de WSL,
+  ou une microVM de Docker Sandboxes ?
+- **Pourquoi ça compte** : R189 propose un isolement par défaut pour un dépôt venu du dehors, et le bac à sable du test à blanc de
+  W6 répond au même besoin (R195).
+- **Position actuelle** : `[HYPOTHÈSE]` WSL2 d'abord, parce que Claude Code y tourne et que son bac à sable y existe ; un conteneur
+  ensuite, Podman de préférence pour sa licence ; une microVM là où Windows Hypervisor Platform est permis. Aucun de ces chemins
+  n'est un prérequis de l'app.
+- **Ce qu'il faut pour trancher** : E27 sur la machine de la Présidence ; ce que la politique informatique du client test permet
+  (WSL fermé ou non par Intune ou par stratégie de groupe), sans nom ni détail.
+
+## Q26 : Ce qu'une leçon du harnais peut proposer de changer, et ce qu'elle ne touche jamais
+
+`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 15/11/2026 · issue du [Conseil, séance n°27](./conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md), R194
+
+- **La question** : R194 fait d'une leçon tirée des runs une proposition, rejouée par la banque et acceptée par une personne. Quelles
+  pièces du harnais une leçon peut-elle viser : une règle en mots, une convention du brouillon, un plan de Cortex, un cas de la
+  banque, la préférence de modèle d'une tâche, la fiche d'environnement ? Et lesquelles jamais : le socle, une règle qui relâche,
+  les étapes verrouillées, les sorties ?
+- **Pourquoi ça compte** : Harness² modifie jusqu'à son fichier de garde-fous, et rien de ce que montre son article ne les protège
+  (arXiv 2610.14224, 09/10/2026). Sans liste écrite, une leçon utile peut élargir un périmètre sans qu'on le voie.
+- **Position actuelle** : `[HYPOTHÈSE]` une leçon ne fait que proposer, et ne peut que durcir une règle ; elle vise d'abord les
+  conventions et les cas de la banque, qui ne changent aucune permission. Le socle refuse déjà qu'un agent change une règle
+  (`RulesFloor.java:105-107`).
+- **Ce qu'il faut pour trancher** : E29 ; la table écrite des pièces visées, relue par la Présidence ; un brouillon d'ADR si le lot
+  W10 est retenu.
 
 ---
 
