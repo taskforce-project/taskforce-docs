@@ -24,6 +24,13 @@ Logo projet        : assets/images/logo_taskforce.png
 **Date :** 08/06/2026  
 **Auteur(s) :** Pierre MICHEL
 
+> **▶ 16/11/2026 :** la 1.17.0 est en prod avec la desktop 1.14.0 (release [#544](https://github.com/taskforce-project/taskforce-fullstack/pull/544)) : les trois premiers lots du workflow
+> pilotable ([séance n°25](../../recherche/conseil/seances/2026-11-13-le-workflow-pilotable-plan-des-lots.md)). W0, les données
+> vivantes ([#535](https://github.com/taskforce-project/taskforce-fullstack/pull/535), V131) ; W1, l'application Workflow au rang du Board, pilotée sur ses nœuds, avec l'objectif du projet et
+> « Show all links » ([#542](https://github.com/taskforce-project/taskforce-fullstack/pull/542), V133) ; W2, le modèle des processus, son vérificateur et les points de pause verrouillés de
+> TF-J2-10, l'import et l'export BPMN 2.0 ([#538](https://github.com/taskforce-project/taskforce-fullstack/pull/538), V132). Chaque lot après sa relecture indépendante (R159) et, pour les
+> écrans, leur revue (R161). Suivent l'essai de la Présidence (E24), TF-J2-7 (le dossier signé), puis W3, W4 et W5.
+>
 > **▶ 15/11/2026 :** la 1.16.1 est en prod (release [#539](https://github.com/taskforce-project/taskforce-fullstack/pull/539)) : les flux temps réel n'acceptent plus qu'une destination que
 > l'app utilise, vérifiée pour la personne qui s'abonne, et seul le serveur y publie ([#537](https://github.com/taskforce-project/taskforce-fullstack/pull/537)). Backend seul : pas de
 > migration, pas de route, et la desktop 1.13.0 reste la version courante. Le chantier en cours est le workflow pilotable des
