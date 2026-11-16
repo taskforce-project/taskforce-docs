@@ -24,6 +24,32 @@ related:
 
 ---
 
+## 2026-11-16 : la Présidence tranche la séance n°27
+
+**Fait** : le secrétariat a remontré R188 à R195 à la Présidence, chacune avec ce qu'elle dit, les voix contre ou abstenues au second tour et leur raison, et sa recommandation. La Présidence répond en un message, puis confirme la lecture du secrétariat : « oui c'est ça pour R192, et je retiens R195 » ([PV n°27](./conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md)). Le même message tranche le point « avant d'appliquer » de TF-J2-10 : « Je suis d'accord avec l'option 2 » ([PV n°25](./conseil/seances/2026-11-13-le-workflow-pilotable.md), complément du 16/11/2026). Le secrétariat range les suites : Q23 à Q26 mises à jour ; E27, E28 et E29 retenues, E26 en attente, E12 renvoyée à plus tard ; ADR-028 en projet ; le plan des lots complété (W2, W5, W6, W9, W10).
+
+**Trouvé** :
+- `[ÉTABLI]` La Présidence suit trois fois la voix restée seule au second tour : Jobs sur l'estimation (« 1 chiffre ou rien »), LeCun sur l'isolement (« Ca devrait etre active par defaut effectivement. »), Musk sur les leçons du harnais (« je vois pas pk l'utilisateur devrait choisir en fait »).
+- `[ÉTABLI]` Elle pose la question que R189 laissait de côté : « comment on fait pour le bac a sable si la personne n'utilise pas Claude code ? ». Sa contrainte : pas de cloud payant, « scalable et robuste », « En etant realiste aussi ».
+- `[ÉTABLI]` Le moteur de bac à sable de Claude Code est publié à part, sous Apache 2.0, en préversion de recherche ([Sandbox Runtime](https://github.com/anthropic-experimental/sandbox-runtime)) ; le framework Containerization d'Apple fait tourner des conteneurs Linux sous macOS ([Apple](https://github.com/apple/containerization)). Dépôts ouverts le 16/11/2026, à relire en entier avant E27.
+- `[DÉDUIT]` Un chiffre seul n'est pas un intervalle : E28 ne donne plus à E1 son premier intervalle émis par le produit.
+
+**Décidé** : R188 à R195 retenues.
+- R188, amendée avec Jobs : un seul chiffre avec son unité, jamais une fourchette ; « 4 min » si au moins 8 des 10 dernières estimations comparables étaient justes, sinon « Temps estimé : 4 min » ; le chiffre décompte et se réajuste ; à 0 sans être fini, « Finalisation… ». Les tests en cours restent dans W5, donc dans J2 ; l'estimation va dans W9.
+- R189, amendée avec LeCun : l'isolement est par défaut, partout, quel que soit l'agent.
+- R190, pas exécutée maintenant : E26 attend ; le banc permanent est retenu, chaque requête évaluée nourrit le banc, par modèle et par tâche (la boucle de R61).
+- R191, pour plus tard, avec les données des clients : E12 attend.
+- R192, amendée avec Musk : pas de liste de refus écrite d'avance, chaque fonction se juge au cas par cas ; sauf la ligne de la loi, aucun modèle de TaskForce ne note des personnes ni n'attribue le travail sur leur comportement (AI Act, annexe III, point 4(b)) ; Smart Assign perd son critère de performance passée, dans le lot de nettoyage.
+- R193, sans entraînement pour l'instant : TaskForce reste agnostique sur les modèles.
+- R194, amendée avec Musk : une leçon qui durcit le harnais s'active seule quand la banque d'évaluations la valide ; versionnée, notifiée, annulable d'un geste ; jamais une règle relâchée, jamais le socle.
+- R195, mise à jour : J2 inchangé, sauf les tests en cours (W5) ; l'isolement par défaut après J2, avec le test à blanc (W6) ; l'estimation (W9) ; un lot W10 ; au labo, E27, E28 et E29, ni E26 ni E12 pour l'instant.
+- TF-J2-10, l'option 2 : tout travail d'agent qui peut changer le code repasse le point « avant d'appliquer » sur chaque chemin vers « avant la livraison » ; les zones qui ne font que lire ou écrire des notes en sont dispensées.
+- Des huit questions du Conseil, quatre sont tranchées (les tests en cours, la fourchette, Smart Assign, la source de MANTA : un post LinkedIn du 15/11/2026), une en partie (les postes, pas le moteur), trois restent ouvertes (l'entraînement, le client test, les corrections de la Présidence pour E29).
+
+**Précisions du secrétariat**, à part de la décision : « juste » veut dire la durée réelle à 20 % près, mesuré par E28. L'isolement vit dans le runner, pas dans l'agent ; une interface, un moteur par système (bubblewrap sous Linux ; Seatbelt sous macOS, et une machine virtuelle Linux légère pour les tests qui exigent Linux ; une distribution WSL2 dédiée sous Windows ; Docker ou Podman seulement s'ils sont déjà installés) ; le modèle hors du bac à sable, avec le GPU ; pas de bac à sable écrit en C par TaskForce ([ADR-028](./decisions/ADR-028-DRAFT-execution-isolee-par-defaut.md), en projet). Un banc commun à plusieurs entreprises ne garde que des scores agrégés, avec leur accord. En cloud, TaskForce héberge les données comme sous-traitant (RGPD, article 28) : un entraînement sur elles ne se fait qu'avec l'accord écrit du client, au contrat, et pour lui.
+
+**Prochain coup** : la relecture d'ADR-028 par la Présidence, et ce que fait une mission sans moteur d'isolement ; E28 (une requête sur le dossier), puis E27 et E29, au labo, sans rien prendre à J2 ; en mode développement, l'état des tests en cours dans W5 et le critère de performance passée retiré de Smart Assign ; la roadmap (W10, TF-J2-10).
+
 ## 2026-11-15 : la Présidence tranche deux points du workflow
 
 **Fait** : la revue des écrans de W1 (R161) a jugé que l'application Workflow, en l'état, « se lit comme un deuxième Board ». Le 15/11/2026 au soir, le secrétariat a posé deux questions à la Présidence : ajouter un interrupteur « Show all links », éteint par défaut et limité à 200 liens, pour lire la vue comme un plan dès maintenant ; et, pour les points de pause de TF-J2-10, repasser la liste de contrôle « avant la mission » avant chaque mission d'agents, pré-remplie, plutôt qu'une seule fois.

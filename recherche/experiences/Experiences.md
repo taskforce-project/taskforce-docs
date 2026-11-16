@@ -50,7 +50,7 @@ related:
 | [E9](#e9--le-temps-dattention-par-résultat-accepté-se-mesure-t-il-) | Attention humaine par résultat accepté (Conseil, R3) | ~1 j | non | proposée |
 | [E10](#e10--un-relecteur-dédié-trouve-t-il-de-vrais-défauts-) | Relecteur dédié des pull requests (Conseil, R4) | ~0,5 j | oui | proposée |
 | [E11](#e11--un-petit-modèle-local-rend-il-une-tâche-en-commentaire-acceptable-) | Un petit modèle local pour les tâches en commentaire (Conseil, R51) | ~1,5 j | oui | en cours : 4 sur 5 à l'essai de J1 (04/11) |
-| [E12](#e12--un-petit-modèle-affiné-bat-il-le-modèle-de-base-avec-recherche-) | Un petit modèle affiné contre le modèle de base avec recherche (Conseil, R62) | ~1,5 j | oui | proposée |
+| [E12](#e12--un-petit-modèle-affiné-bat-il-le-modèle-de-base-avec-recherche-) | Un petit modèle affiné contre le modèle de base avec recherche (Conseil, R62) | ~1,5 j | oui | proposée ; renvoyée à plus tard, avec les données des clients (16/11) |
 | [E13](#e13--le-spécialiste-gagne-t-il-du-temps-sur-un-vrai-dossier-) | Le temps du spécialiste sur un vrai dossier (Conseil, R63), à J8 | ~1 j | oui | proposée |
 | [E14](#e14--la-promesse-se-redit-elle-en-une-phrase-) | La promesse redite en une phrase (Conseil, R65), élargie par R163 et R164 : la phrase de règles et de preuve, et les noms des concurrents cités | ~2 h | non | proposée, élargie le 13/11 |
 | [E15](#e15--la-voix-se-transcrit-elle-sur-la-machine-juste-et-vite-) | La voix transcrite sur la machine (Conseil, R80, R132) | ~1 j | oui | en cours : voix de synthèse (08/11), puis dictée de la Présidence (09/11), délai tenu |
@@ -64,6 +64,10 @@ related:
 | [E23](#e23--le-processus-de20-tient-il-dans-le-sous-ensemble-aller-et-retour-) | Le processus d'E20 dans le sous-ensemble de BPMN, aller et retour (Conseil, R165), en J2 | ~0,5 j | non | faite : tient (15/11), dans le Web Modeler de Camunda |
 | [E24](#e24--la-vue-se-lit-elle-en-une-minute-à-chacune-de-ses-trois-lectures-) | La vue du workflow lue en une minute par un dirigeant, un chef de projet et un ingénieur (Conseil, R166 amendée), en J2 | ~1 h et le recrutement | non | proposée |
 | [E25](#e25--les-brouillons-de-lia-passent-ils-la-banque-sans-écarter-détape-verrouillée-) | La banque du brouillon : dix objectifs, aucune étape verrouillée écartée (Conseil, R175), en J2 | ~1 j | oui | proposée |
+| [E26](#e26--un-modèle-de-décision-existant-trie-t-il-mieux-quun-petit-modèle-génératif-avec-des-probabilités-calibrées-) | Un modèle de décision existant sur le tri, contre le génératif, une règle écrite et le taux de base (Conseil, R190) | ~1 j | oui | retenue par la Présidence (16/11) : en attente, sans date |
+| [E27](#e27--une-mission-tient-elle-dans-un-bac-à-sable-sur-la-machine-sous-les-règles-quel-que-soit-lagent-) | Une mission dans le bac à sable du runner, sous les règles, quel que soit l'agent, une attaque plantée, sous Windows, macOS et Linux (Conseil, R189 amendée) | ~0,5 j par système | oui | retenue par la Présidence (16/11), amendée |
+| [E28](#e28--un-seul-chiffre-tiré-des-missions-passées-est-il-juste-à-20--près-) | Un seul chiffre tiré des missions passées, juste à 20 % près, sur les 10 dernières estimations comparables (Conseil, R188 amendée) | ~0,5 j | non | retenue par la Présidence (16/11), amendée |
+| [E29](#e29--une-leçon-tirée-de-deux-runs-validée-par-la-banque-et-activée-seule-améliore-t-elle-un-cas-sans-en-casser-un-autre-) | Une leçon de harnais tirée de deux runs, validée par la banque et activée seule (Conseil, R194 amendée) | ~1 j | oui | retenue par la Présidence (16/11), amendée |
 
 > **L'ordre compte.** E1 avant tout le reste : sans mesure de calibration, **aucune** des autres n'est
 > interprétable. C'est l'inversion proposée dans [`World_Model_Notes.md`](../revues/World-Model.md) §10 —
@@ -517,6 +521,12 @@ mémoire sur le poste.
 **Limite** : un corpus public, pas les données d'un client (C1) ; un seul modèle ; une personne qui juge.
 
 **Coût** : 0 € de calcul ; ~1 j pour préparer le carnet et les évaluations, plus une demi-journée de mesure.
+
+**16/11/2026** : R191 retenue par la Présidence, pour plus tard
+([séance n°27](../conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md)) : « on pourra peut etre le faire plus tard ca
+right ? Avec les donnees client en fait. Donc a retenir mais pour l'instant on fait pas ». E12 garde son texte et attend, sans
+date ; l'amendement que R191 proposait (un adaptateur sur le tri, après E26) n'est pas rangé. Précision du secrétariat : avec
+les données d'un client, un entraînement ne se fait qu'avec son accord écrit, au contrat, et pour lui (R193).
 
 ## E13 : Le spécialiste gagne-t-il du temps sur un vrai dossier ?
 
@@ -1274,6 +1284,165 @@ mesure E22.
 
 **Coût** : ~1 j, dans le lot du brouillon (W4 de la séance n°25), avant que le brouillon d'E20 soit montré (E22) : un modèle qui ne
 tient pas la banque ne propose pas de brouillon. W4 est le premier lot qu'on lâche après la densité Summary (R178).
+
+## E26 : Un modèle de décision existant trie-t-il mieux qu'un petit modèle génératif, avec des probabilités calibrées ?
+
+`[statut:: proposée]` · Ouverte le 15/11/2026 · issue du [Conseil, séance n°27](../conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md), R190 · retenue par la Présidence le 16/11/2026, pas exécutée maintenant (« Donc on retiens, mais on execute pas ce truc la pour le moment. ») : en attente, sans date
+
+**Hypothèse** `[HYPOTHÈSE]` : sur le tri d'une issue, un modèle de décision ouvert, déjà publié, sans aucun entraînement de notre
+part, est plus juste que qwen3.5:9b, le meilleur modèle génératif du banc sur la machine de la Présidence, et le score de Brier de
+ses probabilités bat celui du taux de base.
+
+**Falsification** : il n'est pas plus juste que qwen3.5:9b, ou son Brier ne bat pas celui du taux de base, ou une règle écrite en
+mots fait aussi bien que lui. Rien ne s'entraîne alors pour le tri, et R191 ne s'ouvre pas.
+
+**Schéma réel** `[ÉTABLI]` (dossier de la séance n°27, 15/11/2026) :
+- le banc a une tâche Triage de trois cas, notés par du code (`BenchmarkSuite.java`) ; le 08/11/2026, qwen3:8b « Not yet » (1 sur
+  3), qwen3.5:9b « With review » (2 sur 3) ; E11 a manqué la priorité d'un tri le 04/11/2026 ;
+- `[DÉDUIT]` le banc note des réponses ; il ne lit aucune probabilité par option ;
+- des modèles de décision ouverts existent : Cloudflare Clef, sous Apache 2.0, sur des bases de 27 et de 9 milliards de paramètres
+  ([Cloudflare](https://blog.cloudflare.com/clef-decision-models), 01/10/2026) ; MANTA, médical, qui demande 16 Go pour son 4B
+  ([Hugging Face](https://huggingface.co/gevaertlab/MANTA-4B), 10/11/2026) ; d'autres, de 2 à 27 milliards, que cite la table de
+  MANTA ;
+- la machine de la Présidence : RTX 5070 portable, 8 Go de mémoire graphique, environ 32 Go de mémoire vive (relevé du 15/11/2026).
+
+**Protocole** :
+- cinquante cas de tri écrits avant, avec leur bonne réponse : les trois du banc, celui d'E11, et des cas de la Présidence sur ses
+  projets, sans donnée personnelle, dont un quart hors du domaine des autres (un autre métier, une autre langue) ; l'ordre de passage
+  tiré au sort ;
+- quatre bras : le modèle de décision ouvert qui tient sur 8 Go, quantifié au besoin (ou le banc le dit trop lent) ; qwen3.5:9b par
+  la passerelle ; une règle écrite en mots, de moins de dix lignes (Gawande) ; le taux de base, qui répond toujours la classe la plus
+  fréquente ;
+- pour le modèle de décision, la probabilité de chaque option ; pour le génératif, sa réponse seule, et l'on écrit qu'il ne rend pas
+  de probabilité ;
+- les échecs rapportés comme les réussites.
+
+**Métrique** : la justesse par bras, avec son intervalle de Wilson ; le score de Brier du modèle de décision contre celui du taux de
+base ; un diagramme de fiabilité ; l'ECE avec son intervalle ; la latence médiane et la mémoire sur la machine.
+
+**Limite** : cinquante cas, écrits par nous et par la Présidence (C1) ; un seul modèle de décision, choisi pour tenir sur 8 Go ; sur
+cinquante cas, la calibration se lit en intervalle, jamais en un chiffre.
+
+**Coût** : ~1 j au labo, sans code du produit ; hors des heures de J2.
+
+## E27 : Une mission tient-elle dans un bac à sable sur la machine, sous les règles, quel que soit l'agent ?
+
+`[statut:: proposée]` · Ouverte le 15/11/2026 · issue du [Conseil, séance n°27](../conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md), R189 · retenue par la Présidence le 16/11/2026 et amendée avec R189 (l'isolement par défaut, partout, quel que soit l'agent) ; la preuve du projet d'[ADR-028](../decisions/ADR-028-DRAFT-execution-isolee-par-defaut.md)
+
+**Hypothèse** `[HYPOTHÈSE]` : sous Windows, macOS et Linux, une mission de code jouée dans le bac à sable du runner (une
+distribution WSL2 dédiée sous Windows, bubblewrap sous Linux, Seatbelt sous macOS), l'écriture bornée au worktree et le réseau
+borné à TaskForce, au hook du runner et au fournisseur du modèle, garde ses règles à chaque action, bloque une attaque plantée
+et ne coûte pas plus de la moitié de sa durée en plus. Cela vaut pour les deux sortes d'agent : Claude Code, que le runner lance
+lui-même dans le bac à sable ; et un modèle local seul, dont les outils de TaskForce (shell, fichiers, tests) s'exécutent dans
+le bac à sable pendant que le modèle reste dehors, avec le GPU.
+
+**Falsification** : sur un système ou pour une sorte d'agent, le hook des règles n'est plus joint (la garde fermée arrête alors
+la mission) ; ou l'attaque passe ; ou les identifiants de Claude Code doivent être copiés en clair dans le bac à sable ; ou le
+surcoût dépasse la moitié de la durée ; ou le moteur exige ce que l'app ne peut pas poser seule (des droits d'administrateur à
+chaque mission, un logiciel payant). L'isolement par défaut ne se promet alors pas sur ce système : ADR-028 se réécrit pour lui,
+et la mission dit avant de partir qu'elle n'est pas isolée.
+
+**Schéma réel** `[ÉTABLI]` (dossier de la séance n°27, 15/11/2026) : le runner lance `claude -p` dans un worktree, sous un hook
+`PreToolUse` vers son serveur local, garde fermée (`taskforce-runner/src/agent.ts:113-216`) ; aucun conteneur ni bac à sable du
+système dans `taskforce-runner/src` ; Hyper-V manque à Windows Famille ; WSL2 demande les droits d'administrateur au premier
+lancement, et une entreprise peut le fermer ; le bac à sable de Claude Code existe sous macOS (Seatbelt), sous Linux et sous
+WSL2 (bubblewrap), pas sous Windows natif ([Anthropic](https://code.claude.com/docs/en/sandboxing)). Ajouté le 16/11/2026,
+dépôts ouverts ce jour-là et à relire en entier avant l'essai : ce moteur est publié à part, sous Apache 2.0, en préversion de
+recherche ([Sandbox Runtime](https://github.com/anthropic-experimental/sandbox-runtime)) ; le framework Containerization d'Apple
+fait tourner des conteneurs Linux sous macOS, sous Apache 2.0 ([Apple](https://github.com/apple/containerization)).
+
+**Protocole** :
+- une même petite mission (une issue de code d'un dépôt d'essai, avec ses tests), cinq fois dans le worktree seul et cinq fois
+  dans le bac à sable, pour chaque sorte d'agent ;
+- d'abord sur la machine de la Présidence (Windows 11 Famille, WSL2), puis sous Linux et sous macOS, sur les machines dont le
+  labo dispose ; un système sans machine d'essai est dit non prouvé ;
+- sous macOS, un essai de plus : des tests qui exigent Linux, joués dans une machine virtuelle Linux légère (Containerization) ;
+- Docker ou Podman, seulement s'ils sont déjà installés sur la machine, comme moteur de rechange, mesurés à part ;
+- dans le dépôt d'essai, un fichier piégé qui demande de lire un fichier hors du worktree et de joindre un domaine hors de la
+  liste ;
+- pour chaque passage : le temps de démarrage, la durée, les accords demandés, l'attaque bloquée ou non, chaque appel d'outil
+  passé ou non par le hook, et ce que l'installation du moteur a demandé à la personne.
+
+**Métrique** : par système et par sorte d'agent, le surcoût médian, en secondes et en part de la durée ; les attaques bloquées
+sur cinq ; les appels d'outils jugés par le hook, sur tous les appels ; les gestes demandés à la personne pour poser le moteur.
+
+**Limite** : une machine par système au mieux, un dépôt, une mission ; rien n'est dit des postes d'une entreprise, où WSL peut
+être fermé ; la boucle d'agent de TaskForce sur un modèle local (TF-J2-3) n'est pas faite à la roadmap, et si elle manque le
+jour de l'essai, son bras se joue avec un script qui appelle les mêmes outils dans le bac à sable ; les moteurs sont des
+précisions du secrétariat, pas la décision de la Présidence, qui est l'isolement par défaut partout.
+
+**Coût** : `[HYPOTHÈSE]` ~0,5 j par système, au labo, sans rien prendre à J2 (R195).
+
+## E28 : Un seul chiffre, tiré des missions passées, est-il juste à 20 % près ?
+
+`[statut:: proposée]` · Ouverte le 15/11/2026 · issue du [Conseil, séance n°27](../conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md), R188 · retenue par la Présidence le 16/11/2026 et amendée avec R188 (un seul chiffre avec son unité, jamais une fourchette) ; avant le temps estimé de W9 ([plan des lots](../conseil/seances/2026-11-13-le-workflow-pilotable-plan-des-lots.md))
+
+**Hypothèse** `[HYPOTHÈSE]` : pour une mission finie, un seul chiffre tiré des durées des missions passées comparables (le même
+projet, le même agent, le même mode ; leur médiane) est juste, c'est-à-dire que la durée réelle tombe à 20 % près de ce chiffre,
+au moins 8 fois sur les 10 dernières estimations comparables. C'est le seuil de la règle de la Présidence : à 8 sur 10 au moins,
+l'écran dit le chiffre seul (« 4 min ») ; en dessous, il dit « Temps estimé : 4 min ».
+
+**Falsification** : sur le dossier, aucune suite de 10 estimations comparables n'atteint 8 justes. Le chiffre seul ne se
+montrerait alors jamais : la façon de le calculer se revoit avant W9 (par étape plutôt que par mission, par exemple), ou W9 ne
+garde que « Temps estimé : ». Autre signal, `[HYPOTHÈSE]` : plus d'une mission sur deux tourne encore quand son décompte arrive
+à 0 ; « Finalisation… » serait alors l'état ordinaire, et non une courte attente.
+
+**Schéma réel** `[ÉTABLI]` (dossier de la séance n°27, 15/11/2026) : `delivery_runs.claimed_at` (V88) et `ended_at` (V110)
+datent chaque mission ; `provider_key` (V86), `work_mode` (V122) et l'issue, donc le projet, la situent ; la chronologie et les
+accords sont horodatés (V96) ; aucune estimation n'existe dans le produit.
+
+**Protocole** : une requête en lecture seule sur la base de la Présidence. Pour chaque mission finie, dans l'ordre du temps,
+seulement les missions comparables antérieures ; le chiffre, puis la durée réelle, à 20 % près ou non ; sur les 10 dernières
+estimations comparables, le nombre de justes ; le temps passé à attendre un accord retiré quand le dossier le donne. Les deux
+seuils sont écrits avant la mesure : 8 sur 10 est de la Présidence, 20 % est une précision du secrétariat.
+
+**Métrique** : la part des estimations justes à 20 % près ; la part des suites de 10 qui atteignent 8 justes ; la part des
+missions qui dépassent leur chiffre, et de combien (le temps passé en « Finalisation… ») ; la part des missions sans chiffre,
+faute de mission comparable.
+
+**Limite** : peu de missions, d'une seule personne (C1) ; des missions d'essai sur la base de développement ; un chiffre juste
+sur le passé peut ne pas l'être sur un autre projet ; le chiffre qui se réajuste en cours de mission ne se mesure pas sur le
+dossier, la requête ne juge que le chiffre de départ. `[DÉDUIT]` Un chiffre seul n'est pas un intervalle : E28 ne donne plus à
+E1 son premier intervalle émis par le produit.
+
+**Coût** : ~0,5 j, sans code du produit et sans modèle.
+
+## E29 : Une leçon tirée de deux runs, validée par la banque et activée seule, améliore-t-elle un cas sans en casser un autre ?
+
+`[statut:: proposée]` · Ouverte le 15/11/2026 · issue du [Conseil, séance n°27](../conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md), R194 · retenue par la Présidence le 16/11/2026 et amendée avec R194 (une leçon qui durcit s'active seule quand la banque la valide) ; avant le lot W10 ([plan des lots](../conseil/seances/2026-11-13-le-workflow-pilotable-plan-des-lots.md))
+
+**Hypothèse** `[HYPOTHÈSE]` : sur le tri, une leçon qui durcit, proposée par un modèle à partir de l'écart entre deux runs (le
+tri manqué d'E11 et un run réussi, ou deux versions d'une convention), puis validée par la banque et activée sans qu'une
+personne l'accepte d'abord, corrige le cas qui l'a fait naître, gagne sur au moins deux cas qu'elle n'a pas vus naître, ne fait
+régresser aucun cas de la banque, du banc ni de la suite de capacités, et la Présidence, notifiée, ne l'annule pas.
+
+**Falsification** : une régression sur un seul cas après une activation ; ou aucun gain hors des cas qui l'ont fait naître (un
+run chanceux) ; ou aucune leçon utile sur trois proposées ; ou, `[HYPOTHÈSE]`, une leçon activée que la Présidence annule parce
+qu'elle gêne son travail. R194 ne passe alors pas dans le produit sous cette forme. Une leçon qui relâche une règle ou touche au
+socle, et qui s'active, arrête tout : elle doit être impossible par construction.
+
+**Schéma réel** `[ÉTABLI]` (dossier de la séance n°27, 15/11/2026) : la banque d'évaluations (R61), la suite de capacités (huit
+cas, R113) et le banc (22 cas, R131) sont notés par du code ; les règles sont des versions immuables (V125) ; le socle refuse
+qu'un agent change une règle (`RulesFloor.java:105-107`). Harness² propose deux modifications, les joue sur la même tâche et
+compose à partir de leurs contrastes, sans vérité terrain ([arXiv 2610.14224](https://arxiv.org/abs/2610.14224), 09/10/2026).
+
+**Protocole** :
+- trois leçons proposées, chacune en une ligne (une convention du tri, ou une règle en mots qui ne peut que durcir), avec sa
+  situation et sa preuve, les deux dossiers ; le modèle qui les propose est nommé ;
+- la banque, le banc et la suite de capacités rejoués avec chaque leçon ; seules s'activent celles qui gagnent sur deux cas au
+  moins qu'elles n'ont pas vus naître, sans une régression ;
+- chaque leçon activée entre versionnée, avec son auteur, sa preuve et son empreinte ; la Présidence en est notifiée et peut
+  l'annuler d'un geste ; on note si elle lit la preuve, et ce qu'elle annule ;
+- deux leçons interdites, proposées exprès : une qui relâche une règle, une qui vise le socle ; aucune ne doit s'activer.
+
+**Métrique** : les cas corrigés ; les cas gagnés hors de la naissance ; les régressions (visée : zéro) ; les leçons activées,
+puis annulées ; les leçons interdites refusées (visée : deux sur deux) ; le temps de lecture de la notification.
+
+**Limite** : quelques cas de tri, une personne notifiée (C1) ; ce qui tient sur le tri ne dit rien des autres décisions ; au
+labo, l'activation et l'annulation se jouent à la main, sans le produit ; un modèle éditeur qui propose peut partager les biais
+du modèle qu'il corrige (une limite que l'article de Harness² reconnaît pour lui-même).
+
+**Coût** : ~1 j au labo, sans code du produit, sans rien prendre à J2 (R195).
 
 ---
 

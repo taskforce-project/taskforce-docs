@@ -48,10 +48,10 @@ related:
 | [Q20](#q20--la-signature-électronique-au-sens-de-21-cfr-11200--quand-et-comment-) | La signature électronique au sens de 21 CFR 11.200 : quand, et comment ? | P2 | ouverte : une option des accords, que le client choisit, après J2 (13/11) |
 | [Q21](#q21--un-fournisseur-dune-personne-passe-t-il-lévaluation-fournisseur-dun-client-gxp-) | Un fournisseur d'une personne passe-t-il l'évaluation fournisseur d'un client GxP ? | P1 | ouverte : attend le client test (13/11) |
 | [Q22](#q22--les-questions-du-marché-qui-attendent-le-client-test) | Les questions du marché qui attendent le client test | P1 | ouverte : six questions de la séance n°26 (13/11) |
-| [Q23](#q23--quelle-décision-de-taskforce-mérite-un-modèle-de-décision-et-sur-quelles-étiquettes-lapprendre-sans-données-de-client-) | Quelle décision de TaskForce mérite un modèle de décision, et sur quelles étiquettes l'apprendre sans données de client ? | P2 | ouverte |
-| [Q24](#q24--qui-répond-dun-adaptateur-ou-dune-leçon-appris-chez-une-entreprise-au-sens-du-rgpd-et-de-lai-act-) | Qui répond d'un adaptateur ou d'une leçon appris chez une entreprise, au sens du RGPD et de l'AI Act ? | P2 | ouverte |
-| [Q25](#q25--comment-isoler-une-mission-sous-windows-natif-sans-prérequis-) | Comment isoler une mission sous Windows natif, sans prérequis ? | P2 | ouverte |
-| [Q26](#q26--ce-quune-leçon-du-harnais-peut-proposer-de-changer-et-ce-quelle-ne-touche-jamais) | Ce qu'une leçon du harnais peut proposer de changer, et ce qu'elle ne touche jamais | P2 | ouverte |
+| [Q23](#q23--quelle-décision-de-taskforce-mérite-un-modèle-de-décision-et-sur-quelles-étiquettes-lapprendre-sans-données-de-client-) | Quelle décision de TaskForce mérite un modèle de décision, et sur quelles étiquettes l'apprendre sans données de client ? | P2 | ouverte : aucun entraînement pour l'instant, E26 et E12 attendent (16/11) |
+| [Q24](#q24--qui-répond-dun-adaptateur-ou-dune-leçon-appris-chez-une-entreprise-au-sens-du-rgpd-et-de-lai-act-) | Qui répond d'un adaptateur ou d'une leçon appris chez une entreprise, au sens du RGPD et de l'AI Act ? | P2 | ouverte : attend la lecture d'un juriste ; aucun entraînement pour l'instant (16/11) |
+| [Q25](#q25--comment-isoler-une-mission-sous-windows-natif-sans-prérequis-) | Comment isoler une mission sous Windows natif, sans prérequis ? | P2 | en cours : l'isolement par défaut partout, ADR-028 en projet, E27 (16/11) |
+| [Q26](#q26--ce-quune-leçon-du-harnais-peut-proposer-de-changer-et-ce-quelle-ne-touche-jamais) | Ce qu'une leçon du harnais peut proposer de changer, et ce qu'elle ne touche jamais | P2 | en cours : une leçon qui durcit s'active seule ; jamais le socle, jamais une règle relâchée (16/11) |
 
 ---
 
@@ -547,6 +547,13 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   « à qui la confier » (R192).
 - **Ce qu'il faut pour trancher** : E26 (un modèle de décision existant contre le génératif, une règle écrite et le taux de base),
   puis E12 amendée si E26 désigne le cas ; la licence, le nom et le lieu de publication, demandés à la Présidence.
+- **16/11/2026** : R190 retenue, pas exécutée maintenant ; R191 retenue, pour plus tard, avec les données des clients ; R192
+  retenue, amendée avec Musk ([séance n°27](./conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md)). La Présidence :
+  « Donc on retiens, mais on execute pas ce truc la pour le moment. » Rien ne s'entraîne pour l'instant : E26 et E12 attendent,
+  sans date. Le banc permanent est retenu : chaque requête est évaluée et nourrit le banc, par modèle et par tâche (la boucle de
+  R61). Pas de liste de refus écrite d'avance, sauf la ligne de la loi : aucun modèle de TaskForce ne note des personnes ni
+  n'attribue le travail sur leur comportement. Q23 reste ouverte : la décision à apprendre, ses étiquettes, la licence, le nom
+  et le lieu de publication attendent E26 et E12.
 
 ## Q24 : Qui répond d'un adaptateur ou d'une leçon appris chez une entreprise, au sens du RGPD et de l'AI Act ?
 
@@ -565,10 +572,19 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 - **Ce qu'il faut pour trancher** : la lecture d'un juriste ou d'un délégué à la protection des données sur le schéma de R193 ; l'avis
   28/2024 de l'EDPB et les fiches 10 et 13 de la CNIL ; les recommandations de la CNIL sur l'IA au travail, annoncées pour 2026,
   quand elles paraîtront.
+- **16/11/2026** : R193 retenue, sans entraînement pour l'instant ; R194 retenue, amendée avec Musk
+  ([séance n°27](./conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md)). TaskForce reste agnostique sur les modèles :
+  « on n'a rien a voir cote modele ». **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : sur « c'est eux
+  ou moi qui aurait la data », en cloud, TaskForce héberge les données comme sous-traitant (RGPD, article 28) ; elles restent au
+  client, et un entraînement sur elles ne se fait qu'avec son accord écrit, au contrat, et pour lui ; un banc commun à plusieurs
+  entreprises ne garde que des scores agrégés, avec leur accord, et aucun contenu ne sort. `[DÉDUIT]` La position du 15/11
+  (« TaskForce, qui ne voit ni ses données ni ses poids ») ne vaut que pour une installation chez le client ; en cloud, le rôle
+  de sous-traitant s'y ajoute. Q24 reste ouverte : elle attend la lecture d'un juriste, et la réponse sur les décisions des
+  salariés du client test (question n°5 du PV).
 
 ## Q25 : Comment isoler une mission sous Windows natif, sans prérequis ?
 
-`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 15/11/2026 · issue du [Conseil, séance n°27](./conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md), R189
+`[statut:: en-cours]` · `[prio:: P2]` · Ouverte le 15/11/2026 · issue du [Conseil, séance n°27](./conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md), R189
 
 - **La question** : le worktree isole la branche, pas le poste. Sous Windows natif, la plateforme principale de l'app desktop, le bac
   à sable de Claude Code n'existe pas ; WSL2 demande les droits d'administrateur au premier lancement ; Hyper-V manque à Windows
@@ -582,10 +598,19 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   n'est un prérequis de l'app.
 - **Ce qu'il faut pour trancher** : E27 sur la machine de la Présidence ; ce que la politique informatique du client test permet
   (WSL fermé ou non par Intune ou par stratégie de groupe), sans nom ni détail.
+- **16/11/2026** : R189 retenue, amendée avec LeCun
+  ([séance n°27](./conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md)) : « Ca devrait etre active par defaut
+  effectivement. » L'isolement est par défaut, partout, quel que soit l'agent. `[DÉDUIT]` La position du 15/11 (« Aucun de ces
+  chemins n'est un prérequis de l'app ») ne tient plus telle quelle : il faut sur chaque système un moteur que l'app pose
+  elle-même. **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence
+  ([ADR-028](./decisions/ADR-028-DRAFT-execution-isolee-par-defaut.md), en projet) : sous Windows, une distribution WSL2
+  dédiée ; Docker ou Podman seulement s'ils sont déjà installés ; l'isolement dans le runner, pour que les outils d'un modèle
+  local seul soient isolés comme Claude Code. Q25 passe en cours. Restent, pour E27 : les droits d'administrateur au premier
+  lancement de WSL2, WSL fermé par une entreprise, et ce que fait une mission quand la machine n'offre aucun moteur.
 
 ## Q26 : Ce qu'une leçon du harnais peut proposer de changer, et ce qu'elle ne touche jamais
 
-`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 15/11/2026 · issue du [Conseil, séance n°27](./conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md), R194
+`[statut:: en-cours]` · `[prio:: P2]` · Ouverte le 15/11/2026 · issue du [Conseil, séance n°27](./conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md), R194
 
 - **La question** : R194 fait d'une leçon tirée des runs une proposition, rejouée par la banque et acceptée par une personne. Quelles
   pièces du harnais une leçon peut-elle viser : une règle en mots, une convention du brouillon, un plan de Cortex, un cas de la
@@ -598,6 +623,14 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   (`RulesFloor.java:105-107`).
 - **Ce qu'il faut pour trancher** : E29 ; la table écrite des pièces visées, relue par la Présidence ; un brouillon d'ADR si le lot
   W10 est retenu.
+- **16/11/2026** : R194 retenue, amendée avec Musk
+  ([séance n°27](./conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md)) : « je vois pas pk l'utilisateur devrait choisir
+  en fait ». Une leçon qui durcit le harnais s'active seule quand la banque d'évaluations la valide ; elle est versionnée,
+  notifiée et annulable d'un geste ; une leçon ne relâche jamais une règle et ne touche jamais au socle. La position du 15/11
+  (« une leçon ne fait que proposer ») change donc pour les leçons qui durcissent. Q26 passe en cours. Restent : la table écrite
+  des pièces qu'une leçon peut viser ; `[DÉDUIT]` ce que « durcir » veut dire pour une convention du brouillon, un cas de la
+  banque ou une préférence de modèle, qui restent des propositions tant que ce n'est pas écrit ; les étapes verrouillées et les
+  sorties, que R194 mettait hors de portée et que le secrétariat y laisse. E29, puis le lot W10.
 
 ---
 

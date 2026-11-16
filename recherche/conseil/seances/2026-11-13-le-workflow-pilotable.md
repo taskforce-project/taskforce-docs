@@ -929,6 +929,25 @@ points ci-dessus :
   construction ; le vérificateur l'exige devant chacune ; dans W5, la liste arrive pré-remplie depuis la dernière réponse du même
   run, et la personne la confirme d'un geste.
 
+**Complément du 16/11/2026.** Après la revue du vérificateur de W2 (R159, PR
+[#538](https://github.com/taskforce-project/taskforce-fullstack/pull/538)), le secrétariat a posé une question à la Présidence
+sur le point « avant d'appliquer » de TF-J2-10, avec ses options. La Présidence y répond le 16/11/2026, à la fin de son message
+sur la [séance n°27](./2026-11-15-le-run-et-les-petits-modeles.md), mot pour mot :
+
+> « Je suis d'accord avec l'option 2 »
+
+- **L'option 2, telle que le secrétariat l'avait posée** : tout travail d'agent qui peut changer le code (pousser, ouvrir une
+  pull request, écrire des fichiers appliqués) repasse le point « avant d'appliquer » sur chaque chemin vers « avant la
+  livraison ». Les zones qui ne font que lire ou écrire des notes, comme les notes de version, en sont dispensées.
+
+**Précisions du secrétariat pour la mise en œuvre.** Elles ne sont pas des mots de la Présidence, qui n'a tranché que le point
+ci-dessus ([plan des lots](./2026-11-13-le-workflow-pilotable-plan-des-lots.md), W2) :
+
+- le vérificateur refuse un processus où une zone d'agent qui peut changer le code rejoint « avant la livraison » sans passer
+  par « avant d'appliquer » (`changeWithoutPausePoint`, PR #538) ;
+- ce qu'une zone peut faire se lit dans ses règles, celles du paquet du projet ([Backend](../../../v1/02-produit/Backend.md),
+  TF-J2-10).
+
 ## Notes du secrétariat
 
 - **Le dossier** : seulement des pages publiques, lues le 13/11/2026. Le projet d'annexe 22 et la spécification de BPMN 2.0.2 ont
@@ -1002,6 +1021,10 @@ points ci-dessus :
   §12) et dans W1, la liste « avant la mission » avant chaque mission d'agents dans W2 et W5, au plan des lots, chaque fois la
   décision à part des précisions du secrétariat ; la ligne de TF-J2-10 à la roadmap ; la ligne du registre de la charte (§12)
   complétée ; le récit au Journal.
+- Rangé le 16/11/2026, après le complément du 16/11/2026 et la décision de la Présidence sur la
+  [séance n°27](./2026-11-15-le-run-et-les-petits-modeles.md) : l'option 2 dans W2, au plan des lots ; W5, W6 et W9 précisés, et
+  un lot W10 ajouté, chaque fois la décision à part des précisions du secrétariat ; le récit au Journal. Reste la ligne de
+  TF-J2-10 à la roadmap.
 - Rien ne migre vers `v1/` sans tâche ni ADR (quarantaine, [`CLAUDE.md`](../../CLAUDE.md) §2).
 
 ---

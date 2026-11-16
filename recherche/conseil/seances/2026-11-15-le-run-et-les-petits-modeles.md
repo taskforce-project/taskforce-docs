@@ -16,6 +16,7 @@ related:
   - "./2026-10-29-intelligence-possedee.md"
   - "../../decisions/ADR-022-DRAFT-infrastructure-pas-les-regles.md"
   - "../../decisions/ADR-025-DRAFT-un-seul-moteur-de-regles.md"
+  - "../../decisions/ADR-028-DRAFT-execution-isolee-par-defaut.md"
   - "../../experiences/Experiences.md"
   - "../../Questions-ouvertes.md"
 ---
@@ -39,6 +40,11 @@ related:
 >
 > **Un constat hors saisine** : Smart Assign, dans le code, pèse la réussite passée de chaque personne pour proposer à qui confier
 > une issue. C'est la zone que l'AI Act classe à haut risque à partir du 02/12/2027 (R192).
+>
+> **Décision de la Présidence (16/11/2026)** : R188 à R195 retenues. R188, R189, R192 et R194 sont amendées : un seul chiffre au
+> lieu d'une fourchette, l'isolement par défaut partout, pas de liste de refus écrite d'avance sauf la ligne de la loi, une
+> leçon qui durcit activée seule. Rien ne s'exécute ni ne s'entraîne pour l'instant au titre de R190, R191 et R193
+> ([décision](#décision-de-la-présidence)).
 
 - **Saisine** (Présidence, 15/11/2026, en conversation, mot pour mot) :
   - « Quand on lance les workflows faudrait vraiment qu'on puisse visualiser tout ca si possible : Run #145, Status Running,
@@ -1079,20 +1085,219 @@ recommandation passe avec 22 oui sur 24 au moins.
    les leçons d'E29 au labo ?
 8. **MANTA** : où l'a-t-elle vu le 15/11 ? Ses dépôts datent du 10/11 ; le secrétariat veut dater sa source.
 
-## Décision
+## Décision de la Présidence
 
-**Décision de la Présidence** : à venir.
+Tranchée le 16/11/2026, en conversation. Le secrétariat avait remontré R188 à R195 à la Présidence, chacune avec ce qu'elle dit,
+les voix contre ou abstenues au second tour et leur raison, et sa recommandation. La Présidence répond en un message, mot pour
+mot :
+
+> « R188 :
+>
+> Je suis d'accord avec Jobs, 1 chiffre ou rien, avec unite si necessaire. Apres on pourrait faire un truc genre : si les
+> estimation sont tjr a 80% juste sur les, jsp moi, les 10 dernieres estimation, alors on affiche juste le chiffre, enfin le
+> temps quoi voila, chiffre + unite on va dire, mais si c'est en dessous alors on affiche l'estimation, donc trouver une petite
+> formule tres courte comme "temps estime : X + unite" avec le deompcte quand mm mais qui s'adapte du coup, genre il decoule
+> quand mm, et une fois a 0 ca mets loading ou finalisation ou bref t'as compris quoi un truc qui demande a l'utilisateur
+> d'attendre encore 30 secondes right ? Je pense que ca niveau UI/UX c'est ok.
+>
+> R189 :
+>
+> Oui Lecun a pas tord la dessus. Par contre faudrait faire gaffe. Imagine quand on installe Taskforce, ca ouvre une instance
+> Docker par exemple ou autre, a voir sur Mac par exemple ce que ca donne, mais disons chaque PC ouvre sa propre instance en
+> gros. on verra plus tard pour faire du partager. Dans ce cas la, ca voudrais dire que par defaut, tout ce qui est execute,
+> c'execute dans le container Docker right ? Enfin je vexu dire t'aurais vraiment tout sur le PC + tout ce qui releve de
+> l'execution, des runs, des bac a sable et ainsi de suite, serait en environnement isole via un container ou une autre
+> technologie. Et ca devrait etre le cas partout je pense. Ca devrait etre active par defaut effectivement. Donc oui je suis
+> d'accord avec toi, mais comment on fait pour le bac a sable si la personne n'utilise pas Claude code ? Imaginons qu'elle
+> utilise "Juste" qwen4 en 27B par exemple, pour tout faire genre elle a vraiment que ca. Que ce passe t'il alors ? Comment on
+> isole les tests, les runs, les executions, ... Le cloud est payant, c'est une solution mais c'est payant et pour l'instant je
+> peux pas me le permettre. je pars du principe que sur notre propre machine, elle sont suffisament puissante ajd pour ne pas
+> payer super cher un abo cloud.
+>
+> Donc je suis plus d'accord avec Lecun, a voir comment on fait ca, si c'est viable, pertinent, facile d'utilisation, ...
+>
+> J'aurais aucun pb d'ailleurs a build notre propre system de bac a sable hein, enfin je veux dire si faut commencer a faire du
+> C j'ai pas de pb, de l'assembly ou autre mdrrrr, mais faut juste que ce soit pertinent, qu'on ai un objectif clair et
+> pertinent pour les clients. Docker me semble pertinent mais c'est pace que je l'utilise quoi, et que c'est quand mm
+> relativement lege quoi.
+>
+> Mais faut que ce soit scalable et robuste, donc faut proposer des choses. En etant realiste aussi
+>
+> R190 :
+>
+> Conflit d'interet je m'en fiche, tu travail pour moi, pour Taskforce, et plus pour ta boite en etant ici. Ton entreprise est
+> tres interressante justement pour ton modele de decision, mais je ne vais pas le copier puisque je souhaite etre modele
+> agnostic, donc il n'y a aucun conflit d'interet. Donc oui on peut faire ca evidemment, qu'elle est la pertinence d'entrainer
+> un modele finalement si il y en a deja des top gratuit qu'on peut installer ? Bon ensuite Faut voir comment orhcestrer ca,
+> comment rendre ca niveau UI/UX, pour l'instant l'entrainement on pourrait peut etre s'abstenir, de toute facon c'est derisoire
+> j'ai aucun h100 ca prendrais beaucoup trop de temps. Donc on retiens, mais on execute pas ce truc la pour le moment. Bon par
+> contre on garde tjr l'idee de realiser des benchmark avec les modeles qu'on a quoi, mais en permanence j'ai envie de dire,
+> genre chaque requete est evalue stv et ajouter a un benchamrk commun quoi.
+>
+> R191 :
+>
+> Oui je suis d'accord, on pourra peut etre le faire plus tard ca right ? Avec les donnees client en fait. Donc a retenir mais
+> pour l'instant on fait pas
+>
+> R192 :
+>
+> Alright qu'en penses Musk ? je pense qu'on peut le suivre, mais effectivement lesmart assign de toute facon ne sera as utilise
+> je pense.
+>
+> R193 :
+>
+> Bezos, oui je suis d'accord, mais elles loueront les machines pour l'entrainement, pas pour heberger les modeles. Est ce que
+> je me trompe ? Quelles entreprises ne reverais pas d'avoir ses propres models, adapte a ses workflows, a ses evolutions, ...
+> Et nous sommes models agnostic ne l'oublions pas, peut importe ce que fas l'utilisateur, on n'a rien a voir cote modele, si il
+> souhaite en entrainer lui mm ou utiliser des modeles deja existant via des plateformes, c'est pas un pb, il connecte sa
+> plateforme, il connecte son LLM sur sa machine ou sur le cloud bref il peut faire ce qu'il veut pour faire tourner taskforce,
+> c'est tout. Donc oui elles loueront, mais en attendant c'est eux ou moi qui aurait la data. Donc a voir, de toute facon on
+> fait pas d'entrainement pour le moment.
+>
+> R194 :
+>
+> Je serais partant pour l'idee de Musk en realite, si ca corrige, si ca ameliore, si ca augmente la precision du harnais et
+> ainsi de suite, je vois pas pk l'utilisateur devrait choisir en fait.
+>
+> R195 :
+>
+> comprends pas je dois voter quoi la dedans ? Chaque ligne ajoutee au plan est une promess en plus, quelle plan, le miens ?
+> Celui de taskforce ?
+>
+> Les questions pour moi :
+>
+> Je suis d'accord avec l'option 2 »
+
+Le secrétariat a ensuite proposé sa lecture, recommandation par recommandation, avec deux confirmations à donner : sa lecture de
+R192, et le sort de R195. La Présidence répond, mot pour mot :
+
+> « oui c'est ça pour R192, et je retiens R195 »
+
+La dernière ligne du premier message, « Je suis d'accord avec l'option 2 », répond à une autre question, sur le point « avant
+d'appliquer » de TF-J2-10 : elle est consignée au [PV de la séance n°25](./2026-11-13-le-workflow-pilotable.md), complément du
+16/11/2026.
+
+Dans ce qui suit, **la décision** est ce que la Présidence a dit ou confirmé. Les **précisions du secrétariat** sont à part : ce
+ne sont pas ses mots.
 
 | Recommandation | Décision | Raison de la Présidence |
 | --- | --- | --- |
-| R188 | | |
-| R189 | | |
-| R190 | | |
-| R191 | | |
-| R192 | | |
-| R193 | | |
-| R194 | | |
-| R195 | | |
+| R188 | Retenue, amendée (avec Jobs) | « Je suis d'accord avec Jobs, 1 chiffre ou rien, avec unite si necessaire. » |
+| R189 | Retenue, amendée (avec LeCun) | « Ca devrait etre active par defaut effectivement. » ; « Donc je suis plus d'accord avec Lecun » |
+| R190 | Retenue, pas exécutée maintenant | « Donc on retiens, mais on execute pas ce truc la pour le moment. » |
+| R191 | Retenue, pour plus tard | « Donc a retenir mais pour l'instant on fait pas » |
+| R192 | Retenue, amendée (avec Musk) | « je pense qu'on peut le suivre » ; « oui c'est ça pour R192 » |
+| R193 | Retenue, sans entraînement pour l'instant | « de toute facon on fait pas d'entrainement pour le moment. » |
+| R194 | Retenue, amendée (avec Musk) | « Je serais partant pour l'idee de Musk en realite » |
+| R195 | Retenue, mise à jour par ces décisions | « je retiens R195 » |
+
+- **R188, retenue, amendée (avec Jobs)** : « Je suis d'accord avec Jobs, 1 chiffre ou rien, avec unite si necessaire. » La
+  fourchette de R188 tombe.
+  - **La décision** :
+    - un seul chiffre avec son unité, jamais une fourchette ;
+    - si au moins 8 des 10 dernières estimations comparables étaient justes, l'écran dit seulement « 4 min » ; sinon, il dit
+      « Temps estimé : 4 min ». La Présidence : « si les estimation sont tjr a 80% juste sur les, jsp moi, les 10 dernieres
+      estimation, alors on affiche juste le chiffre », et, en dessous, « trouver une petite formule tres courte comme "temps
+      estime : X + unite" » ;
+    - le chiffre décompte et se réajuste : « avec le deompcte quand mm mais qui s'adapte du coup » ;
+    - à 0 sans être fini, l'écran passe à « Finalisation… » : « une fois a 0 ca mets loading ou finalisation », « un truc qui
+      demande a l'utilisateur d'attendre encore 30 secondes right ? ».
+  - **Précisions du secrétariat** : « juste » veut dire la durée réelle à 20 % près ; E28, amendée, le mesure. Les mots de
+    l'écran s'écrivent en anglais, comme toute l'interface.
+  - **Ce qui ne change pas** : les tests en cours restent dans W5, donc dans J2 ; l'estimation va dans W9, après J2.
+- **R189, retenue, amendée (avec LeCun)** : « Ca devrait etre active par defaut effectivement. » ; « Donc je suis plus d'accord
+  avec Lecun ».
+  - **La décision** : l'isolement est par défaut, partout, quel que soit l'agent. La Présidence : « tout ce qui releve de
+    l'execution, des runs, des bac a sable et ainsi de suite, serait en environnement isole via un container ou une autre
+    technologie. Et ca devrait etre le cas partout je pense. » R189 faisait du conteneur « une option d'isolement, jamais un
+    prérequis », par défaut pour les seuls dépôts venus du dehors : c'est la position maintenue de LeCun au second tour qui est
+    retenue.
+  - **Ce que la Présidence demande** : « comment on fait pour le bac a sable si la personne n'utilise pas Claude code ? » ; sans
+    cloud payant (« Le cloud est payant, c'est une solution mais c'est payant et pour l'instant je peux pas me le
+    permettre. ») ; « Mais faut que ce soit scalable et robuste, donc faut proposer des choses. En etant realiste aussi ».
+  - **Précisions du secrétariat, proposées le 16/11/2026** en réponse. Ce ne sont pas des mots de la Présidence, et E27 doit les
+    prouver :
+    - l'isolement vit dans le runner, pas dans l'agent. Avec un modèle local seul, ce sont les outils de TaskForce (shell,
+      fichiers, tests) qui s'exécutent dans le bac à sable. Avec Claude Code, le runner le lance lui-même dans le bac à sable ;
+    - une seule interface, un moteur choisi selon la machine : bubblewrap sous Linux ; Seatbelt sous macOS, et une machine
+      virtuelle Linux légère (le framework Containerization d'Apple) pour les tests qui exigent Linux ; une distribution WSL2
+      dédiée sous Windows ; Docker ou Podman seulement s'ils sont déjà installés ;
+    - le modèle reste hors du bac à sable, avec le GPU ;
+    - pas de bac à sable écrit en C par TaskForce : les noyaux fournissent les briques, et le moteur de bac à sable de Claude
+      Code, publié en open source, peut servir. La Présidence y était prête (« J'aurais aucun pb d'ailleurs a build notre propre
+      system de bac a sable »), à une condition : « faut juste que ce soit pertinent, qu'on ai un objectif clair et pertinent
+      pour les clients » ;
+    - le projet d'[ADR-028](../../decisions/ADR-028-DRAFT-execution-isolee-par-defaut.md) les écrit, avec ses options écartées ;
+      la preuve est E27, amendée en ce sens, sur Windows, macOS et Linux.
+  - **Ce qui ne change pas** : aucun isolement ne sert à relâcher une règle ; le hook des règles reste, et chaque sortie reste
+    jugée.
+- **R190, retenue, pas exécutée maintenant** : « Donc on retiens, mais on execute pas ce truc la pour le moment. »
+  - **La décision** : E26 attend, sans date (« pour l'instant l'entrainement on pourrait peut etre s'abstenir, de toute facon
+    c'est derisoire j'ai aucun h100 ca prendrais beaucoup trop de temps. »). Le banc permanent est retenu : « on garde tjr
+    l'idee de realiser des benchmark avec les modeles qu'on a quoi, mais en permanence j'ai envie de dire, genre chaque requete
+    est evalue stv et ajouter a un benchamrk commun quoi. » Chaque requête est évaluée et nourrit le banc, par modèle et par
+    tâche : c'est la boucle de R61.
+  - **Sur le conflit d'intérêts du secrétariat**, un modèle d'Anthropic : « Conflit d'interet je m'en fiche, tu travail pour
+    moi, pour Taskforce, et plus pour ta boite en etant ici. » TaskForce ne copie le modèle de personne : « je souhaite etre
+    modele agnostic ».
+  - **Précision du secrétariat** : un banc commun à plusieurs entreprises ne garde que des scores agrégés, avec leur accord, et
+    aucun contenu ne sort.
+- **R191, retenue, pour plus tard** : « Oui je suis d'accord, on pourra peut etre le faire plus tard ca right ? Avec les donnees
+  client en fait. Donc a retenir mais pour l'instant on fait pas ».
+  - **La décision** : E12 attend, avec son texte d'avant la séance ; l'amendement que R191 lui proposait n'est pas rangé.
+  - **Précision du secrétariat** : R191 écartait toute donnée de client de l'essai au labo. Un entraînement « Avec les donnees
+    client » relève donc de R193 et de sa précision : avec l'accord écrit du client, et pour lui.
+- **R192, retenue, amendée (avec Musk)** : « Alright qu'en penses Musk ? je pense qu'on peut le suivre, mais effectivement
+  lesmart assign de toute facon ne sera as utilise je pense. » Musk s'était abstenu : trop de non écrits d'avance. La lecture du
+  secrétariat, confirmée par la Présidence (« oui c'est ça pour R192 ») :
+  - pas de liste de refus écrite d'avance : chaque fonction se juge au cas par cas ;
+  - sauf la ligne de la loi : aucun modèle de TaskForce ne note des personnes ni n'attribue le travail sur leur comportement (AI
+    Act, annexe III, point 4(b)) ;
+  - Smart Assign ne servira pas : son critère de performance passée sort, dans le lot de nettoyage.
+- **R193, retenue, sans entraînement pour l'instant** : « de toute facon on fait pas d'entrainement pour le moment. »
+  - **La décision** : TaskForce reste agnostique sur les modèles. La Présidence : « nous sommes models agnostic ne l'oublions
+    pas, peut importe ce que fas l'utilisateur, on n'a rien a voir cote modele ». À l'abstention de Bezos (la plupart des
+    entreprises loueront), elle répond par une question : « elles loueront les machines pour l'entrainement, pas pour heberger
+    les modeles. Est ce que je me trompe ? » `[HYPOTHÈSE]` Le dossier ne le tranche pas.
+  - **Précision du secrétariat**, sur « c'est eux ou moi qui aurait la data » : en cloud, TaskForce héberge les données comme
+    sous-traitant (RGPD, article 28). Elles restent au client. Un entraînement sur elles ne se fait qu'avec son accord écrit, au
+    contrat, et pour lui.
+- **R194, retenue, amendée (avec Musk)** : « Je serais partant pour l'idee de Musk en realite, si ca corrige, si ca ameliore, si
+  ca augmente la precision du harnais et ainsi de suite, je vois pas pk l'utilisateur devrait choisir en fait. » Musk avait voté
+  non au second tour : une leçon qui ne fait que durcir devrait s'activer quand la banque passe.
+  - **La décision** :
+    - une leçon qui durcit le harnais s'active seule quand la banque d'évaluations la valide ;
+    - elle est versionnée, notifiée et annulable d'un geste ;
+    - une leçon ne relâche jamais une règle et ne touche jamais au socle.
+  - **Précision du secrétariat** : `[DÉDUIT]` le reste de R194 tient. La banque rejoue la leçon avant toute activation, sans une
+    régression, avec un gain sur au moins deux cas qu'elle n'a pas vus naître : c'est ce que « valider » veut dire. Seule
+    l'acceptation par une personne, avant l'activation, tombe pour une leçon qui durcit.
+- **R195, retenue, mise à jour par ces décisions** : la Présidence a d'abord demandé « comprends pas je dois voter quoi la
+  dedans ? Chaque ligne ajoutee au plan est une promess en plus, quelle plan, le miens ? Celui de taskforce ? ». Le plan est le
+  [plan des lots](./2026-11-13-le-workflow-pilotable-plan-des-lots.md) de la séance n°25, celui de TaskForce ; la phrase qu'elle
+  cite est la raison de l'abstention de Shotwell. Après la lecture du secrétariat : « je retiens R195 ».
+  - J2 inchangé, sauf l'état des tests en cours (W5) ;
+  - l'isolement par défaut après J2, avec le test à blanc (W6), via E27 et ADR-028 ;
+  - l'estimation (W9) ;
+  - W10, les leçons auto-activées quand elles durcissent ;
+  - au labo : E27, E28 et E29 ; ni E26 ni E12 pour l'instant.
+
+**Les réponses aux huit questions du Conseil.** Quatre sont tranchées par ce message, une l'est en partie, trois restent
+ouvertes.
+
+1. **Les tests en cours** (R188) : tranchée. Dans J2, dans W5 : la Présidence retient R188 et n'amende que l'estimation.
+2. **La fourchette** (R188) : tranchée, par un refus. « 1 chiffre ou rien » : pas de fourchette. Les seuils d'E28 changent : 8
+   estimations justes sur les 10 dernières (la Présidence), à 20 % près (le secrétariat).
+3. **Le run sur la machine** (R189) : tranchée pour les postes, partout et quel que soit l'agent. Le moteur à essayer sur sa
+   machine reste ouvert, avec Q25 : le secrétariat propose une distribution WSL2 dédiée (ADR-028), et E27 l'essaie.
+4. **L'entraînement** (R190, R191) : ouverte, et sans objet pour l'instant. Rien ne s'entraîne ; la première décision à
+   apprendre, la licence, le nom et le lieu de publication attendent E26 et E12, avec Q23.
+5. **Le client test** (R193) : ouverte. Le message n'y répond pas ; elle va avec Q24.
+6. **Smart Assign** (R192) : tranchée. La performance passée sort de ses critères, dans le lot de nettoyage, sans attendre le
+   client test.
+7. **Harness²** (R194) : ouverte. Le message ne dit pas si les corrections de la Présidence peuvent nourrir les leçons d'E29 ;
+   elle va avec Q26.
+8. **MANTA** : répondue. La Présidence l'a vu dans un post LinkedIn, le 15/11/2026, cinq jours après ses dépôts.
 
 ## Notes du secrétariat
 
@@ -1143,6 +1348,23 @@ recommandation passe avec 22 oui sur 24 au moins.
     2606.13643).
 - **Numérotation** : R188 à R195, Q23 à Q26 et E26 à E29 vérifiés libres dans `taskforce-docs` (`feature/lean-oss`, `7bbcbc5`) le
   15/11/2026 ; ADR-028 est libre, pour un brouillon si R189 ou R193 est retenue.
+- **Après la décision** (16/11/2026) :
+  - **Les seuils de R188** : « 8 des 10 dernières » lit « a 80% juste sur les, jsp moi, les 10 dernieres estimation » ; « à 20 %
+    près » n'est pas un mot de la Présidence, c'est une précision du secrétariat, qu'E28 mesure.
+  - **Les précisions sur R189** sont du secrétariat ; la décision est l'isolement par défaut, partout. Deux de leurs faits
+    n'étaient pas au dossier de la séance. Le secrétariat en a ouvert les dépôts le 16/11/2026, sans plus : le moteur de bac à
+    sable de Claude Code, publié à part sous Apache 2.0, en préversion de recherche
+    ([Sandbox Runtime](https://github.com/anthropic-experimental/sandbox-runtime)) ; le framework Containerization d'Apple, qui
+    fait tourner des conteneurs Linux sous macOS, sous Apache 2.0 ([Apple](https://github.com/apple/containerization)). Ils sont
+    à relire en entier avant E27.
+  - **Le conflit d'intérêts** : ce moteur est celui d'Anthropic, dont le secrétariat est un modèle. La Présidence l'écarte
+    (« Conflit d'interet je m'en fiche ») ; le secrétariat continue de l'écrire ici.
+  - **R194** : `[DÉDUIT]` la décision parle d'une leçon qui durcit. Une leçon qui ne durcit rien (une convention du brouillon,
+    une préférence de modèle) reste une proposition qu'une personne accepte, comme R194 le disait ; les étapes verrouillées et
+    les sorties, que R194 mettait hors de portée d'une leçon, y restent. À confirmer avec Q26.
+  - **Ce que les précisions laissent ouvert** : ce que fait une mission quand la machine n'offre aucun moteur d'isolement (R189
+    disait : elle le dit avant de partir). C'est posé à la Présidence dans ADR-028.
+  - **La numérotation** : E26 à E29 gardent leurs numéros ; ADR-028 est pris par le projet sur l'exécution isolée.
 - **L'avis du secrétariat**, après la clôture : le mien, pas celui du Conseil.
   - `[DÉDUIT]` La vue d'un run est faite aux deux tiers ; ce qui compte n'est pas l'estimation, c'est le silence des tests, jusqu'à
     quinze minutes sans un mot. C'est le premier correctif, et le moins cher.
@@ -1169,6 +1391,22 @@ recommandation passe avec 22 oui sur 24 au moins.
 - En mode développement, après la décision : l'événement du runner au lancement des tests et l'étape Check (W5) ; Smart Assign
   instruit (R192), avec la lecture d'un juriste.
 - `recherche/CLAUDE.md`, §3 : C4 à mettre à jour par la Présidence.
+- Après la décision de la Présidence, rangé le 16/11/2026 :
+  - au registre de la charte (§12) et au Journal : « la Présidence tranche la séance n°27 » ;
+  - à `Questions-ouvertes.md` : Q23 et Q24 restent ouvertes (aucun entraînement pour l'instant ; le sous-traitant en cloud) ;
+    Q25 et Q26 passent en cours (l'isolement par défaut partout ; la leçon qui durcit s'active seule) ;
+  - à `experiences/Experiences.md` : E27, E28 et E29 entrent, retenues, E27 amendée par R189 et E28 par R188 ; E26 entre,
+    retenue mais en attente, sans date ; E12 garde son texte et attend (R191) ;
+  - le projet d'[ADR-028](../../decisions/ADR-028-DRAFT-execution-isolee-par-defaut.md), l'exécution isolée par défaut ;
+  - au [plan des lots](./2026-11-13-le-workflow-pilotable-plan-des-lots.md) de la séance n°25 : W5 (les tests en cours), W6
+    (l'isolement par défaut), W9 (le temps estimé), W10 (les leçons du harnais), chaque fois la décision à part des précisions ;
+    et W2, pour l'option 2 de TF-J2-10 (complément du 16/11/2026 au PV n°25).
+- Restent, après ce rangement :
+  - à la roadmap, en mode développement : l'événement du runner au lancement des tests et l'étape Check (W5) ; le critère de
+    performance passée retiré de Smart Assign, dans le lot de nettoyage ; le lot W10 ; la ligne de TF-J2-10 ;
+  - au labo, sans rien prendre à J2 : E28, E27, puis E29 ;
+  - à la Présidence : relire ADR-028 et dire ce que fait une mission sans moteur d'isolement ; les questions 3 (le moteur), 4, 5
+    et 7 ci-dessus.
 - Rien ne migre vers `v1/` sans tâche ni ADR (quarantaine, [`CLAUDE.md`](../../CLAUDE.md) §2).
 
 ---

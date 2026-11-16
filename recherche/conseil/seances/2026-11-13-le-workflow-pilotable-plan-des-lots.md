@@ -10,6 +10,8 @@ related:
   - "./2026-11-13-le-workflow-pilotable.md"
   - "../../decisions/ADR-023-DRAFT-execution-durable-postgresql.md"
   - "../../decisions/ADR-027-DRAFT-modele-des-processus.md"
+  - "../../decisions/ADR-028-DRAFT-execution-isolee-par-defaut.md"
+  - "./2026-11-15-le-run-et-les-petits-modeles.md"
   - "../../../v1/13-roadmap/Roadmap_Backlog.md"
 ---
 
@@ -18,6 +20,10 @@ related:
 > Joint au PV de la [séance n°25](./2026-11-13-le-workflow-pilotable.md) (R178, retenue par la Présidence le 13/11/2026 au soir).
 > Dix lots, W0 à W9. J2 s'arrête à W5 : W0 à W5, pour le seul processus « intégrer un module » d'E20, chacun réduit à ce qu'il
 > exige ; W6 à W9 après J2. Les durées sont des `[HYPOTHÈSE]`.
+>
+> **Le 16/11/2026**, la décision de la Présidence sur la [séance n°27](./2026-11-15-le-run-et-les-petits-modeles.md) précise W5,
+> W6 et W9, et ajoute un onzième lot, W10, après J2 ; son accord sur l'option 2 de TF-J2-10 précise W2. Chaque ajout est daté,
+> la décision à part des précisions du secrétariat.
 
 ## Les règles de tous les lots
 
@@ -44,10 +50,11 @@ related:
 | W3 | Le moteur durable v1 et ses coupures | W2 ; le dossier signé (TF-J2-7) avant | R159 | J2 |
 | W4 | Le brouillon de l'IA et le premier workflow par défaut | W1, W2 | R159, R161 | J2 |
 | W5 | Piloter le processus : incidents, attentes, manques | W1, W3 ; W4 pour le brouillon | R159, R161 | J2, puis E20 |
-| W6 | Éditer, créer et essayer à blanc ses workflows ; le LIMS ; Documents | W4, W5 | R159, R161 | Après J2 (J3) |
+| W6 | Éditer, créer et essayer à blanc ses workflows ; le LIMS ; Documents ; l'isolement par défaut (16/11) | W4, W5 ; E27 pour l'isolement | R159, R161 | Après J2 (J3) |
 | W7 | Exploiter : modifier, migrer, compenser, relancer depuis une étape | W3, W5 | R159, R161 | Après J2 (J5) |
 | W8 | S'ouvrir : Camunda, MCP Apps, un processus appelable | W2, W5 | R159 | Après J2 (J5) |
-| W9 | Améliorer : l'analyse sur la même carte | W5, le dossier | R161 | Après J2 (J7) |
+| W9 | Améliorer : l'analyse sur la même carte ; le temps estimé d'une mission (16/11) | W5, le dossier ; E28 pour le temps estimé | R161 | Après J2 (J7) |
+| W10 | Les leçons du harnais : celles qui durcissent s'activent seules quand la banque les valide (16/11) | W5, la banque d'évaluations ; E29 | R159, R161 | Après J2, après le client test |
 
 ## Dans J2, avant E20
 
@@ -131,6 +138,12 @@ related:
     pré-remplie. Précisions du secrétariat pour la mise en œuvre : ce défaut place le point de pause « avant la mission » devant
     chaque zone d'agent, y compris sur la boucle qui revient de l'acceptation vers la construction, et le vérificateur l'exige
     devant chacune ;
+  - ajouté le 16/11/2026, décision de la Présidence (« Je suis d'accord avec l'option 2 »,
+    [PV](./2026-11-13-le-workflow-pilotable.md), complément du 16/11/2026) : tout travail d'agent qui peut changer le code
+    (pousser, ouvrir une pull request, écrire des fichiers appliqués) repasse le point « avant d'appliquer » sur chaque chemin
+    vers « avant la livraison » ; les zones qui ne font que lire ou écrire des notes, comme les notes de version, en sont
+    dispensées. Précisions du secrétariat pour la mise en œuvre : le vérificateur refuse un processus qui y manque
+    (`changeWithoutPausePoint`), et lit ce qu'une zone peut faire dans ses règles, celles du paquet du projet ;
   - l'onglet « Definition » de l'inspecteur le lit ; aucun éditeur.
 - **Dépend de** : rien ; en même temps que W1.
 - **Fini quand** :
@@ -213,6 +226,11 @@ related:
   - ajouté le 15/11/2026, décision de la Présidence : la liste « avant la mission » repassée avant chaque mission d'agents,
     pré-remplie. Précisions du secrétariat pour la mise en œuvre : elle arrive pré-remplie depuis la dernière réponse du même
     run, et la personne la confirme d'un geste ;
+  - ajouté le 16/11/2026, décision de la Présidence sur la [séance n°27](./2026-11-15-le-run-et-les-petits-modeles.md) (R188 et
+    R195 retenues) : l'état des tests pendant qu'ils tournent reste dans W5, donc dans J2. Selon R188 : le runner envoie un
+    événement quand il lance les tests du projet ; l'étape Check dit « Running the project's tests », avec leur limite de 15
+    minutes ; le résultat garde ses mots d'aujourd'hui ; sur la vue du workflow, le nœud de la mission dit la même chose.
+    L'estimation n'est pas ici : elle va dans W9 ;
   - l'ordre des étapes imposé par le moteur (R179) ;
   - les mêmes gestes en mots, par Cortex ; « Waiting for you » liste les tâches humaines du processus, avec « Open on its
     workflow ».
@@ -224,7 +242,9 @@ related:
   3. chaque tâche humaine montre la signification de sa signature, et la signature entre au dossier avec le nom, la date et l'heure ;
   4. la mesure avant et après des erreurs bêtes (Gawande) : deux erreurs semées sur trois missions (le critère 8 de J2), comptées
      avec le processus et sans lui ;
-  5. la revue des écrans ; la relecture R159 ; l'essai de la Présidence.
+  5. la revue des écrans ; la relecture R159 ; l'essai de la Présidence ;
+  6. ajouté le 16/11/2026 (la preuve de R188) : une mission dont l'étape Check dit que les tests tournent, pendant qu'ils
+     tournent.
 - **Relectures** : R159, R161.
 - **Quand** : J2. `[HYPOTHÈSE]` une semaine. Puis la démo (TF-J2-1) et E20 (TF-J2-11).
 
@@ -252,6 +272,22 @@ related:
     publication ;
   - le dossier de l'essai, à part du dossier réel et jamais montré comme réel ; le client peut en faire une pièce de ses propres
     essais, son OQ par exemple, et TaskForce ne dit jamais qu'un workflow est conforme (R179, R187).
+- **L'isolement par défaut**, ajouté le 16/11/2026 par la décision de la Présidence sur la
+  [séance n°27](./2026-11-15-le-run-et-les-petits-modeles.md) (R189 amendée avec LeCun : « Ca devrait etre active par defaut
+  effectivement. ») : tout ce qui s'exécute, les runs, les tests et le bac à sable du test à blanc, tourne isolé, par défaut,
+  partout, quel que soit l'agent. Le bac à sable du test à blanc et l'isolement d'un run sont le même besoin (R195) : une
+  exécution sans effet au dehors.
+  - **Précisions du secrétariat**, proposées le 16/11/2026, qui ne sont pas des mots de la Présidence
+    ([ADR-028](../../decisions/ADR-028-DRAFT-execution-isolee-par-defaut.md), en projet) :
+    - l'isolement vit dans le runner, pas dans l'agent : les outils de TaskForce (shell, fichiers, tests) s'exécutent dans le
+      bac à sable quand un modèle local travaille seul, et le runner y lance lui-même Claude Code ;
+    - une seule interface, un moteur choisi selon la machine : bubblewrap sous Linux ; Seatbelt sous macOS, et une machine
+      virtuelle Linux légère pour les tests qui exigent Linux ; une distribution WSL2 dédiée sous Windows ; Docker ou Podman
+      seulement s'ils sont déjà installés ;
+    - le modèle reste hors du bac à sable, avec le GPU ;
+    - aucun bac à sable écrit en C par TaskForce ;
+    - aucun isolement ne relâche une règle : le hook reste, chaque sortie reste jugée (R189).
+  - **Avant ce lot** : E27, sur Windows, macOS et Linux, puis ADR-028 ratifié ou réécrit. Pas dans J2.
 - **Dépend de** : W4, W5.
 - **Fini quand** : une personne qui ne fait pas de logiciel dérive « rédaction et revue d'un document », ajoute une étape, une
   personne qui décide et une règle en mots, et publie, en quinze minutes au plus ; la Présidence construit son workflow de LIMS (IQ,
@@ -291,11 +327,50 @@ related:
 - **But** : où le processus perd du temps, sur la même carte.
 - **Contenu** : les durées et les cibles par étape, tirées du dossier ; une bande de temps sous les colonnes ; la ligne de santé du
   projet (On track, At risk, Off track), écrite par la personne qui en répond, Cortex pouvant en préparer le texte.
+- **Le temps estimé d'une mission**, ajouté le 16/11/2026 par la décision de la Présidence sur la
+  [séance n°27](./2026-11-15-le-run-et-les-petits-modeles.md) (R188 amendée avec Jobs : « 1 chiffre ou rien, avec unite si
+  necessaire »). La règle de la Présidence :
+  - un seul chiffre avec son unité, jamais une fourchette ;
+  - si au moins 8 des 10 dernières estimations comparables étaient justes, l'écran dit seulement « 4 min » ; sinon, il dit
+    « Temps estimé : 4 min » ;
+  - le chiffre décompte et se réajuste ;
+  - à 0 sans être fini, l'écran passe à « Finalisation… ».
+- **Précisions du secrétariat** sur le temps estimé, qui ne sont pas des mots de la Présidence :
+  - « juste » veut dire la durée réelle à 20 % près ; E28 le mesure sur le dossier, avant que rien ne soit montré ;
+  - `[HYPOTHÈSE]` comparables : le même projet, le même agent, le même mode (R188) ; sans mission comparable, aucun chiffre,
+    l'écran garde le temps écoulé ; avec moins de dix estimations comparables, « Temps estimé : » ;
+  - jamais à côté d'un bouton d'accord (R188, Harris) ;
+  - les mots de l'écran s'écrivent en anglais, dans `frontend/lib/constants_en.ts`.
 - **Dépend de** : W5, le dossier.
 - **Fini quand** : une étape lente vue sur la carte se retrouve au dossier ; aucune mesure d'agent ni classement (R57) ; la revue des
   écrans.
 - **Relectures** : R161.
 - **Quand** : après J2 (J7).
+
+### W10 : les leçons du harnais
+
+Ajouté le 16/11/2026 par la décision de la Présidence sur la [séance n°27](./2026-11-15-le-run-et-les-petits-modeles.md) (R194
+amendée avec Musk, R195).
+
+- **But** : le harnais apprend de ses runs, sans qu'une règle se relâche jamais.
+- **Contenu**, la décision de la Présidence (« je vois pas pk l'utilisateur devrait choisir en fait ») :
+  - une leçon qui durcit le harnais s'active seule quand la banque d'évaluations la valide ;
+  - elle est versionnée, notifiée et annulable d'un geste ;
+  - une leçon ne relâche jamais une règle et ne touche jamais au socle.
+- **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence :
+  - `[DÉDUIT]` de R194, retenue pour le reste : une leçon naît de l'écart entre deux runs (un échec et une réussite, une
+    correction de la personne, un cas de la banque rejoué sous deux versions du harnais) ; la banque la valide en la rejouant
+    sur tous ses cas, sans une régression, avec un gain sur au moins deux cas qu'elle n'a pas vus naître ; elle entre au dossier
+    avec son auteur, sa preuve et son empreinte ;
+  - `[DÉDUIT]` une leçon qui ne durcit rien (une convention du brouillon, une préférence de modèle) reste une proposition qu'une
+    personne accepte ; les étapes verrouillées et les sorties restent hors de portée d'une leçon. À confirmer avec Q26 ;
+  - l'annulation entre au dossier, comme l'activation.
+- **Dépend de** : W5 ; la banque d'évaluations ; E29, au labo, avant le lot.
+- **Fini quand** `[HYPOTHÈSE]` : E29 tenue ; une leçon activée seule se voit, entre au dossier et s'annule d'un geste ; une
+  leçon qui relâcherait une règle ou toucherait au socle est refusée par construction, un cas par refus ; aucune régression de
+  la banque après une activation ; les relectures.
+- **Relectures** : R159, R161.
+- **Quand** : après J2, après le client test (R194).
 
 ## Ce qu'on lâche d'abord, et ce qu'on ne lâche jamais
 
