@@ -902,6 +902,33 @@ d'ajouter à W6 un test à blanc, absent du plan. La Présidence répond, mot po
 - `[DÉDUIT]` **W3 le prépare sans élargir J2** : l'horloge du moteur et ses effets passent par des ports qu'on remplace, ce que
   le banc des coupures demande déjà pour ses minuteries.
 
+**Complément du 15/11/2026 (2).** Le 15/11/2026 au soir, la revue des écrans de W1 (R161) a jugé que l'application Workflow, en
+l'état, « se lit comme un deuxième Board » : sans moteur, ses colonnes sont celles du Board, et les liens ne se voient qu'au nœud
+choisi. Le secrétariat a posé deux questions à la Présidence :
+
+1. ajouter un interrupteur « Show all links », éteint par défaut et limité à 200 liens, pour lire la vue comme un plan dès
+   maintenant ;
+2. pour les points de pause de TF-J2-10, repasser la liste de contrôle « avant la mission » avant chaque mission d'agents,
+   pré-remplie, plutôt qu'une seule fois.
+
+La Présidence répond, mot pour mot :
+
+> « oui pour les deux, go »
+
+- **Un interrupteur « Show all links »** dans la vue du workflow : éteint par défaut, au plus 200 liens.
+- **La liste « avant la mission » repassée avant chaque mission d'agents**, pré-remplie (TF-J2-10).
+
+**Précisions du secrétariat pour la mise en œuvre.** Elles ne sont pas des mots de la Présidence, qui n'a tranché que les deux
+points ci-dessus :
+
+- pour l'interrupteur ([spécification d'UX](./2026-11-13-le-workflow-pilotable-ux.md), §4.8 ;
+  [plan des lots](./2026-11-13-le-workflow-pilotable-plan-des-lots.md), W1) : les arêtes les plus proches de la vue d'abord ; le
+  choix retenu pour la personne, comme la densité ; à 375 px, un compte sur chaque carte au lieu des courbes ;
+- pour la liste ([plan des lots](./2026-11-13-le-workflow-pilotable-plan-des-lots.md), W2 et W5) : le défaut « intégrer un
+  module » place le point « avant la mission » devant chaque zone d'agent, y compris la boucle de l'acceptation vers la
+  construction ; le vérificateur l'exige devant chacune ; dans W5, la liste arrive pré-remplie depuis la dernière réponse du même
+  run, et la personne la confirme d'un geste.
+
 ## Notes du secrétariat
 
 - **Le dossier** : seulement des pages publiques, lues le 13/11/2026. Le projet d'annexe 22 et la spécification de BPMN 2.0.2 ont
@@ -971,6 +998,10 @@ d'ajouter à W6 un test à blanc, absent du plan. La Présidence répond, mot po
     avec la précision de la Présidence : ce que l'infrastructure permet, rien de revendiqué.
 - Rangé le 15/11/2026, après le complément de la Présidence : le test à blanc dans W6 et sa préparation dans W3, au plan des
   lots ; une ligne au registre de la charte (§12) ; E23 faite ; le récit au Journal.
+- Rangé le 16/11/2026, après le second complément du 15/11/2026 : « Show all links » à la spécification d'UX (§4.8, §10, §11 et
+  §12) et dans W1, la liste « avant la mission » avant chaque mission d'agents dans W2 et W5, au plan des lots, chaque fois la
+  décision à part des précisions du secrétariat ; la ligne de TF-J2-10 à la roadmap ; la ligne du registre de la charte (§12)
+  complétée ; le récit au Journal.
 - Rien ne migre vers `v1/` sans tâche ni ADR (quarantaine, [`CLAUDE.md`](../../CLAUDE.md) §2).
 
 ---

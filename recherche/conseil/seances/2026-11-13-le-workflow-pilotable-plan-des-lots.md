@@ -87,6 +87,10 @@ related:
     Flyway, leurs routes, vérifiés comme le reste du projet, et le dialogue « Add an objective » (560 px) ;
   - les colonnes du projet comme étapes ; les issues comme nœuds, avec leur mission, leurs accords et le nombre de leurs
     documents ; les dépendances à la sélection ;
+  - ajouté le 15/11/2026, décision de la Présidence (« oui pour les deux, go ») : un interrupteur « Show all links », éteint par
+    défaut, au plus 200 liens. Précisions du secrétariat pour la mise en œuvre : les arêtes les plus proches de la vue d'abord,
+    le choix retenu pour la personne, un compte sur chaque carte à 375 px
+    ([spécification d'UX](./2026-11-13-le-workflow-pilotable-ux.md), §4.8) ;
   - les états, leur tri, les trois densités, l'inspecteur, les gestes qui existent déjà (ouvrir, décider, demander à Cortex,
     arrêter, relancer, confier, déplacer), le temps réel par W0, tels que la spécification les décrit ;
   - dans la conversation, la carte compacte d'un nœud et « Open in Workflow » ;
@@ -123,6 +127,10 @@ related:
   - le schéma de sortie d'un brouillon, pour les modèles ;
   - le processus « intégrer un module » écrit, premier workflow par défaut de la livraison logicielle, ses étapes verrouillées
     comprises (les points de pause de TF-J2-10) ;
+  - ajouté le 15/11/2026, décision de la Présidence : la liste « avant la mission » repassée avant chaque mission d'agents,
+    pré-remplie. Précisions du secrétariat pour la mise en œuvre : ce défaut place le point de pause « avant la mission » devant
+    chaque zone d'agent, y compris sur la boucle qui revient de l'acceptation vers la construction, et le vérificateur l'exige
+    devant chacune ;
   - l'onglet « Definition » de l'inspecteur le lit ; aucun éditeur.
 - **Dépend de** : rien ; en même temps que W1.
 - **Fini quand** :
@@ -202,6 +210,9 @@ related:
     someone else » ;
   - la tâche humaine : l'accord avec la signification de la signature, la saisie typée, la liste de contrôle de moins de dix lignes,
     chaque ligne cochée au dossier ;
+  - ajouté le 15/11/2026, décision de la Présidence : la liste « avant la mission » repassée avant chaque mission d'agents,
+    pré-remplie. Précisions du secrétariat pour la mise en œuvre : elle arrive pré-remplie depuis la dernière réponse du même
+    run, et la personne la confirme d'un geste ;
   - l'ordre des étapes imposé par le moteur (R179) ;
   - les mêmes gestes en mots, par Cortex ; « Waiting for you » liste les tâches humaines du processus, avec « Open on its
     workflow ».

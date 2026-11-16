@@ -24,6 +24,19 @@ related:
 
 ---
 
+## 2026-11-15 : la Présidence tranche deux points du workflow
+
+**Fait** : la revue des écrans de W1 (R161) a jugé que l'application Workflow, en l'état, « se lit comme un deuxième Board ». Le 15/11/2026 au soir, le secrétariat a posé deux questions à la Présidence : ajouter un interrupteur « Show all links », éteint par défaut et limité à 200 liens, pour lire la vue comme un plan dès maintenant ; et, pour les points de pause de TF-J2-10, repasser la liste de contrôle « avant la mission » avant chaque mission d'agents, pré-remplie, plutôt qu'une seule fois.
+
+**Trouvé** :
+- `[ÉTABLI]` Sans moteur, les colonnes de la vue sont celles du Board, et les liens ne se dessinent que pour le nœud choisi ([spécification d'UX](./conseil/seances/2026-11-13-le-workflow-pilotable-ux.md), §4.8).
+
+**Décidé** : « oui pour les deux, go » ([PV n°25](./conseil/seances/2026-11-13-le-workflow-pilotable.md), complément du 15/11/2026 (2)). Un interrupteur « Show all links », éteint par défaut, au plus 200 liens ; la liste « avant la mission » repassée avant chaque mission d'agents, pré-remplie. Rien d'autre n'est tranché.
+
+**Précisions du secrétariat pour la mise en œuvre**, à part de la décision : les arêtes les plus proches de la vue d'abord, le choix retenu pour la personne, un compte sur chaque carte à 375 px (W1) ; le défaut « intégrer un module » place le point « avant la mission » devant chaque zone d'agent, y compris la boucle de l'acceptation vers la construction, et le vérificateur l'exige devant chacune (W2) ; la liste arrive pré-remplie depuis la dernière réponse du même run et se confirme d'un geste (W5).
+
+**Prochain coup** : l'interrupteur dans W1 ; le défaut et son vérificateur dans W2 ; la confirmation pré-remplie avec W5.
+
 ## 2026-11-15 : séance n°27, le run sur la machine et les petits modèles de décision
 
 **Fait** : la Présidence demande si l'on voit déjà un run qui tourne (son numéro, son état, son étape, ses fichiers, ses tests, une estimation), et si un environnement de run peut vivre sur la machine de l'utilisateur, avec Docker, sans payer de cloud. Puis, sur MANTA, comment se fait un petit modèle de décision, si elle doit entraîner sur sa machine des modèles faits pour TaskForce, et si chaque entreprise peut créer le sien avec ce qu'elle y met ; elle ajoute un post sur Harness². Le secrétariat a constitué le dossier sur le code de `dev` (`3da4f4a8`), les relevés du 15/11 et des pages publiques seulement, puis réuni le Conseil en plénière de vingt-quatre, Yann LeCun contradicteur ([PV](./conseil/seances/2026-11-15-le-run-et-les-petits-modeles.md)).

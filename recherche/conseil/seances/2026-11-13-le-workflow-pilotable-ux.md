@@ -221,6 +221,13 @@ Aucun symbole de BPMN ; le type se lit dans les mots de la carte.
   colonnes ; des courbes de 2 px en `--primary`, une pointe de 6 px ; au survol d'une arête, « Blocks » ou « Blocked by ».
 - Les autres nœuds s'estompent à 40 % d'opacité, en 150 ms.
 - Au plus 50 arêtes dessinées ; au-delà, l'inspecteur dit « and {count} more ».
+- **Ajouté le 15/11/2026, décision de la Présidence** ([PV](./2026-11-13-le-workflow-pilotable.md), complément du
+  15/11/2026 (2)) : un interrupteur « Show all links », éteint par défaut, qui dessine au plus 200 liens.
+- **Précisions du secrétariat pour la mise en œuvre** (15/11/2026), à part de la décision :
+  - allumé, les arêtes les plus proches de la vue d'abord ; au-delà de 200, « and {count} more » ;
+  - le choix se retient pour la personne, comme la densité ;
+  - à 375 px, un compte des liens sur chaque carte au lieu des courbes ;
+  - éteint, rien ne change : les arêtes du nœud choisi seulement, 50 au plus.
 
 ## 5. L'inspecteur
 
@@ -346,7 +353,8 @@ Personne ne choisit sa lecture par un profil : la densité se change d'un geste,
   change de place que dans sa colonne ; une carte qui change de colonne glisse en 200 ms, sans rebond ; une donnée qui arrive ne
   déplace ni la sélection, ni le défilement.
 - **L'échelle** : au-delà de 50 cartes dans une colonne, « Show {count} more » ; seules les cartes visibles se rendent ; les arêtes
-  seulement pour la sélection, 50 au plus ; aucune position n'est enregistrée.
+  seulement pour la sélection, 50 au plus ; aucune position n'est enregistrée. Précisé le 15/11/2026 : c'est le comportement par
+  défaut ; l'interrupteur « Show all links » du §4.8, choisi par la personne, dessine les autres, 200 au plus.
 - **L'étroit** (sous 768 px, la webapp) : les colonnes deviennent une liste de sections, une par étape, les cartes en pleine
   largeur ; l'inspecteur, une feuille plein écran avec un retour ; l'en-tête sur deux lignes ; Plan seulement, Summary par le filtre
   « Needs you ».
@@ -379,11 +387,14 @@ for your runner to pick it up », « No answer in time: refused ». Aucun tiret 
 | `workflow.filter.label` | Filter |
 | `workflow.filter.clear` | Show everything |
 | `workflow.legend` | Legend |
+| `workflow.showAllLinks` | Show all links |
 | `workflow.follow` | Follow |
 | `workflow.nextAttention` | Next that needs attention |
 | `workflow.live.on` | Live |
 | `workflow.live.reconnecting` | Reconnecting… |
 | `workflow.live.offline` | Offline. Showing {time}. |
+
+Ajouté le 15/11/2026 : `workflow.showAllLinks`, le texte de l'interrupteur du §4.8.
 
 ### 11.2 L'objectif
 
@@ -568,7 +579,8 @@ for your runner to pick it up », « No answer in time: refused ». Aucun tiret 
 - Un symbole de BPMN : losange, cercle d'événement, jeton, couloir de rôle.
 - Une fenêtre par-dessus l'application, ou un dialogue pour la vue entière : la vue a son adresse.
 - Voir sans pouvoir agir : chaque état qui attend quelqu'un a son geste sur le nœud.
-- La pelote : toutes les arêtes à la fois.
+- La pelote : toutes les arêtes à la fois. Précisé le 15/11/2026 : elle reste écartée comme comportement par défaut ;
+  l'interrupteur « Show all links » (§4.8) est le seul moyen, choisi par la personne, de tout voir, plafonné à 200 arêtes.
 - Une couleur sans son mot, ou une couleur qui change de sens d'une densité à l'autre.
 - Une mise en page qui saute quand une donnée arrive.
 - Une attente cachée, un faux vert après une relance.
