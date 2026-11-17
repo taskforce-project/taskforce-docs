@@ -56,6 +56,9 @@ related:
 | [Q28](#q28--le-cra-et-la-licence--libre-non-monétisé-ou-édition-payante--lagpl-seule-ou-avec-une-licence-commerciale-) | Le CRA et la licence : libre non monétisé, ou édition payante ; l'AGPL seule, ou avec une licence commerciale ? | P2 | ouverte |
 | [Q29](#q29--le-format-du-dossier--saligner-sur-la-rfc-8785-et-le-brouillon-de-lietf-ou-garder-le-sien-) | Le format du dossier : s'aligner sur la RFC 8785 et le brouillon de l'IETF, ou garder le sien ? | P2 | ouverte |
 | [Q30](#q30--le-sort-des-surfaces-gelées-et-quand-le-décider) | Le sort des surfaces gelées, et quand le décider | P2 | ouverte |
+| [Q31](#q31--le-témoin--où-ancrer-lempreinte-de-tête-du-dossier-hors-de-lopérateur-) | Le témoin : où ancrer l'empreinte de tête du dossier, hors de l'opérateur ? | P1 | ouverte |
+| [Q32](#q32--qui-écrit-les-processus-et-les-paquets-de-règles-et-que-donne-taskforce-comme-exemples-) | Qui écrit les processus et les paquets de règles, et que donne TaskForce comme exemples ? | P2 | ouverte |
+| [Q33](#q33--la-classe-dune-écriture-externe--qui-la-déclare-et-comment-prouver-son-action-inverse-) | La classe d'une écriture externe : qui la déclare, et comment prouver son action inverse ? | P1 | ouverte |
 
 ---
 
@@ -649,9 +652,20 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 - **Position actuelle** : `[HYPOTHÈSE]` la demande existe là où un audit contrôle déjà (BPF, Part 11, SOC 2, les
   questionnaires fournisseurs), et elle se dit dans les mots de l'audit, pas dans ceux des agents. Elle passe par un
   partenaire qui porte la qualité plus sûrement que par une vente directe (R63, Q21).
+- **17/11/2026**, séance n°29 :
+  - `[ÉTABLI]` D5 a lu Hacker News, des blogs, la presse professionnelle, des conférences rapportées et des offres d'emploi.
+    Reddit et LinkedIn n'ont pas été lus. Le terrain public est muet sur ce segment : deux fils qui demandent ce qu'une
+    entreprise paierait ne citent ni conformité, ni audit, ni agents ; sur les onze signaux de preuve, sept viennent de
+    vendeurs ; aucun auditeur ni responsable qualité ne parle à la première personne.
+  - `[ÉTABLI]` La Présidence écarte la méthode des entretiens (saisine de la n°29). R197 amendée propose cinq sources
+    d'observation, le client test en tête ; les entretiens de R186 ne sont plus une condition.
 - **Ce qu'il faut pour trancher** : les retours du premier client test ; puis les entretiens de R186, qui attendent après
   lui. Trois acheteurs sur cinq qui décrivent une preuve qu'ils ne savent pas produire aujourd'hui, dans leurs mots.
   Complète Q21 et Q22.
+- **17/11/2026**, séance n°29, **ce qu'il faut pour trancher**, complété : le client test observé (ouvre-t-il le
+  dossier, à qui le montre-t-il) ; un acheteur autre que lui qui demande, installe ou paie ; si la Présidence l'accepte,
+  une question de fait posée sans campagne (question 11 du PV) ; une lecture de Reddit et de LinkedIn par une personne
+  connectée.
 
 ## Q28 : Le CRA et la licence : libre non monétisé, ou édition payante ; l'AGPL seule, ou avec une licence commerciale ?
 
@@ -665,6 +679,12 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   règle semblable `[À VÉRIFIER]`.
 - **Pourquoi ça compte** : le modèle de revenus (Q15) passe presque partout par une édition payante (Plane, Mattermost,
   Sidekiq). Le jour où TaskForce en a une, il change de statut au sens du CRA, avec des obligations datées.
+- **17/11/2026**, séance n°29 :
+  - `[ÉTABLI]` (D4) Des outils de développement libres adoptés sans être payés ont fermé ou été repris : Earthly a cessé de
+    maintenir son projet libre et cite la cannibalisation par son propre outil gratuit ; Kite a fermé avec 500 000
+    développeurs actifs ; Continue a été repris en 06/2026. `[HYPOTHÈSE]` Le mur le plus probable est d'être adopté sans être
+    payé. R206 propose qu'une licence commerciale et un prix soient écrits avant toute annonce large ; la Présidence a dit
+    « le prix faudra voir » : la question lui revient (question 10 du PV).
 - **Position actuelle** : `[HYPOTHÈSE]` tant que TaskForce est gratuit (R106), rien ne presse. Prévoir tôt une licence
   commerciale à côté de l'AGPL, pour les acheteurs dont la politique l'interdit ; ne rien écrire sur le CRA en public avant
   une lecture qualifiée.
@@ -686,6 +706,13 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 - **Position actuelle** : `[HYPOTHÈSE]` s'aligner sur la RFC 8785 pour la canonisation coûte peu et ne lie à rien ; le
   brouillon de l'IETF se lit, sans s'y attacher tant qu'il n'a aucun statut ; le format et son vérificateur se publient
   (Mazzucato, LeCun, R64).
+- **17/11/2026**, séance n°29 :
+  - `[ÉTABLI]` (D4, relu par le secrétariat) La boîte à outils de Microsoft émet des reçus signés en Ed25519 sur JSON
+    canonique (RFC 8785) ; JFrog annonce un enregistrement signé en in-toto et DSSE ; six brouillons individuels à l'IETF,
+    aucun adopté ; une proposition de prédicat à l'OpenSSF close sans adoption le 29/09/2026.
+  - `[HYPOTHÈSE]` Un format propre à TaskForce serait le septième. R198 amendée et R206 : la canonisation selon la RFC 8785,
+    la signature dans une enveloppe que d'autres lisent déjà, le schéma de ce que le dossier ajoute publié avec son
+    vérificateur. E34 l'éprouve.
 - **Ce qu'il faut pour trancher** : comparer `CanonicalJson.java` à la RFC 8785 sur ses cas d'essai (il refuse les décimaux) ;
   lire le brouillon en entier ; un brouillon d'ADR avec TF-J2-7.
 
@@ -703,6 +730,54 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   a ouvert reste, ce qu'il n'a pas ouvert s'en va. L'issue et une liste simple du travail ne sont pas en cause.
 - **Ce qu'il faut pour trancher** : E32 (ce qui dépend de l'issue interne) ; ce que le client test ouvre et n'ouvre pas, sans
   nom ni détail ; la décision de la Présidence sur la question 2 du PV.
+
+## Q31 : Le témoin : où ancrer l'empreinte de tête du dossier, hors de l'opérateur ?
+
+`[statut:: ouverte]` · `[prio:: P1]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°29](./conseil/seances/2026-11-17-preciser-avant-de-trancher.md), R198 amendée
+
+- **La question** : le dossier d'une mission est une chaîne SHA-256 que TF-J2-7 doit signer. La chaîne, sa racine et la clé
+  vivent chez le même opérateur, qui peut tout récrire et tout resigner. Un fil de discussion public le dit d'un outil
+  voisin : une chaîne que l'opérateur détient ne prouve rien à un tiers (D5, C5). Où écrire l'empreinte de tête pour qu'un
+  autre que l'opérateur la détienne aussi ?
+- **Pourquoi ça compte** : sans témoin, « vérifiable sans TaskForce » veut dire « cohérent », pas « inchangé ». Hamilton
+  s'est abstenue sur R198 amendée pour cette raison, Bengio la partage.
+- **Position actuelle** : `[HYPOTHÈSE]` le moins cher d'abord : l'empreinte de tête écrite dans la pull request ou le commit
+  chez l'hôte quand il y en a un, et dite dans le dossier. Un service d'horodatage ou un registre de transparence attendent
+  qu'un acheteur les demande.
+- **Ce qu'il faut pour trancher** : la décision sur la clé dans l'app de bureau (ADR-028, E27) ; lire comment les
+  enveloppes in-toto et DSSE et le profil SCITT prévoient un témoin ; un brouillon d'ADR avec TF-J2-7. Complète Q29.
+
+## Q32 : Qui écrit les processus et les paquets de règles, et que donne TaskForce comme exemples ?
+
+`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°29](./conseil/seances/2026-11-17-preciser-avant-de-trancher.md), R200 amendée
+
+- **La question** : la Présidence étend le workflow à « compliance, reglementation, convention ». TaskForce fournit le
+  moteur, jamais le contenu réglementaire (R179, R187, ADR-022). Une entreprise moyenne n'a personne pour écrire ses
+  processus ; les grands comptes écrivent les leurs avec une équipe plateforme (D5, S15). Qui écrit : l'entreprise, un
+  partenaire qui en répond, une communauté ? Sous quelle forme un processus et ses règles se partagent-ils ? Jusqu'où vont
+  les exemples que TaskForce donne ?
+- **Pourquoi ça compte** : un moteur vide ne montre rien ; un paquet réglementaire signé TaskForce contredit R187. D5 voit
+  dans « le paquet de règles prêt » une des trois directions que le terrain porte.
+- **Position actuelle** : `[HYPOTHÈSE]` TaskForce donne des exemples de conventions d'ingénierie, marqués comme des exemples
+  (les quatre yeux sur un changement d'agent, aucun push direct, les tests avant la fusion). Une réglementation est écrite
+  par l'entreprise ou par un partenaire qui en répond. TaskForce ne certifie aucun paquet.
+- **Ce qu'il faut pour trancher** : la page du processus d'E20 avec une étape de chaque famille ; ce que le premier client
+  test écrit lui-même et ce qu'il demande qu'on lui donne ; Q21 (le partenaire).
+
+## Q33 : La classe d'une écriture externe : qui la déclare, et comment prouver son action inverse ?
+
+`[statut:: ouverte]` · `[prio:: P1]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°29](./conseil/seances/2026-11-17-preciser-avant-de-trancher.md), R201 amendée
+
+- **La question** : la Présidence dit « si il peut le faire lui mm go ». Dans TaskForce, c'est le cas : cinq écritures
+  internes partent sans accord, chacune avec son action inverse (`default.rules.json`). Hors de TaskForce, le socle classe
+  toute écriture externe irréversible (`RulesFloor.java`, `mcp.write`), quel que soit l'outil. Peut-on déclarer réversible
+  une écriture dans un outil externe, qui le déclare, et qu'est-ce qui prouve que l'inverse défait vraiment ?
+- **Pourquoi ça compte** : la fatigue des accords est le signal le plus solide du terrain (D5, S26 à S32). Mais R1 interdit
+  qu'un agent décide de ce qui est irréversible, et Bengio rappelle qu'une inverse qui supprime l'objet ne rappelle pas la
+  notification partie.
+- **Position actuelle** : `[HYPOTHÈSE]` outil par outil ; une personne qui administre l'espace déclare, nomme l'inverse,
+  l'essai la prouve ; le défaut reste la carte ; la garde « jamais les trois à la fois » ne se relâche pas.
+- **Ce qu'il faut pour trancher** : E33 ; le brouillon d'ADR-030 ; la décision de la Présidence sur la question 5 du PV.
 
 ---
 
