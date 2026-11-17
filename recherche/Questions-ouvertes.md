@@ -52,6 +52,10 @@ related:
 | [Q24](#q24--qui-répond-dun-adaptateur-ou-dune-leçon-appris-chez-une-entreprise-au-sens-du-rgpd-et-de-lai-act-) | Qui répond d'un adaptateur ou d'une leçon appris chez une entreprise, au sens du RGPD et de l'AI Act ? | P2 | ouverte : attend la lecture d'un juriste ; aucun entraînement pour l'instant (16/11) |
 | [Q25](#q25--comment-isoler-une-mission-sous-windows-natif-sans-prérequis-) | Comment isoler une mission sous Windows natif, sans prérequis ? | P2 | en cours : l'isolement par défaut partout, ADR-028 en projet, E27 (16/11) |
 | [Q26](#q26--ce-quune-leçon-du-harnais-peut-proposer-de-changer-et-ce-quelle-ne-touche-jamais) | Ce qu'une leçon du harnais peut proposer de changer, et ce qu'elle ne touche jamais | P2 | en cours : une leçon qui durcit s'active seule ; jamais le socle, jamais une règle relâchée (16/11) |
+| [Q27](#q27--la-demande-dune-preuve-sur-site-existe-t-elle-chez-les-entreprises-de-10-à-250-personnes-) | La demande d'une preuve sur site existe-t-elle chez les entreprises de 10 à 250 personnes ? | P1 | ouverte |
+| [Q28](#q28--le-cra-et-la-licence--libre-non-monétisé-ou-édition-payante--lagpl-seule-ou-avec-une-licence-commerciale-) | Le CRA et la licence : libre non monétisé, ou édition payante ; l'AGPL seule, ou avec une licence commerciale ? | P2 | ouverte |
+| [Q29](#q29--le-format-du-dossier--saligner-sur-la-rfc-8785-et-le-brouillon-de-lietf-ou-garder-le-sien-) | Le format du dossier : s'aligner sur la RFC 8785 et le brouillon de l'IETF, ou garder le sien ? | P2 | ouverte |
+| [Q30](#q30--le-sort-des-surfaces-gelées-et-quand-le-décider) | Le sort des surfaces gelées, et quand le décider | P2 | ouverte |
 
 ---
 
@@ -631,6 +635,74 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   des pièces qu'une leçon peut viser ; `[DÉDUIT]` ce que « durcir » veut dire pour une convention du brouillon, un cas de la
   banque ou une préférence de modèle, qui restent des propositions tant que ce n'est pas écrit ; les étapes verrouillées et les
   sorties, que R194 mettait hors de portée et que le secrétariat y laisse. E29, puis le lot W10.
+
+## Q27 : La demande d'une preuve sur site existe-t-elle chez les entreprises de 10 à 250 personnes ?
+
+`[statut:: ouverte]` · `[prio:: P1]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°28](./conseil/seances/2026-11-17-le-recentrage.md), R196
+
+- **La question** : la place que la séance n°28 donne à TaskForce (un dossier par tâche, vérifiable hors de l'outil, installé
+  chez l'entreprise) se déduit de ce que les plateformes ne vendent pas. Une absence d'offre peut être une absence de demande.
+  Aucune enquête lue ne chiffre la demande d'une gouvernance d'agents sur site, aucune ne porte sur les entreprises européennes
+  de 10 à 250 personnes, et aucun exemple public ne montre une personne seule vendant cela à des entreprises régulées.
+- **Pourquoi ça compte** : R196 fonde la phrase du produit sur cette place ; R181 y prend sa niche. Si la demande n'existe que
+  chez les grands comptes, servis en ligne par les plateformes, la couche n'a pas d'acheteur à sa taille.
+- **Position actuelle** : `[HYPOTHÈSE]` la demande existe là où un audit contrôle déjà (BPF, Part 11, SOC 2, les
+  questionnaires fournisseurs), et elle se dit dans les mots de l'audit, pas dans ceux des agents. Elle passe par un
+  partenaire qui porte la qualité plus sûrement que par une vente directe (R63, Q21).
+- **Ce qu'il faut pour trancher** : les retours du premier client test ; puis les entretiens de R186, qui attendent après
+  lui. Trois acheteurs sur cinq qui décrivent une preuve qu'ils ne savent pas produire aujourd'hui, dans leurs mots.
+  Complète Q21 et Q22.
+
+## Q28 : Le CRA et la licence : libre non monétisé, ou édition payante ; l'AGPL seule, ou avec une licence commerciale ?
+
+`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°28](./conseil/seances/2026-11-17-le-recentrage.md), R203
+
+- **La question** : deux choix se tiennent. Le Cyber Resilience Act s'applique en entier le 11/12/2027, et ses déclarations
+  de vulnérabilités exploitées depuis le 11/09/2026 ; `[À VÉRIFIER]` selon un seul commentaire d'avocat sur les lignes
+  directrices de la Commission (27/07/2026), un logiciel libre n'est « mis sur le marché » que s'il est monétisé, et une même
+  entité peut être intendante d'une édition communautaire et fabricante d'une édition payante. Et l'AGPL sert l'audit du code
+  mais gêne l'achat : la politique publique de Google l'interdit chez lui, et d'autres directions juridiques auraient une
+  règle semblable `[À VÉRIFIER]`.
+- **Pourquoi ça compte** : le modèle de revenus (Q15) passe presque partout par une édition payante (Plane, Mattermost,
+  Sidekiq). Le jour où TaskForce en a une, il change de statut au sens du CRA, avec des obligations datées.
+- **Position actuelle** : `[HYPOTHÈSE]` tant que TaskForce est gratuit (R106), rien ne presse. Prévoir tôt une licence
+  commerciale à côté de l'AGPL, pour les acheteurs dont la politique l'interdit ; ne rien écrire sur le CRA en public avant
+  une lecture qualifiée.
+- **Ce qu'il faut pour trancher** : la lecture du texte primaire des lignes directrices (communication C(2026) 5252) ; un
+  juriste, avant toute édition payante ; Q15.
+
+## Q29 : Le format du dossier : s'aligner sur la RFC 8785 et le brouillon de l'IETF, ou garder le sien ?
+
+`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°28](./conseil/seances/2026-11-17-le-recentrage.md), R198
+
+- **La question** : le dossier de TaskForce est une chaîne SHA-256 sur un JSON canonique écrit dans son code
+  (`CanonicalJson.java`), exportée au format `taskforce-evidence/1`. Un brouillon individuel à l'IETF (« Agent Audit Trail »,
+  version 09, 26/10/2026) décrit un journal d'agent chaîné par SHA-256 selon la RFC 8785, signatures en option ; il n'est
+  « not endorsed by the IETF ». Faut-il s'aligner sur la RFC 8785, reprendre les champs du brouillon, ou publier son propre
+  format comme une spécification ouverte ?
+- **Pourquoi ça compte** : aucun standard adopté ne dit comment prouver ce qu'un agent a fait (Forrester, 20/03/2026). Un
+  format publié peut servir de référence à de petites entreprises ; un format isolé oblige chaque auditeur à apprendre le
+  nôtre. Les normes du JTC 21, attendues d'ici le 28/02/2027, peuvent démentir l'un comme l'autre.
+- **Position actuelle** : `[HYPOTHÈSE]` s'aligner sur la RFC 8785 pour la canonisation coûte peu et ne lie à rien ; le
+  brouillon de l'IETF se lit, sans s'y attacher tant qu'il n'a aucun statut ; le format et son vérificateur se publient
+  (Mazzucato, LeCun, R64).
+- **Ce qu'il faut pour trancher** : comparer `CanonicalJson.java` à la RFC 8785 sur ses cas d'essai (il refuse les décimaux) ;
+  lire le brouillon en entier ; un brouillon d'ADR avec TF-J2-7.
+
+## Q30 : Le sort des surfaces gelées, et quand le décider
+
+`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°28](./conseil/seances/2026-11-17-le-recentrage.md), R202
+
+- **La question** : R202 gèle le Board et sa famille (List, Backlog, Cycles, Roadmap, Teams, Dashboard, Analytics, Members,
+  le suivi du temps), la vue Workflow en cartes, les préréglages non connectés, l'app web hébergée. Un gel coûte : des
+  migrations à porter, de la sécurité à tenir, des écrans à expliquer à un client qui évalue son fournisseur. Lesquelles
+  supprimer, lesquelles reprendre, et sur quel signal ?
+- **Pourquoi ça compte** : Musk a maintenu que geler est le pire des trois états ; Ait Si Abbou, que le gel retire au
+  non-ingénieur la seule vue qu'il lit. Sans date, un gel devient un abandon qui ne dit pas son nom.
+- **Position actuelle** : `[HYPOTHÈSE]` la décision se prend au retour du premier client test, surface par surface : ce qu'il
+  a ouvert reste, ce qu'il n'a pas ouvert s'en va. L'issue et une liste simple du travail ne sont pas en cause.
+- **Ce qu'il faut pour trancher** : E32 (ce qui dépend de l'issue interne) ; ce que le client test ouvre et n'ouvre pas, sans
+  nom ni détail ; la décision de la Présidence sur la question 2 du PV.
 
 ---
 
