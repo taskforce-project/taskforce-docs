@@ -59,6 +59,9 @@ related:
 | [Q31](#q31--le-témoin--où-ancrer-lempreinte-de-tête-du-dossier-hors-de-lopérateur-) | Le témoin : où ancrer l'empreinte de tête du dossier, hors de l'opérateur ? | P1 | ouverte |
 | [Q32](#q32--qui-écrit-les-processus-et-les-paquets-de-règles-et-que-donne-taskforce-comme-exemples-) | Qui écrit les processus et les paquets de règles, et que donne TaskForce comme exemples ? | P2 | ouverte |
 | [Q33](#q33--la-classe-dune-écriture-externe--qui-la-déclare-et-comment-prouver-son-action-inverse-) | La classe d'une écriture externe : qui la déclare, et comment prouver son action inverse ? | P1 | ouverte |
+| [Q34](#q34--à-qui-appartient-le-code-et-comment-le-garder-cessible-) | À qui appartient le code, et comment le garder cessible ? | P1 | ouverte |
+| [Q35](#q35--le-vérificateur--un-autre-modèle-suffit-il-ou-faut-il-un-juge-qui-nest-pas-un-agent-) | Le vérificateur : un autre modèle suffit-il, ou faut-il un juge qui n'est pas un agent ? | P2 | ouverte |
+| [Q36](#q36--que-garde-le-dossier-dune-machine-quand-laction-nattend-pas-un-accord-) | Que garde le dossier d'une machine, quand l'action n'attend pas un accord ? | P3 | ouverte |
 
 ---
 
@@ -659,6 +662,11 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
     vendeurs ; aucun auditeur ni responsable qualité ne parle à la première personne.
   - `[ÉTABLI]` La Présidence écarte la méthode des entretiens (saisine de la n°29). R197 amendée propose cinq sources
     d'observation, le client test en tête ; les entretiens de R186 ne sont plus une condition.
+- **17/11/2026**, séance n°30 :
+  - `[ÉTABLI]` (D7) Aucune source lue ne montre un acheteur qui paie pour un dossier de preuve par tâche, ni une personne
+    seule vendant à un compte régulé. Les listes d'un grand accélérateur ne demandent pas cette couche sous ce nom ; celle
+    d'hiver 2027 demande l'IA derrière les murs, là où sont « the largest budgets ». Une enquête de fonds (28/10/2026) :
+    47 % des responsables de la sécurité prendraient une jeune pousse pour un trou que leur plateforme ne couvre pas.
 - **Ce qu'il faut pour trancher** : les retours du premier client test ; puis les entretiens de R186, qui attendent après
   lui. Trois acheteurs sur cinq qui décrivent une preuve qu'ils ne savent pas produire aujourd'hui, dans leurs mots.
   Complète Q21 et Q22.
@@ -666,6 +674,8 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   dossier, à qui le montre-t-il) ; un acheteur autre que lui qui demande, installe ou paie ; si la Présidence l'accepte,
   une question de fait posée sans campagne (question 11 du PV) ; une lecture de Reddit et de LinkedIn par une personne
   connectée.
+- **17/11/2026**, séance n°30, **ce qu'il faut pour trancher**, complété : les sept critères du point de décision
+  (R218), observés chez le premier client test trente jours après la remise de la v1.
 
 ## Q28 : Le CRA et la licence : libre non monétisé, ou édition payante ; l'AGPL seule, ou avec une licence commerciale ?
 
@@ -685,6 +695,11 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
     développeurs actifs ; Continue a été repris en 06/2026. `[HYPOTHÈSE]` Le mur le plus probable est d'être adopté sans être
     payé. R206 propose qu'une licence commerciale et un prix soient écrits avant toute annonce large ; la Présidence a dit
     « le prix faudra voir » : la question lui revient (question 10 du PV).
+- **17/11/2026**, séance n°30 :
+  - `[ÉTABLI]` La Présidence tient un rachat pour une issue acceptable. `[ÉTABLI]` (D7) Un éditeur d'une seule personne vend
+    depuis plus de dix ans des éditions commerciales d'une bibliothèque libre, installées chez le client. `[HYPOTHÈSE]` La
+    licence commerciale répond au risque d'être installé sans être payé ; elle suppose tous les droits chez un seul
+    titulaire (Q34).
 - **Position actuelle** : `[HYPOTHÈSE]` tant que TaskForce est gratuit (R106), rien ne presse. Prévoir tôt une licence
   commerciale à côté de l'AGPL, pour les acheteurs dont la politique l'interdit ; ne rien écrire sur le CRA en public avant
   une lecture qualifiée.
@@ -746,6 +761,10 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   qu'un acheteur les demande.
 - **Ce qu'il faut pour trancher** : la décision sur la clé dans l'app de bureau (ADR-028, E27) ; lire comment les
   enveloppes in-toto et DSSE et le profil SCITT prévoient un témoin ; un brouillon d'ADR avec TF-J2-7. Complète Q29.
+- **17/11/2026**, séance n°30 :
+  - Le point 9 de la liste à trancher pose la question à la Présidence : l'empreinte de tête écrite dans la pull request
+    quand il y en a une, avec TF-J2-7. R212 : rien d'autre ne s'ajoute au commit ni à la pull request qu'un lien et cette
+    empreinte.
 
 ## Q32 : Qui écrit les processus et les paquets de règles, et que donne TaskForce comme exemples ?
 
@@ -778,6 +797,53 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 - **Position actuelle** : `[HYPOTHÈSE]` outil par outil ; une personne qui administre l'espace déclare, nomme l'inverse,
   l'essai la prouve ; le défaut reste la carte ; la garde « jamais les trois à la fois » ne se relâche pas.
 - **Ce qu'il faut pour trancher** : E33 ; le brouillon d'ADR-030 ; la décision de la Présidence sur la question 5 du PV.
+
+## Q34 : À qui appartient le code, et comment le garder cessible ?
+
+`[statut:: ouverte]` · `[prio:: P1]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°30](./conseil/seances/2026-11-17-finir-la-v1.md), R216
+
+- **La question** : TaskForce est sous AGPL-3.0. Une licence commerciale, et un jour une cession, ne sont possibles que si
+  tous les droits du code sont chez un seul titulaire. Le sont-ils aujourd'hui ? Qu'advient-il d'une contribution
+  extérieure, et des dépendances dont la licence limite la revente ?
+- **Pourquoi ça compte** : la Présidence tient un rachat pour une issue acceptable, et R206 demande une licence commerciale
+  avant toute annonce large. Dans les cas lus (D7), on rachète un outil dont on dépend ou une équipe ; un dépôt dont les
+  droits sont partagés ne se vend ni ne se licencie.
+- **Position actuelle** : `[HYPOTHÈSE]` aucune contribution extérieure n'est fusionnée sans un accord écrit qui laisse au
+  titulaire le droit de licencier autrement ; l'inventaire des droits se fait une fois, maintenant.
+- **Ce qu'il faut pour trancher** : l'inventaire des auteurs du dépôt et des licences des dépendances ; l'avis du juriste
+  (Q28) ; la décision de la Présidence sur le point 13 de la liste.
+
+## Q35 : Le vérificateur : un autre modèle suffit-il, ou faut-il un juge qui n'est pas un agent ?
+
+`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°30](./conseil/seances/2026-11-17-finir-la-v1.md), R210
+
+- **La question** : R210 place, entre les contrôles déterministes et la personne, un vérificateur qui n'est pas l'auteur.
+  Un second modèle est-il assez indépendant pour laisser passer un changement ? Ou ne peut-il que renvoyer à une
+  personne ?
+- **Pourquoi ça compte** : `[ÉTABLI]` (D8) un modèle qui évalue favorise ses productions ; l'auto-correction ne marche
+  qu'avec un retour externe fiable ; ces travaux ne portent pas sur le code, et aucune étude trouvée ne compare, sur du
+  code, un agent qui se relit à un vérificateur indépendant. Sur le terrain, cinq revues d'IA sur six viennent du même
+  produit que l'auteur. Bengio s'est abstenu sur R210 pour cette raison.
+- **Position actuelle** : `[HYPOTHÈSE]` en v1, le vérificateur n'existe pas. Quand il existera, il ne fera jamais partir
+  seul un changement que les contrôles déterministes n'ont pas déjà prouvé.
+- **Ce qu'il faut pour trancher** : E36 ; un essai où des changements fautifs connus passent devant un modèle relecteur,
+  devant le même modèle que l'auteur, et devant les seuls contrôles déterministes.
+
+## Q36 : Que garde le dossier d'une machine, quand l'action n'attend pas un accord ?
+
+`[statut:: ouverte]` · `[prio:: P3]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°30](./conseil/seances/2026-11-17-finir-la-v1.md), R215
+
+- **La question** : le dossier d'une mission lie une demande, une règle, un accord humain, une action et un résultat. Une
+  machine décide en millisecondes, sans réseau. Qu'est-ce qui tient lieu d'accord : la règle en vigueur, la reprise en
+  main, une autorisation donnée d'avance ? Et que peut-on dire honnêtement de la décision d'un réseau de neurones ?
+- **Pourquoi ça compte** : `[ÉTABLI]` (D6) le règlement (UE) 2023/1230 exige dès le 20/01/2027, pour certaines machines,
+  l'enregistrement des données du processus de décision lié à la sécurité ; les normes harmonisées n'existent pas. Une
+  prépublication de 07/2026 montre qu'un raisonnement affiché ne reflète pas forcément la décision interne du modèle.
+  C'est le rêve que la Présidence a posé.
+- **Position actuelle** : `[HYPOTHÈSE]` le dossier dit quelle règle, quelle demande, quel accord ou quelle reprise en main ;
+  jamais « pourquoi ». Rien ne se construit avant le point de décision.
+- **Ce qu'il faut pour trancher** : la v1 finie ; puis une demi-journée au labo sur un enregistrement public ; un
+  partenaire qui a un vrai robot, ou un texte qui nomme un format.
 
 ---
 
