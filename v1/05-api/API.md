@@ -298,6 +298,12 @@ valeur d'un choix ou une réponse tapée ; 200 avec l'appel tel que le geste con
 question, `pending` pour sa carte, `success` avec `ref` et `target`, `refused`, `error`) ; 404 si le dossier n'est pas
 celui de la personne, 400 si la question est déjà répondue ou la réponse vide.
 
+**MAJ 19/11/2026 : où Cortex écrit** (R204 de la séance n°28 ; PR #548, pas encore en prod). Chaque `AssistantToolCall`
+d'une écriture porte `where` (`AssistantWhere` : `{system, workspace, asked}`) : le lieu où l'action écrit (« TaskForce » ou
+le connecteur), l'espace quand c'est TaskForce, et l'outil que la demande nommait quand il diffère ; la carte le montre
+avant le geste. Les réponses peuvent aussi porter un bloc signé `TaskForce · done` (une phrase qui niait une action
+faite, remplacée) ou `TaskForce · record` (ce que le tour et la conversation ont fait, à côté d'une phrase incertaine).
+
 **MAJ 05/11/2026 : une carte de deux questions au plus** (R115 précisée par la Présidence ; PR #486, pas encore
 fusionnée). Un appel au statut `question` porte `questions` (une ou deux, la carte) au lieu de `question` :
 `{field, header, text, multiple, choices: [{value, label, description, recommended}]}`, quatre choix au plus, le

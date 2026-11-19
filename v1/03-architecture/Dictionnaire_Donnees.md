@@ -1315,7 +1315,7 @@ Ce qui encadre les agents au-delà d'une mission. Les règles de l'espace, versi
 
 ### `eval_cases`
 
-13 colonnes · 3 clé(s) étrangère(s).
+14 colonnes · 3 clé(s) étrangère(s).
 
 | Colonne | Type | Nullable | Clés | Défaut | ON DELETE |
 |---|---|:--:|---|---|---|
@@ -1332,6 +1332,7 @@ Ce qui encadre les agents au-delà d'une mission. Les règles de l'espace, versi
 | `cassette` | text | non |  |  |  |
 | `criteria` | text | non |  |  |  |
 | `archived` | bool | non |  | `false` |  |
+| `context` | text | non |  | `'{}'::text` |  |
 
 ### `eval_runs`
 
