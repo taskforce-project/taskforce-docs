@@ -52,16 +52,19 @@ related:
 | [Q24](#q24--qui-répond-dun-adaptateur-ou-dune-leçon-appris-chez-une-entreprise-au-sens-du-rgpd-et-de-lai-act-) | Qui répond d'un adaptateur ou d'une leçon appris chez une entreprise, au sens du RGPD et de l'AI Act ? | P2 | ouverte : attend la lecture d'un juriste ; aucun entraînement pour l'instant (16/11) |
 | [Q25](#q25--comment-isoler-une-mission-sous-windows-natif-sans-prérequis-) | Comment isoler une mission sous Windows natif, sans prérequis ? | P2 | en cours : l'isolement par défaut partout, ADR-028 en projet, E27 (16/11) |
 | [Q26](#q26--ce-quune-leçon-du-harnais-peut-proposer-de-changer-et-ce-quelle-ne-touche-jamais) | Ce qu'une leçon du harnais peut proposer de changer, et ce qu'elle ne touche jamais | P2 | en cours : une leçon qui durcit s'active seule ; jamais le socle, jamais une règle relâchée (16/11) |
-| [Q27](#q27--la-demande-dune-preuve-sur-site-existe-t-elle-chez-les-entreprises-de-10-à-250-personnes-) | La demande d'une preuve sur site existe-t-elle chez les entreprises de 10 à 250 personnes ? | P1 | ouverte |
-| [Q28](#q28--le-cra-et-la-licence--libre-non-monétisé-ou-édition-payante--lagpl-seule-ou-avec-une-licence-commerciale-) | Le CRA et la licence : libre non monétisé, ou édition payante ; l'AGPL seule, ou avec une licence commerciale ? | P2 | ouverte |
-| [Q29](#q29--le-format-du-dossier--saligner-sur-la-rfc-8785-et-le-brouillon-de-lietf-ou-garder-le-sien-) | Le format du dossier : s'aligner sur la RFC 8785 et le brouillon de l'IETF, ou garder le sien ? | P2 | ouverte |
-| [Q30](#q30--le-sort-des-surfaces-gelées-et-quand-le-décider) | Le sort des surfaces gelées, et quand le décider | P2 | ouverte |
-| [Q31](#q31--le-témoin--où-ancrer-lempreinte-de-tête-du-dossier-hors-de-lopérateur-) | Le témoin : où ancrer l'empreinte de tête du dossier, hors de l'opérateur ? | P1 | ouverte |
-| [Q32](#q32--qui-écrit-les-processus-et-les-paquets-de-règles-et-que-donne-taskforce-comme-exemples-) | Qui écrit les processus et les paquets de règles, et que donne TaskForce comme exemples ? | P2 | ouverte |
-| [Q33](#q33--la-classe-dune-écriture-externe--qui-la-déclare-et-comment-prouver-son-action-inverse-) | La classe d'une écriture externe : qui la déclare, et comment prouver son action inverse ? | P1 | ouverte |
-| [Q34](#q34--à-qui-appartient-le-code-et-comment-le-garder-cessible-) | À qui appartient le code, et comment le garder cessible ? | P1 | ouverte |
-| [Q35](#q35--le-vérificateur--un-autre-modèle-suffit-il-ou-faut-il-un-juge-qui-nest-pas-un-agent-) | Le vérificateur : un autre modèle suffit-il, ou faut-il un juge qui n'est pas un agent ? | P2 | ouverte |
-| [Q36](#q36--que-garde-le-dossier-dune-machine-quand-laction-nattend-pas-un-accord-) | Que garde le dossier d'une machine, quand l'action n'attend pas un accord ? | P3 | ouverte |
+| [Q27](#q27--la-demande-dune-preuve-sur-site-existe-t-elle-chez-les-entreprises-de-10-à-250-personnes-) | La demande d'une preuve sur site existe-t-elle chez les entreprises de 10 à 250 personnes ? | P1 | ouverte : se lit au point de décision ; les entretiens ne sont plus une condition (22/11) |
+| [Q28](#q28--le-cra-et-la-licence--libre-non-monétisé-ou-édition-payante--lagpl-seule-ou-avec-une-licence-commerciale-) | Le CRA et la licence : libre non monétisé, ou édition payante ; l'AGPL seule, ou avec une licence commerciale ? | P2 | en cours : la licence commerciale et le prix avant toute annonce large, le juriste avant l'édition payante ; quelle licence et quel prix restent ouverts (22/11) |
+| [Q29](#q29--le-format-du-dossier--saligner-sur-la-rfc-8785-et-le-brouillon-de-lietf-ou-garder-le-sien-) | Le format du dossier : s'aligner sur la RFC 8785 et le brouillon de l'IETF, ou garder le sien ? | P2 | tranchée (22/11) : aucun format propre ; RFC 8785, in-toto et DSSE à instruire par E34 |
+| [Q30](#q30--le-sort-des-surfaces-gelées-et-quand-le-décider) | Le sort des surfaces gelées, et quand le décider | P2 | en cours : le sort se décide au point de décision, sur l'usage observé (22/11) |
+| [Q31](#q31--le-témoin--où-ancrer-lempreinte-de-tête-du-dossier-hors-de-lopérateur-) | Le témoin : où ancrer l'empreinte de tête du dossier, hors de l'opérateur ? | P1 | en cours : l'empreinte de tête dans la pull request quand il y en a une ; le reste ouvert (22/11) |
+| [Q32](#q32--qui-écrit-les-processus-et-les-paquets-de-règles-et-que-donne-taskforce-comme-exemples-) | Qui écrit les processus et les paquets de règles, et que donne TaskForce comme exemples ? | P2 | en cours : TaskForce fournit le moteur et des exemples marqués ; qui publie les paquets reste ouvert (22/11) |
+| [Q33](#q33--la-classe-dune-écriture-externe--qui-la-déclare-et-comment-prouver-son-action-inverse-) | La classe d'une écriture externe : qui la déclare, et comment prouver son action inverse ? | P1 | en cours : ADR-030 en projet, E33 ; hors de TaskForce, outil par outil, après la v1 (22/11) |
+| [Q34](#q34--à-qui-appartient-le-code-et-comment-le-garder-cessible-) | À qui appartient le code, et comment le garder cessible ? | P1 | en cours : tous les droits chez un seul titulaire ; l'inventaire reste à faire (22/11) |
+| [Q35](#q35--le-vérificateur--un-autre-modèle-suffit-il-ou-faut-il-un-juge-qui-nest-pas-un-agent-) | Le vérificateur : un autre modèle suffit-il, ou faut-il un juge qui n'est pas un agent ? | P2 | ouverte : le vérificateur est écrit, pas construit en v1 ; E36 (22/11) |
+| [Q36](#q36--que-garde-le-dossier-dune-machine-quand-laction-nattend-pas-un-accord-) | Que garde le dossier d'une machine, quand l'action n'attend pas un accord ? | P3 | ouverte : rien ne se construit avant le point de décision (22/11) |
+| [Q37](#q37--lapp-web-hébergée--quel-seuil-rouvrirait-un-hébergement-pour-des-clients-) | L'app web hébergée : quel seuil rouvrirait un hébergement pour des clients ? | P2 | ouverte : le seuil revient à la Présidence, aucun n'est fixé (22/11) |
+| [Q38](#q38--action-de-la-présidence--poser-sans-campagne-la-question-de-fait-de-la-séance-n29) | Action de la Présidence : poser, sans campagne, la question de fait de la séance n°29 | P2 | ouverte : action de la Présidence, sans date (22/11) |
+| [Q39](#q39--action-de-la-présidence--lire-une-fois-reddit-et-linkedin-connectée-avec-les-mots-de-la-recherche-d5) | Action de la Présidence : lire une fois Reddit et LinkedIn, connectée, avec les mots de la recherche D5 | P3 | ouverte : action de la Présidence, sans date (22/11) |
 
 ---
 
@@ -676,10 +679,25 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   connectée.
 - **17/11/2026**, séance n°30, **ce qu'il faut pour trancher**, complété : les sept critères du point de décision
   (R218), observés chez le premier client test trente jours après la remise de la v1.
+- **22/11/2026**, décision de la Présidence sur les séances n°28 à n°30 : « Alright ecoute prends les meilleurs decision
+  avec le conseille pour cette v1 et c'est partie ». La Présidence délègue : les dix-huit points de la
+  [séance n°30](./conseil/seances/2026-11-17-finir-la-v1.md) sont tranchés selon l'avis de la majorité du Conseil.
+  - **La décision** : R196, dont Q27 est issue, est remplacée par R205, la place ajustée, retenue par délégation de la
+    Présidence au Conseil, selon l'avis de sa majorité (point 1). R197 amendée est retenue : le premier client test
+    observé passe en tête, et les entretiens de R186 ne sont plus une condition. Les sept critères du point de décision
+    (R218) sont retenus ; ils se lisent trente jours après la remise de la v1 au premier client test, au plus tard le
+    31/03/2027 (point 17). La question de fait et la lecture de Reddit et de LinkedIn sont retenues (point 18) et
+    inscrites comme des actions de la Présidence, sans date : Q38 et Q39.
+  - **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : la décision retient une place et une
+    façon de l'observer ; elle ne dit pas que la demande existe. R205 garde comme hypothèse que des équipes de 10 à 250
+    personnes paient cela. Le butoir du 31/03/2027 revient sur la décision de la Présidence sur la séance n°26 (aucune
+    date avant le client test) : il est retenu par la délégation, et la Présidence peut le retirer d'une ligne.
+    `[DÉDUIT]` Q27 se lit au point de décision, sur les critères b, c et e de R218, et sur les réponses de Q38 et de Q39
+    si elles viennent. Q27 reste ouverte.
 
 ## Q28 : Le CRA et la licence : libre non monétisé, ou édition payante ; l'AGPL seule, ou avec une licence commerciale ?
 
-`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°28](./conseil/seances/2026-11-17-le-recentrage.md), R203
+`[statut:: en-cours]` · `[prio:: P2]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°28](./conseil/seances/2026-11-17-le-recentrage.md), R203
 
 - **La question** : deux choix se tiennent. Le Cyber Resilience Act s'applique en entier le 11/12/2027, et ses déclarations
   de vulnérabilités exploitées depuis le 11/09/2026 ; `[À VÉRIFIER]` selon un seul commentaire d'avocat sur les lignes
@@ -705,10 +723,21 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   une lecture qualifiée.
 - **Ce qu'il faut pour trancher** : la lecture du texte primaire des lignes directrices (communication C(2026) 5252) ; un
   juriste, avant toute édition payante ; Q15.
+- **22/11/2026**, décision de la Présidence, par délégation de la Présidence au Conseil, selon l'avis de sa majorité
+  ([séance n°30](./conseil/seances/2026-11-17-finir-la-v1.md), point 13 de la liste à trancher ; R206 et R216
+  retenues) :
+  - **La décision** : la licence commerciale et le prix sont écrits avant toute annonce large ; tous les droits du code
+    sont chez un seul titulaire ; le juriste passe avant l'édition payante. La Présidence, le 17/11/2026, sur le
+    rachat : « si je peux me faire acheter par une boite qui veut mon truc j'ai aucun pb avec ca ».
+  - **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : l'ordre est tranché, le contenu ne l'est
+    pas. Restent ouverts : quelle licence commerciale à côté de l'AGPL, quel prix (Q15), quel juriste, et la lecture du
+    texte primaire sur le CRA. `[DÉDUIT]` La position du 17/11 (« rien ne presse ») ne tient plus telle quelle : la
+    licence et le prix précèdent toute annonce large, et le critère 9 de « la v1 est finie » (R218) les demande écrits
+    dans le dossier fournisseur. Les droits du code sont suivis en Q34. Q28 passe en cours.
 
 ## Q29 : Le format du dossier : s'aligner sur la RFC 8785 et le brouillon de l'IETF, ou garder le sien ?
 
-`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°28](./conseil/seances/2026-11-17-le-recentrage.md), R198
+`[statut:: tranchée]` · `[prio:: P2]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°28](./conseil/seances/2026-11-17-le-recentrage.md), R198
 
 - **La question** : le dossier de TaskForce est une chaîne SHA-256 sur un JSON canonique écrit dans son code
   (`CanonicalJson.java`), exportée au format `taskforce-evidence/1`. Un brouillon individuel à l'IETF (« Agent Audit Trail »,
@@ -730,10 +759,24 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
     vérificateur. E34 l'éprouve.
 - **Ce qu'il faut pour trancher** : comparer `CanonicalJson.java` à la RFC 8785 sur ses cas d'essai (il refuse les décimaux) ;
   lire le brouillon en entier ; un brouillon d'ADR avec TF-J2-7.
+- **22/11/2026**, décision de la Présidence, par délégation de la Présidence au Conseil, selon l'avis de sa majorité
+  ([séance n°30](./conseil/seances/2026-11-17-finir-la-v1.md), point 9 de la liste à trancher ; R198 amendée, R206 et
+  R212 retenues) :
+  - **La décision** : aucun format propre. La canonisation suit la RFC 8785 ; la signature entre dans une enveloppe que
+    d'autres lisent déjà (in-toto et DSSE), à instruire avec TF-J2-7 par E34, inscrite ce jour ; le schéma de ce que le
+    dossier ajoute et son vérificateur se publient, ouverts (R206). La page de vérification s'écrit d'abord, et rien ne
+    s'ajoute au commit.
+  - **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : Q29 est tranchée sur son principe,
+    TaskForce ne garde pas un format à lui. Le brouillon individuel de l'IETF ne devient pas la référence : un brouillon
+    adopté par un groupe de travail est un des quatre signaux notés de R207 (s'y aligner, sans pivoter). Restent, pour
+    E34 et non pour la Présidence : l'écart de `CanonicalJson.java` avec la RFC 8785 (il refuse les décimaux) ; les
+    champs du dossier qui ne trouveraient pas leur place dans l'énoncé ; le signal d'arrêt de R198 amendée (si le format
+    déborde, le dossier garde son format d'aujourd'hui, signé, et l'enveloppe attend). E34 est l'essai du critère 3 de
+    « la v1 est finie » (R218). Le témoin reste en Q31.
 
 ## Q30 : Le sort des surfaces gelées, et quand le décider
 
-`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°28](./conseil/seances/2026-11-17-le-recentrage.md), R202
+`[statut:: en-cours]` · `[prio:: P2]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°28](./conseil/seances/2026-11-17-le-recentrage.md), R202
 
 - **La question** : R202 gèle le Board et sa famille (List, Backlog, Cycles, Roadmap, Teams, Dashboard, Analytics, Members,
   le suivi du temps), la vue Workflow en cartes, les préréglages non connectés, l'app web hébergée. Un gel coûte : des
@@ -745,10 +788,27 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   a ouvert reste, ce qu'il n'a pas ouvert s'en va. L'issue et une liste simple du travail ne sont pas en cause.
 - **Ce qu'il faut pour trancher** : E32 (ce qui dépend de l'issue interne) ; ce que le client test ouvre et n'ouvre pas, sans
   nom ni détail ; la décision de la Présidence sur la question 2 du PV.
+- **22/11/2026**, décision de la Présidence, par délégation de la Présidence au Conseil, selon l'avis de sa majorité
+  ([séance n°30](./conseil/seances/2026-11-17-finir-la-v1.md), points 2, 10 et 12 de la liste à trancher ; R199 et R202
+  amendées, R209 retenues) :
+  - **La décision** : le Board et sa famille gèlent, l'issue reste l'ancre, et leur sort se décide au point de décision,
+    sur l'usage observé, celui des non-ingénieurs compris. Une liste du travail d'un projet, par état, en langage clair,
+    reste hors du gel. Dans la v1 se masquent Smart Assign, l'agent Copilot tant qu'il n'ouvre pas de dossier et « Show
+    all links » ; les 97 préréglages jamais connectés portent la mention « pas encore essayé ». L'app web hébergée
+    devient une démonstration en données d'exemple et l'espace de la Présidence. R202 était retenue dès le 17/11/2026 :
+    « R202: ok je comprends oui on s'engage pas, on fourni juste le necessaire pour augmenter la confiance ».
+  - **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : le « quand » est tranché, le sort ne
+    l'est pas. La position du 17/11 (« au retour du premier client test ») devient : au point de décision, trente jours
+    après la remise de la v1 au premier client test, au plus tard le 31/03/2027. Rien ne se supprime d'ici là (R209 :
+    tout le reste demeure gelé, sans suppression) ; le critère 10 de « la v1 est finie » demande que les surfaces
+    arrêtées soient masquées et qu'aucune surface gelée n'ait reçu de travail depuis le 17/11/2026. L'app web hébergée
+    sort de cette question : son seuil de réouverture est en Q37. E32 est inscrite ce jour. Q30 passe en cours.
+    Restent : surface par surface, supprimer ou reprendre, sur ce que le client test ouvre et n'ouvre pas, sans nom ni
+    détail.
 
 ## Q31 : Le témoin : où ancrer l'empreinte de tête du dossier, hors de l'opérateur ?
 
-`[statut:: ouverte]` · `[prio:: P1]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°29](./conseil/seances/2026-11-17-preciser-avant-de-trancher.md), R198 amendée
+`[statut:: en-cours]` · `[prio:: P1]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°29](./conseil/seances/2026-11-17-preciser-avant-de-trancher.md), R198 amendée
 
 - **La question** : le dossier d'une mission est une chaîne SHA-256 que TF-J2-7 doit signer. La chaîne, sa racine et la clé
   vivent chez le même opérateur, qui peut tout récrire et tout resigner. Un fil de discussion public le dit d'un outil
@@ -765,10 +825,22 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   - Le point 9 de la liste à trancher pose la question à la Présidence : l'empreinte de tête écrite dans la pull request
     quand il y en a une, avec TF-J2-7. R212 : rien d'autre ne s'ajoute au commit ni à la pull request qu'un lien et cette
     empreinte.
+- **22/11/2026**, décision de la Présidence, par délégation de la Présidence au Conseil, selon l'avis de sa majorité
+  ([séance n°30](./conseil/seances/2026-11-17-finir-la-v1.md), point 9 de la liste à trancher ; R198 amendée et R212
+  retenues) :
+  - **La décision** : oui pour le témoin, le moins cher : l'empreinte de tête du dossier s'écrit dans la pull request
+    quand il y en a une, avec TF-J2-7. Rien d'autre ne s'ajoute au commit ni à la pull request qu'un lien et cette
+    empreinte. La Présidence, le 17/11/2026, écarte la session de l'agent dans le commit : « Enregistrer la session de
+    l'agent dans le commit ? C'est du bruit je suis clairement d'accord. »
+  - **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : Q31 est tranchée pour ce seul témoin, et
+    passe en cours. Restent ouverts : `[DÉDUIT]` une mission sans pull request, qui n'a pas de témoin hors de
+    l'opérateur ; un service d'horodatage ou un registre de transparence, qui attendent qu'un acheteur les demande (R198
+    amendée, précision 5) ; la clé de signature dans l'app de bureau (ADR-028, E27). E34, inscrite ce jour, ne tranche
+    pas le témoin.
 
 ## Q32 : Qui écrit les processus et les paquets de règles, et que donne TaskForce comme exemples ?
 
-`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°29](./conseil/seances/2026-11-17-preciser-avant-de-trancher.md), R200 amendée
+`[statut:: en-cours]` · `[prio:: P2]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°29](./conseil/seances/2026-11-17-preciser-avant-de-trancher.md), R200 amendée
 
 - **La question** : la Présidence étend le workflow à « compliance, reglementation, convention ». TaskForce fournit le
   moteur, jamais le contenu réglementaire (R179, R187, ADR-022). Une entreprise moyenne n'a personne pour écrire ses
@@ -782,10 +854,23 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   par l'entreprise ou par un partenaire qui en répond. TaskForce ne certifie aucun paquet.
 - **Ce qu'il faut pour trancher** : la page du processus d'E20 avec une étape de chaque famille ; ce que le premier client
   test écrit lui-même et ce qu'il demande qu'on lui donne ; Q21 (le partenaire).
+- **22/11/2026**, décision de la Présidence, par délégation de la Présidence au Conseil, selon l'avis de sa majorité
+  ([séance n°30](./conseil/seances/2026-11-17-finir-la-v1.md), points 5 et 14 de la liste à trancher ; R200 amendée
+  retenue, « R200: ok » dès le 17/11/2026) :
+  - **La décision** : un processus porte une réglementation, une convention d'ingénierie ou une norme interne. TaskForce
+    fournit le moteur, et des exemples de conventions marqués comme des exemples ; jamais le contenu réglementaire,
+    jamais un paquet « prévalidé » ; il ne certifie aucun paquet. Le dessin du processus est délégué à l'équipe de Jobs.
+    Le premier client test est partenaire de conception, avec un accord écrit qui dit ce que chacun donne et reçoit.
+  - **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : la position du 17/11 devient la décision
+    pour ce que TaskForce fournit. Q32 passe en cours. Restent ouverts, comme R200 amendée l'écrit : qui publie les
+    paquets (l'entreprise, un partenaire, une communauté) ; sous quelle forme ils circulent d'une installation à l'autre
+    (l'abstention de Nilekani sur R213) ; ce que le premier client test écrit lui-même (le critère d du point de
+    décision, R218). La page du processus d'E20, avec une étape de chaque famille, tient au critère 5 de « la v1 est
+    finie ».
 
 ## Q33 : La classe d'une écriture externe : qui la déclare, et comment prouver son action inverse ?
 
-`[statut:: ouverte]` · `[prio:: P1]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°29](./conseil/seances/2026-11-17-preciser-avant-de-trancher.md), R201 amendée
+`[statut:: en-cours]` · `[prio:: P1]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°29](./conseil/seances/2026-11-17-preciser-avant-de-trancher.md), R201 amendée
 
 - **La question** : la Présidence dit « si il peut le faire lui mm go ». Dans TaskForce, c'est le cas : cinq écritures
   internes partent sans accord, chacune avec son action inverse (`default.rules.json`). Hors de TaskForce, le socle classe
@@ -797,10 +882,22 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
 - **Position actuelle** : `[HYPOTHÈSE]` outil par outil ; une personne qui administre l'espace déclare, nomme l'inverse,
   l'essai la prouve ; le défaut reste la carte ; la garde « jamais les trois à la fois » ne se relâche pas.
 - **Ce qu'il faut pour trancher** : E33 ; le brouillon d'ADR-030 ; la décision de la Présidence sur la question 5 du PV.
+- **22/11/2026**, décision de la Présidence, par délégation de la Présidence au Conseil, selon l'avis de sa majorité
+  ([séance n°30](./conseil/seances/2026-11-17-finir-la-v1.md), point 6 de la liste à trancher ; R201 amendée retenue) :
+  - **La décision** : trois classes décidées d'avance par une personne (part seul, attend une carte, refusé). Dans
+    TaskForce, rien ne change. Hors de TaskForce, outil par outil, après la v1.
+  - **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : Q33 passe en cours. Le projet
+    d'[ADR-030](./decisions/ADR-030-DRAFT-la-classe-d-une-ecriture-externe.md) est rangé ce jour et E33 est inscrite. Ce
+    que la décision fixe : une personne qui administre l'espace déclare, nomme l'inverse, et l'essai la prouve ; le
+    défaut reste la carte ; jamais un agent ni un modèle au moment d'agir. Rien du socle ne change en v1 : l'état écrit
+    chez un hôte ([ADR-031](./decisions/ADR-031-DRAFT-une-source-de-travail-sans-copie.md), en projet) en dépend et
+    n'est pas dans la v1 (R218). Restent : la première partie d'E33, le geste qui annule les cinq écritures internes,
+    que le secrétariat n'a pas trouvé dans le code (critère 6 de « la v1 est finie ») ; sa seconde partie, sur un outil
+    réel, après la v1 ; la réserve de Bengio, ce qui est sorti de l'outil ne se rappelle pas.
 
 ## Q34 : À qui appartient le code, et comment le garder cessible ?
 
-`[statut:: ouverte]` · `[prio:: P1]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°30](./conseil/seances/2026-11-17-finir-la-v1.md), R216
+`[statut:: en-cours]` · `[prio:: P1]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°30](./conseil/seances/2026-11-17-finir-la-v1.md), R216
 
 - **La question** : TaskForce est sous AGPL-3.0. Une licence commerciale, et un jour une cession, ne sont possibles que si
   tous les droits du code sont chez un seul titulaire. Le sont-ils aujourd'hui ? Qu'advient-il d'une contribution
@@ -812,6 +909,16 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   titulaire le droit de licencier autrement ; l'inventaire des droits se fait une fois, maintenant.
 - **Ce qu'il faut pour trancher** : l'inventaire des auteurs du dépôt et des licences des dépendances ; l'avis du juriste
   (Q28) ; la décision de la Présidence sur le point 13 de la liste.
+- **22/11/2026**, décision de la Présidence, par délégation de la Présidence au Conseil, selon l'avis de sa majorité
+  ([séance n°30](./conseil/seances/2026-11-17-finir-la-v1.md), point 13 de la liste à trancher ; R216 retenue) :
+  - **La décision** : tous les droits du code chez un seul titulaire ; la licence commerciale et le prix écrits avant
+    toute annonce large ; le juriste avant l'édition payante. La Présidence, le 17/11/2026 : « si je peux me faire
+    acheter par une boite qui veut mon truc j'ai aucun pb avec ca ». R216 ajoute que le rachat ne se vise pas.
+  - **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : le principe est tranché, le fait ne l'est
+    pas. Q34 passe en cours. Restent : l'inventaire des auteurs du dépôt et des licences des dépendances, au labo (la
+    preuve en dix jours de R216) ; la forme de l'accord écrit demandé à une contribution extérieure, dont l'absence est
+    un signal d'arrêt de R216 ; l'avis du juriste (Q28) ; l'engagement envers les clients si l'éditeur change de mains,
+    que Vestager demande dans la licence commerciale et non dans une page.
 
 ## Q35 : Le vérificateur : un autre modèle suffit-il, ou faut-il un juge qui n'est pas un agent ?
 
@@ -828,6 +935,16 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   seul un changement que les contrôles déterministes n'ont pas déjà prouvé.
 - **Ce qu'il faut pour trancher** : E36 ; un essai où des changements fautifs connus passent devant un modèle relecteur,
   devant le même modèle que l'auteur, et devant les seuls contrôles déterministes.
+- **22/11/2026**, décision de la Présidence, par délégation de la Présidence au Conseil, selon l'avis de sa majorité
+  ([séance n°30](./conseil/seances/2026-11-17-finir-la-v1.md), point 7 de la liste à trancher ; R210 retenue) :
+  - **La décision** : pour le geste de fin, la vérification automatique, puis la décision d'une personne, rendue courte
+    et possible par lot ; la fusion sans personne est écrite, éteinte, pas construite en v1.
+  - **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : la décision ne tranche pas Q35, elle la
+    place après la v1. Le vérificateur, l'étage 3 de R210, est écrit et pas construit : la position du 17/11 tient. R210
+    retenue fixe deux bornes : un contrôle déterministe précède toujours le vérificateur, et si un contrôle ou le
+    vérificateur échoue, le changement revient à une personne. E36 est inscrite ce jour. `[DÉDUIT]` Elle mesure après
+    coup ce qui serait parti seul, pas ce que vaut un modèle relecteur : l'essai des changements fautifs connus reste à
+    écrire. Q35 reste ouverte.
 
 ## Q36 : Que garde le dossier d'une machine, quand l'action n'attend pas un accord ?
 
@@ -844,9 +961,79 @@ RGPD (Data_Flywheel §5). **Mauvais troc à nommer explicitement** avant qu'une 
   jamais « pourquoi ». Rien ne se construit avant le point de décision.
 - **Ce qu'il faut pour trancher** : la v1 finie ; puis une demi-journée au labo sur un enregistrement public ; un
   partenaire qui a un vrai robot, ou un texte qui nomme un format.
+- **22/11/2026**, décision de la Présidence, par délégation de la Présidence au Conseil, selon l'avis de sa majorité
+  ([séance n°30](./conseil/seances/2026-11-17-finir-la-v1.md), point 16 de la liste à trancher ; R215 retenue) :
+  - **La décision** : la phrase du rêve est une direction ; rien ne se construit avant le point de décision ; le
+    chantier ne s'ouvre que sur une des deux conditions (un partenaire qui a un vrai robot ou une flotte et accepte un
+    essai ; un texte, acte délégué ou norme, qui nomme un format).
+  - **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : la position du 17/11 devient la décision
+    pour « rien ne se construit ». Le premier pas, une demi-journée au labo, ne vient que la v1 finie. Au 17/11/2026,
+    aucune des deux conditions n'est remplie (R215). Q36 reste ouverte, et attend.
+
+## Q37 : L'app web hébergée : quel seuil rouvrirait un hébergement pour des clients ?
+
+`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 22/11/2026 · issue du [Conseil, séance n°30](./conseil/seances/2026-11-17-finir-la-v1.md), R213, et de la décision de la Présidence du 22/11/2026 (point 12 de la liste à trancher)
+
+- **La question** : l'app web hébergée change de rôle. Elle devient une démonstration en données d'exemple et l'espace
+  de travail de la Présidence ; elle n'accueille plus les données d'aucun client. R213 ajoute que le seuil qui
+  rouvrirait un hébergement pour des clients se fixe par la Présidence, d'avance. Ce seuil n'est pas fixé. Quel fait,
+  compté comment, rouvrirait un hébergement ?
+- **Pourquoi ça compte** : la Présidence a fait de l'installation chez le client la voie principale, le 17/11/2026 :
+  « la version installe en on premise ecoute ca m'arrange moi c'est parfait, installer chez lui c'est good, je veux pas
+  avoir a gerer ca en vrai de vrai, si plein de gens le veulenet que je controlle plus alors oui mais c'est sinon c'est
+  entreprise grade donc on premise principalement ca me va ». Les données d'un client sur l'instance hébergée sont un
+  signal d'arrêt de R213. Un seuil écrit d'avance évite que la réouverture se décide à la première demande. Complète Q13
+  (l'hébergement).
+- **La décision** (22/11/2026, par délégation de la Présidence au Conseil, selon l'avis de sa majorité) : la
+  démonstration est retenue, plus aucun client n'est hébergé, et le seuil de réouverture revient à la Présidence.
+- **Position actuelle** : aucune. **Précision du secrétariat** : le Conseil n'a proposé aucun seuil et le secrétariat
+  n'en propose pas. Les mots de la Présidence donnent un sens (« si plein de gens le veulenet »), pas un chiffre.
+- **Ce qu'il faut pour trancher** : une ligne de la Présidence, qui dit quel fait et combien, écrite avant la première
+  demande d'hébergement ; `[HYPOTHÈSE]` les demandes d'hébergement, notées quand elles viennent, parmi les usages que
+  R197 amendée observe ; ce que coûte un hébergement tenu par une personne seule (Q13).
+
+## Q38 : Action de la Présidence : poser, sans campagne, la question de fait de la séance n°29
+
+`[statut:: ouverte]` · `[prio:: P2]` · Ouverte le 22/11/2026 · issue du [Conseil, séance n°29](./conseil/seances/2026-11-17-preciser-avant-de-trancher.md), R197 amendée et question 11, et de la [séance n°30](./conseil/seances/2026-11-17-finir-la-v1.md), point 18 de la liste à trancher · action de la Présidence, sans date
+
+- **La question** : c'est une action, pas un choix à instruire. La Présidence pose, quand l'occasion vient et sans
+  campagne, à des personnes qu'elle connaît déjà, une seule question : « votre auditeur ou votre client vous a-t-il déjà
+  demandé quelque chose sur vos agents de code, et qu'avez-vous montré ? ».
+- **Pourquoi ça compte** : le segment visé n'écrit pas en public (Q27). La question porte sur un acte passé, pas sur une
+  douleur (Duflo, son abstention sur R197 amendée). Prabhakar note qu'un signal de R207 qui porte sur des acheteurs ne
+  peut pas se produire si personne ne les approche.
+- **La décision** (22/11/2026, par délégation de la Présidence au Conseil, selon l'avis de sa majorité) : oui
+  (point 18).
+- **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : c'est un geste de la Présidence elle-même,
+  inscrit sans date. Ce n'est une condition d'aucune recommandation (avis de la majorité, question 11 de la n°29). Duflo
+  parlait de cinq personnes ; la décision n'en fixe pas le nombre. Les réponses se notent sans nom de personne ni
+  d'entreprise.
+- **Ce qu'il faut pour clore** : les réponses notées (demandé ou non, par un auditeur ou par un client, ce qui a été
+  montré), rapportées au Conseil ; ou une ligne de la Présidence qui y renonce.
+
+## Q39 : Action de la Présidence : lire une fois Reddit et LinkedIn, connectée, avec les mots de la recherche D5
+
+`[statut:: ouverte]` · `[prio:: P3]` · Ouverte le 22/11/2026 · issue du [Conseil, séance n°29](./conseil/seances/2026-11-17-preciser-avant-de-trancher.md), question 13, et de la [séance n°30](./conseil/seances/2026-11-17-finir-la-v1.md), point 18 de la liste à trancher · action de la Présidence, sans date
+
+- **La question** : c'est une action, pas un choix à instruire. D5 n'a lu ni Reddit ni LinkedIn : les deux étaient
+  fermés à la recherche, et seule une personne connectée peut les lire. La Présidence les lit une fois, connectée, avec
+  les mêmes mots que D5 (dossier de la séance n°29).
+- **Pourquoi ça compte** : D5 trouve le terrain public muet sur les entreprises de 10 à 250 personnes, mais ces deux
+  terrains n'ont pas été lus (Q27). Sur les onze signaux de preuve lus, sept viennent de vendeurs, et aucun auditeur ni
+  responsable qualité ne parle à la première personne.
+- **La décision** (22/11/2026, par délégation de la Présidence au Conseil, selon l'avis de sa majorité) : oui
+  (point 18).
+- **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : le PV n°30 écrivait « avant le
+  17/12/2026 » ; l'action est inscrite ici sans date, comme un geste de la Présidence. La relecture mensuelle des
+  signaux de R207 commence le 17/12/2026 : c'est le rythme du secrétariat, pas une échéance de la Présidence. `[DÉDUIT]`
+  Une lecture faite avant cette date entre dans la première relecture ; une lecture faite après, dans la suivante. Un
+  signal se note par son support, sa date et le rôle de son auteur, sans adresse ni nom ; les textes de vendeurs se
+  comptent à part (R197 amendée).
+- **Ce qu'il faut pour clore** : la lecture faite et sa note (les mots cherchés, la date, ce qui a été trouvé, absences
+  comprises), versée à la grille des signaux ; ou une ligne de la Présidence qui y renonce.
 
 ---
 
 **Points d'entrée :** [🔬 R&D](./README.md) · [🤖 Mode recherche](./CLAUDE.md) · [🧪 Expériences](./experiences/Experiences.md) · [📖 Notes critiques](./revues/World-Model.md)
 
-**Dernière mise à jour :** 10/11/2026 · **v1.3** · Projet Taskforce, Metz Numeric School 2025-2026
+**Dernière mise à jour :** 22/11/2026 · **v1.4** · Projet Taskforce, Metz Numeric School 2025-2026

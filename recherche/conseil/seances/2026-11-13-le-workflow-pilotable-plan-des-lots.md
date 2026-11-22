@@ -12,6 +12,9 @@ related:
   - "../../decisions/ADR-027-DRAFT-modele-des-processus.md"
   - "../../decisions/ADR-028-DRAFT-execution-isolee-par-defaut.md"
   - "./2026-11-15-le-run-et-les-petits-modeles.md"
+  - "./2026-11-17-le-recentrage.md"
+  - "./2026-11-17-preciser-avant-de-trancher.md"
+  - "./2026-11-17-finir-la-v1.md"
   - "../../../v1/13-roadmap/Roadmap_Backlog.md"
 ---
 
@@ -24,6 +27,13 @@ related:
 > **Le 16/11/2026**, la décision de la Présidence sur la [séance n°27](./2026-11-15-le-run-et-les-petits-modeles.md) précise W5,
 > W6 et W9, et ajoute un onzième lot, W10, après J2 ; son accord sur l'option 2 de TF-J2-10 précise W2. Chaque ajout est daté,
 > la décision à part des précisions du secrétariat.
+>
+> **Le 22/11/2026**, la Présidence délègue au Conseil la décision sur les séances [n°28](./2026-11-17-le-recentrage.md),
+> [n°29](./2026-11-17-preciser-avant-de-trancher.md) et [n°30](./2026-11-17-finir-la-v1.md) (« Alright ecoute prends les
+> meilleurs decision avec le conseille pour cette v1 et c'est partie ») : ce qu'elles recommandent est retenu par délégation de
+> la Présidence au Conseil, selon l'avis de sa majorité. W1 gèle en cartes ; W3 à W5 restent dans J2, pour le seul processus
+> d'E20 ; ce qui n'est pas dans la v1 est dit sous « Après J2 ». Chaque ajout est daté, la décision à part des précisions du
+> secrétariat.
 
 ## Les règles de tous les lots
 
@@ -55,6 +65,10 @@ related:
 | W8 | S'ouvrir : Camunda, MCP Apps, un processus appelable | W2, W5 | R159 | Après J2 (J5) |
 | W9 | Améliorer : l'analyse sur la même carte ; le temps estimé d'une mission (16/11) | W5, le dossier ; E28 pour le temps estimé | R161 | Après J2 (J7) |
 | W10 | Les leçons du harnais : celles qui durcissent s'activent seules quand la banque les valide (16/11) | W5, la banque d'évaluations ; E29 | R159, R161 | Après J2, après le client test |
+
+Ajouté le 22/11/2026, avec la décision sur les séances n°28 à n°30 : la table ci-dessus reste celle du 13/11 et du 16/11. La vue
+en cartes de W1 gèle ; W3 à W5 suivent TF-J2-7, pour le seul processus d'E20 ; l'isolement de W6 reste après J2 ; l'import et
+l'export BPMN gèlent, avec W8. Les notes sont sous chaque lot.
 
 ## Dans J2, avant E20
 
@@ -122,6 +136,24 @@ related:
   10. puis E24, dans les dix jours.
 - **Relectures** : R161, R159.
 - **Quand** : J2. `[HYPOTHÈSE]` une semaine.
+- **Le gel de la vue en cartes**, ajouté le 22/11/2026. La décision : R200 (« R200: ok ») et R202 (« R202: ok je comprends oui
+  on s'engage pas, on fourni juste le necessaire pour augmenter la confiance ») sont retenues par la Présidence le 17/11/2026,
+  dans leur version précisée par la [séance n°29](./2026-11-17-preciser-avant-de-trancher.md) ; le point 10 de la
+  [séance n°30](./2026-11-17-finir-la-v1.md) (ce qu'on masque dans la v1) est retenu le 22/11/2026 par délégation de la
+  Présidence au Conseil, selon l'avis de sa majorité. Selon R200 et R202 ([séance n°28](./2026-11-17-le-recentrage.md)) :
+  - la vue Workflow en cartes gèle : elle reste visible et ne reçoit plus un jour de travail, jusqu'à ce que les processus la
+    remplacent ;
+  - le calque « Show all links » s'arrête : il est masqué dans la v1 ; les dépendances se lisent dans l'issue et dans l'étape,
+    en liens cliquables ;
+  - le workflow entre par l'issue (un volet « Workflow », qui déroule le processus de cette issue étape par étape) et par la
+    conversation, pas par un second tableau ;
+  - **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence :
+    - `[ÉTABLI]` W1 est livré (PR #542, en production avec la 1.17.0) : ses critères ci-dessus sont ceux du lot livré, ils ne se
+      rejouent pas ;
+    - masquer n'est pas supprimer : selon R202, une surface arrêtée est masquée sans suppression de code ni de données, et
+      supprimée après le client test ; une faille de sécurité dans une surface gelée se corrige ;
+    - le signal d'arrêt de R200 tient : si W5, livré, se lit encore comme un Board, la vue en cartes est supprimée, et le
+      workflow ne se lit plus que dans l'issue et la conversation.
 
 ### W2 : le modèle des processus et son vérificateur
 
@@ -184,6 +216,21 @@ related:
   6. les tests unitaires de la logique, les tests d'intégration sur PostgreSQL, le banc.
 - **Relectures** : R159.
 - **Quand** : J2. `[HYPOTHÈSE]` une semaine et demie.
+- **L'ordre, et la liste dure**, ajouté le 22/11/2026. La décision : R203 (précisée par la
+  [séance n°29](./2026-11-17-preciser-avant-de-trancher.md)), R211 et le point 8 de la
+  [séance n°30](./2026-11-17-finir-la-v1.md) sont retenus le 22/11/2026 par délégation de la Présidence au Conseil, selon l'avis
+  de sa majorité ; R204 l'était le 17/11/2026 (« R204: Ok »). Selon eux :
+  - J2 se joue dans cet ordre : les correctifs de la recette (R204, faits : PR #548, fusionnée dans `dev` le 19/11/2026, pas
+    encore en production) ; TF-J2-7, le dossier ; puis W3, W4 et W5, pour le seul processus d'E20. Rien ne s'ajoute ;
+  - la liste dure complète vient avec W3 à W5 : ce n'est pas un moteur de plus, c'est un processus dont chaque étape est une
+    case avec sa preuve (R211) ; d'ici là, la liste de l'issue reste ce qu'elle est, et la page du dossier distingue « vérifié
+    par » et « déclaré par l'agent » ;
+  - le critère 5 de « la v1 est finie » (R218) : le processus d'E20 tourne de bout en bout, avec une étape de chaque famille et
+    un point de pause tenu ; l'essai qui le prouve : W3 à W5 livrés, E20 joué ;
+  - **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence :
+    - le contenu et les critères de W3 écrits ci-dessus ne changent pas ;
+    - les PV ne répartissent pas la liste dure entre W3, W4 et W5 : ce que chacun en porte s'écrit avant W3, sans lot de plus
+      (R200, précisée : « aucun lot de plus »).
 
 ### W4 : le brouillon de l'IA et le premier workflow par défaut
 
@@ -211,6 +258,20 @@ related:
 - **Relectures** : R159, R161.
 - **Quand** : J2, pour le seul workflow d'E20 ; les autres natures de travail après. `[HYPOTHÈSE]` une semaine. C'est le premier
   lot qu'on lâche après la densité Summary.
+- **Une étape de chaque famille**, ajouté le 22/11/2026. La décision : R200, précisée par la
+  [séance n°29](./2026-11-17-preciser-avant-de-trancher.md), est retenue par la Présidence le 17/11/2026 (« R200: ok ») ; le
+  point 5 de la [séance n°30](./2026-11-17-finir-la-v1.md) (le dessin du processus, délégué à l'équipe de Jobs) est retenu le
+  22/11/2026 par délégation de la Présidence au Conseil, selon l'avis de sa majorité. Selon R200 précisée :
+  - le seul processus d'E20 porte une étape de chaque famille (une réglementation, une convention d'ingénierie, une norme
+    interne) et tient sur une page ; aucun lot de plus ;
+  - TaskForce fournit le moteur, et des exemples de conventions marqués comme des exemples ; jamais le contenu réglementaire,
+    jamais un paquet « prévalidé » ;
+  - chaque étape a un auteur et une raison ; une étape qui n'a jamais rien bloqué ni rien attrapé est signalée à une personne,
+    qui la garde ou la retire ;
+  - **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence :
+    - `[DÉDUIT]` le processus « intégrer un module » est écrit depuis W2, et une version publiée ne change pas : l'étape de
+      chaque famille y entre par une nouvelle version, vérifiée comme les autres ;
+    - W4 reste borné au seul workflow d'E20, comme écrit le 13/11 ; ses critères ne changent pas.
 
 ### W5 : piloter le processus
 
@@ -247,8 +308,40 @@ related:
      tournent.
 - **Relectures** : R159, R161.
 - **Quand** : J2. `[HYPOTHÈSE]` une semaine. Puis la démo (TF-J2-1) et E20 (TF-J2-11).
+- **La page du processus, avant W5**, ajouté le 22/11/2026. La décision : R200, précisée par la
+  [séance n°29](./2026-11-17-preciser-avant-de-trancher.md), est retenue par la Présidence le 17/11/2026 (« R200: ok ») ; R203
+  est retenue le 22/11/2026 par délégation de la Présidence au Conseil, selon l'avis de sa majorité. Selon elles :
+  - la page du processus d'E20 (les étapes, qui signe, la preuve attendue, la famille de chaque étape, ce que l'écran dit à
+    chaque état) est relue par la Présidence avant que W5 ne commence ;
+  - le processus se lit dans l'issue et dans la conversation, pas par un second tableau ; TF-J2-6, « la vue du travail »,
+    devient ce volet (R203) ;
+  - le signal d'arrêt : W5 livré qui se lit encore comme un Board ;
+  - **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence :
+    - `[DÉDUIT]` le contenu de W5 écrit le 13/11 pose ses gestes sur les nœuds de la vue de W1, qui gèle : la page du processus
+      dit où chaque geste se pose (le volet de l'issue, la conversation) ;
+    - les critères de W5 ne sont pas réécrits ici : ils se relisent avec cette page, avant le lot.
 
 ## Après J2
+
+**Ce qui n'est pas dans la v1**, ajouté le 22/11/2026. La décision : R203 (précisée par la
+[séance n°29](./2026-11-17-preciser-avant-de-trancher.md)), R218 et les points 3, 6, 7 et 16 de la
+[séance n°30](./2026-11-17-finir-la-v1.md) sont retenus le 22/11/2026 par délégation de la Présidence au Conseil, selon l'avis
+de sa majorité. Selon eux :
+- rien ne s'ajoute à J2 : ni la source de travail externe, ni le hook du plugin, ni l'isolement, qui viennent après (R203) ;
+- ne sont pas dans la v1, et elle le dit (R218) : une source externe complète, le vérificateur de l'étage 3, la fusion sans
+  personne, l'écriture d'un état chez un hôte, un webhook entrant, tout ce qui touche aux robots ;
+- en v1, on demande ailleurs depuis Claude Code seulement, par le serveur MCP et le plugin qui existent ; la première vraie
+  source externe vient après le client test, GitHub puis Linear (point 3) ;
+- les accords hors de TaskForce viennent outil par outil, après la v1 (point 6) ;
+- la fusion sans personne est écrite, éteinte, pas construite en v1 (point 7) ;
+- le rêve, tout ce qui touche aux robots, reste une direction : rien n'est construit avant le point de décision (point 16) ;
+- **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence :
+  - aucun de ces objets n'est un lot de ce plan : ils n'ont ici ni numéro, ni critères de fin ;
+  - le point de décision se tient trente jours après la remise de la v1 au premier client test, au plus tard le 31/03/2027
+    (R218) ; son issue « tester le marché » nomme la première source externe parmi les coups suivants (R217) ;
+  - les projets d'ADR qui les instruisent : [ADR-029](../../decisions/ADR-029-DRAFT-la-couche-le-travail-vient-d-ou-il-est.md)
+    (la couche), [ADR-030](../../decisions/ADR-030-DRAFT-la-classe-d-une-ecriture-externe.md) (la classe d'une écriture externe)
+    et [ADR-031](../../decisions/ADR-031-DRAFT-une-source-de-travail-sans-copie.md) (le contrat d'une source).
 
 ### W6 : éditer et créer ses workflows
 
@@ -296,6 +389,16 @@ related:
   effet hors du bac à sable, et le cas gardé repasse sur la version suivante avant sa publication ; les relectures.
 - **Relectures** : R159, R161.
 - **Quand** : après J2 (J3).
+- **L'isolement reste après J2**, ajouté le 22/11/2026. La décision : R198, R202 et R203, précisées par la
+  [séance n°29](./2026-11-17-preciser-avant-de-trancher.md), sont retenues (R202 par la Présidence le 17/11/2026, « R202: ok je
+  comprends oui on s'engage pas, on fourni juste le necessaire pour augmenter la confiance » ; R198 et R203 le 22/11/2026 par
+  délégation de la Présidence au Conseil, selon l'avis de sa majorité). Selon elles
+  ([séance n°28](./2026-11-17-le-recentrage.md)) :
+  - l'isolement ne s'ajoute pas à J2, il vient après (R203) ; le runner se garde en l'état, avec « l'isolement après J2
+    (ADR-028) » (R202) ;
+  - où vit la clé de signature du dossier dans l'app desktop, où la base est sur le poste, se décide avec l'isolement (R198 ;
+    ADR-028, E27) ;
+  - **Précision du secrétariat**, qui n'est pas un mot de la Présidence : rien ne change au contenu ni aux critères de ce lot.
 
 ### W7 : exploiter, complet
 
@@ -321,6 +424,14 @@ related:
   relecture.
 - **Relectures** : R159.
 - **Quand** : après J2 (J5).
+- **Le gel de l'aller-retour BPMN**, ajouté le 22/11/2026. La décision : R202, précisée par la
+  [séance n°29](./2026-11-17-preciser-avant-de-trancher.md), est retenue par la Présidence le 17/11/2026 (« R202: ok je
+  comprends oui on s'engage pas, on fourni juste le necessaire pour augmenter la confiance »). Selon sa table
+  ([séance n°28](./2026-11-17-le-recentrage.md)) : l'import et l'export BPMN, l'aller-retour avec Camunda, gèlent ; « W8, après
+  J2 (Q18) ».
+  - **Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : `[DÉDUIT]` l'import et l'export livrés avec W2
+    restent en place, sans un jour de travail de plus ; selon R202, le gel dure jusqu'au retour du client test, où le sort de
+    chaque surface gelée se décide sur l'usage observé.
 
 ### W9 : améliorer
 

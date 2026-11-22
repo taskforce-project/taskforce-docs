@@ -68,6 +68,14 @@ related:
 | [E27](#e27--une-mission-tient-elle-dans-un-bac-à-sable-sur-la-machine-sous-les-règles-quel-que-soit-lagent-) | Une mission dans le bac à sable du runner, sous les règles, quel que soit l'agent, une attaque plantée, sous Windows, macOS et Linux (Conseil, R189 amendée) | ~0,5 j par système | oui | retenue par la Présidence (16/11), amendée |
 | [E28](#e28--un-seul-chiffre-tiré-des-missions-passées-est-il-juste-à-20--près-) | Un seul chiffre tiré des missions passées, juste à 20 % près, sur les 10 dernières estimations comparables (Conseil, R188 amendée) | ~0,5 j | non | retenue par la Présidence (16/11), amendée |
 | [E29](#e29--une-leçon-tirée-de-deux-runs-validée-par-la-banque-et-activée-seule-améliore-t-elle-un-cas-sans-en-casser-un-autre-) | Une leçon de harnais tirée de deux runs, validée par la banque et activée seule (Conseil, R194 amendée) | ~1 j | oui | retenue par la Présidence (16/11), amendée |
+| [E30](#e30--cortex-répond-il-juste-sur-le-projet-taskforce-quand-les-réponses-sont-écrites-avant-) | La recette sur le projet TaskForce lui-même, dix lignes, les réponses attendues écrites avant, le modèle nu comme témoin (Conseil, R203 amendée) | ~0,5 j, plus la passe de la Présidence et celle du témoin | oui | retenue le 22/11 par délégation de la Présidence au Conseil, amendée par la n°29 |
+| [E31](#e31--cortex-atteint-il-le-bon-outil-en-français-demande-t-il-laccord-et-dit-il-vrai-) | Vingt demandes en français vers des outils connectés, avant et après les correctifs, relues avec les trois classes (Conseil, R201 amendée, R204) | ~0,5 j | oui | retenue le 22/11 par délégation de la Présidence au Conseil, amendée par la n°29 |
+| [E32](#e32--la-preuve-tient-elle-sans-le-board-avec-une-issue-qui-porte-la-référence-de-son-origine-) | Ce qui dépend de l'issue interne, tracé sur le code, sans code du produit ; un seul lieu de jugement par mission (Conseil, R199 amendée, R208) | ~0,5 j | non | retenue le 22/11 par délégation de la Présidence au Conseil, amendée par la n°29 |
+| [E33](#e33--laction-inverse-défait-elle-vraiment-ce-qui-est-parti-seul-) | Les cinq écritures internes qui partent sans accord, puis une écriture externe : leur action inverse défait-elle tout ? (Conseil, R201 amendée) ; critère 6 de la v1 | ~0,5 j, puis ~0,5 j après la v1 | non | retenue le 22/11 par délégation de la Présidence au Conseil |
+| [E34](#e34--le-dossier-tient-il-dans-une-enveloppe-standard-vérifiée-par-un-outil-qui-nest-pas-le-nôtre-) | Le dossier d'une mission dans une enveloppe in-toto et DSSE, vérifié par un outil standard (Conseil, R198 amendée, R206) ; critère 3 de la v1 | ~0,5 j | non | retenue le 22/11 par délégation de la Présidence au Conseil |
+| [E35](#e35--peut-on-demander-une-mission-depuis-claude-code-avec-le-serveur-mcp-et-le-plugin-tels-quils-sont-) | Demander une mission depuis Claude Code, avec ce qui existe (Conseil, R208) ; critère 7 de la v1 | ~0,5 j | oui | retenue le 22/11 par délégation de la Présidence au Conseil |
+| [E36](#e36--quelle-part-des-changements-du-dépôt-taskforce-serait-partie-seule-et-combien-aurait-il-fallu-en-rattraper-) | La part des changements du dépôt TaskForce qui serait partie seule sous des classes écrites avant (Conseil, R210) | ~0,5 j | non | retenue le 22/11 par délégation de la Présidence au Conseil |
+| [E37](#e37--lapp-de-bureau-sinstalle-t-elle-sur-une-machine-vierge-hors-réseau-sans-aide-) | L'app de bureau sur une machine vierge, hors réseau, chronométrée (Conseil, R213) ; critère 8 de la v1 | ~0,5 j | oui, local | retenue le 22/11 par délégation de la Présidence au Conseil |
 
 > **L'ordre compte.** E1 avant tout le reste : sans mesure de calibration, **aucune** des autres n'est
 > interprétable. C'est l'inversion proposée dans [`World_Model_Notes.md`](../revues/World-Model.md) §10 —
@@ -1444,8 +1452,367 @@ du modèle qu'il corrige (une limite que l'article de Harness² reconnaît pour 
 
 **Coût** : ~1 j au labo, sans code du produit, sans rien prendre à J2 (R195).
 
+## E30 : Cortex répond-il juste sur le projet TaskForce, quand les réponses sont écrites avant ?
+
+`[statut:: proposée]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°28](../conseil/seances/2026-11-17-le-recentrage.md), R203 · retenue le 22/11/2026 par délégation de la Présidence au Conseil, selon l'avis de sa majorité ([séance n°30](../conseil/seances/2026-11-17-finir-la-v1.md), point 18 de la liste à trancher) ; amendée par la séance n°29 (le modèle nu comme témoin), l'amendement est porté sous la fiche
+
+**Hypothèse** `[HYPOTHÈSE]` : sur un projet « TaskForce » créé dans l'app desktop à partir de la roadmap publique, avec le
+modèle local de la Présidence, Cortex répond juste à huit au moins de dix demandes dont le secrétariat a écrit la réponse
+attendue avant la passe (l'état d'un lot, ce qui bloque, qui décide, une issue à créer, une issue à déplacer, une mission à
+confier, une écriture dans un outil connecté), et n'affirme ni ne nie à tort aucune action.
+
+**Falsification** : moins de huit réponses justes sur dix, ou une seule phrase qui annonce une action non faite, ou qui nie
+une action faite. Les deux seuils sont `[HYPOTHÈSE]`, à confirmer par la Présidence avant la passe.
+
+**Schéma réel** `[ÉTABLI]` (dossier de la séance n°28, 17/11/2026) : chaque réponse outillée de Cortex ouvre un dossier
+(`cortex_records`, `cortex_record_events`, V107) ; le modèle est gardé par message (`ai_message.model`, V117) ; un cas de la
+banque se tire d'un dossier (`eval_cases.source_record`, V108). La recette de la 1.17.0 comptait 19 étapes ; la Présidence
+n'avait pas de projet réel pour la jouer (étape s11).
+
+**Protocole** : le secrétariat écrit et date dix demandes et leur réponse attendue, tirées du dépôt public et de la roadmap,
+avant que le projet n'existe dans l'app. La Présidence crée le projet, joue les dix demandes dans l'ordre, sans reformuler, et
+note pour chacune : juste, fausse, ou « ne sait pas ». Chaque réponse fausse devient un cas de la banque (R118). La passe se
+rejoue après les correctifs de R204.
+
+**Métrique** : le nombre de réponses justes sur dix ; le nombre d'actions annoncées ou niées à tort ; le temps de chaque
+réponse ; la part des demandes où Cortex a nommé la cible avant d'écrire.
+
+**Limite** : une personne, un modèle, un projet dont elle connaît tout (C1) ; les réponses sont connues, donc l'essai ne dit
+rien d'un projet inconnu, qui reste à E20 ; dix demandes ne font pas une statistique. Pas de témoin (Duflo).
+
+**Coût** : ~0,5 j au secrétariat pour les dix demandes ; une passe d'une heure pour la Présidence ; sans code du produit.
+
+**Amendement de la séance n°29** (R203 amendée,
+[séance n°29](../conseil/seances/2026-11-17-preciser-avant-de-trancher.md)), retenu avec la fiche :
+
+- **Protocole**, ajouter : un témoin. Les mêmes dix demandes, dans un ordre tiré au sort, sont posées au même modèle
+  sans le harnais, sur le banc des modèles, avec les mêmes données du projet données dans son contexte. La grille de
+  lecture (juste, fausse, « ne sait pas »), les seuils et l'ordre sont écrits et datés avant les deux passes.
+- **Métrique**, ajouter : l'écart entre Cortex et le modèle nu, demande par demande ; c'est ce que les outils et les
+  règles ajoutent.
+- **Limite**, remplacer « Pas de témoin (Duflo) » par : le témoin est le même modèle, sur la même machine, le même
+  jour ; il ne dit rien d'un autre modèle ni d'un projet inconnu. Les écritures ne se comparent pas : le modèle nu
+  n'agit pas.
+- **Coût**, ajouter : une demi-heure de plus pour la passe du témoin.
+
+**Décision du 22/11/2026** : la Présidence délègue (« Alright ecoute prends les meilleurs decision avec le conseille
+pour cette v1 et c'est partie »). La fiche et son amendement sont retenus par délégation de la Présidence au Conseil,
+selon l'avis de sa majorité : au point 18, oui à la prochaine recette sur le projet TaskForce, avec le modèle nu comme
+témoin.
+
+**Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : les deux seuils de la falsification restent
+`[HYPOTHÈSE]`, à confirmer par la Présidence avant la passe, comme la fiche l'écrit. R204 est faite (PR #548, fusionnée
+dans `dev` le 19/11/2026, pas encore en production). `[DÉDUIT]` Si la passe se joue sur une version qui porte déjà ces
+correctifs, elle ne se rejoue pas après eux, et le relevé le dit.
+
+## E31 : Cortex atteint-il le bon outil en français, demande-t-il l'accord, et dit-il vrai ?
+
+`[statut:: proposée]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°28](../conseil/seances/2026-11-17-le-recentrage.md), R201 et R204 · retenue le 22/11/2026 par délégation de la Présidence au Conseil, selon l'avis de sa majorité ([séance n°30](../conseil/seances/2026-11-17-finir-la-v1.md), point 6 de la liste à trancher) ; relue par la séance n°29 avec les trois classes de R201 amendée, l'amendement est porté sous la fiche
+
+**Hypothèse** `[HYPOTHÈSE]` : après les correctifs de R204, sur vingt demandes en français qui nomment un outil connecté
+(Linear, Notion, Slack), dix lectures et dix écritures, l'outil qui convient est dans la liste envoyée au modèle vingt fois
+sur vingt ; chaque écriture montre une carte qui nomme la cible ; aucune réponse ne dit « je n'ai pas d'outil » quand il
+existe ; aucune action n'est annoncée ou niée à tort.
+
+**Falsification** : après les correctifs, l'outil qui convient manque à la liste une seule fois ; ou une écriture part sans
+carte ; ou Cortex obtient un droit sans qu'une personne l'accorde ; ou un accord refusé est redemandé.
+
+**Schéma réel** `[ÉTABLI]` (dossier de la séance n°28) : `AgentService.relevantExternal` garde 12 outils externes au plus
+(`integrations.mcp.max-tools-per-request`), triés sur les mots du message courant comparés aux noms des outils ; à la recette,
+sur sept demandes, aucune n'a reçu `save_issue` ni `save_project` (relevé du secrétariat). Une écriture externe demande
+toujours un accord (`default.rules.json`, `RulesFloor.java`).
+
+**Protocole** : les vingt demandes sont écrites avant, avec pour chacune l'outil attendu. Elles se jouent deux fois, avant et
+après les correctifs, sur l'app desktop, avec le même modèle. Pour chaque demande, on relève dans le dossier de Cortex : les
+outils envoyés au modèle, l'outil appelé, la carte montrée, la phrase finale. Aucune écriture n'est accordée sur un espace
+réel : la carte est refusée, sauf sur un espace d'essai.
+
+**Métrique** : la part des demandes où l'outil attendu est dans la liste ; où il est appelé ; où la carte nomme la cible ; les
+phrases fausses ; les « je ne peux pas » à tort.
+
+**Limite** : un modèle, trois outils, une personne ; des demandes écrites par celui qui connaît le défaut ; la fatigue de
+l'accord (Harris) ne se mesure pas sur vingt demandes.
+
+**Coût** : ~0,5 j, dont la moitié avant les correctifs ; sans code du produit.
+
+**Amendement de la séance n°29** (R201 amendée,
+[séance n°29](../conseil/seances/2026-11-17-preciser-avant-de-trancher.md), sa preuve en dix jours) : « E31, comme à la
+n°28, relue avec les trois classes ». Les trois classes sont : part seul, attend une carte, refusé.
+
+**Décision du 22/11/2026** : la Présidence délègue (« Alright ecoute prends les meilleurs decision avec le conseille
+pour cette v1 et c'est partie »). La fiche et sa relecture sont retenues par délégation de la Présidence au Conseil,
+selon l'avis de sa majorité. R204, dont la fiche mesure les correctifs, était retenue dès le 17/11/2026 (« R204: Ok »).
+
+**Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : `[DÉDUIT]` les dix écritures de la fiche
+visent des outils externes, que R201 amendée laisse dans « attend une carte » tant qu'un outil n'est pas déclaré (projet
+d'[ADR-030](../decisions/ADR-030-DRAFT-la-classe-d-une-ecriture-externe.md)) : l'hypothèse et la falsification tiennent
+telles qu'écrites. La relecture ajoute, pour chaque demande, la classe attendue, écrite avant, et le relevé de ce que
+Cortex dit d'une lecture partie seule (où, et quoi). R204 est faite (PR #548, fusionnée dans `dev` le 19/11/2026, pas
+encore en production) : `[DÉDUIT]` la passe « avant » demande une version qui ne porte pas ces correctifs ; s'il n'en
+reste pas le jour de l'essai, le relevé le dit et ne compare pas.
+
+## E32 : La preuve tient-elle sans le Board, avec une issue qui porte la référence de son origine ?
+
+`[statut:: proposée]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°28](../conseil/seances/2026-11-17-le-recentrage.md), R199 · retenue le 22/11/2026 par délégation de la Présidence au Conseil, selon l'avis de sa majorité ([séance n°30](../conseil/seances/2026-11-17-finir-la-v1.md), points 2 à 4 de la liste à trancher) ; amendée par la séance n°29 (un seul lieu de jugement par mission), l'amendement est porté sous la fiche
+
+**Hypothèse** `[HYPOTHÈSE]` : tout ce que la preuve demande à l'issue de TaskForce (la délégation, le dossier, les accords, la
+checklist, la portée de l'agent, les notifications) tient si cette issue porte la référence d'un élément de travail externe
+(GitHub, Linear) et y renvoie le résultat. Rien de cela ne demande une colonne du Board, un cycle, ni aucun écran de sa
+famille ; et `delivery_runs` ne change pas.
+
+**Falsification** : un seul chemin de la preuve qui lit un champ que seul le Board renseigne (une colonne, un statut déplacé à
+la main, un cycle) ; ou un besoin qui oblige à changer la clé de `delivery_runs`. Le Board ne gèle alors pas sur ce point, et
+le brouillon d'ADR-029 se réécrit.
+
+**Schéma réel** `[ÉTABLI]` (dossier de la séance n°28, pièce 3) : `delivery_runs.issue_id` est `NOT NULL` vers `issues`, avec
+suppression en cascade (V86) ; `delivery_run_approvals` et `delivery_run_evidence` pendent au run (V96, V103) ; une issue
+importée porte `imported_from` (V126), sans identifiant externe ni retour vers l'outil ; l'import copie 100 issues au plus.
+
+**Protocole** : une lecture du code, sans rien y écrire. Pour chaque chemin (déléguer, accorder, cocher, remettre, exporter le
+dossier, notifier), la liste des champs de l'issue et du projet qu'il lit ; pour chacun, s'il vient du Board ou de l'issue
+seule. Puis, sur le papier, le même chemin pour une issue venue de GitHub et une venue de Linear : ce qui est lu, ce qui est
+écrit en retour, ce qui se passe quand la source change ou disparaît (le contrat de R199).
+
+**Métrique** : le nombre de champs lus par la preuve ; la part qui ne vient que du Board ; le nombre de points du contrat sans
+réponse.
+
+**Limite** : une lecture, pas un essai : elle dit ce que le code lit, pas ce qu'une mission réelle rencontrera ; les limites
+des connecteurs (droits, débit, ce que l'éditeur laisse écrire) ne se voient qu'en les jouant.
+
+**Coût** : ~0,5 j, sans code du produit et sans modèle.
+
+**Amendement de la séance n°29** (R199 amendée,
+[séance n°29](../conseil/seances/2026-11-17-preciser-avant-de-trancher.md)) : E32 doit aussi montrer qu'une mission n'a
+jamais deux lieux de jugement. C'est ce qui ferait voter oui Jobs, abstenu, et c'est un signal d'arrêt de R199 amendée :
+« E32 qui trouve deux lieux pour juger la même mission ».
+
+**Ce que la séance n°30 ajoute** (R208, R217) : E32 entre, avec E35, dans la preuve en dix jours de R208 ; R217 la range
+parmi ce qui se fait au labo dès maintenant.
+
+**Décision du 22/11/2026** : la Présidence délègue (« Alright ecoute prends les meilleurs decision avec le conseille
+pour cette v1 et c'est partie »). La fiche et son amendement sont retenus par délégation de la Présidence au Conseil,
+selon l'avis de sa majorité : le Board gèle et l'issue reste l'ancre (point 2), la première vraie source externe vient
+après le client test (point 3), le contrat d'une source est retenu (point 4).
+
+**Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : `[DÉDUIT]` au protocole s'ajoute, pour chaque
+chemin, le lieu où le résultat se juge (la pull request quand il y en a une, sinon la remise de TaskForce, selon R199
+amendée) ; à la falsification, un chemin où le même résultat se juge à deux endroits. « Le contrat de R199 » se lit
+maintenant avec R209 et le projet d'[ADR-031](../decisions/ADR-031-DRAFT-une-source-de-travail-sans-copie.md) ; le
+brouillon que la falsification ferait réécrire est le projet
+d'[ADR-029](../decisions/ADR-029-DRAFT-la-couche-le-travail-vient-d-ou-il-est.md).
+
+## E33 : L'action inverse défait-elle vraiment ce qui est parti seul ?
+
+`[statut:: proposée]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°29](../conseil/seances/2026-11-17-preciser-avant-de-trancher.md), R201 amendée · retenue le 22/11/2026 par délégation de la Présidence au Conseil, selon l'avis de sa majorité ([séance n°30](../conseil/seances/2026-11-17-finir-la-v1.md), point 6 de la liste à trancher) ; l'essai du critère 6 de « la v1 est finie » (R218) ; la preuve du projet d'[ADR-030](../decisions/ADR-030-DRAFT-la-classe-d-une-ecriture-externe.md)
+
+**Hypothèse** `[HYPOTHÈSE]` : pour chacune des cinq écritures que les règles par défaut laissent partir sans accord (créer une
+issue, la modifier, commenter, créer un projet, créer une note), il existe dans l'app un geste qui la défait, et après ce
+geste rien ne reste : ni l'objet, ni une notification non rappelée, ni un événement sortant. Puis, après J2 : pour une
+écriture dans un outil externe qu'une personne déclare réversible, l'inverse défait l'objet et rien n'est sorti de l'outil.
+
+**Falsification** : une seule des cinq écritures sans geste qui la défait ; ou un geste qui laisse une trace hors de
+TaskForce (une notification envoyée, un webhook parti, un message dans un outil connecté). Pour l'écriture externe : un
+courriel, une notification ou un automatisme déclenché que l'inverse ne rappelle pas.
+
+**Schéma réel** `[ÉTABLI]` (lu le 17/11/2026, `dev`, `067c577b`) : `resources/harness/default.rules.json` compte trente
+règles ; cinq autorisent une écriture interne avec la classe `reversible-exit` et une action inverse nommée (`close-issue`,
+`restore-issue`, `delete-comment`, `archive-project`, `delete-note`). `RulesFloor.java` ne tient pas pour réversible une
+sortie sans inverse, et classe `mcp.write` parmi les actions à sens unique. Le secrétariat n'a trouvé dans la copie du code
+aucun geste qui exécute l'inverse sous ce nom ; les webhooks sortants et les notifications existent (inventaire de la n°28).
+
+**Protocole** : première partie, sans code du produit. Sur l'app de bureau, faire faire à Cortex chacune des cinq écritures ;
+relever ce qui part (notifications, webhooks, messages) ; chercher le geste qui défait ; le jouer ; relever ce qui reste.
+Seconde partie, après J2 et seulement si R201 amendée est retenue : sur un outil réel que la Présidence a connecté, une
+écriture choisie par elle, déclarée réversible, puis son inverse.
+
+**Métrique** : par écriture : le geste existe (oui, non) ; ce qui reste après (rien, ou la liste) ; ce qui est sorti et n'est
+pas rappelé (rien, ou la liste).
+
+**Limite** : une personne, un espace, cinq actions ; un outil externe n'en représente aucun autre ; l'essai ne dit rien de la
+fatigue elle-même, que seule la mesure des cartes acceptées donnera. À annoncer avant de lancer.
+
+**Coût** : ~0,5 j pour la première partie ; ~0,5 j pour la seconde, après J2. Ce qu'on ne fait pas pendant ce temps : rien de
+J2, l'essai est au labo.
+
+**Ce que la séance n°30 ajoute** (R218 ; point 6 de la liste à trancher) : E33 est l'essai du critère 6 de « la v1 est
+finie » : les trois classes se voient, une écriture courante part seule et s'annule d'un geste, une lourde attend la
+bonne personne, un refus est écrit. Son état au 17/11/2026 : en partie, le geste d'annulation n'a pas été trouvé. Hors
+de TaskForce, les classes s'ouvrent outil par outil, après la v1.
+
+**Décision du 22/11/2026** : la Présidence délègue (« Alright ecoute prends les meilleurs decision avec le conseille
+pour cette v1 et c'est partie »). La fiche est retenue par délégation de la Présidence au Conseil, selon l'avis de sa
+majorité, avec R201 amendée : la condition que la fiche posait à sa seconde partie est remplie.
+
+**Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : la première partie se joue pour la v1, sans
+code du produit. `[DÉDUIT]` Si un geste manque, c'est le critère 6 qui n'est pas rempli : le geste se construit en mode
+développement, pas dans l'essai. La seconde partie, que la fiche place « après J2 », vient après la v1 (point 6) : elle
+est la preuve du projet d'[ADR-030](../decisions/ADR-030-DRAFT-la-classe-d-une-ecriture-externe.md).
+
+## E34 : Le dossier tient-il dans une enveloppe standard, vérifiée par un outil qui n'est pas le nôtre ?
+
+`[statut:: proposée]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°29](../conseil/seances/2026-11-17-preciser-avant-de-trancher.md), R198 amendée et R206 · retenue le 22/11/2026 par délégation de la Présidence au Conseil, selon l'avis de sa majorité ([séance n°30](../conseil/seances/2026-11-17-finir-la-v1.md), point 9 de la liste à trancher) ; l'essai du critère 3 de « la v1 est finie » (R218)
+
+**Hypothèse** `[HYPOTHÈSE]` : un dossier exporté par TaskForce (`taskforce-evidence/1`) se range, sans perdre un champ, dans un
+énoncé in-toto signé sous une enveloppe DSSE ; un outil standard, qui n'est pas le vérificateur du runner, en vérifie la
+signature ; et le vérificateur du runner vérifie toujours la chaîne à l'intérieur.
+
+**Falsification** : un champ du dossier qui ne trouve pas sa place sans inventer une structure que l'énoncé ne prévoit pas ;
+ou une canonisation de TaskForce qui diffère de la RFC 8785 sur un cas du dossier ; ou l'outil standard qui refuse
+l'enveloppe.
+
+**Schéma réel** `[ÉTABLI]` (dossier de la n°28) : la chaîne est calculée par `core/harness/evidence/EvidenceChain.java` sur
+un JSON canonique écrit dans le code (`CanonicalJson.java`, qui refuse les décimaux) ; l'export se vérifie par
+`npm run verify` dans `taskforce-runner`. Aucune signature, aucune clé dans le code. `[ÉTABLI]` (D4) JFrog annonce un
+enregistrement en in-toto et DSSE ; la boîte à outils de Microsoft signe en Ed25519 sur JSON canonique selon la RFC 8785.
+
+**Protocole** : au labo, par un script hors du produit. Prendre un dossier exporté d'une mission réelle du projet TaskForce ;
+comparer sa canonisation à la RFC 8785 sur ses propres octets ; l'emballer dans un énoncé in-toto ; le signer sous DSSE
+avec une clé d'essai ; le vérifier avec un outil standard, puis avec le vérificateur du runner. Lister les champs qui n'ont
+pas trouvé de place.
+
+**Métrique** : le nombre de champs sans place ; les écarts de canonisation (zéro attendu) ; vérifié ou non par l'outil
+standard ; le temps passé.
+
+**Limite** : une clé d'essai, pas la décision sur la clé (ADR-028, E27) ; un seul dossier ; l'essai ne dit pas qu'un
+auditeur lira cette enveloppe, seulement qu'un outil la lit. Il ne tranche pas le témoin (Q31).
+
+**Coût** : ~0,5 j. Ce qu'on ne fait pas pendant ce temps : rien de J2. Si le temps double, l'essai s'arrête et le dossier
+garde son format d'aujourd'hui (signal d'arrêt de R198 amendée).
+
+**Ce que la séance n°30 ajoute** (R218 ; point 9 de la liste à trancher) : E34 est l'essai du critère 3 de « la v1 est
+finie » : le dossier est signé par une clé hors de portée de l'agent, et vérifié hors ligne par un outil qui n'est pas
+TaskForce. Son état au 17/11/2026 : absent.
+
+**Décision du 22/11/2026** : la Présidence délègue (« Alright ecoute prends les meilleurs decision avec le conseille
+pour cette v1 et c'est partie »). La fiche est retenue par délégation de la Présidence au Conseil, selon l'avis de sa
+majorité : aucun format propre, la RFC 8785, in-toto et DSSE à instruire avec TF-J2-7.
+
+**Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : `[DÉDUIT]` la fiche se joue au labo avec une
+clé d'essai : elle dit si l'enveloppe tient, elle ne prouve pas à elle seule le critère 3, qui demande une clé hors de
+portée de l'agent. Pour ce critère, elle se rejoue sur un dossier signé par TF-J2-7. Le signal d'arrêt de la fiche
+tient : si le temps double, le dossier garde son format d'aujourd'hui. Elle ne tranche pas le témoin (Q31).
+
+## E35 : Peut-on demander une mission depuis Claude Code, avec le serveur MCP et le plugin tels qu'ils sont ?
+
+`[statut:: proposée]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°30](../conseil/seances/2026-11-17-finir-la-v1.md), R208 · retenue le 22/11/2026 par délégation de la Présidence au Conseil, selon l'avis de sa majorité (point 3 de la liste à trancher) ; l'essai du critère 7 de « la v1 est finie » (R218)
+
+**Hypothèse** `[HYPOTHÈSE]` : depuis une session Claude Code où le plugin TaskForce est installé, une personne peut créer une
+issue et la déléguer par le serveur MCP sans ouvrir TaskForce, puis n'y venir qu'une fois, pour accepter, et lire l'état de
+la mission depuis Claude Code.
+
+**Falsification** : la délégation est refusée à un agent connecté de l'extérieur ; ou il faut ouvrir TaskForce plus d'une
+fois avant que la mission parte ; ou l'état ne se lit pas depuis Claude Code.
+
+**Schéma réel** `[ÉTABLI]` (copie du code de `dev`, lue le 17/11/2026) : le serveur MCP (`POST /api/workspaces/{slug}/mcp`)
+expose dix-sept outils, dont `create_issue`, `delegate_issue` et `get_mission` ; une action qui demande un accord n'est pas
+exécutée pour un agent connecté de l'extérieur ; le plugin (0.2.0) n'a qu'une commande, `/taskforce`, qui lit et commente.
+Ce que l'agent reçoit est un brief de six champs (`AgentBrief.java`).
+
+**Protocole** : sur l'app de bureau, sans code du produit. Trois demandes écrites avant, sur le projet TaskForce. Pour
+chacune : la poser dans Claude Code ; relever chaque appel d'outil, chaque refus, chaque passage par TaskForce ; noter ce
+qui manque au brief (l'origine, les règles, le modèle).
+
+**Métrique** : par demande : partie ou non ; le nombre de passages par TaskForce ; les champs du brief absents ; l'état lu
+ou non depuis Claude Code.
+
+**Limite** : une personne, un poste, trois demandes ; Claude Code seul, aucun autre agent ; l'essai ne dit rien d'un outil
+de suivi. À annoncer avant de lancer.
+
+**Coût** : ~0,5 j. Ce qu'on ne fait pas pendant ce temps : rien de J2, l'essai est au labo.
+
+**Ce que la séance n°30 ajoute** (R218 ; points 3 et 15 de la liste à trancher) : E35 est l'essai du critère 7 de « la
+v1 est finie », où elle est rejouée : une mission demandée depuis Claude Code arrive avec son brief, accepté d'un geste,
+et son état se lit depuis là-bas. Son état au 17/11/2026 : en partie, les outils existent. Le plugin ne va sur une place
+de marché que ce critère rempli, sur décision de la Présidence.
+
+**Décision du 22/11/2026** : la Présidence délègue (« Alright ecoute prends les meilleurs decision avec le conseille
+pour cette v1 et c'est partie »). La fiche est retenue par délégation de la Présidence au Conseil, selon l'avis de sa
+majorité : en v1, on demande ailleurs depuis Claude Code seulement, par le serveur MCP et le plugin qui existent.
+
+**Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : la fiche se joue deux fois : d'abord sur ce
+qui existe, avant d'écrire une ligne (R208), puis pour le critère 7. La Présidence avait écrit le 17/11/2026 : « avant
+de faire d'autre modif (les fix on peut), faut attendre le retour de l'analyse pour qu'on puisse prendre une decision
+tous ensemble avec le conseil. » La décision commune est prise le 22/11/2026 ; l'essai reste sans code du produit, comme
+la fiche l'écrit.
+
+## E36 : Quelle part des changements du dépôt TaskForce serait partie seule, et combien aurait-il fallu en rattraper ?
+
+`[statut:: proposée]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°30](../conseil/seances/2026-11-17-finir-la-v1.md), R210 · retenue le 22/11/2026 par délégation de la Présidence au Conseil, selon l'avis de sa majorité (point 7 de la liste à trancher)
+
+**Hypothèse** `[HYPOTHÈSE]` : sous des classes étroites écrites avant de regarder (la documentation, des tests ajoutés, le
+format, une mise à jour de dépendance), une part mesurable des changements fusionnés du dépôt TaskForce serait partie
+seule, et aucun de ceux-là n'a dû être corrigé ou annulé ensuite.
+
+**Falsification** : un seul changement classé « part seul » qui touche une des huit familles de R210, ou qu'un commit
+ultérieur a corrigé ou annulé dans les quatorze jours.
+
+**Schéma réel** `[ÉTABLI]` : l'historique git du dépôt public ; les règles par défaut classent par action et non par
+fichier (`default.rules.json`) ; les tests sont lancés par le runner. `[ÉTABLI]` (D8) Aucune source ne mesure « 90 / 10 ».
+
+**Protocole** : au labo, par un script hors du produit. Écrire et dater les classes et les huit familles avant de lire
+l'historique. Prendre les changements fusionnés des trente derniers jours ; classer chacun par ses seuls fichiers
+touchés ; pour ceux classés « part seul », chercher un correctif ou une annulation dans les quatorze jours. Tirer au sort
+dix changements « part seul » et les relire à la main.
+
+**Métrique** : la part classée « part seul » ; parmi eux, le nombre de rattrapés ; dans l'échantillon, le nombre que la
+relecture aurait arrêtés.
+
+**Limite** : un dépôt, un auteur et ses agents, un mois ; c'est une mesure après coup, pas un essai de la porte ; elle ne
+dit rien d'un autre dépôt ni d'une équipe. Le chiffre obtenu n'est pas une promesse et ne sort pas du labo.
+
+**Coût** : ~0,5 j. Si le classement par fichiers demande plus d'une demi-journée, l'essai s'arrête et le dit.
+
+**Décision du 22/11/2026** : la Présidence délègue (« Alright ecoute prends les meilleurs decision avec le conseille
+pour cette v1 et c'est partie »). La fiche est retenue par délégation de la Présidence au Conseil, selon l'avis de sa
+majorité, avec R210 : pour le geste de fin, la vérification automatique, la décision d'une personne rendue courte et
+possible par lot ; la fusion sans personne écrite, éteinte, pas construite en v1.
+
+**Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : `[DÉDUIT]` aucun des dix critères de « la v1
+est finie » ne dépend de cette fiche. Son chiffre ne sort pas du labo, comme elle l'écrit, et R210 retenue interdit tout
+taux dans le produit ou dans un texte public. Elle ne mesure pas ce que vaut un modèle relecteur (Q35). Elle se joue
+sans code du produit, comme E35.
+
+## E37 : L'app de bureau s'installe-t-elle sur une machine vierge, hors réseau, sans aide ?
+
+`[statut:: proposée]` · Ouverte le 17/11/2026 · issue du [Conseil, séance n°30](../conseil/seances/2026-11-17-finir-la-v1.md), R213 · retenue le 22/11/2026 par délégation de la Présidence au Conseil, selon l'avis de sa majorité (point 11 de la liste à trancher) ; l'essai du critère 8 de « la v1 est finie » (R218)
+
+**Hypothèse** `[HYPOTHÈSE]` : sur une machine qui n'a jamais vu TaskForce, une personne installe l'app de bureau, coupe le
+réseau, et mène une première mission avec un modèle local, sans aide et sans documentation autre que celle du produit.
+
+**Falsification** : une étape qui demande le réseau après l'installation ; une étape qui demande une aide extérieure ; une
+mise à jour qui perd des données.
+
+**Schéma réel** `[ÉTABLI]` (copie du code) : un profil « bureau » fait tourner le serveur sur le poste, avec une base
+PostgreSQL embarquée, sans service d'identité externe ; les installateurs ne sont pas signés. `[À VÉRIFIER]` La copie ne
+contient pas l'app de bureau elle-même ni l'installation d'un serveur.
+
+**Protocole** : une machine vierge ou une machine virtuelle. Chronométrer de l'installateur à la première mission finie.
+Relever chaque avertissement du système, chaque appel réseau, chaque blocage. Puis installer la version suivante par-dessus
+et vérifier que rien n'est perdu.
+
+**Métrique** : le temps ; le nombre d'étapes ; les avertissements ; les appels réseau après la coupure ; perdu ou non à la
+mise à jour.
+
+**Limite** : un système, une machine ; l'essai ne dit rien du serveur d'équipe, qui reste à vérifier sur le dépôt.
+
+**Coût** : ~0,5 j. Ce qu'on ne fait pas pendant ce temps : rien de J2.
+
+**Ce que la séance n°30 ajoute** (R218 ; point 11 de la liste à trancher) : E37 est l'essai du critère 8 de « la v1 est
+finie », « puis la même sur le serveur » : l'app de bureau s'installe sur une machine vierge, hors réseau, avec un
+modèle local, sans aide ; le serveur d'équipe par une procédure écrite ; une mise à jour sans perte. Son état au
+17/11/2026 : l'app de bureau existe, le serveur est `[À VÉRIFIER]`.
+
+**Décision du 22/11/2026** : la Présidence délègue (« Alright ecoute prends les meilleurs decision avec le conseille
+pour cette v1 et c'est partie »). La fiche est retenue par délégation de la Présidence au Conseil, selon l'avis de sa
+majorité : l'app de bureau et un serveur d'équipe, une configuration supportée chacune. L'installation chez le client
+est la voie que la Présidence a dite le 17/11/2026 : « installer chez lui c'est good ».
+
+**Précisions du secrétariat**, qui ne sont pas des mots de la Présidence : la fiche ne couvre que l'app de bureau ;
+`[DÉDUIT]` le critère 8 demande le même essai sur le serveur d'équipe, qui reste à écrire une fois le dépôt vérifié.
+Elle se joue sans code du produit, comme E35.
+
 ---
 
 **Points d'entrée :** [🔬 R&D](../README.md) · [🤖 Mode recherche](../CLAUDE.md) · [❓ Questions](../Questions-ouvertes.md) · [📖 Notes critiques](../revues/World-Model.md)
 
-**Dernière mise à jour :** 10/11/2026 · **v1.10** · Projet Taskforce, Metz Numeric School 2025-2026
+**Dernière mise à jour :** 22/11/2026 · **v1.11** · Projet Taskforce, Metz Numeric School 2025-2026

@@ -9,6 +9,8 @@ formation: plénière
 tags: [recherche, conseil, seance, recentrage, preuve, dossier, conformite, confiance, souverainete, integrations, board, workflow, cortex, inventaire]
 related:
   - "../README.md"
+  - "./2026-11-17-preciser-avant-de-trancher.md"
+  - "./2026-11-17-finir-la-v1.md"
   - "./2026-11-15-le-run-et-les-petits-modeles.md"
   - "./2026-11-13-le-marche-a-prendre.md"
   - "./2026-11-13-le-workflow-pilotable.md"
@@ -18,6 +20,8 @@ related:
   - "../../decisions/ADR-022-DRAFT-infrastructure-pas-les-regles.md"
   - "../../decisions/ADR-024-DRAFT-mcp-taskforce-surface-unique.md"
   - "../../decisions/ADR-028-DRAFT-execution-isolee-par-defaut.md"
+  - "../../decisions/ADR-029-DRAFT-la-couche-le-travail-vient-d-ou-il-est.md"
+  - "../../decisions/ADR-030-DRAFT-la-classe-d-une-ecriture-externe.md"
   - "../../experiences/Experiences.md"
   - "../../Questions-ouvertes.md"
 ---
@@ -1088,7 +1092,104 @@ Chacune avec ses options et l'avis de la majorité, pour une réponse d'une lign
 
 ## Décision de la Présidence
 
-En attente. Le secrétariat ne rédige pas cette raison à sa place (charte, §2.4) : il la demande.
+Tranchée en trois temps, en conversation : le 17/11/2026 après cette séance, le 17/11/2026 après la séance n°29, puis le
+22/11/2026 après la séance n°30.
+
+1. **Le 17/11/2026, après cette séance.** La Présidence répond aux neuf recommandations. Une seule ligne tranche, mot pour mot
+   : « R204: Ok ». Le reste de ce message demande des précisions : c'est la saisine de la [séance
+   n°29](./2026-11-17-preciser-avant-de-trancher.md), consignée à son PV.
+2. **Le 17/11/2026, après la n°29.** Deux lignes tranchent, mot pour mot : « R202: ok je comprends oui on s'engage pas, on
+   fourni juste le necessaire pour augmenter la confiance » et « R200: ok ». Le reste de ce message est la saisine de la
+   [séance n°30](./2026-11-17-finir-la-v1.md), consignée à son PV.
+3. **Le 22/11/2026, après la n°30.** Le secrétariat avait remonté à la Présidence les dix-huit points à trancher de la n°30,
+   chacun avec l'avis de la majorité, et recommandé de suivre la majorité partout. La Présidence répond, mot pour mot :
+
+> « Alright ecoute prends les meilleurs decision avec le conseille pour cette v1 et c'est partie »
+
+**La Présidence délègue.** Les dix-huit points de la n°30 sont tranchés selon l'avis de la majorité du Conseil, tel que le PV
+n°30 l'écrit (« La liste à trancher pour finir la v1 »). Ce qui suit, quand il ne porte pas une citation du 17/11, est
+**retenu par délégation de la Présidence au Conseil, selon l'avis de sa majorité**. Sa raison est la délégation : le
+secrétariat ne lui en prête aucune autre (charte, §2.4).
+
+Dans ce qui suit, **la décision** est ce que la Présidence a dit, ou ce que la majorité a écrit au PV et que la délégation
+retient. Les **précisions du secrétariat** sont à part : ce ne sont pas ses mots.
+
+| Recommandation | Décision | Raison de la Présidence |
+| --- | --- | --- |
+| R196 | Remplacée par R205 (n°29) | La délégation du 22/11/2026 |
+| R197 | Retenue, dans sa version précisée par la n°29 | La délégation du 22/11/2026 |
+| R198 | Retenue, dans sa version précisée par la n°29 | La délégation du 22/11/2026 |
+| R199 | Retenue, dans sa version précisée par la n°29 | La délégation du 22/11/2026 |
+| R200 | Retenue le 17/11/2026, dans sa version précisée par la n°29 | « R200: ok » |
+| R201 | Retenue, dans sa version précisée par la n°29 | La délégation du 22/11/2026 |
+| R202 | Retenue le 17/11/2026, dans sa version précisée par la n°29 | « R202: ok je comprends oui on s'engage pas, on fourni juste le necessaire pour augmenter la confiance » |
+| R203 | Retenue, dans sa version précisée par la n°29 | La délégation du 22/11/2026 |
+| R204 | Retenue le 17/11/2026 ; faite | « R204: Ok » |
+
+- **R196, remplacée par R205.** La phrase de cette séance n'est plus celle de TaskForce : la place est la place ajustée de
+  R205 (n°30, point 1, option A). Sa décision est au [PV n°29](./2026-11-17-preciser-avant-de-trancher.md).
+- **R197, retenue dans sa version précisée** (« R197, amendée », n°29) : la méthode en quatre temps, les cinq sources
+  d'observation, la table de correspondance qui se montre aussi. Le point 18 de la n°30 en retient la suite : une seule
+  question de fait, posée sans campagne.
+- **R198, retenue dans sa version précisée** (« R198, amendée », n°29) : le dossier est le produit, la signature est le droit
+  d'entrée ; la page du lecteur d'abord ; aucun format propre.
+  - **La décision** (n°30, point 9, option B) : TF-J2-7 et la page de vérification, la page écrite d'abord, rien au commit ;
+    l'empreinte de tête écrite dans la pull request quand il y en a une.
+- **R199, retenue dans sa version précisée** (« R199, amendée », n°29) : une couche qui dit qui possède quel moment ; une
+  source menée au bout d'abord.
+  - **La décision** (n°30, points 2, 3 et 4) : le Board gèle, l'issue reste l'ancre, et le sort du Board se décide au point de
+    décision, sur l'usage observé ; en v1, on ne demande ailleurs que depuis Claude Code, par le serveur MCP et le plugin qui
+    existent ; la première vraie source externe vient après le client test, GitHub puis Linear ; le contrat d'une source de
+    R209 est retenu.
+  - **Précision du secrétariat** : le projet
+    d'[ADR-029](../../decisions/ADR-029-DRAFT-la-couche-le-travail-vient-d-ou-il-est.md) est rangé, amendé par la n°29 et par
+    R208 et R209. Il reste à relire par la Présidence.
+- **R200, retenue le 17/11/2026** : « R200: ok ». Dans sa version précisée par la n°29 : un processus porte une
+  réglementation, une convention ou une norme interne ; TaskForce donne le moteur et des exemples de conventions, jamais le
+  contenu réglementaire.
+  - **La décision du 22/11, par délégation** (n°30, point 5) : le dessin du processus est délégué à l'équipe de Jobs.
+- **R201, retenue dans sa version précisée** (« R201, amendée », n°29) : trois classes décidées d'avance par une personne :
+  part seul, attend une carte, refusé.
+  - **La décision** (n°30, point 6, option B) : les trois classes ; hors de TaskForce, outil par outil, après la v1.
+  - **Précision du secrétariat** : le projet d'[ADR-030](../../decisions/ADR-030-DRAFT-la-classe-d-une-ecriture-externe.md) et
+    E33 portent cette suite.
+- **R202, retenue le 17/11/2026** : « R202: ok je comprends oui on s'engage pas, on fourni juste le necessaire pour augmenter
+  la confiance ». Dans sa version précisée par la n°29 : l'inventaire inchangé ; les mots précisés ; la fin du gel décidée sur
+  l'usage observé.
+  - **La décision du 22/11, par délégation** (n°30, point 10) : dans la v1, Smart Assign est masqué, l'agent Copilot aussi
+    tant qu'il n'ouvre pas de dossier, « Show all links » est retiré, et les 97 préréglages jamais connectés restent visibles
+    avec la mention « pas encore essayé ».
+  - **Précision du secrétariat** : R202 plaçait la fin du gel « au retour du client test ». Le point 2 de la n°30 la place au
+    point de décision, trente jours après la remise de la v1 au premier client test.
+- **R203, retenue dans sa version précisée** (« R203, amendée », n°29) : ce que cela change, plus un témoin dans E30 et le
+  pitch sur R205.
+  - **La décision** (n°30, points 17 et 18) : l'ordre des « dix jours » est remplacé par celui de la v1 (R217) et par ses dix
+    critères (R218) ; la prochaine recette se joue sur le projet TaskForce, avec le modèle nu comme témoin (E30).
+  - **Précision du secrétariat** : R203 disait que les dates de R183 ne courent pas. Le point 17 pose un butoir au point de
+    décision, le 31/03/2027 ; ce qu'il change à la décision sur la séance n°26 est dit au [PV
+    n°30](./2026-11-17-finir-la-v1.md).
+- **R204, retenue le 17/11/2026 ; faite** : « R204: Ok ».
+  - **Ce qui est fait** : les six correctifs sont dans la PR #548, fusionnée dans `dev` le 19/11/2026 (commit `9d95f88d`),
+    après six tours de relecture indépendante. Ils ne sont pas encore en production.
+  - **Précision du secrétariat** : la preuve de R204 demande chaque correctif rejoué par la Présidence sur l'app de bureau,
+    avec son cas. C'est le critère 1 de la v1 (R218) ; le secrétariat ne le dit pas rempli.
+
+**Les dix questions de cette séance** ne reçoivent pas de réponse ici : elles ont été remplacées par les quatorze questions de
+la n°29, puis par les dix-huit points de la n°30, que la délégation tranche. Le détail de chaque point est au [PV
+n°30](./2026-11-17-finir-la-v1.md).
+
+| Question de cette séance | Ce qu'elle est devenue | Tranchée par |
+| --- | --- | --- |
+| 1. La phrase | n°29, question 1 ; n°30, point 1 | La délégation : la place ajustée de R205 |
+| 2. Le Board | n°29, question 2 ; n°30, point 2 | La délégation : gelé, son sort au point de décision |
+| 3. La source de travail externe | n°29, question 3 ; n°30, points 3 et 4 | La délégation : Claude Code seulement en v1 ; GitHub puis Linear après le client test |
+| 4. La vue Workflow | n°29, question 4 ; n°30, point 5 | « R200: ok » ; le dessin par la délégation |
+| 5. Cortex | n°29, question 5 ; n°30, points 6 et 7 | La délégation : les trois classes |
+| 6. Ce qu'on arrête | n°29, question 6 ; n°30, point 10 | « R202: ok […] » pour le principe ; la délégation pour les quatre lignes |
+| 7. Les dix jours | n°29, question 7 ; n°30, point 17 | La délégation : l'ordre de la v1 et ses dix critères |
+| 8. La prochaine recette | n°29, question 8 ; n°30, point 18 | La délégation : sur le projet TaskForce, avec le modèle nu comme témoin |
+| 9. Les mots | n°29, question 9 ; sortie de la liste à la n°30 | Le secrétariat la lit comme tranchée par « R202: ok je comprends oui on s'engage pas » |
+| 10. Le juriste | n°29, question 10 ; n°30, point 13 | La délégation : la licence commerciale et le prix avant toute annonce large ; le juriste avant l'édition payante |
 
 ## Notes du secrétariat
 
@@ -1176,6 +1277,19 @@ En attente. Le secrétariat ne rédige pas cette raison à sa place (charte, §2
 - Au labo, sans rien prendre à J2 : la table de correspondance (R197) ; le déroulé d'un processus en une page (R200) ; E32.
 - À la roadmap, par une tâche : `Etude_business` à revoir ; le `README.md` du dépôt (le nombre de migrations) ; le
   `README.md` du plugin, après vérification.
+- Après la décision de la Présidence, rangé le 22/11/2026 :
+  - au registre de la charte (§12) et au Journal : « la Présidence délègue au Conseil et tranche les séances n°28 à n°30 » ;
+  - à `Questions-ouvertes.md` : Q27 à Q30 mises à jour, chacune avec son statut daté ;
+  - à `experiences/Experiences.md` : E30, E31 et E32 entrent, retenues, E30 amendée par la n°29 (le modèle nu comme témoin) ;
+  - le projet d'[ADR-029](../../decisions/ADR-029-DRAFT-la-couche-le-travail-vient-d-ou-il-est.md), amendé par la n°29 (R199)
+    et par la n°30 (R208, R209) ;
+  - à la roadmap, le bloc du 22/11/2026, « La v1, tranchée par délégation » ; au [plan des
+    lots](./2026-11-13-le-workflow-pilotable-plan-des-lots.md) de la séance n°25, une note sur chaque lot touché.
+- Restent, après ce rangement :
+  - en mode développement : la mise en production de la PR #548 ; TF-J2-7 ; les surfaces arrêtées masquées (R202) ;
+  - à la Présidence : rejouer les six correctifs sur l'app de bureau (R204) ; relire le projet d'ADR-029 ;
+  - à la roadmap, par une tâche : `Etude_business` à revoir ; le `README.md` du dépôt ; le `README.md` du plugin, après
+    vérification.
 - Rien ne migre vers `v1/` sans tâche ni ADR (quarantaine, [`CLAUDE.md`](../../CLAUDE.md) §2).
 
 ---

@@ -24,6 +24,78 @@ Logo projet        : assets/images/logo_taskforce.png
 **Date :** 08/06/2026  
 **Auteur(s) :** Pierre MICHEL
 
+> **▶ 22/11/2026 :** la v1, tranchée par délégation. Ce qui suit est retenu par délégation de la Présidence au Conseil,
+> selon l'avis de sa majorité (« Alright ecoute prends les meilleurs decision avec le conseille pour cette v1 et c'est
+> partie », le 22/11/2026), sur les séances [n°28](../../recherche/conseil/seances/2026-11-17-le-recentrage.md),
+> [n°29](../../recherche/conseil/seances/2026-11-17-preciser-avant-de-trancher.md) et
+> [n°30](../../recherche/conseil/seances/2026-11-17-finir-la-v1.md) (R197 à R218, R196 remplacée par R205, et les dix-huit
+> points de la n°30). Dans l'ordre :
+> - **Fait** : R204, les six correctifs de la recette (retenue par la Présidence le 17/11/2026 : « R204: Ok »), PR
+>   [#548](https://github.com/taskforce-project/taskforce-fullstack/pull/548), fusionnée dans `dev` le 19/11/2026 (commit
+>   `9d95f88d`), pas encore en production.
+> - **Les lots qui suivent** : TF-J2-7, le dossier complet et signé, avec la page de vérification (écrite d'abord, aucun
+>   format propre, rien au commit) et le témoin dans la pull request (l'empreinte de tête, écrite dans la pull request quand
+>   il y en a une) ; puis W3 à W5, pour le seul processus d'E20, qui porte une étape de chaque famille (une réglementation,
+>   une convention d'ingénierie, une norme interne). La liste dure complète vient avec W3 à W5 ; d'ici là, la page du
+>   dossier distingue « vérifié par » et « déclaré par l'agent ».
+> - **Ce qui se masque dans la v1** : Smart Assign ; l'agent Copilot, tant qu'il n'ouvre pas de dossier ; le calque
+>   « Show all links ». Et la mention « pas encore essayé » se pose sur les 97 préréglages jamais connectés, qui restent
+>   listés.
+> - **Ce qui gèle** : le Board et sa famille, la vue Workflow en cartes. Ils restent visibles et ne reçoivent plus de
+>   travail ; l'issue reste l'ancre ; le sort du Board se décide au point de décision, sur l'usage observé. L'inventaire
+>   complet des surfaces est dans R202 (n°28, précisée par la n°29).
+> - **L'installation** : l'app de bureau et un serveur d'équipe, une configuration supportée chacune.
+> - **L'app web hébergée** : une démonstration en données d'exemple et l'espace de la Présidence ; plus aucun client
+>   hébergé. Précision du secrétariat : le seuil qui rouvrirait un hébergement pour des clients revient à la Présidence et
+>   reste ouvert ([Q37](../../recherche/Questions-ouvertes.md)).
+> - **La licence et le prix** : la licence commerciale et le prix sont écrits avant toute annonce large ; tous les droits du
+>   code chez un seul titulaire ; le juriste avant l'édition payante.
+> - **Le premier client test** : partenaire de conception, avec un accord écrit qui dit ce que chacun donne et reçoit.
+> - **« La v1 est finie »** veut dire dix critères, chacun avec l'essai qui le prouve (R218, recopiés du PV n°30) :
+>   1. Les six correctifs de R204 sont livrés. L'essai : chacun avec son cas, rejoué sur l'app de bureau.
+>   2. Le dossier d'une mission porte la demande, la règle et sa version, chaque accord, les actions, le résultat, les
+>      vérifications et le modèle ; il survit à la suppression de l'issue. L'essai : une mission réelle, son dossier
+>      exporté, l'issue supprimée.
+>   3. Il est signé par une clé hors de portée de l'agent, et vérifié hors ligne par un outil qui n'est pas TaskForce.
+>      L'essai : E34.
+>   4. Sa page se lit sans aide. L'essai : une personne qui n'est pas ingénieure répond à six questions en cinq minutes.
+>   5. Le processus d'E20 tourne de bout en bout, avec une étape de chaque famille et un point de pause tenu. L'essai : W3 à
+>      W5 livrés ; E20 joué.
+>   6. Les trois classes se voient : une écriture courante part seule et s'annule d'un geste ; une lourde attend la bonne
+>      personne ; un refus est écrit. L'essai : E33.
+>   7. Une mission demandée depuis Claude Code arrive avec son brief, accepté d'un geste, et son état se lit depuis là-bas.
+>      L'essai : E35, rejouée.
+>   8. L'app de bureau s'installe sur une machine vierge, hors réseau, avec un modèle local, sans aide ; le serveur d'équipe
+>      par une procédure écrite ; une mise à jour sans perte. L'essai : E37, puis la même sur le serveur.
+>   9. Le dossier fournisseur existe : la page de sécurité, la table de correspondance, la table « au lieu de », la licence
+>      et le prix écrits. L'essai : les quatre pièces relues par la Présidence.
+>   10. Les surfaces arrêtées sont masquées, et aucune surface gelée n'a reçu de travail depuis le 17/11/2026. L'essai :
+>       l'inventaire de la n°28, relu.
+> - **Le point de décision** se tient trente jours après la remise de la v1 au premier client test, et au plus tard le
+>   31/03/2027 (R217, R218). Ses critères, en oui ou non, écrits avant la remise :
+>   - a. le client test a-t-il mené au moins une mission réelle, de bout en bout ?
+>   - b. a-t-il ouvert le dossier d'une mission sans qu'on le lui demande ?
+>   - c. l'a-t-il montré à une personne qui audite ou qui répond de la qualité ?
+>   - d. a-t-il écrit ou changé lui-même une règle ou une étape de processus ?
+>   - e. un autre que lui a-t-il demandé, installé ou payé ?
+>   - f. un des signaux A ou B de R207 s'est-il déclenché ?
+>   - g. la v1 remplissait-elle les dix critères à la remise ?
+>
+>   Ses quatre issues, écrites d'avance, et leur règle de lecture (R218) :
+>
+>   - **tester le marché** : a, b et c oui (ou e oui), et f non. Le coup suivant : la licence et le prix affichés ; le
+>     plugin publié ; la première source externe ; la question de fait posée à quelques personnes ;
+>   - **ajuster** : a et d oui, b ou c non. La porte passe devant dans tout ce qu'on dit ; le dossier reste, en second ;
+>     retour au Conseil sur ce que le client test a ouvert ;
+>   - **replier** : f oui. Le repli écrit de R207 : la preuve du travail des agents de code dans le logiciel validé ;
+>   - **pivoter** : a non, ou g non au butoir. Retour au Conseil, tout ouvert, le rêve compris.
+>
+>   Précision du secrétariat : le butoir du 31/03/2027 revient sur la décision de la Présidence sur la séance n°26 (aucune
+>   date avant le client test). Il est retenu par la délégation du 22/11/2026, et la Présidence peut le retirer d'une ligne.
+> - **La relecture mensuelle des signaux de R207**, à partir du 17/12/2026 : le secrétariat relit trois signaux une fois par
+>   mois, à une session du labo, et écrit leur état au Journal. A, un équivalent arrive ; B, le dossier devient un doublon ;
+>   C, le client test ne s'en sert pas.
+>
 > **▶ 16/11/2026 :** la 1.17.0 est en prod avec la desktop 1.14.0 (release [#544](https://github.com/taskforce-project/taskforce-fullstack/pull/544)) : les trois premiers lots du workflow
 > pilotable ([séance n°25](../../recherche/conseil/seances/2026-11-13-le-workflow-pilotable-plan-des-lots.md)). W0, les données
 > vivantes ([#535](https://github.com/taskforce-project/taskforce-fullstack/pull/535), V131) ; W1, l'application Workflow au rang du Board, pilotée sur ses nœuds, avec l'objectif du projet et

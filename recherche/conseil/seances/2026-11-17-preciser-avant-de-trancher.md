@@ -9,6 +9,7 @@ formation: plénière
 tags: [recherche, conseil, seance, precisions, concurrence, signaux, pivot, preuve, dossier, accords, processus, mots]
 related:
   - "../README.md"
+  - "./2026-11-17-finir-la-v1.md"
   - "./2026-11-17-le-recentrage.md"
   - "./2026-11-13-le-marche-a-prendre.md"
   - "./2026-11-13-depasser-camunda.md"
@@ -17,6 +18,8 @@ related:
   - "../../decisions/ADR-022-DRAFT-infrastructure-pas-les-regles.md"
   - "../../decisions/ADR-025-DRAFT-un-seul-moteur-de-regles.md"
   - "../../decisions/ADR-028-DRAFT-execution-isolee-par-defaut.md"
+  - "../../decisions/ADR-029-DRAFT-la-couche-le-travail-vient-d-ou-il-est.md"
+  - "../../decisions/ADR-030-DRAFT-la-classe-d-une-ecriture-externe.md"
   - "../../experiences/Experiences.md"
   - "../../Questions-ouvertes.md"
 ---
@@ -1311,8 +1314,62 @@ une réponse d'une ligne.
 
 ## Décision de la Présidence
 
-En attente. Le secrétariat ne rédige pas cette raison à sa place (charte, §2.4) : il la demande. R204 a été retenue par la
-Présidence sur la n°28 (« R204 : Ok ») ; elle n'est pas l'objet de cette séance.
+Tranchée le 22/11/2026, en conversation, par une délégation. La Présidence avait répondu à cette séance le 17/11/2026 par un
+message dont deux lignes tranchent R200 et R202 (elles sont consignées au [PV n°28](./2026-11-17-le-recentrage.md)) et dont le
+reste est la saisine de la [séance n°30](./2026-11-17-finir-la-v1.md). La n°30 a remplacé les quatorze questions de cette
+séance par dix-huit points. Le secrétariat les a remontés à la Présidence, chacun avec l'avis de la majorité, et a recommandé
+de suivre la majorité partout. La Présidence répond, mot pour mot :
+
+> « Alright ecoute prends les meilleurs decision avec le conseille pour cette v1 et c'est partie »
+
+**La Présidence délègue.** Les dix-huit points de la n°30 sont tranchés selon l'avis de la majorité du Conseil, tel que le PV
+n°30 l'écrit. Les recommandations de cette séance sont **retenues par délégation de la Présidence au Conseil, selon l'avis de
+sa majorité**. Sa raison est la délégation : le secrétariat ne lui en prête aucune autre (charte, §2.4).
+
+Dans ce qui suit, **la décision** est ce que la majorité a écrit au PV et que la délégation retient. Les **précisions du
+secrétariat** sont à part.
+
+| Recommandation | Décision | Raison de la Présidence |
+| --- | --- | --- |
+| R205, qui remplace R196 | Retenue | La délégation du 22/11/2026 |
+| R197 à R203, amendées | Retenues dans cette version ; R200 et R202 dès le 17/11/2026 | La délégation ; « R200: ok » ; « R202: ok je comprends oui on s'engage pas, on fourni juste le necessaire pour augmenter la confiance » ([PV n°28](./2026-11-17-le-recentrage.md)) |
+| R206 | Retenue | La délégation du 22/11/2026 |
+| R207 | Retenue | La délégation du 22/11/2026 |
+
+- **R205, retenue** (n°30, point 1, option A) : la place ajustée. TaskForce fait passer le travail des agents de code par les
+  règles de l'entreprise ; ce qui est courant part seul, ce qui est lourd attend la bonne personne, et chaque tâche laisse un
+  dossier complet, vérifiable sans TaskForce ; il se pose sur les outils qu'elle a déjà et s'installe chez elle. R196 est
+  remplacée.
+  - **Précision du secrétariat** : la place reste étiquetée `[HYPOTHÈSE]` dans les documents du labo, comme R205 l'écrit ;
+    l'étiquette se lève sur les signaux de R207.
+- **R206, retenue** : ne pas refaire ce qui se donne ; parler les formats des autres ; ne se brancher que sur la demande d'un
+  acheteur ; ne jamais dire qui l'on bat.
+  - **La décision** (n°30, point 13, option B) : la licence commerciale et le prix sont écrits avant toute annonce large ;
+    tous les droits du code sont chez un seul titulaire ; le juriste passe avant l'édition payante.
+- **R207, retenue** : trois signaux surveillés chaque mois, quatre notés, et le repli écrit d'avance.
+  - **La décision** (n°30, point 18) : le logiciel validé est le lieu du repli, écrit et non construit.
+  - **Précision du secrétariat** : la première relecture des signaux est celle que R207 fixe, le 17/12/2026 ; le secrétariat
+    la tient et l'écrit au Journal.
+
+**Les quatorze questions de cette séance** ont été remplacées par les dix-huit points de la n°30. La table reprend celle du PV
+n°30 (« Ce que deviennent les quatorze questions de la n°29 ») et dit, pour chacune, ce que la délégation tranche.
+
+| Question de cette séance | Ce qu'elle est devenue (PV n°30) | Ce qui est tranché |
+| --- | --- | --- |
+| 1. La place | Point 1, inchangée | A : la place ajustée de R205 |
+| 2. Le Board | Point 2 | B : gelé, l'issue reste l'ancre ; son sort se décide au point de décision, sur l'usage observé |
+| 3. La source de travail externe | Points 3 et 4 | En v1, Claude Code seulement, par le serveur MCP et le plugin qui existent ; la première vraie source après le client test, GitHub puis Linear ; le contrat d'une source de R209 : oui |
+| 4. Le workflow | Tranchée sur le fond (« R200: ok ») ; reste le point 5 | Le dessin est délégué à l'équipe de Jobs |
+| 5. Cortex et les classes | Point 6, complété par le point 7 | B : les trois classes ; hors de TaskForce, outil par outil, après la v1. Le geste de fin : la vérification automatique, la décision d'une personne ; la fusion sans personne écrite, éteinte, pas construite en v1 |
+| 6. Ce qu'on arrête | Point 10 | Smart Assign masqué ; l'agent Copilot masqué tant qu'il n'ouvre pas de dossier ; « Show all links » retiré ; la mention « pas encore essayé » sur les 97 préréglages |
+| 7. Les dix jours | Point 17 | Remplacée par l'ordre de la v1 (R217) et ses dix critères (R218) : oui |
+| 8. La prochaine recette | Point 18 | Oui : sur le projet TaskForce, avec le modèle nu comme témoin (E30) |
+| 9. Les mots | Sortie de la liste | Le secrétariat la lit comme tranchée par « R202: ok je comprends oui on s'engage pas » ; une ligne de la Présidence suffit si ce n'est pas le sens |
+| 10. Le juriste, la licence, le prix | Point 13, avec les droits du code | B : la licence commerciale et le prix avant toute annonce large ; le juriste avant l'édition payante |
+| 11. Une question de fait | Point 18 | Oui. C'est un geste de la Présidence elle-même : il est inscrit comme une action de la Présidence, sans date (Q38) |
+| 12. Une date | Remplacée par le point 17 | B : le point de décision trente jours après la remise au premier client test, au plus tard le 31/03/2027 (voir la précision du [PV n°30](./2026-11-17-finir-la-v1.md)) |
+| 13. Reddit et LinkedIn | Point 18 | Oui. C'est un geste de la Présidence elle-même, connectée : il est inscrit comme une action de la Présidence, sans date (Q39) |
+| 14. Le repli | Point 18 | Oui : le logiciel validé, écrit et non construit ; il est aussi une des quatre issues du point de décision |
 
 ## Notes du secrétariat
 
@@ -1406,6 +1463,18 @@ Présidence sur la n°28 (« R204 : Ok ») ; elle n'est pas l'objet de cette sé
   page des branchements possibles (R206).
 - En mode développement, après la décision : rien de plus que la n°28. Les six correctifs sont lancés (R204) ; TF-J2-7
   suit.
+- Après la décision de la Présidence, rangé le 22/11/2026 :
+  - au registre de la charte (§12) et au Journal : « la Présidence délègue au Conseil et tranche les séances n°28 à n°30 » ;
+  - à `Questions-ouvertes.md` : Q31, Q32 et Q33 mises à jour, chacune avec son statut daté ; Q38 et Q39, deux actions de la
+    Présidence, sans date (la question de fait ; Reddit et LinkedIn lus une fois) ;
+  - à `experiences/Experiences.md` : E33 et E34 entrent, retenues ; E30 entre avec l'amendement de cette séance ;
+  - le projet d'[ADR-030](../../decisions/ADR-030-DRAFT-la-classe-d-une-ecriture-externe.md), la classe d'une écriture externe
+    ; le projet d'[ADR-029](../../decisions/ADR-029-DRAFT-la-couche-le-travail-vient-d-ou-il-est.md), amendé selon R199.
+- Restent, après ce rangement :
+  - au secrétariat : la première relecture des trois signaux de R207, le 17/12/2026, écrite au Journal ;
+  - à la Présidence : relire le projet d'ADR-030 ; Q38 et Q39 ;
+  - au labo : les pièces listées plus haut (la page du lecteur, la table de correspondance, les deux grilles, la page du
+    processus d'E20, la table « au lieu de », la page des branchements possibles).
 - Rien ne migre vers `v1/` sans tâche ni ADR (quarantaine, [`CLAUDE.md`](../../CLAUDE.md) §2).
 
 ---
