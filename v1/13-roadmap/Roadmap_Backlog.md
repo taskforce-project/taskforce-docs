@@ -96,6 +96,12 @@ Logo projet        : assets/images/logo_taskforce.png
 >   mois, à une session du labo, et écrit leur état au Journal. A, un équivalent arrive ; B, le dossier devient un doublon ;
 >   C, le client test ne s'en sert pas.
 >
+> **▶ 22/11/2026 :** la 1.17.1 est sur `main` avec la desktop 1.14.1 (release [#549](https://github.com/taskforce-project/taskforce-fullstack/pull/549)), mais pas encore déployée : les
+> deux VM de l'école sont hors ligne depuis le 17/11/2026 environ (`api` et `app` répondent 530, Cloudflare 1033). Dedans : le
+> banc des modèles qui note un modèle servi même quand les réglages en nomment un disparu ([#547](https://github.com/taskforce-project/taskforce-fullstack/pull/547)) ; les six correctifs de
+> confiance de Cortex de R204 ([#548](https://github.com/taskforce-project/taskforce-fullstack/pull/548), V134), après six tours de relecture indépendante (R159). La desktop 1.14.1 est publiée
+> et sa liste de contrôle du lancement est verte. Suit TF-J2-7, et la décision de la Présidence sur l'hébergement.
+>
 > **▶ 16/11/2026 :** la 1.17.0 est en prod avec la desktop 1.14.0 (release [#544](https://github.com/taskforce-project/taskforce-fullstack/pull/544)) : les trois premiers lots du workflow
 > pilotable ([séance n°25](../../recherche/conseil/seances/2026-11-13-le-workflow-pilotable-plan-des-lots.md)). W0, les données
 > vivantes ([#535](https://github.com/taskforce-project/taskforce-fullstack/pull/535), V131) ; W1, l'application Workflow au rang du Board, pilotée sur ses nœuds, avec l'objectif du projet et
